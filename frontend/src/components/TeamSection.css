@@ -1,0 +1,119 @@
+/* ============================================
+   PK SOMPURA — TEAM SECTION
+   ============================================ */
+
+.team-section {
+    position: relative;
+    width: 100%;
+    min-height: 80vh;
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--section-padding) var(--content-padding);
+}
+
+.team-header {
+    text-align: center;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.team-label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--color-gold-dim);
+    margin-bottom: 16px;
+}
+
+.team-header h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 400;
+    color: var(--color-text);
+}
+
+.team-header .gold {
+    color: var(--color-gold);
+}
+
+.team-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    margin-top: 24px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    width: 100%;
+    max-width: var(--content-max-width);
+}
+
+.team-card {
+    position: relative;
+    padding: 40px 30px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+    border: 1px solid rgba(214, 185, 140, 0.08);
+    transition: transform 0.4s var(--ease-smooth), border-color 0.4s;
+    cursor: default;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(214, 185, 140, 0.25);
+}
+
+.team-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.team-card h3 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.team-role {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-gold-dim);
+}
+
+.team-desc {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+/* Decorative Card Corners */
+.team-card .corner {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+}
+
+.team-card .corner::before,
+.team-card .corner::after {
+    content: '';
+    position: absolute;
+    background: var(--color-gold-dim);
+}
+
+.team-card .top-left { top: -1px; left: -1px; }
+.team-card .top-left::before { width: 1px; height: 100%; }
+.team-card .top-left::after { width: 100%; height: 1px; }
+
+.team-card .bottom-right { bottom: -1px; right: -1px; }
+.team-card .bottom-right::before { width: 1px; height: 100%; right: 0; bottom: 0; }
+.team-card .bottom-right::after { width: 100%; height: 1px; right: 0; bottom: 0; }

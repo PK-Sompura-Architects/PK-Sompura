@@ -1,0 +1,94 @@
+.inquiry-wrapper {
+    min-height: 100vh;
+    padding: 15vh var(--content-padding) 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inquiry-container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--color-bg-elevated);
+    border: 1px solid rgba(194, 155, 87, 0.3); /* Gold border */
+    border-radius: 12px;
+    padding: 50px;
+    box-shadow: 0 20px 40px rgba(26, 38, 52, 0.05);
+}
+
+.inquiry-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.inquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--color-bg);
+    border: 1px solid rgba(26, 38, 52, 0.1);
+    border-radius: 6px;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px var(--color-gold-dim);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    padding: 16px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: var(--color-gold);
+}
+
+@media (max-width: 768px) {
+    .inquiry-container {
+        padding: 30px 20px;
+    }
+}

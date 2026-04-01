@@ -1,0 +1,75 @@
+.dashboard-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center; 
+    padding: 0 var(--content-padding);
+}
+
+/* LEFT SIDE: Typography */
+.dashboard-text-overlay {
+    position: relative;
+    z-index: 3;
+    text-align: left;
+    pointer-events: none; 
+    width: 50%; /* Keeps text on the left half */
+    max-width: 800px;
+}
+
+/* FULL SCREEN: 3D Model */
+.dashboard-model-container {
+    position: absolute; /* Breaks free from the left/right layout */
+    inset: 0;           /* Stretches to all 4 corners of the screen */
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    /* We removed the mask completely. The 3D scene will fill the whole screen! */
+}
+
+.sompura-title {
+    font-family: 'Cinzel Decorative', var(--font-heading);
+    color: #B4DDF0;
+    -webkit-text-stroke: 1.5px var(--color-gold);
+    text-shadow: 4px 4px 12px rgba(31, 60, 94, 0.3);
+    font-size: clamp(40px, 6vw, 90px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.sompura-subtitle {
+    font-family: var(--font-heading);
+    color: var(--color-gold);
+    font-size: clamp(14px, 1.5vw, 22px);
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 15vh;
+    }
+    
+    .dashboard-text-overlay {
+        width: 100%;
+        text-align: center;
+        margin-top: 0;
+    }
+    
+    .sompura-title {
+        letter-spacing: 4px;
+    }
+    
+    .dashboard-model-container {
+        /* Pushes the temple image down so it sits below the text on phones */
+        top: 25%; 
+    }
+}

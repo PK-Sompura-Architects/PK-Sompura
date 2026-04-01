@@ -1,1 +1,1 @@
-# PK-Sompura
+This is a website which shows the legacy of Temple construction of the PK Sompura Architect. A legacy driven by more than 3 generations of the PK Sompura family. 

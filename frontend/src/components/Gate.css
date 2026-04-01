@@ -1,7 +1,13 @@
+/* ============================================
+   PK SOMPURA — GATE ANIMATION
+   Cinematic temple entrance with 3D marble doors
+   ============================================ */
+
+/* --- GATE CONTAINER --- */
 .gate-container {
   position: fixed;
   inset: 0;
-  background: #0f0f10;
+  background: var(--color-bg); /* Bright ethereal blue */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,52 +16,251 @@
   perspective: 1800px;
 }
 
-/* LIGHT BEHIND DOORS */
-.light-layer {
+/* Soft white/blue vignette instead of harsh black */
+.gate-container::before {
+  content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, #d6b98c 0%, transparent 65%);
-  opacity: 0;
-  z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 40%, var(--color-bg-elevated) 100%);
+  z-index: 5;
+  pointer-events: none;
 }
 
-/* DOORS */
+/* --- THE CINEMATIC LIGHT BLOOM --- */
+.gate-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px; /* Starts as a razor-thin crack of light */
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.9),
+              0 0 100px 40px rgba(234, 243, 247, 0.8); /* Matches Ethereal Blue */
+  transform: translateX(-50%) scaleX(0);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* When the gate opens, trigger the 4-second bloom */
+.gate-container.open .gate-glow {
+  animation: cinematicBloom 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes cinematicBloom {
+  0% { 
+      transform: translateX(-50%) scaleX(0); 
+      opacity: 0; 
+  }
+  15% { 
+      transform: translateX(-50%) scaleX(15); /* The crack opens and flashes */
+      opacity: 1; 
+  }
+  70% { 
+      transform: translateX(-50%) scaleX(250); /* Spreads to fill the screen */
+      opacity: 0.9; 
+  }
+  100% { 
+      transform: translateX(-50%) scaleX(500); 
+      opacity: 0; /* Dissolves completely into the Hero section */
+      visibility: hidden;
+  }
+}
+
+/* --- DOOR PANELS --- */
 .door {
   position: absolute;
   width: 50%;
   height: 100%;
-  background: linear-gradient(145deg, #1c1c1e, #2a2a2d);
-  box-shadow: inset -10px 0 20px rgba(0,0,0,0.6);
   transform-style: preserve-3d;
   backface-visibility: hidden;
   z-index: 2;
 }
 
-.left {
-  left: 0;
-  transform-origin: left center;
+/* Majestic bright marble/sandstone texture */
+.door-face {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent 0px, transparent 38px, rgba(0,0,0,0.015) 38px, rgba(0,0,0,0.015) 40px),
+    repeating-linear-gradient(90deg, transparent 0px, transparent 18px, rgba(0,0,0,0.02) 18px, rgba(0,0,0,0.02) 20px),
+    linear-gradient(175deg, #f4f1eb 0%, #e8e4dc 30%, #ded9cf 60%, #e0dcd4 100%);
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.05);
 }
 
-.right {
+/* Soft mottled marble veins/dust */
+.door-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 60% at 30% 20%, rgba(255,255,255,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 100% at 70% 80%, rgba(0,0,0,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0,0,0,0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Carved decorative border */
+.door-face::after {
+  content: '';
+  position: absolute;
+  top: 4%;
+  bottom: 4%;
+  width: 85%;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 2px;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.04), 0 0 1px rgba(0,0,0,0.05);
+  pointer-events: none;
+}
+
+.left .door-face::after { right: 6%; }
+.right .door-face::after { left: 6%; }
+
+/* --- DOOR THICKNESS (side edge visible during rotation) --- */
+.door-edge {
+  position: absolute;
+  top: 0;
+  width: 18px;
+  height: 100%;
+  transform-style: preserve-3d;
+  background: linear-gradient(90deg, #d4cfc5 0%, #e8e4dc 40%, #c8c3b8 100%);
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+}
+
+.left .door-edge {
   right: 0;
   transform-origin: right center;
+  transform: rotateY(90deg);
 }
 
-/* BUTTON */
+.right .door-edge {
+  left: 0;
+  transform-origin: left center;
+  transform: rotateY(-90deg);
+}
+
+/* --- 3D HINGE DETAIL (Dark Brass/Bronze for contrast) --- */
+.door-hinge {
+  position: absolute;
+  width: 8px;
+  height: 60px;
+  background: linear-gradient(180deg, #3a3228 0%, #5a4a38 30%, #3a3228 50%, #5a4a38 70%, #3a3228 100%);
+  border-radius: 3px;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.3), inset 0 0 3px rgba(255,255,255,0.1);
+  z-index: 3;
+}
+
+.left .door-hinge { left: 0; }
+.right .door-hinge { right: 0; }
+.door-hinge.top { top: 15%; }
+.door-hinge.mid { top: 45%; }
+.door-hinge.bottom { top: 75%; }
+
+.door-hinge::before,
+.door-hinge::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, #6a5a48 0%, #3a3228 100%);
+  box-shadow: inset 0 0 2px rgba(255,255,255,0.1);
+}
+
+.door-hinge::before { top: 8px; }
+.door-hinge::after { bottom: 8px; }
+
+/* --- SEAM LINE (center crack between doors) --- */
+.door-seam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+  /* Softened the shadow for the bright marble */
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 20%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.05) 60%, rgba(0,0,0,0.2) 80%, rgba(0,0,0,0.02) 100%);
+  z-index: 3;
+  box-shadow: 0 0 4px rgba(0,0,0,0.15);
+}
+
+/* --- LEFT/RIGHT TRANSFORMS --- */
+.left { left: 0; transform-origin: left center; }
+.right { right: 0; transform-origin: right center; }
+
+/* When gate container is open */
+/* CRITICAL FIX: Destroys the invisible wall blocking the mouse completely */
+.gate-container.open { 
+  pointer-events: none; 
+  animation: vanishGate 0s linear 4.5s forwards;
+}
+
+@keyframes vanishGate {
+  to {
+    visibility: hidden;
+    z-index: -1;
+  }
+}
+
+.gate-container.open .left { transform: rotateY(-110deg); }
+.gate-container.open .right { transform: rotateY(110deg); }
+
+/* --- ENTER BUTTON --- */
 .enter-btn {
   position: relative;
-  z-index: 3;
-  padding: 14px 32px;
-  background: transparent;
-  border: 1px solid #d6b98c;
-  color: #e8e6e3;
-  font-size: 18px;
+  z-index: 10;
+  padding: 18px 48px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  font-family: var(--font-heading); 
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   cursor: pointer;
-  letter-spacing: 1px;
-  transition: 0.3s;
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  opacity: 0;
+  
+  /* Need to ensure the button is clickable before the gate opens */
+  pointer-events: auto;
 }
 
 .enter-btn:hover {
-  background: #d6b98c;
-  color: #0f0f10;
+  background: var(--color-gold-dim);
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  letter-spacing: 6px;
+  box-shadow: 0 0 30px rgba(31, 60, 94, 0.1), inset 0 0 20px rgba(31, 60, 94, 0.05);
+}
+
+.enter-btn:active {
+  transform: scale(0.97);
+  transition: transform 0.1s;
+}
+
+.enter-btn::before,
+.enter-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  transition: width 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.enter-btn::before { top: -12px; }
+.enter-btn::after { bottom: -12px; }
+.enter-btn:hover::before, .enter-btn:hover::after { width: 80px; }
+
+@media (max-width: 768px) {
+  .enter-btn { padding: 14px 36px; font-size: 13px; letter-spacing: 3px; }
+  .door-edge { width: 12px; }
+  .door-hinge { width: 6px; height: 45px; }
 }

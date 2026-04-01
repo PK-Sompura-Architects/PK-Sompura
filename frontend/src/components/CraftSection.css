@@ -1,0 +1,237 @@
+/* ============================================
+   PK SOMPURA — CRAFT SECTION
+   Stone carving craftsmanship showcase
+   ============================================ */
+
+.craft-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    background: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- BACKGROUND --- */
+.craft-bg {
+    position: absolute;
+    inset: -10%;
+    background:
+        radial-gradient(ellipse 50% 60% at 70% 50%, rgba(214, 185, 140, 0.03) 0%, transparent 60%),
+        linear-gradient(180deg, #0a0a0b 0%, #0e0d0c 50%, #0a0a0b 100%);
+    z-index: 0;
+}
+
+/* --- CONTENT --- */
+.craft-content {
+    max-width: var(--content-max-width);
+    width: 100%;
+    padding: var(--section-padding) var(--content-padding);
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
+}
+
+/* --- LEFT: TEXT --- */
+.craft-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.craft-label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--color-gold-dim);
+}
+
+.craft-text h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 1px;
+    color: var(--color-text);
+}
+
+.craft-text h2 .gold {
+    color: var(--color-gold);
+}
+
+.craft-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-gold), transparent);
+}
+
+.craft-text p {
+    font-size: clamp(16px, 1.5vw, 18px);
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    max-width: 480px;
+}
+
+/* Craft values list */
+.craft-values {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.craft-value {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.craft-value-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--color-gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.craft-value span {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+/* --- RIGHT: VISUAL --- */
+.craft-visual {
+    position: relative;
+    aspect-ratio: 3/4;
+    max-height: 500px;
+}
+
+.craft-image-frame {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border: 1px solid rgba(214, 185, 140, 0.08);
+    overflow: hidden;
+}
+
+.craft-image-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, transparent 50%, rgba(10, 10, 11, 0.6) 100%),
+        linear-gradient(0deg, transparent 50%, rgba(10, 10, 11, 0.3) 100%);
+    pointer-events: none;
+}
+
+.craft-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 40% 40%, rgba(214, 185, 140, 0.06) 0%, transparent 60%),
+        linear-gradient(145deg, #151517 0%, #1e1e20 50%, #131315 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.craft-image-placeholder span {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--color-text-dim);
+    text-transform: uppercase;
+}
+
+/* Decorative corner accents */
+.craft-corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    z-index: 3;
+}
+
+.craft-corner::before,
+.craft-corner::after {
+    content: '';
+    position: absolute;
+    background: var(--color-gold-dim);
+}
+
+.craft-corner::before {
+    width: 1px;
+    height: 24px;
+}
+
+.craft-corner::after {
+    width: 24px;
+    height: 1px;
+}
+
+.craft-corner.tl {
+    top: -1px;
+    left: -1px;
+}
+
+.craft-corner.tr {
+    top: -1px;
+    right: -1px;
+}
+
+.craft-corner.tr::before {
+    right: 0;
+}
+
+.craft-corner.tr::after {
+    right: 0;
+}
+
+.craft-corner.bl {
+    bottom: -1px;
+    left: -1px;
+}
+
+.craft-corner.bl::before {
+    bottom: 0;
+}
+
+.craft-corner.bl::after {
+    bottom: 0;
+}
+
+.craft-corner.br {
+    bottom: -1px;
+    right: -1px;
+}
+
+.craft-corner.br::before {
+    right: 0;
+    bottom: 0;
+}
+
+.craft-corner.br::after {
+    right: 0;
+    bottom: 0;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .craft-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .craft-visual {
+        max-height: 400px;
+        order: -1;
+    }
+}
