@@ -5,7 +5,6 @@ import Lenis from "lenis";
 
 // Components
 import Preloader from "./components/Preloader";
-import Gate from "./components/Gate";
 import Dock from "./components/Dock";
 import { LanguageProvider } from "./context/LanguageContext";
 
@@ -35,42 +34,37 @@ function SmoothScroll() {
 }
 
 function AppContent() {
-    // 🔴 TEMPORARILY DISABLED: Forced to false so you see the intro every time you refresh
-    const hasSeenIntro = false; 
+    const hasSeenIntro = false;
     
     const [isAppReady, setIsAppReady] = useState(!!hasSeenIntro);
-    const [isGateTriggered, setIsGateTriggered] = useState(false);
-    const [showGate, setShowGate] = useState(!hasSeenIntro);
+    const [showPreloader, setShowPreloader] = useState(!hasSeenIntro);
     const mainRef = useRef(null);
+    const dockRef = useRef(null);
 
     const handlePreloaderComplete = () => {
-        setIsGateTriggered(true);
         setIsAppReady(true);
 
-        gsap.fromTo(mainRef.current,
-            { opacity: 0, scale: 0.95 },
-            { opacity: 1, scale: 1, duration: 2.5, ease: "power3.out", delay: 0.5 }
-        );
-
+        // Fade out the preloader smoothly
         setTimeout(() => {
-            setShowGate(false);
-            // 🔴 TEMPORARILY DISABLED:
-            // sessionStorage.setItem("introPlayed", "true"); 
-        }, 4000); 
+            setShowPreloader(false);
+        }, 300);
+
+        // Fade in the main content + dock
+        gsap.fromTo(mainRef.current,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 1.8, ease: "power3.out", delay: 0.3 }
+        );
     };
 
     return (
         <>
             <SmoothScroll />
             
-            {!isAppReady && !hasSeenIntro && (
+            {showPreloader && (
                 <Preloader onComplete={handlePreloaderComplete} />
             )}
 
-            {showGate && <Gate isTriggered={isGateTriggered} />}
-
-            {/* ✅ FIX: Dock is now OUTSIDE the <main> tag so it won't disappear! */}
-            {!showGate && <Dock />}
+            {isAppReady && <Dock ref={dockRef} />}
 
             <main 
                 className="app-container"

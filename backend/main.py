@@ -4,12 +4,9 @@ Main application with CORS, routers, database initialization, and Admin
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from sqladmin import Admin
-from pathlib import Path
 from backend.routes import temples, contact, upload, lineage
 from backend.database import engine
-from backend.routes import temples, contact, upload
 from backend.models import Base
 from backend.admin import authentication_backend, TempleAdmin, TempleImageAdmin, ContactSubmissionAdmin
 from backend.admin import LineageMemberAdmin
@@ -54,18 +51,6 @@ app.include_router(temples.router, prefix="/temples", tags=["Temples"])
 app.include_router(contact.router, prefix="/contact", tags=["Contact"])
 app.include_router(upload.router, prefix="/upload", tags=["Upload"])
 app.include_router(lineage.router, prefix="/lineage", tags=["Lineage"])
-
-# Mount Static Files (Step 4)
-# We mount frontend/public/temples to /temples to serve images directly
-BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_DIR = BASE_DIR / "frontend" / "public" / "temples"
-STATIC_DIR.mkdir(parents=True, exist_ok=True)
-
-TEAM_DIR = BASE_DIR / "frontend" / "public" / "team"
-TEAM_DIR.mkdir(parents=True, exist_ok=True)
-app.mount("/team", StaticFiles(directory=str(TEAM_DIR)), name="team")
-
-app.mount("/temples", StaticFiles(directory=str(STATIC_DIR)), name="temples")
 
 # Admin Interface with Authentication (Step 9 & 12)
 admin = Admin(app, engine, title="PK Sompura Admin", authentication_backend=authentication_backend)

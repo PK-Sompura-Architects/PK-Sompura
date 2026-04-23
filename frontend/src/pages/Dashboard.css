@@ -30,9 +30,9 @@
 
 .sompura-title {
     font-family: 'Cinzel Decorative', var(--font-heading);
-    color: #B4DDF0;
+    color: #D6EFFF;
     -webkit-text-stroke: 1.5px var(--color-gold);
-    text-shadow: 4px 4px 12px rgba(31, 60, 94, 0.3);
+    text-shadow: 4px 4px 12px rgba(15, 28, 46, 0.3);
     font-size: clamp(40px, 6vw, 90px);
     font-weight: 700;
     text-transform: uppercase;

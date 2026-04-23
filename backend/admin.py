@@ -2,14 +2,27 @@ from sqladmin import ModelView, Admin
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
-from backend.models import Temple, TempleImage, ContactSubmission
+from backend.models import Temple, TempleImage, ContactSubmission, LineageMember
 from wtforms import FileField
 from markupsafe import Markup
 from pathlib import Path
-from backend.models import Temple, TempleImage, ContactSubmission, LineageMember
+from supabase import create_client, Client
+from dotenv import load_dotenv
 import time
-import shutil
 import os
+
+# --- SUPABASE CLIENT INIT ---
+env_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=env_path)
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+if SUPABASE_URL and SUPABASE_KEY:
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+else:
+    supabase = None
+    print("WARNING: Supabase credentials missing. Admin image uploads will fail.")
 
 # --- AUTHENTICATION (Step 12) ---
 class AdminAuth(AuthenticationBackend):
@@ -42,6 +55,36 @@ class AdminAuth(AuthenticationBackend):
 
 authentication_backend = AdminAuth(secret_key="pk_sompura_secure_secret_key_change_this_in_production")
 
+
+# --- HELPER: Upload to Supabase ---
+async def upload_to_supabase(file, bucket_name: str) -> str:
+    """
+    Reads a file uploaded through the admin form,
+    pushes it to a Supabase Storage bucket,
+    and returns the public CDN URL.
+    """
+    if not supabase:
+        raise RuntimeError("Supabase client is not configured. Check your .env file.")
+
+    timestamp = int(time.time())
+    clean_name = file.filename.replace(" ", "_")
+    filename = f"{timestamp}_{clean_name}"
+
+    content = await file.read()
+
+    # Determine content type
+    content_type = getattr(file, "content_type", None) or "application/octet-stream"
+
+    supabase.storage.from_(bucket_name).upload(
+        path=filename,
+        file=content,
+        file_options={"content-type": content_type}
+    )
+
+    public_url = supabase.storage.from_(bucket_name).get_public_url(filename)
+    return public_url
+
+
 # --- ADMIN VIEWS (Step 9 & 6) ---
 class TempleAdmin(ModelView, model=Temple):
     column_list = [
@@ -73,12 +116,6 @@ class TempleImageAdmin(ModelView, model=TempleImage):
         TempleImage.order_index
     ]
     
-    # Use 'file' instead of 'url' in the form
-    # We remove 'url' from creation/edit forms so user doesn't manually enter it.
-    # We also DON'T put 'file' in form_columns because it's not a model field, 
-    # but verify if sqladmin needs it to show up. 
-    # Actually, form_extra_fields adds it. 
-    # Converting start of list to use "temple" and "is_cutout"
     form_columns = ["temple", "is_cutout", "order_index"]
     
     form_extra_fields = {
@@ -95,37 +132,12 @@ class TempleImageAdmin(ModelView, model=TempleImage):
     async def on_model_change(self, data, model, is_created, request):
         file = data.get("file")
         
-        # Check if a file was uploaded
         if file and hasattr(file, "filename") and file.filename:
-            # Prepare path
-            BASE_DIR = Path(__file__).resolve().parent.parent
-            UPLOAD_DIR = BASE_DIR / "frontend" / "public" / "temples"
-            UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-            
-            # Generate unique filename
-            timestamp = int(time.time())
-            clean_name = file.filename.replace(" ", "_")
-            filename = f"{timestamp}_{clean_name}"
-            file_path = UPLOAD_DIR / filename
-            
-            # Save file
-            # Note: file is likely a Starlette UploadFile object or similar wrapper from wtforms/sqladmin
-            # We need to read it. If it's pure wtforms it might be different, but sqladmin integrates with Starlette.
-            # Let's try to read it as a stream.
-            
-            # In sqladmin with FastAPI, it seems it passes the UploadFile object.
-            content = await file.read()
-            with open(file_path, "wb") as f:
-                f.write(content)
-            
-            # Set variable
-            model.url = f"/temples/{filename}"
+            public_url = await upload_to_supabase(file, "temples")
+            model.url = public_url
         elif is_created and not model.url:
-             # If created and no file, maybe set a default or error? 
-             # For now, allow empty or handle gracefully.
-             pass
+            pass
         
-        # Clean up 'file' from data so it doesn't try to save to DB (though model doesn't have it, safe)
         if "file" in data:
             del data["file"]
 
@@ -148,21 +160,8 @@ class LineageMemberAdmin(ModelView, model=LineageMember):
     async def on_model_change(self, data, model, is_created, request):
         file = data.get("file")
         if file and hasattr(file, "filename") and file.filename:
-            # Create a /team folder inside public to hold portraits
-            BASE_DIR = Path(__file__).resolve().parent.parent
-            UPLOAD_DIR = BASE_DIR / "frontend" / "public" / "team"
-            UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-            
-            timestamp = int(time.time())
-            clean_name = file.filename.replace(" ", "_")
-            filename = f"{timestamp}_{clean_name}"
-            file_path = UPLOAD_DIR / filename
-            
-            content = await file.read()
-            with open(file_path, "wb") as f:
-                f.write(content)
-            
-            model.image_url = f"/team/{filename}"
+            public_url = await upload_to_supabase(file, "team")
+            model.image_url = public_url
             
         if "file" in data:
             del data["file"]
@@ -172,7 +171,7 @@ class ContactSubmissionAdmin(ModelView, model=ContactSubmission):
         ContactSubmission.id,
         ContactSubmission.name,
         ContactSubmission.email,
-        ContactSubmission.phone, # Added
+        ContactSubmission.phone,
         ContactSubmission.temple_type,
         ContactSubmission.submitted_at
     ]

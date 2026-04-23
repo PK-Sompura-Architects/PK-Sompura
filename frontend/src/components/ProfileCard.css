@@ -12,17 +12,17 @@
   --grain: none;
   --icon: none;
   --behind-gradient: none;
-  --behind-glow-color: rgba(31, 60, 94, 0.4); /* Sompura Navy Glow */
+  --behind-glow-color: rgba(15, 28, 46, 0.4); /* Deep Slate Glow */
   --behind-glow-size: 35%;
   --inner-gradient: none;
   
-  /* Sompura Holographic Colors */
-  --sunpillar-1: #1F3C5E; 
-  --sunpillar-2: #2D5482;
-  --sunpillar-3: #B4DDF0;
-  --sunpillar-4: #DCEAF0;
-  --sunpillar-5: #CDE0E8;
-  --sunpillar-6: #0A1421;
+  /* Sompura Sky Marble Holographic Colors */
+  --sunpillar-1: #0F1C2E; 
+  --sunpillar-2: #1E3A5F;
+  --sunpillar-3: #C2E8FF;
+  --sunpillar-4: #D6EFFF;
+  --sunpillar-5: #A8D8F0;
+  --sunpillar-6: #0F1C2E;
   --sunpillar-clr-1: var(--sunpillar-1);
   --sunpillar-clr-2: var(--sunpillar-2);
   --sunpillar-clr-3: var(--sunpillar-3);
@@ -68,10 +68,10 @@
   position: relative;
   background-blend-mode: color-dodge, normal, normal, normal;
   animation: glow-bg 12s linear infinite;
-  box-shadow: 0 20px 40px rgba(31, 60, 94, 0.15);
+  box-shadow: 0 20px 40px rgba(15, 28, 46, 0.2);
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   transform: translateZ(0) rotateX(0deg) rotateY(0deg);
-  background: rgba(10, 20, 33, 0.95); /* Deep Navy Base */
+  background: rgba(15, 28, 46, 0.95); /* Deep Slate Base */
   backface-visibility: hidden;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -170,7 +170,7 @@
 .pc-details p {
   font-family: var(--font-body);
   font-size: 13px;
-  color: #B4DDF0;
+  color: #A8D8F0;
   text-transform: uppercase;
   letter-spacing: 4px;
   margin: 0 0 15px 0;

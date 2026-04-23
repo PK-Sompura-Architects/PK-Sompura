@@ -42,23 +42,23 @@
 
 .temple-bg-gradient.variant-0 {
     background:
-        radial-gradient(ellipse 60% 50% at 30% 40%, rgba(214, 185, 140, 0.04) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 60% at 70% 60%, rgba(160, 100, 50, 0.03) 0%, transparent 50%),
-        linear-gradient(160deg, #0c0b0a 0%, #141210 30%, #0a0908 60%, #0f0e0d 100%);
+        radial-gradient(ellipse 60% 50% at 30% 40%, rgba(194, 232, 255, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 70% 60%, rgba(184, 150, 90, 0.03) 0%, transparent 50%),
+        linear-gradient(160deg, #0a1020 0%, #0f1c2e 30%, #080e1a 60%, #0c1624 100%);
 }
 
 .temple-bg-gradient.variant-1 {
     background:
-        radial-gradient(ellipse 50% 60% at 60% 50%, rgba(180, 140, 80, 0.04) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 40% at 20% 70%, rgba(214, 185, 140, 0.03) 0%, transparent 50%),
-        linear-gradient(200deg, #0d0c0a 0%, #110f0d 30%, #0a0a08 60%, #0e0d0b 100%);
+        radial-gradient(ellipse 50% 60% at 60% 50%, rgba(194, 232, 255, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 40% at 20% 70%, rgba(184, 150, 90, 0.03) 0%, transparent 50%),
+        linear-gradient(200deg, #0b1122 0%, #101e32 30%, #090f1c 60%, #0d1828 100%);
 }
 
 .temple-bg-gradient.variant-2 {
     background:
-        radial-gradient(ellipse 55% 55% at 50% 50%, rgba(200, 160, 100, 0.04) 0%, transparent 60%),
-        radial-gradient(ellipse 30% 50% at 80% 30%, rgba(214, 185, 140, 0.03) 0%, transparent 50%),
-        linear-gradient(140deg, #0b0a09 0%, #13110f 30%, #090908 60%, #0d0c0b 100%);
+        radial-gradient(ellipse 55% 55% at 50% 50%, rgba(194, 232, 255, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 50% at 80% 30%, rgba(184, 150, 90, 0.03) 0%, transparent 50%),
+        linear-gradient(140deg, #091020 0%, #0f1d30 30%, #070d18 60%, #0c1626 100%);
 }
 
 /* --- MID LAYER CUTOUT (0.6x parallax) --- */

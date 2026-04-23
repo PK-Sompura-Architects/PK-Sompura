@@ -16,23 +16,31 @@ function Dashboard() {
                 />
             </div>
 
-            {/* The 3D Temple Model Container is now Full-Screen */}
+            {/* The 3D Temple Model Container — Full-Screen */}
             <div className="dashboard-model-container">
                 <ModelViewer
                     url="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/ToyCar/glTF-Binary/ToyCar.glb"
                     width="100%"
                     height="100%"
                     
-                    /* THE FIX: Pushes the model 45% to the right of the screen center */
-                    modelXOffset={0.45} 
+                    /* Pushes the model to the right in scene-space units */
+                    modelXOffset={1.0}
+                    modelYOffset={-0.1}
+                    
+                    /* Prominent cinematic model */
+                    scaleFactor={2.5}
+                    defaultZoom={3}
+                    autoFrame={false}
                     
                     enableMouseParallax={true}
                     enableHoverRotation={true}
                     autoRotate={true}
-                    autoRotateSpeed={0.2}
+                    autoRotateSpeed={0.25}
+                    autoFrame={true}
                     environmentPreset="city" 
                     showScreenshotButton={false}
                     enableManualZoom={false} 
+                    fadeIn={true}
                 />
             </div>
 

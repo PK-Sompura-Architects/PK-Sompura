@@ -13,7 +13,7 @@
     position: absolute;
     inset: -20%;
     background:
-        radial-gradient(ellipse 70% 50% at 50% 50%, rgba(180, 220, 255, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 50% at 50% 50%, rgba(194, 232, 255, 0.2) 0%, transparent 70%),
         linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-elevated) 40%, var(--color-bg) 100%);
     z-index: 1;
 }
@@ -67,9 +67,9 @@
 
 .hero-title {
     font-family: 'Cinzel Decorative', var(--font-heading); 
-    color: #B4DDF0; 
+    color: #D6EFFF; 
     -webkit-text-stroke: 1.5px var(--color-gold); 
-    text-shadow: 4px 4px 12px rgba(31, 60, 94, 0.25); 
+    text-shadow: 4px 4px 12px rgba(15, 28, 46, 0.3); 
     font-size: clamp(40px, 7vw, 76px);
     font-weight: 700;
     text-transform: uppercase;

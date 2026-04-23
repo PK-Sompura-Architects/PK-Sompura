@@ -48,6 +48,16 @@ const DesktopControls = ({ pivot, min, max, zoomEnabled }) => {
   );
 };
 
+/**
+ * FIX: The rotation hierarchy is now:
+ *   <positionGroup>  ← handles xOff/yOff translation (world position)
+ *     <rotationGroup> ← handles local Y-axis spin, hover, manual rotation
+ *       <inner>       ← normalized model (centered + scaled)
+ *
+ * Previously, outer.position was mutated every frame via ndc.unproject, which
+ * shifted the pivot point and caused the "Earth orbiting the sun" bug.
+ * Now the model spins on its OWN axis first, then gets translated.
+ */
 const ModelInner = ({
   url,
   xOff,
@@ -65,9 +75,11 @@ const ModelInner = ({
   fadeIn,
   autoRotate,
   autoRotateSpeed,
+  scaleFactor,
   onLoaded
 }) => {
-  const outer = useRef(null);
+  const posGroup = useRef(null);  // Translation only
+  const rotGroup = useRef(null);  // Rotation only  
   const inner = useRef(null);
   const { camera, gl } = useThree();
 
@@ -86,41 +98,50 @@ const ModelInner = ({
     return null;
   }, [url, ext]);
 
-  const pivotW = useRef(new THREE.Vector3());
   useLayoutEffect(() => {
     if (!content) return;
     const g = inner.current;
     g.updateWorldMatrix(true, true);
 
-    const sphere = new THREE.Box3().setFromObject(g).getBoundingSphere(new THREE.Sphere());
-    const s = 1 / (sphere.radius * 2);
-    g.position.set(-sphere.center.x, -sphere.center.y, -sphere.center.z);
+    // Center the model on its own origin and scale to fill the scene
+    const box = new THREE.Box3().setFromObject(g);
+    const sphere = box.getBoundingSphere(new THREE.Sphere());
+    const diameter = sphere.radius * 2;
+    // Scale so that the model's diameter = scaleFactor in world units
+    const s = scaleFactor / diameter;
     g.scale.setScalar(s);
+    // Re-center after scaling
+    g.position.set(-sphere.center.x * s, -sphere.center.y * s, -sphere.center.z * s);
 
     g.traverse(o => {
       if (o.isMesh) {
         o.castShadow = true;
         o.receiveShadow = true;
         if (fadeIn) {
+          o.material = o.material.clone();
           o.material.transparent = true;
           o.material.opacity = 0;
         }
       }
     });
 
-    g.getWorldPosition(pivotW.current);
-    pivot.copy(pivotW.current);
-    outer.current.rotation.set(initPitch, initYaw, 0);
+    // Set initial rotation on the rotation group (not position group)
+    rotGroup.current.rotation.set(initPitch, initYaw, 0);
 
+    // Position the model using xOff/yOff as direct scene-space offsets
+    posGroup.current.position.set(xOff, yOff, 0);
+
+    // Set camera distance for good framing
     if (autoFrame && camera.isPerspectiveCamera) {
-      const persp = camera;
-      const fitR = sphere.radius * s;
-      const d = (fitR * 1.2) / Math.sin((persp.fov * Math.PI) / 180 / 2);
-      persp.position.set(pivotW.current.x, pivotW.current.y, pivotW.current.z + d);
-      persp.near = d / 10;
-      persp.far = d * 10;
-      persp.updateProjectionMatrix();
+      const fitR = scaleFactor / 2;
+      const d = (fitR * 1.2) / Math.sin((camera.fov * Math.PI) / 180 / 2);
+      camera.position.set(0, 0, d);
+      camera.near = d / 100;
+      camera.far = d * 100;
+      camera.updateProjectionMatrix();
     }
+
+    pivot.set(0, 0, 0);
 
     if (fadeIn) {
       let t = 0;
@@ -141,12 +162,12 @@ const ModelInner = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 
+  // Manual rotation via pointer drag (desktop)
   useEffect(() => {
     if (!enableManualRotation || isTouch) return;
     const el = gl.domElement;
     let drag = false;
-    let lx = 0,
-      ly = 0;
+    let lx = 0, ly = 0;
     const down = e => {
       if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
       drag = true;
@@ -160,8 +181,8 @@ const ModelInner = ({
       const dy = e.clientY - ly;
       lx = e.clientX;
       ly = e.clientY;
-      outer.current.rotation.y += dx * ROTATE_SPEED;
-      outer.current.rotation.x += dy * ROTATE_SPEED;
+      rotGroup.current.rotation.y += dx * ROTATE_SPEED;
+      rotGroup.current.rotation.x += dy * ROTATE_SPEED;
       vel.current = { x: dx * ROTATE_SPEED, y: dy * ROTATE_SPEED };
       invalidate();
     };
@@ -175,18 +196,13 @@ const ModelInner = ({
     };
   }, [gl, enableManualRotation]);
 
+  // Touch rotation + pinch zoom
   useEffect(() => {
     if (!isTouch) return;
     const el = gl.domElement;
     const pts = new Map();
-
     let mode = 'idle';
-    let sx = 0,
-      sy = 0,
-      lx = 0,
-      ly = 0,
-      startDist = 0,
-      startZ = 0;
+    let sx = 0, sy = 0, lx = 0, ly = 0, startDist = 0, startZ = 0;
 
     const down = e => {
       if (e.pointerType !== 'touch') return;
@@ -231,8 +247,8 @@ const ModelInner = ({
         const dy = e.clientY - ly;
         lx = e.clientX;
         ly = e.clientY;
-        outer.current.rotation.y += dx * ROTATE_SPEED;
-        outer.current.rotation.x += dy * ROTATE_SPEED;
+        rotGroup.current.rotation.y += dx * ROTATE_SPEED;
+        rotGroup.current.rotation.x += dy * ROTATE_SPEED;
         vel.current = { x: dx * ROTATE_SPEED, y: dy * ROTATE_SPEED };
         invalidate();
       } else if (mode === 'pinch' && pts.size === 2) {
@@ -264,6 +280,7 @@ const ModelInner = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gl, enableManualRotation, enableManualZoom, minZoom, maxZoom]);
 
+  // Mouse parallax + hover rotation (desktop)
   useEffect(() => {
     if (isTouch) return;
     const mm = e => {
@@ -280,28 +297,31 @@ const ModelInner = ({
 
   useFrame((_, dt) => {
     let need = false;
+
+    // Smooth parallax (applied to position group)
     cPar.current.x += (tPar.current.x - cPar.current.x) * PARALLAX_EASE;
     cPar.current.y += (tPar.current.y - cPar.current.y) * PARALLAX_EASE;
-    const phx = cHov.current.x,
-      phy = cHov.current.y;
+
+    // Apply parallax as a subtle position offset on the position group
+    posGroup.current.position.x = xOff + cPar.current.x * 0.5;
+    posGroup.current.position.y = yOff + cPar.current.y * 0.5;
+
+    // Hover tilt (applied to rotation group)
+    const phx = cHov.current.x, phy = cHov.current.y;
     cHov.current.x += (tHov.current.x - cHov.current.x) * HOVER_EASE;
     cHov.current.y += (tHov.current.y - cHov.current.y) * HOVER_EASE;
+    rotGroup.current.rotation.x += cHov.current.x - phx;
+    rotGroup.current.rotation.y += cHov.current.y - phy;
 
-    const ndc = pivotW.current.clone().project(camera);
-    ndc.x += xOff + cPar.current.x;
-    ndc.y += yOff + cPar.current.y;
-    outer.current.position.copy(ndc.unproject(camera));
-
-    outer.current.rotation.x += cHov.current.x - phx;
-    outer.current.rotation.y += cHov.current.y - phy;
-
+    // Auto-rotate on local Y
     if (autoRotate) {
-      outer.current.rotation.y += autoRotateSpeed * dt;
+      rotGroup.current.rotation.y += autoRotateSpeed * dt;
       need = true;
     }
 
-    outer.current.rotation.y += vel.current.x;
-    outer.current.rotation.x += vel.current.y;
+    // Inertia
+    rotGroup.current.rotation.y += vel.current.x;
+    rotGroup.current.rotation.x += vel.current.y;
     vel.current.x *= INERTIA;
     vel.current.y *= INERTIA;
     if (Math.abs(vel.current.x) > 1e-4 || Math.abs(vel.current.y) > 1e-4) need = true;
@@ -319,9 +339,11 @@ const ModelInner = ({
 
   if (!content) return null;
   return (
-    <group ref={outer}>
-      <group ref={inner}>
-        <primitive object={content} />
+    <group ref={posGroup}>
+      <group ref={rotGroup}>
+        <group ref={inner}>
+          <primitive object={content} />
+        </group>
       </group>
     </group>
   );
@@ -329,25 +351,26 @@ const ModelInner = ({
 
 const ModelViewer = ({
   url,
-  width = 400,
-  height = 400,
+  width = '100%',
+  height = '100%',
   modelXOffset = 0,
   modelYOffset = 0,
   defaultRotationX = -50,
   defaultRotationY = 20,
-  defaultZoom = 0.5,
-  minZoomDistance = 0.5,
-  maxZoomDistance = 10,
+  defaultZoom = 3,
+  minZoomDistance = 1,
+  maxZoomDistance = 20,
+  scaleFactor = 1.5,
   enableMouseParallax = true,
   enableManualRotation = true,
   enableHoverRotation = true,
   enableManualZoom = true,
-  ambientIntensity = 0.3,
-  keyLightIntensity = 1,
-  fillLightIntensity = 0.5,
+  ambientIntensity = 0.4,
+  keyLightIntensity = 1.2,
+  fillLightIntensity = 0.6,
   rimLightIntensity = 0.8,
   environmentPreset = 'forest',
-  autoFrame = false,
+  autoFrame = true,
   placeholderSrc,
   showScreenshotButton = true,
   fadeIn = false,
@@ -433,17 +456,17 @@ const ModelViewer = ({
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           gl.outputColorSpace = THREE.SRGBColorSpace;
         }}
-        camera={{ fov: 50, position: [0, 0, camZ], near: 0.01, far: 100 }}
+        camera={{ fov: 45, position: [0, 0, camZ], near: 0.01, far: 200 }}
         style={{ touchAction: 'pan-y pinch-zoom' }}
       >
         {environmentPreset !== 'none' && <Environment preset={environmentPreset} background={false} />}
 
         <ambientLight intensity={ambientIntensity} />
-        <directionalLight position={[5, 5, 5]} intensity={keyLightIntensity} castShadow />
-        <directionalLight position={[-5, 2, 5]} intensity={fillLightIntensity} />
-        <directionalLight position={[0, 4, -5]} intensity={rimLightIntensity} />
+        <directionalLight position={[5, 8, 5]} intensity={keyLightIntensity} castShadow />
+        <directionalLight position={[-5, 3, 5]} intensity={fillLightIntensity} />
+        <directionalLight position={[0, 5, -5]} intensity={rimLightIntensity} />
 
-        <ContactShadows ref={contactRef} position={[0, -0.5, 0]} opacity={0.35} scale={10} blur={2} />
+        <ContactShadows ref={contactRef} position={[0, -0.8, 0]} opacity={0.3} scale={12} blur={2.5} />
 
         <Suspense fallback={<Loader placeholderSrc={placeholderSrc} />}>
           <ModelInner
@@ -463,6 +486,7 @@ const ModelViewer = ({
             fadeIn={fadeIn}
             autoRotate={autoRotate}
             autoRotateSpeed={autoRotateSpeed}
+            scaleFactor={scaleFactor}
             onLoaded={onModelLoaded}
           />
         </Suspense>

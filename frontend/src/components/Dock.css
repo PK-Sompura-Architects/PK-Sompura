@@ -1,5 +1,5 @@
 /* ============================================
-   NAVIGATION DOCK (Deep Navy Glassmorphism)
+   NAVIGATION DOCK (Deep Slate Glassmorphism)
    ============================================ */
 .dock-outer {
   display: flex;
@@ -23,12 +23,12 @@
   border-radius: 2rem;
   padding: 0 0.8rem 0.6rem;
   
-  /* Dark Glassmorphism Upgrade */
-  background: rgba(10, 20, 33, 0.75); /* Deep dark navy */
+  /* Deep Slate Glassmorphism */
+  background: rgba(15, 28, 46, 0.82);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(214, 185, 140, 0.3); /* Soft Gold border to contrast */
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(184, 150, 90, 0.3);
+  box-shadow: 0 10px 40px rgba(15, 28, 46, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   
   pointer-events: auto; /* Re-enables clicks specifically for the dock */
 }
@@ -54,7 +54,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #EAF3F7; /* Bright ethereal blue so it pops against dark navy */
+  color: #E8F4FF; /* Sky White that pops against deep slate */
   width: 100%;
   height: 100%;
 }
@@ -82,11 +82,11 @@
   transform: translateX(-50%);
   
   /* Frosted Dark Tooltip */
-  background: rgba(10, 20, 33, 0.9);
+  background: rgba(15, 28, 46, 0.92);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(214, 185, 140, 0.4);
-  color: #EAF3F7;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(184, 150, 90, 0.4);
+  color: #E8F4FF;
+  box-shadow: 0 4px 12px rgba(15, 28, 46, 0.25);
 }
 
 /* --- MOBILE RESPONSIVE POLISH --- */
