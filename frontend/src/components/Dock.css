@@ -44,7 +44,15 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: background-color var(--dur-base) var(--ease-smooth);
+  transition: background-color var(--dur-base) var(--ease-smooth),
+              width 220ms var(--ease-out-expo),
+              height 220ms var(--ease-out-expo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock-item {
+    transition: background-color var(--dur-base) var(--ease-smooth);
+  }
 }
 
 .dock-item:hover {
@@ -98,14 +106,25 @@
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  transform: translateX(-50%);
-  
-  /* Frosted Dark Tooltip */
-  background: rgba(15, 28, 46, 0.92);
+  transform: translateX(-50%) translateY(6px);
+
+  /* Frosted tooltip */
+  background: rgba(19, 78, 74, 0.94);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(184, 150, 90, 0.4);
+  border: 1px solid rgba(245, 158, 11, 0.45);
   color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(19, 78, 74, 0.35);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-smooth),
+              transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.dock-item:hover .dock-label,
+.dock-item:focus-visible .dock-label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* --- MOBILE RESPONSIVE POLISH --- */

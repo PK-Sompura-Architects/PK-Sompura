@@ -5,19 +5,24 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    // Mirrors the routers mounted in backend/main.py.
     proxy: {
       '/admin': 'http://127.0.0.1:8000',
-      '/temples': 'http://127.0.0.1:8000', // API & Static
-      '/contact': 'http://127.0.0.1:8000', // API
-      '/upload': 'http://127.0.0.1:8000', // API
-      '/team': 'http://127.0.0.1:8000',
+      '/lineage': 'http://127.0.0.1:8000',
+      '/projects': 'http://127.0.0.1:8000',
+      '/galleries': 'http://127.0.0.1:8000',
+      '/statics': 'http://127.0.0.1:8000',
     }
   },
   build: {
     rollupOptions: {
       output: {
+        // Split the large, rarely-changing libraries so a content edit does
+        // not invalidate them in the browser cache.
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'gsap-vendor': ['gsap'],
+          'supabase-vendor': ['@supabase/supabase-js'],
         }
       }
     },

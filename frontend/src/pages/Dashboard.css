@@ -27,19 +27,59 @@
     max-width: 800px;
 }
 
-/* Ambient Prism backdrop — a decorative layer, so it must stay out of the
-   grid flow or it consumes a column and displaces the nav. */
+/* Ambient aurora backdrop. Decorative, so it stays out of the grid flow —
+   as a static grid item it consumes a column and displaces the hero nav.
+   Drawn in CSS rather than WebGL: at this opacity a shader and a live GL
+   context buy nothing a gradient cannot, and cost a frame loop. */
 .dashboard-bg {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    /* The shader renders cyan; rotate it into the marigold/peacock range and
-       keep it faint so it stays a wash rather than competing with the type. */
-    opacity: 0.32;
-    filter: hue-rotate(-140deg) saturate(0.8);
-    mask-image: radial-gradient(ellipse 85% 75% at 60% 45%, #000 35%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 60% 45%, #000 35%, transparent 100%);
+    overflow: hidden;
+    mask-image: radial-gradient(ellipse 90% 80% at 55% 45%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 55% 45%, #000 30%, transparent 100%);
+}
+
+.dashboard-bg::before,
+.dashboard-bg::after {
+    content: '';
+    position: absolute;
+    inset: -25%;
+    background-repeat: no-repeat;
+    will-change: transform;
+}
+
+.dashboard-bg::before {
+    background-image:
+        radial-gradient(38% 46% at 22% 30%, rgba(245, 158, 11, 0.50), transparent 70%),
+        radial-gradient(34% 40% at 74% 26%, rgba(248, 197, 102, 0.42), transparent 72%),
+        radial-gradient(42% 44% at 60% 72%, rgba(234, 140, 30, 0.34), transparent 70%);
+    animation: auroraDriftA 26s ease-in-out infinite alternate;
+}
+
+.dashboard-bg::after {
+    background-image:
+        radial-gradient(34% 38% at 78% 62%, rgba(13, 148, 136, 0.28), transparent 70%),
+        radial-gradient(30% 34% at 30% 74%, rgba(94, 234, 212, 0.24), transparent 72%);
+    animation: auroraDriftB 34s ease-in-out infinite alternate;
+}
+
+@keyframes auroraDriftA {
+    0%   { transform: translate3d(-3%, -2%, 0) scale(1);    }
+    100% { transform: translate3d(4%, 3%, 0)  scale(1.14); }
+}
+
+@keyframes auroraDriftB {
+    0%   { transform: translate3d(3%, 2%, 0)  scale(1.1);  }
+    100% { transform: translate3d(-4%, -3%, 0) scale(1);   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-bg::before,
+    .dashboard-bg::after {
+        animation: none;
+    }
 }
 
 /* RIGHT SIDE: page navigation */

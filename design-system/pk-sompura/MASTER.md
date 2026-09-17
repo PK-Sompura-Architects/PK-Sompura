@@ -92,8 +92,26 @@ site re-skins at once. Keep these aliases until components are migrated.
   took it to 582 KB with geometry intact.
 - `.dashboard-bg` must stay `position: absolute`. As a static grid item it
   consumes a column and displaces the hero nav onto a second row.
-- The `Prism` shader renders cyan, which clashes with the palette. It is
-  hue-rotated −140deg in CSS and masked back to a faint warm wash.
+- The hero backdrop is a **CSS aurora**, not WebGL. `Prism` (an OGL shader) was
+  removed: behind a mask at ~30% opacity it was indistinguishable from a
+  gradient while holding a live GL context and a frame loop.
+- **`motion` was removed.** It weighed 129 kB (43 kB gzip) and existed only for
+  the Dock's magnify effect, which is now one rAF writing widths plus a CSS
+  transition. Do not reintroduce it for a single animation.
+- `ModelViewer.jsx` was deleted — 507 lines importing three.js, imported nowhere.
+- Routes are `React.lazy` split. Initial payload went 427 kB gzip → ~114 kB.
+
+### Supabase is stripped from production builds
+
+`AdminPage` guards on `import.meta.env.VITE_SUPABASE_URL`. Vite inlines that at
+**build time**, so with the variable unset the guard folds to `false`, and
+Rollup eliminates `createClient` entirely — verified: zero Supabase bytes in any
+built chunk. Uploads cannot work until those vars exist at build time.
+
+Note the corollary: because `VITE_*` values are inlined into the client bundle,
+setting them publishes the anon key and `VITE_ADMIN_PASSWORD` to anyone who
+reads the JS. The admin password must move server-side, and the Supabase tables
+and buckets need Row Level Security before that key is exposed.
 - All page content is revealed by GSAP. A 4s failsafe in `App.jsx` now forces the
   site visible if the intro timeline stalls — do not remove it.
 

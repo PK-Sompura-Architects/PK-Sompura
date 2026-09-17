@@ -1,4 +1,3 @@
-import Prism from "../components/Prism";
 import HeroNav from "../components/HeroNav";
 import ScrollReveal from "../components/ScrollReveal";
 import LineageSection from '../components/LineageSection';
@@ -26,16 +25,7 @@ function Dashboard() {
                     </ScrollReveal>
                 </div>
 
-                {/* Background Animation */}
-                <div className="dashboard-bg">
-                    <Prism
-                        animationType="3drotate"
-                        timeScale={0.08}
-                        glow={1.1}
-                        noise={0.12}
-                        colorFrequency={0.4}
-                    />
-                </div>
+                <div className="dashboard-bg" aria-hidden="true" />
 
                 <HeroNav />
 

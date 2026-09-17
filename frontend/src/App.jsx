@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { gsap } from "gsap";
 import Lenis from "lenis";
@@ -8,12 +8,13 @@ import Preloader from "./components/Preloader";
 import Dock from "./components/Dock";
 import { LanguageProvider } from "./context/LanguageContext";
 
-// Pages
-import Dashboard from "./pages/Dashboard";
-import Projects from "./pages/Projects";
-import About from "./pages/About";
-import Inquiry from "./pages/Inquiry";
-import AdminPage from "./pages/AdminPage";
+// Pages — split per route so a visitor only downloads the one they open.
+// AdminPage in particular drags in the whole Supabase client.
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Projects = lazy(() => import("./pages/Projects"));
+const About = lazy(() => import("./pages/About"));
+const Inquiry = lazy(() => import("./pages/Inquiry"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 import "./global.css";
 
@@ -86,13 +87,15 @@ function AppContent() {
                 }}
             >
                 {isAppReady && (
-                    <Routes>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/projects" element={<Projects />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/inquiry" element={<Inquiry />} />
-                        <Route path="/admin" element={<AdminPage />} />
-                    </Routes>
+                    <Suspense fallback={null}>
+                        <Routes>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/projects" element={<Projects />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/inquiry" element={<Inquiry />} />
+                            <Route path="/admin" element={<AdminPage />} />
+                        </Routes>
+                    </Suspense>
                 )}
             </main>
         </>

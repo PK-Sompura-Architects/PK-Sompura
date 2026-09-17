@@ -1,138 +1,86 @@
-'use client';
-
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'motion/react';
-import { Children, cloneElement, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Grid, Mail, Users } from 'lucide-react';
 import './Dock.css';
 
-// --- Internal Helper Components ---
-function DockItem({ children, className = '', onClick, label, isActive, mouseX, spring, distance, magnification, baseItemSize }) {
-  const ref = useRef(null);
-  const isHovered = useMotionValue(0);
+const BASE_SIZE = 50;
+const MAX_SIZE = 70;
+const FALLOFF = 150;
 
-  const mouseDistance = useTransform(mouseX, val => {
-    const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: baseItemSize };
-    return val - rect.x - baseItemSize / 2;
-  });
-
-  const targetSize = useTransform(mouseDistance, [-distance, 0, distance], [baseItemSize, magnification, baseItemSize]);
-  const size = useSpring(targetSize, spring);
-
-  return (
-    <motion.button
-      ref={ref}
-      type="button"
-      style={{ width: size, height: size }}
-      onHoverStart={() => isHovered.set(1)}
-      onHoverEnd={() => isHovered.set(0)}
-      onFocus={() => isHovered.set(1)}
-      onBlur={() => isHovered.set(0)}
-      onClick={onClick}
-      className={`dock-item ${className}`}
-      aria-label={label}
-      aria-current={isActive ? 'page' : undefined}
-    >
-      {Children.map(children, child => cloneElement(child, { isHovered }))}
-    </motion.button>
-  );
-}
-
-function DockLabel({ children, className = '', ...rest }) {
-  const { isHovered } = rest;
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = isHovered.on('change', latest => {
-      setIsVisible(latest === 1);
-    });
-    return () => unsubscribe();
-  }, [isHovered]);
-
-  return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 10 }}
-          transition={{ duration: 0.2 }}
-          className={`dock-label ${className}`}
-          style={{ x: '-50%' }}
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-function DockIcon({ children, className = '' }) {
-  return <div className={`dock-icon ${className}`}>{children}</div>;
-}
-
-// --- Main Exported Component ---
+/**
+ * macOS-style magnifying dock. The magnification is written straight to
+ * each item's style inside one rAF, and CSS transitions do the smoothing —
+ * previously this pulled in `motion` (129kB) for the same effect.
+ */
 export default function Dock() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const panelRef = useRef(null);
+  const itemsRef = useRef([]);
+  const raf = useRef(0);
+
   const items = [
-    {
-      icon: <img src="/LOGO_2.png" alt="" />,
-      label: 'Dashboard',
-      path: '/',
-    },
+    { icon: <img src="/LOGO_2.png" alt="" />, label: 'Dashboard', path: '/' },
     { icon: <Grid size={22} strokeWidth={1.5} />, label: 'Projects', path: '/projects' },
     { icon: <Users size={22} strokeWidth={1.5} />, label: 'The Lineage', path: '/about' },
     { icon: <Mail size={22} strokeWidth={1.5} />, label: 'Inquiry', path: '/inquiry' },
-  ].map(item => ({ ...item, onClick: () => navigate(item.path) }));
+  ];
 
-  // Animation configuration
-  const spring = { mass: 0.1, stiffness: 150, damping: 12 };
-  const magnification = 70;
-  const distance = 150;
-  const panelHeight = 68;
-  const dockHeight = 256;
-  const baseItemSize = 50;
+  const applySizes = useCallback((pointerX) => {
+    itemsRef.current.forEach((el) => {
+      if (!el) return;
+      let size = BASE_SIZE;
+      if (pointerX !== null) {
+        const rect = el.getBoundingClientRect();
+        const dist = Math.abs(pointerX - (rect.left + rect.width / 2));
+        if (dist < FALLOFF) {
+          const t = 1 - dist / FALLOFF;
+          size = BASE_SIZE + (MAX_SIZE - BASE_SIZE) * t * t;
+        }
+      }
+      el.style.width = `${size}px`;
+      el.style.height = `${size}px`;
+    });
+  }, []);
 
-  const mouseX = useMotionValue(Infinity);
-  const isHovered = useMotionValue(0);
+  const handleMove = useCallback((e) => {
+    const x = e.clientX;
+    cancelAnimationFrame(raf.current);
+    raf.current = requestAnimationFrame(() => applySizes(x));
+  }, [applySizes]);
 
-  const maxHeight = useMemo(() => Math.max(dockHeight, magnification + magnification / 2 + 4), [magnification, dockHeight]);
-  const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
-  const height = useSpring(heightRow, spring);
+  const handleLeave = useCallback(() => {
+    cancelAnimationFrame(raf.current);
+    raf.current = requestAnimationFrame(() => applySizes(null));
+  }, [applySizes]);
+
+  useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
   return (
-    <motion.nav style={{ height, scrollbarWidth: 'none' }} className="dock-outer" aria-label="Primary">
-      <motion.div
-        onMouseMove={({ pageX }) => {
-          isHovered.set(1);
-          mouseX.set(pageX);
-        }}
-        onMouseLeave={() => {
-          isHovered.set(0);
-          mouseX.set(Infinity);
-        }}
+    <nav className="dock-outer" aria-label="Primary">
+      <div
+        ref={panelRef}
         className="dock-panel"
-        style={{ height: panelHeight }}
+        onPointerMove={handleMove}
+        onPointerLeave={handleLeave}
       >
-        {items.map((item, index) => (
-          <DockItem
-            key={index}
-            onClick={item.onClick}
-            label={item.label}
-            isActive={pathname === item.path}
-            mouseX={mouseX}
-            spring={spring}
-            distance={distance}
-            magnification={magnification}
-            baseItemSize={baseItemSize}
+        {items.map((item, i) => (
+          <button
+            key={item.path}
+            type="button"
+            ref={(el) => { itemsRef.current[i] = el; }}
+            className="dock-item"
+            style={{ width: BASE_SIZE, height: BASE_SIZE }}
+            onClick={() => navigate(item.path)}
+            aria-label={item.label}
+            aria-current={pathname === item.path ? 'page' : undefined}
           >
-            <DockIcon>{item.icon}</DockIcon>
-            <DockLabel>{item.label}</DockLabel>
-          </DockItem>
+            <span className="dock-icon">{item.icon}</span>
+            <span className="dock-label" aria-hidden="true">{item.label}</span>
+          </button>
         ))}
-      </motion.div>
-    </motion.nav>
+      </div>
+    </nav>
   );
 }
