@@ -4,8 +4,8 @@
    ============================================= */
 
 .wss-section {
-    background: #000000;
-    padding: 80px var(--content-padding, 40px);
+    background: transparent;
+    padding: var(--section-padding) var(--content-padding, 40px);
     overflow: hidden;
 }
 
@@ -100,9 +100,9 @@
     position: relative;
     overflow: hidden;
     border-radius: 10px;
-    border: 1px solid rgba(184, 150, 90, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.22);
     cursor: pointer;
-    background: #0a0a0a;
+    background: var(--c-peacock-900);
 }
 
 /* Size variants */

@@ -1,7 +1,7 @@
 :root {
   --purple-glow: rgba(184, 150, 90, 0.2); /* Adapted to Sompura Gold */
   --border-color: rgba(184, 150, 90, 0.3);
-  --background-dark: #0F1C2E;
+  --background-dark: #134E4A;
 }
 
 .card-grid {

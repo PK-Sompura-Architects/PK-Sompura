@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { gsap } from "gsap";
 import Lenis from "lenis";
@@ -41,21 +41,30 @@ function AppContent() {
     const mainRef = useRef(null);
     const dockRef = useRef(null);
 
-    const handlePreloaderComplete = () => {
+    // Stable identity: Preloader keys its GSAP effect on this callback, so a new
+    // function each render would kill and restart the intro timeline mid-flight.
+    const handlePreloaderComplete = useCallback(() => {
         setIsAppReady(true);
         sessionStorage.setItem("introPlayed", "true");
 
-        // Fade out the preloader smoothly
-        setTimeout(() => {
-            setShowPreloader(false);
-        }, 300);
+        setTimeout(() => setShowPreloader(false), 300);
 
-        // Fade in the main content + dock
         gsap.fromTo(mainRef.current,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 1.8, ease: "power3.out", delay: 0.3 }
         );
-    };
+    }, []);
+
+    // The intro is rAF-driven, so a suspended tab or a stalled timeline would
+    // otherwise leave the site permanently blank. Reveal regardless after 4s.
+    useEffect(() => {
+        const failsafe = setTimeout(() => {
+            setIsAppReady(true);
+            setShowPreloader(false);
+            if (mainRef.current) gsap.set(mainRef.current, { opacity: 1, y: 0 });
+        }, 4000);
+        return () => clearTimeout(failsafe);
+    }, []);
 
     return (
         <>

@@ -477,7 +477,7 @@ const MagicBento = ({
           const cardProps = {
             className: baseClassName,
             style: {
-              backgroundColor: '#0F1C2E', // Theme base color
+              backgroundColor: '#134E4A', // Deep peacock base
               '--glow-color': glowColor
             }
           };

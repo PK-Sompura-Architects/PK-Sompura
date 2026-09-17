@@ -34,24 +34,26 @@ export default function LineageSection() {
         title: member.name,
         subtitle: member.role,
         phone: CONTACT_NUMBERS[index % CONTACT_NUMBERS.length],
-        borderColor: "#B8965A",
-        gradient: "linear-gradient(145deg, #0F1C2E, #1E3A5F)",
+        borderColor: "var(--c-marigold-500)",
+        gradient: "linear-gradient(145deg, #0F766E, #134E4A)",
     }));
 
     return (
-        <section className="py-20" style={{ backgroundColor: '#000000' }}>
-            <div className="text-center mb-12">
+        <section style={{ padding: 'var(--section-padding) 0', background: 'transparent' }}>
+            <div style={{ textAlign: 'center', marginBottom: 'var(--space-lg)' }}>
                 <ScrollReveal baseOpacity={0} blurStrength={10} baseRotation={3}>
-                    <h2 className="text-5xl font-serif" style={{ color: '#B8965A' }}>The Lineage</h2>
+                    <h2>The Lineage</h2>
                 </ScrollReveal>
                 <ScrollReveal baseOpacity={0} blurStrength={5}>
-                    <p className="text-gray-300 tracking-widest mt-2 uppercase">Generations of Sacred Mastery</p>
+                    <p className="eyebrow" style={{ marginTop: 'var(--space-2xs)' }}>
+                        Generations of Sacred Mastery
+                    </p>
                 </ScrollReveal>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 relative mt-10">
                 {loading ? (
-                    <div className="text-center text-gold">Loading Legacy...</div>
+                    <div className="eyebrow" style={{ textAlign: "center" }}>Loading Legacy...</div>
                 ) : (
                     <ChromaGrid
                         items={gridItems}

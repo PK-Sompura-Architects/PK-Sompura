@@ -71,7 +71,7 @@
   box-shadow: 0 20px 40px rgba(15, 28, 46, 0.2);
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   transform: translateZ(0) rotateX(0deg) rotateY(0deg);
-  background: rgba(15, 28, 46, 0.95); /* Deep Slate Base */
+  background: rgba(19, 78, 74, 0.95); /* Deep peacock base */
   backface-visibility: hidden;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
