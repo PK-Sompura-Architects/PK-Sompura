@@ -1,4 +1,5 @@
 import os
+import re
 import secrets
 import time
 from pathlib import Path
@@ -22,11 +23,22 @@ env_path = Path(__file__).resolve().parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+# Storage writes need the service-role key. The anon key is deliberately
+# blocked from writing to the image buckets, so uploads with it fail with an
+# RLS error. This key never leaves the server.
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+SUPABASE_KEY = SUPABASE_SERVICE_KEY or os.getenv("SUPABASE_KEY")
 
 supabase: Client | None = None
 if SUPABASE_URL and SUPABASE_KEY:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+    if not SUPABASE_SERVICE_KEY:
+        print(
+            "WARNING: SUPABASE_SERVICE_KEY is not set, falling back to "
+            "SUPABASE_KEY. If that is the anon key, image uploads will be "
+            "rejected by row level security."
+        )
 else:
     print("WARNING: Supabase credentials missing. Image uploads will fail.")
 
@@ -105,21 +117,41 @@ authentication_backend = AdminAuth(secret_key=SESSION_SECRET)
 
 # --- CLOUD UPLOAD HELPER ---
 async def upload_to_supabase(file, bucket_name: str) -> str:
-    """Uploads binary file to Supabase and returns public CDN URL."""
+    """Upload a binary file to Supabase storage and return its public URL."""
     if not supabase:
-        raise RuntimeError("Supabase client not configured.")
+        raise RuntimeError(
+            "Supabase is not configured. Set SUPABASE_URL and "
+            "SUPABASE_SERVICE_KEY in backend/.env."
+        )
 
     timestamp = int(time.time())
-    clean_name = file.filename.replace(" ", "_")
+    clean_name = re.sub(r"[^A-Za-z0-9._-]", "_", file.filename or "upload")
     filename = f"{timestamp}_{clean_name}"
     content = await file.read()
     content_type = getattr(file, "content_type", None) or "application/octet-stream"
 
-    supabase.storage.from_(bucket_name).upload(
-        path=filename,
-        file=content,
-        file_options={"content-type": content_type}
-    )
+    try:
+        supabase.storage.from_(bucket_name).upload(
+            path=filename,
+            file=content,
+            file_options={"content-type": content_type},
+        )
+    except Exception as exc:  # noqa: BLE001 - surfaced to the admin UI
+        detail = str(exc)
+        if "row-level security" in detail or "Unauthorized" in detail:
+            raise RuntimeError(
+                "Storage rejected the upload. This usually means "
+                "SUPABASE_SERVICE_KEY holds the anon key rather than the "
+                "service-role key; only the latter may write to the image "
+                "buckets."
+            ) from exc
+        if "Bucket not found" in detail:
+            raise RuntimeError(
+                f"The '{bucket_name}' storage bucket does not exist in this "
+                "Supabase project."
+            ) from exc
+        raise
+
     return supabase.storage.from_(bucket_name).get_public_url(filename)
 
 

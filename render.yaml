@@ -43,10 +43,12 @@ services:
       - key: ALLOWED_ORIGINS
         sync: false
 
-      # Server-side image uploads from the admin panel.
+      # Server-side image uploads from the admin panel. The service-role
+      # key is required: the storage buckets have no write policy, so the
+      # anon key is rejected by row level security.
       - key: SUPABASE_URL
         sync: false
-      - key: SUPABASE_KEY
+      - key: SUPABASE_SERVICE_KEY
         sync: false
 
       # Inquiry relay. Server-side only — never a VITE_ variable.

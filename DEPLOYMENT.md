@@ -29,7 +29,7 @@ the API, which avoids CORS entirely.
    | `ADMIN_PASSWORD_HASH` | `python -m backend.security` — store the printed password in a password manager, put only the hash here |
    | `SESSION_SECRET` | `python -c "import secrets; print(secrets.token_urlsafe(32))"` |
    | `ALLOWED_ORIGINS` | your Netlify URL, e.g. `https://pk-sompura.netlify.app` |
-   | `SUPABASE_URL`, `SUPABASE_KEY` | Supabase → Project Settings → API |
+   | `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` | Supabase → Project Settings → API keys. Use **service_role**, not anon: the storage buckets have no write policy, so anon uploads are rejected. |
    | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | BotFather, if you want inquiry notifications |
 
    `SESSION_SECRET` must be set explicitly. Left unset the app generates a
