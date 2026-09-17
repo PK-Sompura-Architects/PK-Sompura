@@ -19,8 +19,23 @@ from backend.admin import (
     ContactSubmissionAdmin,
 )
 
-Base.metadata.create_all(bind=engine)
 app = FastAPI(title="PK Sompura API")
+
+
+@app.on_event("startup")
+def ensure_schema() -> None:
+    """
+    Create any missing tables, without letting a database problem stop the
+    process from starting.
+
+    This used to run at import time, which meant an unreachable database
+    prevented the app from booting at all — so the health check failed too and
+    the host could only report the service as down, never why.
+    """
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as exc:  # noqa: BLE001 - startup must not be fatal
+        print(f"WARNING: could not verify the database schema at startup: {exc}")
 
 # Browsers reject "*" together with credentials, so the previous config
 # silently broke every credentialed cross-origin request. Set
