@@ -442,3 +442,20 @@
 @media (max-width: 600px) {
     .modal-header, .modal-body { padding: 20px; }
 }
+/* --- Header & states (replaces the inert Tailwind class names) --- */
+.projects-header {
+    text-align: center;
+    padding: var(--section-padding) var(--content-padding) var(--space-lg);
+}
+
+.projects-state {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--space-2xl) var(--content-padding);
+}
+
+.projects-grid-wrap {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 var(--content-padding) var(--space-2xl);
+}

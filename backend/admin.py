@@ -11,7 +11,10 @@ from wtforms import FileField
 from markupsafe import Markup
 from supabase import create_client, Client
 
-from backend.models import LineageMember, TempleProject, DashboardGallery, GalleryImage
+from backend.models import (
+    LineageMember, TempleProject, TempleImage,
+    DashboardGallery, GalleryImage, ContactSubmission,
+)
 from backend.security import verify_password
 
 # --- SUPABASE CONFIGURATION ---
@@ -149,26 +152,54 @@ class LineageMemberAdmin(ModelView, model=LineageMember):
 
 
 class TempleProjectAdmin(ModelView, model=TempleProject):
-    column_list = ["id", "name", "status", "city"]
-    column_searchable_list = ["name", "city"]
-    form_columns = ["name", "trust_name", "status", "city", "main_image"]
+    name = "Temple"
+    name_plural = "Temples"
+    column_list = ["id", "name_en", "city", "state", "year", "is_featured", "is_milestone"]
+    column_searchable_list = ["name_en", "name_gu", "name_hi", "city"]
+    column_sortable_list = ["order_index", "year", "city"]
+    form_columns = [
+        "name_en", "name_gu", "name_hi",
+        "description_en", "description_gu", "description_hi",
+        "city", "state", "location", "year",
+        "is_featured", "is_milestone", "order_index",
+    ]
     icon = "fa-solid fa-gopuram"
-    
+
+    # Gujarati and Hindi are required for the site's language switcher, so the
+    # list view shows at a glance which rows are still missing a translation.
     column_formatters = {
-        "main_image": lambda m, a: Markup(f'<img src="{m.main_image}" width="80" style="border-radius:4px;" />') if m.main_image else ""
+        "name_en": lambda m, a: Markup(
+            f'{m.name_en or "<em>untitled</em>"}'
+            f'{"" if m.name_gu else " <span style=\'color:#b45309\'>(no GU)</span>"}'
+            f'{"" if m.name_hi else " <span style=\'color:#b45309\'>(no HI)</span>"}'
+        )
+    }
+
+
+class TempleImageAdmin(ModelView, model=TempleImage):
+    name = "Temple Image"
+    name_plural = "Temple Images"
+    column_list = ["id", "temple", "url", "is_cutout", "order_index"]
+    form_columns = ["temple", "url", "is_cutout", "order_index"]
+    icon = "fa-solid fa-image"
+
+    column_formatters = {
+        "url": lambda m, a: Markup(
+            f'<img src="{m.url}" width="80" style="border-radius:4px;" />'
+        ) if m.url else ""
     }
 
     async def scaffold_form(self, rules=None):
         form = await super().scaffold_form(rules)
-        form.upload_file = FileField("Upload Main Background Image")
+        form.upload_file = FileField("Upload Image")
         return form
 
     async def on_model_change(self, data, model, is_created, request):
         file_obj = data.pop("upload_file", None)
         if file_obj and hasattr(file_obj, "filename") and file_obj.filename:
             public_url = await upload_to_supabase(file_obj, "temples")
-            model.main_image = public_url
-            data["main_image"] = public_url
+            model.url = public_url
+            data["url"] = public_url
 
 
 class DashboardGalleryAdmin(ModelView, model=DashboardGallery):
@@ -193,9 +224,20 @@ class DashboardGalleryAdmin(ModelView, model=DashboardGallery):
             data["main_image"] = public_url
 
 
+class ContactSubmissionAdmin(ModelView, model=ContactSubmission):
+    name = "Inquiry"
+    name_plural = "Inquiries"
+    column_list = ["id", "name", "phone", "email", "temple_type", "submitted_at"]
+    column_sortable_list = ["submitted_at"]
+    column_default_sort = ("submitted_at", True)
+    can_create = False
+    can_edit = False
+    icon = "fa-solid fa-envelope-open-text"
+
+
 class GalleryImageAdmin(ModelView, model=GalleryImage):
-    column_list = ["id", "temple", "gallery", "url"]
-    form_columns = ["temple", "gallery", "url"]
+    column_list = ["id", "gallery", "url"]
+    form_columns = ["gallery", "url"]
     icon = "fa-solid fa-images"
 
     column_formatters = {

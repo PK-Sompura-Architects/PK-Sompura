@@ -1,51 +1,73 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import MagicBento from '../components/MagicBento';
 import GalleryModal from '../components/GalleryModal';
-import './Projects.css'; // Keep your page header styles
+import { useLanguage } from '../context/LanguageContext';
+import './Projects.css';
+
+const API_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export default function Projects() {
+    const { language } = useLanguage();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
 
     useEffect(() => {
-        const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-        fetch(`${API_URL}/projects/`)
-            .then(res => res.json())
+        // The API resolves translations server-side, so switching language
+        // refetches rather than shipping all three up front.
+        const controller = new AbortController();
+        setLoading(true);
+        setError(false);
+
+        fetch(`${API_URL}/projects/?lang=${language}`, { signal: controller.signal })
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            })
             .then(data => {
                 setProjects(data.projects || []);
                 setLoading(false);
             })
-            .catch(err => console.error("Error fetching projects:", err));
-    }, []);
+            .catch(err => {
+                if (err.name === 'AbortError') return;
+                setError(true);
+                setLoading(false);
+            });
 
-    // Transform backend data to fit MagicBento's expected prop structure
+        return () => controller.abort();
+    }, [language]);
+
     const bentoItems = projects.map(p => ({
         id: p.id,
         title: p.name,
-        description: [p.city, p.trust_name].filter(Boolean).join(" • "),
-        label: p.status, // "Completed" or "Ongoing" will render in the top right
-        image: p.main_image || '/placeholder-gold.jpg',
-        rawData: p // Pass the raw data so we can give the modal the other_images array
+        description: [p.city, p.state].filter(Boolean).join(' • '),
+        label: p.year,
+        image: p.cover_image || '/placeholder-gold.jpg',
+        rawData: p,
     }));
 
     return (
         <div className="projects-page">
-            <header className="projects-header text-center py-12">
-                <span className="text-gold tracking-widest uppercase text-sm">Portfolio</span>
-                <h1 className="text-5xl font-serif mt-2" style={{ color: '#B8965A' }}>Sacred Monuments</h1>
-                <div className="h-px w-24 bg-gold mx-auto mt-6" />
+            <header className="projects-header">
+                <span className="eyebrow">Portfolio</span>
+                <h1>Sacred Monuments</h1>
+                <div className="gold-line" style={{ margin: 'var(--space-sm) auto' }} />
             </header>
 
             {loading ? (
-                <div className="text-center text-gold py-20">Loading Archives...</div>
+                <p className="projects-state">Loading archives…</p>
+            ) : error ? (
+                <p className="projects-state">
+                    Could not load the archive. Please try again shortly.
+                </p>
             ) : projects.length === 0 ? (
-                <div className="text-center text-gray-500 py-20">No Projects Yet</div>
+                <p className="projects-state">No projects yet.</p>
             ) : (
-                <div className="max-w-7xl mx-auto px-4 pb-20">
-                    <MagicBento 
+                <div className="projects-grid-wrap">
+                    <MagicBento
                         items={bentoItems}
-                        glowColor="184, 150, 90" // Sompura Gold
+                        glowColor="245, 158, 11"
                         enableTilt={true}
                         enableStars={true}
                         onCardClick={(item) => setSelectedProject(item.rawData)}
@@ -53,13 +75,13 @@ export default function Projects() {
                 </div>
             )}
 
-            {/* The Universal Modal handles the "other_images" */}
-            <GalleryModal 
+            <GalleryModal
                 isOpen={!!selectedProject}
                 onClose={() => setSelectedProject(null)}
                 title={selectedProject?.name}
-                subtitle={[selectedProject?.city, selectedProject?.trust_name].filter(Boolean).join(" • ")}
-                images={selectedProject?.other_images}
+                subtitle={[selectedProject?.city, selectedProject?.year]
+                    .filter(Boolean).join(' • ')}
+                images={selectedProject?.images}
             />
         </div>
     );

@@ -55,8 +55,10 @@ app.include_router(contact.router, prefix="/contact", tags=["Contact"])
 admin = Admin(app, engine, title="PK Sompura Admin", authentication_backend=authentication_backend)
 admin.add_view(LineageMemberAdmin)
 admin.add_view(TempleProjectAdmin)
+admin.add_view(TempleImageAdmin)
 admin.add_view(DashboardGalleryAdmin)
 admin.add_view(GalleryImageAdmin)
+admin.add_view(ContactSubmissionAdmin)
 
 @app.get("/")
 def read_root(): return {"message": "PK Sompura Backend API is running"}
