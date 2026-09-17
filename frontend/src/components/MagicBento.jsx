@@ -4,8 +4,8 @@ import './MagicBento.css';
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-// Adapted to Sompura Gold (RGB for #B8965A)
-const DEFAULT_GLOW_COLOR = '184, 150, 90';
+// Adapted to Sompura Gold (RGB for #B45309)
+const DEFAULT_GLOW_COLOR = '245, 158, 11';
 const MOBILE_BREAKPOINT = 768;
 
 const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {

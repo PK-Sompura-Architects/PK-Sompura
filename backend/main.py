@@ -49,10 +49,10 @@ app.add_middleware(
     same_site="lax",
 )
 
-app.include_router(lineage.router, prefix="/lineage", tags=["Lineage"])
-app.include_router(temples.router, prefix="/projects", tags=["Projects"])
-app.include_router(galleries.router, prefix="/galleries", tags=["Galleries"])
-app.include_router(contact.router, prefix="/contact", tags=["Contact"])
+app.include_router(lineage.router, prefix="/api/lineage", tags=["Lineage"])
+app.include_router(temples.router, prefix="/api/projects", tags=["Projects"])
+app.include_router(galleries.router, prefix="/api/galleries", tags=["Galleries"])
+app.include_router(contact.router, prefix="/api/contact", tags=["Contact"])
 
 admin = Admin(app, engine, title="PK Sompura Admin", authentication_backend=authentication_backend)
 admin.add_view(LineageMemberAdmin)

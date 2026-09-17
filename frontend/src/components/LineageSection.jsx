@@ -16,7 +16,7 @@ export default function LineageSection() {
 
     useEffect(() => {
         const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-        fetch(`${API_URL}/lineage/`)
+        fetch(`${API_URL}/api/lineage/`)
             .then(res => res.json())
             .then(data => {
                 setMembers(Array.isArray(data) ? data : (data.members || []));

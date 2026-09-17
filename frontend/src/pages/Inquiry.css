@@ -1,6 +1,6 @@
 .inquiry-wrapper {
     min-height: 100vh;
-    padding: 15vh var(--content-padding) 10vh;
+    padding: 12vh var(--content-padding) 160px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -100,10 +100,11 @@
 .submit-btn {
     margin-top: 10px;
     padding: 16px;
-    background: var(--color-text);
-    color: var(--color-bg);
+    background: var(--c-peacock-700);
+    color: #FFFFFF;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
     font-family: var(--font-heading);
     font-size: 14px;
     letter-spacing: 3px;
@@ -113,7 +114,8 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-    background: var(--color-gold);
+    background: var(--c-peacock-900);
+    box-shadow: var(--shadow-md);
 }
 
 .submit-btn:disabled {

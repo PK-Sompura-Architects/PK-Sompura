@@ -87,7 +87,7 @@ export const ChromaGrid = ({
           onMouseMove={handleCardMove}
           style={{
             '--card-border': c.borderColor || 'var(--color-gold)',
-            '--card-gradient': c.gradient || 'linear-gradient(145deg, #0F1C2E, #1A2D48)'
+            '--card-gradient': c.gradient || 'linear-gradient(145deg, #134E4A, #1A2D48)'
           }}
         >
           <div className="chroma-img-wrapper">

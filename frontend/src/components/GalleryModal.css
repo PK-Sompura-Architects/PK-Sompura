@@ -14,7 +14,7 @@
     max-width: 900px;
     max-height: 90vh;
     border-radius: 12px;
-    border: 1px solid rgba(184, 150, 90, 0.3); /* Gold trim */
+    border: 1px solid rgba(245, 158, 11, 0.3); /* Gold trim */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -30,9 +30,9 @@
     cursor: pointer;
     transition: color 0.2s;
 }
-.close-btn:hover { color: rgb(184, 150, 90); }
+.close-btn:hover { color: rgb(245, 158, 11); }
 .modal-header { padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.modal-header h2 { color: rgb(184, 150, 90); margin: 0 0 0.5rem 0; font-family: serif; font-size: 2rem; }
+.modal-header h2 { color: rgb(245, 158, 11); margin: 0 0 0.5rem 0; font-family: serif; font-size: 2rem; }
 .modal-subtitle { color: #aaa; margin: 0; }
 .modal-image-grid {
     padding: 2rem;

@@ -15,8 +15,6 @@ function Inquiry() {
     const [status, setStatus] = useState("idle"); // idle | submitting | success | error
     const [errors, setErrors] = useState({});
 
-    // 🚨 Admin backdoor check
-    const isAdminAttempt = formData.name.toLowerCase() === "admin";
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,7 +51,7 @@ function Inquiry() {
         try {
             // Posts to our own API, which relays to Telegram server-side. The
             // bot token must never reach the browser.
-            const response = await fetch(`${API_URL}/contact/`, {
+            const response = await fetch(`${API_URL}/api/contact/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

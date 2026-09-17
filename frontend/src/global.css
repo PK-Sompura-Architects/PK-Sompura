@@ -284,6 +284,12 @@ a:hover { color: var(--color-accent-hover); }
     box-shadow: var(--shadow-lg);
 }
 
+/* The dock is fixed at the bottom of every page. Without this the last
+   element on a page sits underneath it and cannot be clicked. */
+.app-container {
+    padding-bottom: 120px;
+}
+
 /* --- SCROLLBAR --- */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--c-ivory-sunken); }

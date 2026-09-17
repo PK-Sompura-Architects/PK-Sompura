@@ -69,7 +69,7 @@
     border-radius: 12px;
     overflow: hidden;
     background: var(--color-surface);
-    border: 1px solid rgba(184, 150, 90, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.08);
     cursor: pointer;
     transition: box-shadow 0.5s var(--ease-smooth);
     will-change: transform;
@@ -79,7 +79,7 @@
 .project-card:hover {
     box-shadow:
         0 24px 60px rgba(0, 0, 0, 0.3),
-        0 8px 24px rgba(184, 150, 90, 0.08);
+        0 8px 24px rgba(245, 158, 11, 0.08);
 }
 
 /* --- IMAGE CONTAINER (parallax overflow) --- */
@@ -387,7 +387,7 @@
 
 .modal-header {
     padding: 40px 40px 20px;
-    border-bottom: 1px solid rgba(214, 185, 140, 0.1);
+    border-bottom: 1px solid rgba(248, 197, 102, 0.1);
 }
 
 .modal-header h2 {
@@ -430,7 +430,7 @@
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: 8px;
-    border: 1px solid rgba(184, 150, 90, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.1);
 }
 
 .no-images {

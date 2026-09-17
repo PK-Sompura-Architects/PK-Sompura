@@ -20,7 +20,7 @@ export default function Projects() {
         setLoading(true);
         setError(false);
 
-        fetch(`${API_URL}/projects/?lang=${language}`, { signal: controller.signal })
+        fetch(`${API_URL}/api/projects/?lang=${language}`, { signal: controller.signal })
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();

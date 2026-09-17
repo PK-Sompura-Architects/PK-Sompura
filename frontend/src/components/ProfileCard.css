@@ -12,17 +12,17 @@
   --grain: none;
   --icon: none;
   --behind-gradient: none;
-  --behind-glow-color: rgba(15, 28, 46, 0.4); /* Deep Slate Glow */
+  --behind-glow-color: rgba(19, 78, 74, 0.4); /* Deep Slate Glow */
   --behind-glow-size: 35%;
   --inner-gradient: none;
   
   /* Sompura Dark Gold Holographic Colors */
-  --sunpillar-1: #0F1C2E; 
-  --sunpillar-2: #1E3A5F;
-  --sunpillar-3: #B8965A;
-  --sunpillar-4: #CDAC72;
-  --sunpillar-5: #8B7340;
-  --sunpillar-6: #0F1C2E;
+  --sunpillar-1: #134E4A; 
+  --sunpillar-2: #0F766E;
+  --sunpillar-3: #B45309;
+  --sunpillar-4: #D97706;
+  --sunpillar-5: #F8C566;
+  --sunpillar-6: #134E4A;
   --sunpillar-clr-1: var(--sunpillar-1);
   --sunpillar-clr-2: var(--sunpillar-2);
   --sunpillar-clr-3: var(--sunpillar-3);
@@ -68,7 +68,7 @@
   position: relative;
   background-blend-mode: color-dodge, normal, normal, normal;
   animation: glow-bg 12s linear infinite;
-  box-shadow: 0 20px 40px rgba(15, 28, 46, 0.2);
+  box-shadow: 0 20px 40px rgba(19, 78, 74, 0.2);
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   transform: translateZ(0) rotateX(0deg) rotateY(0deg);
   background: rgba(19, 78, 74, 0.95); /* Deep peacock base */
@@ -170,7 +170,7 @@
 .pc-details p {
   font-family: var(--font-body);
   font-size: 13px;
-  color: #A8D8F0;
+  color: var(--c-marigold-300);
   text-transform: uppercase;
   letter-spacing: 4px;
   margin: 0 0 15px 0;

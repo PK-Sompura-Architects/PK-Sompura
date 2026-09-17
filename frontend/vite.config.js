@@ -6,12 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     // Mirrors the routers mounted in backend/main.py.
+    // Only /api and the server-rendered admin panel go to the backend.
+    // Everything else is a client route owned by the SPA.
     proxy: {
+      '/api': 'http://127.0.0.1:8000',
       '/admin': 'http://127.0.0.1:8000',
-      '/lineage': 'http://127.0.0.1:8000',
-      '/projects': 'http://127.0.0.1:8000',
-      '/galleries': 'http://127.0.0.1:8000',
-      '/contact': 'http://127.0.0.1:8000',
       '/statics': 'http://127.0.0.1:8000',
     }
   },

@@ -8,7 +8,7 @@ export default function DashboardGalleries() {
 
     useEffect(() => {
         const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-        fetch(`${API_URL}/galleries/`)
+        fetch(`${API_URL}/api/galleries/`)
             .then(res => res.json())
             .then(data => setGalleries(data.galleries || []))
             .catch(err => console.error("Error fetching galleries:", err));
@@ -32,7 +32,7 @@ export default function DashboardGalleries() {
             <div className="max-w-7xl mx-auto px-4">
                 <MagicBento 
                     items={bentoItems}
-                    glowColor="184, 150, 90" 
+                    glowColor="245, 158, 11" 
                     enableTilt={true}
                     onCardClick={(item) => setSelectedGallery(item.rawData)}
                 />
