@@ -23,13 +23,14 @@
   border-radius: 2rem;
   padding: 0 0.8rem 0.6rem;
   
-  /* Deep Slate Glassmorphism */
-  background: rgba(15, 28, 46, 0.82);
+  /* Deep peacock glass — contrast anchor against the ivory page */
+  background: rgba(19, 78, 74, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(184, 150, 90, 0.3);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  
+  border: 1px solid rgba(245, 158, 11, 0.38);
+  box-shadow: 0 10px 40px rgba(19, 78, 74, 0.28),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
   pointer-events: auto; /* Re-enables clicks specifically for the dock */
 }
 
@@ -41,13 +42,31 @@
   border-radius: 50%;
   background: transparent;
   border: none;
+  padding: 0;
   cursor: pointer;
-  outline: none;
-  transition: background-color 0.3s;
+  transition: background-color var(--dur-base) var(--ease-smooth);
 }
 
 .dock-item:hover {
-  background: rgba(214, 185, 140, 0.15); /* Gold hover tint */
+  background: rgba(245, 158, 11, 0.22);
+}
+
+.dock-item:focus-visible {
+  outline: 3px solid var(--c-marigold-300);
+  outline-offset: 2px;
+}
+
+/* Active page marker */
+.dock-item[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--c-marigold-300);
 }
 
 .dock-icon {

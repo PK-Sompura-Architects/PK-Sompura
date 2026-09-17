@@ -2,12 +2,12 @@
 
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'motion/react';
 import { Children, cloneElement, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Grid, Mail } from 'lucide-react'; // Elegant icons
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Grid, Mail, Users } from 'lucide-react';
 import './Dock.css';
 
 // --- Internal Helper Components ---
-function DockItem({ children, className = '', onClick, mouseX, spring, distance, magnification, baseItemSize }) {
+function DockItem({ children, className = '', onClick, label, isActive, mouseX, spring, distance, magnification, baseItemSize }) {
   const ref = useRef(null);
   const isHovered = useMotionValue(0);
 
@@ -20,8 +20,9 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
   const size = useSpring(targetSize, spring);
 
   return (
-    <motion.div
+    <motion.button
       ref={ref}
+      type="button"
       style={{ width: size, height: size }}
       onHoverStart={() => isHovered.set(1)}
       onHoverEnd={() => isHovered.set(0)}
@@ -29,10 +30,11 @@ function DockItem({ children, className = '', onClick, mouseX, spring, distance,
       onBlur={() => isHovered.set(0)}
       onClick={onClick}
       className={`dock-item ${className}`}
-      role="button"
+      aria-label={label}
+      aria-current={isActive ? 'page' : undefined}
     >
       {Children.map(children, child => cloneElement(child, { isHovered }))}
-    </motion.div>
+    </motion.button>
   );
 }
 
@@ -72,17 +74,18 @@ function DockIcon({ children, className = '' }) {
 // --- Main Exported Component ---
 export default function Dock() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  // The Navigation Schema (Lineage Completely Removed)
   const items = [
-    { 
-      icon: <img src="/LOGO_2.png" alt="Sompura Logo" />, 
-      label: 'Dashboard', 
-      onClick: () => navigate('/') 
+    {
+      icon: <img src="/LOGO_2.png" alt="" />,
+      label: 'Dashboard',
+      path: '/',
     },
-    { icon: <Grid size={22} strokeWidth={1.5} />, label: 'Projects', onClick: () => navigate('/projects') },
-    { icon: <Mail size={22} strokeWidth={1.5} />, label: 'Inquiry', onClick: () => navigate('/inquiry') },
-  ];
+    { icon: <Grid size={22} strokeWidth={1.5} />, label: 'Projects', path: '/projects' },
+    { icon: <Users size={22} strokeWidth={1.5} />, label: 'The Lineage', path: '/about' },
+    { icon: <Mail size={22} strokeWidth={1.5} />, label: 'Inquiry', path: '/inquiry' },
+  ].map(item => ({ ...item, onClick: () => navigate(item.path) }));
 
   // Animation configuration
   const spring = { mass: 0.1, stiffness: 150, damping: 12 };
@@ -100,7 +103,7 @@ export default function Dock() {
   const height = useSpring(heightRow, spring);
 
   return (
-    <motion.div style={{ height, scrollbarWidth: 'none' }} className="dock-outer">
+    <motion.nav style={{ height, scrollbarWidth: 'none' }} className="dock-outer" aria-label="Primary">
       <motion.div
         onMouseMove={({ pageX }) => {
           isHovered.set(1);
@@ -117,6 +120,8 @@ export default function Dock() {
           <DockItem
             key={index}
             onClick={item.onClick}
+            label={item.label}
+            isActive={pathname === item.path}
             mouseX={mouseX}
             spring={spring}
             distance={distance}
@@ -128,6 +133,6 @@ export default function Dock() {
           </DockItem>
         ))}
       </motion.div>
-    </motion.div>
+    </motion.nav>
   );
 }

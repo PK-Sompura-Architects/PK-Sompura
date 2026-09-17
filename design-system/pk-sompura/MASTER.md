@@ -80,9 +80,20 @@ site re-skins at once. Keep these aliases until components are migrated.
   `ProfileCard`, `MagicBento` base, working-site tiles, ChromaGrid lineage cards.
   They keep white text, so do not convert them to light.
 - `AdminPage.css` is still on the old dark navy theme and has not been migrated.
-- The temple model `public/indian-temple/source/new_lns_glb-hex.glb` is **9.7MB**
-  plus 3.5MB of textures. It must be Draco/meshopt compressed before it can be
-  used in the hero.
+- **The dashboard hero does not use a 3D temple model.** A WebGL hero was built
+  and then removed by request in favour of a modern dock/card navigation.
+  Dropping it cut the bundle from 1,467 kB to 495 kB (gzip 427 → 163 kB),
+  because three.js/R3F/drei left the main path entirely. Do not reintroduce a
+  WebGL hero without weighing that cost.
+- Depth now comes from CSS 3D transforms (`HeroNav` pointer-tracked tilt,
+  `.depth-card`), not WebGL. `--perspective` and `--tilt-max` drive it.
+- `public/indian-temple/source/new_lns_glb-hex.glb` (9.7MB) is unused but kept
+  as a source asset. Anything using it must be Draco-compressed first — doing so
+  took it to 582 KB with geometry intact.
+- `.dashboard-bg` must stay `position: absolute`. As a static grid item it
+  consumes a column and displaces the hero nav onto a second row.
+- The `Prism` shader renders cyan, which clashes with the palette. It is
+  hue-rotated −140deg in CSS and masked back to a faint warm wash.
 - All page content is revealed by GSAP. A 4s failsafe in `App.jsx` now forces the
   site visible if the intro timeline stalls — do not remove it.
 

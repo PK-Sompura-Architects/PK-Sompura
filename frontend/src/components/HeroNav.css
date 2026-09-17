@@ -1,0 +1,135 @@
+.hero-nav {
+    display: grid;
+    gap: var(--space-sm);
+    width: min(100%, 420px);
+    perspective: var(--perspective);
+}
+
+.hero-nav__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-sm);
+    min-height: 88px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.92),
+        rgba(253, 244, 227, 0.78)
+    );
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    isolation: isolate;
+    text-decoration: none;
+    color: var(--color-text);
+
+    transform-style: preserve-3d;
+    transform: perspective(var(--perspective))
+               rotateX(var(--rx, 0deg))
+               rotateY(var(--ry, 0deg));
+    transition: box-shadow var(--dur-base) var(--ease-out-expo),
+                border-color var(--dur-base) var(--ease-smooth),
+                transform var(--dur-slow) var(--ease-out-expo);
+}
+
+.hero-nav__card:hover,
+.hero-nav__card:focus-visible {
+    border-color: var(--c-marigold-300);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Pointer-following sheen — sits behind content via z-index. */
+.hero-nav__sheen {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0;
+    background: radial-gradient(
+        320px circle at var(--gx, 50%) var(--gy, 50%),
+        rgba(245, 158, 11, 0.22),
+        transparent 62%
+    );
+    transition: opacity var(--dur-base) var(--ease-smooth);
+}
+
+.hero-nav__card:hover .hero-nav__sheen,
+.hero-nav__card:focus-visible .hero-nav__sheen {
+    opacity: 1;
+}
+
+.hero-nav__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    background: var(--c-marigold-100);
+    color: var(--c-marigold-700);
+    transform: translateZ(28px);
+    transition: background var(--dur-base) var(--ease-smooth),
+                color var(--dur-base) var(--ease-smooth);
+}
+
+.hero-nav__card:hover .hero-nav__icon,
+.hero-nav__card:focus-visible .hero-nav__icon {
+    background: var(--c-peacock-700);
+    color: #FFFFFF;
+}
+
+.hero-nav__body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transform: translateZ(18px);
+}
+
+.hero-nav__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    color: var(--color-text);
+}
+
+.hero-nav__desc {
+    font-size: var(--text-sm);
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--color-text-muted);
+}
+
+.hero-nav__arrow {
+    color: var(--color-text-subtle);
+    transform: translateZ(14px);
+    transition: transform var(--dur-base) var(--ease-out-expo),
+                color var(--dur-base) var(--ease-smooth);
+}
+
+.hero-nav__card:hover .hero-nav__arrow,
+.hero-nav__card:focus-visible .hero-nav__arrow {
+    color: var(--color-accent);
+    transform: translateZ(14px) translate(3px, -3px);
+}
+
+@media (max-width: 900px) {
+    .hero-nav {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-nav__card,
+    .hero-nav__arrow {
+        transition: none;
+        transform: none;
+    }
+    .hero-nav__icon,
+    .hero-nav__body {
+        transform: none;
+    }
+}

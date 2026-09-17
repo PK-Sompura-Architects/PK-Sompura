@@ -12,9 +12,11 @@
     width: 100%;
     min-height: 100vh;
     overflow: hidden;
-    display: flex;
-    align-items: center; 
-    padding: 0 var(--content-padding);
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: var(--space-xl);
+    padding: var(--space-2xl) var(--content-padding);
 }
 
 /* LEFT SIDE: Typography */
@@ -22,31 +24,52 @@
     position: relative;
     z-index: 3;
     text-align: left;
-    pointer-events: none; 
-    width: 50%;
     max-width: 800px;
 }
 
-/* FULL SCREEN: 3D Model */
-.dashboard-model-container {
-    position: absolute; 
-    inset: 0;           
-    width: 100vw;
-    height: 100vh;
-    z-index: 2;
+/* Ambient Prism backdrop — a decorative layer, so it must stay out of the
+   grid flow or it consumes a column and displaces the nav. */
+.dashboard-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    /* The shader renders cyan; rotate it into the marigold/peacock range and
+       keep it faint so it stays a wash rather than competing with the type. */
+    opacity: 0.32;
+    filter: hue-rotate(-140deg) saturate(0.8);
+    mask-image: radial-gradient(ellipse 85% 75% at 60% 45%, #000 35%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 60% 45%, #000 35%, transparent 100%);
+}
+
+/* RIGHT SIDE: page navigation */
+.dashboard-hero-wrapper .hero-nav {
+    position: relative;
+    z-index: 3;
+    justify-self: end;
+}
+
+@media (max-width: 900px) {
+    .dashboard-hero-wrapper {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+        align-content: center;
+    }
+
+    .dashboard-hero-wrapper .hero-nav {
+        justify-self: stretch;
+    }
 }
 
 .sompura-title {
     font-family: 'Cinzel Decorative', var(--font-heading);
     color: var(--color-gold);
-    -webkit-text-stroke: 1px rgba(184, 150, 90, 0.3);
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Softened shadow for light bg */
     font-size: clamp(40px, 6vw, 90px);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     margin: 0;
-    line-height: 1.1;
+    line-height: 1.05;
 }
 
 .sompura-subtitle {
