@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/no-unknown-property */
-import { Suspense, useRef, useLayoutEffect, useEffect, useMemo } from 'react';
-import { Canvas, useFrame, useLoader, useThree, invalidate } from '@react-three/fiber';
-import { OrbitControls, useGLTF, useFBX, useProgress, Html, Environment, ContactShadows } from '@react-three/drei';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { Suspense, useRef, useLayoutEffect, useEffect, useMemo, useState } from 'react';
+import { Canvas, useFrame, useThree, invalidate } from '@react-three/fiber';
+import { OrbitControls, useGLTF, useProgress, Html, Environment, ContactShadows, Center } from '@react-three/drei';
 import * as THREE from 'three';
 
 const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -50,13 +49,9 @@ const DesktopControls = ({ pivot, min, max, zoomEnabled }) => {
 
 /**
  * FIX: The rotation hierarchy is now:
- *   <positionGroup>  ← handles xOff/yOff translation (world position)
- *     <rotationGroup> ← handles local Y-axis spin, hover, manual rotation
- *       <inner>       ← normalized model (centered + scaled)
- *
- * Previously, outer.position was mutated every frame via ndc.unproject, which
- * shifted the pivot point and caused the "Earth orbiting the sun" bug.
- * Now the model spins on its OWN axis first, then gets translated.
+ * <positionGroup>  ← handles xOff/yOff translation (world position)
+ * <rotationGroup> ← handles local Y-axis spin, hover, manual rotation
+ * <Center>      ← NORMALIZED model (perfect pivot point)
  */
 const ModelInner = ({
   url,
@@ -90,28 +85,28 @@ const ModelInner = ({
   const cHov = useRef({ x: 0, y: 0 });
 
   const ext = useMemo(() => url.split('.').pop().toLowerCase(), [url]);
-  const content = useMemo(() => {
-    if (ext === 'glb' || ext === 'gltf') return useGLTF(url).scene.clone();
-    if (ext === 'fbx') return useFBX(url).clone();
-    if (ext === 'obj') return useLoader(OBJLoader, url).clone();
-    console.error('Unsupported format:', ext);
+  if (ext !== 'glb' && ext !== 'gltf') {
+    console.error('ModelViewer currently supports only .glb/.gltf files:', ext);
     return null;
-  }, [url, ext]);
+  }
+  const content = useGLTF(url).scene.clone();
 
   useLayoutEffect(() => {
     if (!content) return;
     const g = inner.current;
     g.updateWorldMatrix(true, true);
 
-    // Center the model on its own origin and scale to fill the scene
+    // Calculate bounding box purely to get the proper scale factor
     const box = new THREE.Box3().setFromObject(g);
     const sphere = box.getBoundingSphere(new THREE.Sphere());
-    const diameter = sphere.radius * 2;
-    // Scale so that the model's diameter = scaleFactor in world units
-    const s = scaleFactor / diameter;
+    const diameter = Math.max(sphere.radius * 2, 0.001);
+    
+    // Prevent pathological source bounds from shrinking the model to a dot.
+    const s = THREE.MathUtils.clamp(scaleFactor / diameter, 0.5, 20);
     g.scale.setScalar(s);
-    // Re-center after scaling
-    g.position.set(-sphere.center.x * s, -sphere.center.y * s, -sphere.center.z * s);
+    
+    // FIX: Removed manual g.position.set translation. The <Center> component 
+    // down below naturally aligns the geometric center to (0,0,0) so it spins correctly.
 
     g.traverse(o => {
       if (o.isMesh) {
@@ -341,9 +336,10 @@ const ModelInner = ({
   return (
     <group ref={posGroup}>
       <group ref={rotGroup}>
-        <group ref={inner}>
+        {/* FIX: Center component ensures model geometry is perfectly zeroed out for globe rotation */}
+        <Center ref={inner}>
           <primitive object={content} />
-        </group>
+        </Center>
       </group>
     </group>
   );
@@ -379,6 +375,14 @@ const ModelViewer = ({
   onModelLoaded
 }) => {
   useEffect(() => void useGLTF.preload(url), [url]);
+  
+  // FIX: Force remount to solve the "small size on first load" bug
+  const [mountKey, setMountKey] = useState(0);
+  useEffect(() => {
+    const timer = setTimeout(() => setMountKey(prev => prev + 1), 150);
+    return () => clearTimeout(timer);
+  }, []);
+
   const pivot = useRef(new THREE.Vector3()).current;
   const contactRef = useRef(null);
   const rendererRef = useRef(null);
@@ -446,6 +450,7 @@ const ModelViewer = ({
       )}
 
       <Canvas
+        key={mountKey}
         shadows
         frameloop="demand"
         gl={{ preserveDrawingBuffer: true }}

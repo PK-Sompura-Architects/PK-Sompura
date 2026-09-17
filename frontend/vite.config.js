@@ -12,5 +12,15 @@ export default defineConfig({
       '/upload': 'http://127.0.0.1:8000', // API
       '/team': 'http://127.0.0.1:8000',
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
   }
 })

@@ -1,4 +1,13 @@
-.dashboard-wrapper {
+/* --- MAIN DASHBOARD CONTAINER --- */
+.dashboard-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg); /* Locked to light theme */
+}
+
+/* --- HERO SECTION --- */
+.dashboard-hero-wrapper {
     position: relative;
     width: 100%;
     min-height: 100vh;
@@ -14,25 +23,24 @@
     z-index: 3;
     text-align: left;
     pointer-events: none; 
-    width: 50%; /* Keeps text on the left half */
+    width: 50%;
     max-width: 800px;
 }
 
 /* FULL SCREEN: 3D Model */
 .dashboard-model-container {
-    position: absolute; /* Breaks free from the left/right layout */
-    inset: 0;           /* Stretches to all 4 corners of the screen */
+    position: absolute; 
+    inset: 0;           
     width: 100vw;
     height: 100vh;
     z-index: 2;
-    /* We removed the mask completely. The 3D scene will fill the whole screen! */
 }
 
 .sompura-title {
     font-family: 'Cinzel Decorative', var(--font-heading);
-    color: #D6EFFF;
-    -webkit-text-stroke: 1.5px var(--color-gold);
-    text-shadow: 4px 4px 12px rgba(15, 28, 46, 0.3);
+    color: var(--color-gold);
+    -webkit-text-stroke: 1px rgba(184, 150, 90, 0.3);
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Softened shadow for light bg */
     font-size: clamp(40px, 6vw, 90px);
     font-weight: 700;
     text-transform: uppercase;
@@ -43,7 +51,7 @@
 
 .sompura-subtitle {
     font-family: var(--font-heading);
-    color: var(--color-gold);
+    color: var(--color-text); /* Uses deep slate on light bg */
     font-size: clamp(14px, 1.5vw, 22px);
     text-transform: uppercase;
     letter-spacing: 6px;
@@ -51,8 +59,105 @@
     margin-top: 15px;
 }
 
+/* --- ABOUT / LINEAGE SECTION --- */
+.dashboard-about-wrapper {
+    min-height: 100vh;
+    padding: 10vh var(--content-padding) 15vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    background: transparent;
+}
+
+.sompura-section-title {
+    font-family: 'Cinzel Decorative', var(--font-heading);
+    color: var(--color-gold);
+    font-size: clamp(36px, 5vw, 60px);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.sompura-section-subtitle {
+    font-family: var(--font-heading);
+    color: var(--color-text-muted);
+    font-size: clamp(14px, 1.5vw, 20px);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.legacy-loading {
+    color: var(--color-gold);
+    font-family: var(--font-heading);
+    letter-spacing: 2px;
+    margin-top: 40px;
+}
+
+/* --- ANIMATED SCROLL INDICATOR --- */
+.dashboard-scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.scroll-text {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color 0.3s;
+}
+
+.dashboard-scroll-indicator:hover .scroll-text {
+    color: var(--color-gold);
+}
+
+.scroll-chevron-wrapper {
+    position: relative;
+    width: 24px;
+    height: 24px;
+}
+
+.scroll-chevron {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-left: 2px solid var(--color-gold);
+    border-bottom: 2px solid var(--color-gold);
+    transform: rotate(-45deg);
+    left: 50%;
+    margin-left: -7px;
+    animation: chevronMove 2s infinite ease-in-out;
+    opacity: 0;
+}
+
+.scroll-chevron:nth-child(2) {
+    animation-delay: 1s;
+}
+
+@keyframes chevronMove {
+    0% { top: 0; opacity: 0; }
+    50% { opacity: 1; }
+    100% { top: 12px; opacity: 0; }
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
-    .dashboard-wrapper {
+    .dashboard-hero-wrapper {
         flex-direction: column;
         justify-content: flex-start;
         padding-top: 15vh;
@@ -69,7 +174,6 @@
     }
     
     .dashboard-model-container {
-        /* Pushes the temple image down so it sits below the text on phones */
         top: 25%; 
     }
 }

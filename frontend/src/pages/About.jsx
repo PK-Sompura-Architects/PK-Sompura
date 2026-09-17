@@ -10,8 +10,8 @@ function About() {
     useEffect(() => {
         const fetchLineage = async () => {
             try {
-                // Fetch live data from your FastAPI backend
-                const response = await fetch("http://localhost:8000/lineage");
+                const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+                const response = await fetch(`${API_URL}/lineage`);
                 const data = await response.json();
                 setLineage(data);
             } catch (error) {

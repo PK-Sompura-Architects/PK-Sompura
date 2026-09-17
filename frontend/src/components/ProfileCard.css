@@ -16,12 +16,12 @@
   --behind-glow-size: 35%;
   --inner-gradient: none;
   
-  /* Sompura Sky Marble Holographic Colors */
+  /* Sompura Dark Gold Holographic Colors */
   --sunpillar-1: #0F1C2E; 
   --sunpillar-2: #1E3A5F;
-  --sunpillar-3: #C2E8FF;
-  --sunpillar-4: #D6EFFF;
-  --sunpillar-5: #A8D8F0;
+  --sunpillar-3: #B8965A;
+  --sunpillar-4: #CDAC72;
+  --sunpillar-5: #8B7340;
   --sunpillar-6: #0F1C2E;
   --sunpillar-clr-1: var(--sunpillar-1);
   --sunpillar-clr-2: var(--sunpillar-2);

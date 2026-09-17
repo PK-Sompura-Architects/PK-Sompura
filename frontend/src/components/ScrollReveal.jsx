@@ -1,111 +1,66 @@
-import { useEffect, useRef, useMemo } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import './ScrollReveal.css';
+import { useEffect, useRef, useState } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
+/**
+ * ScrollReveal — animates children into view as they enter the viewport.
+ * Props:
+ *   baseOpacity   {number} 0–1  Starting opacity (default 0)
+ *   blurStrength  {number}      Starting blur in px (default 0)
+ *   baseRotation  {number}      Starting rotation in deg (default 0)
+ *   translateY    {number}      Starting Y offset in px (default 24)
+ *   duration      {number}      Transition duration in ms (default 700)
+ *   delay         {number}      Transition delay in ms (default 0)
+ *   threshold     {number}      IntersectionObserver threshold (default 0.15)
+ */
+function ScrollReveal({
+    children,
+    baseOpacity = 0,
+    blurStrength = 0,
+    baseRotation = 0,
+    translateY = 24,
+    duration = 700,
+    delay = 0,
+    threshold = 0.15,
+}) {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
 
-const ScrollReveal = ({
-  children,
-  scrollContainerRef,
-  enableBlur = true,
-  baseOpacity = 0.1,
-  baseRotation = 3,
-  blurStrength = 4,
-  containerClassName = '',
-  textClassName = '',
-  rotationEnd = 'bottom bottom',
-  wordAnimationEnd = 'bottom bottom'
-}) => {
-  const containerRef = useRef(null);
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
 
-  const splitText = useMemo(() => {
-    // If children is a standard string, split it
-    if (typeof children === 'string') {
-        return children.split(/(\s+)/).map((word, index) => {
-        if (word.match(/^\s+$/)) return word;
-        return (
-            <span className="word" key={index}>
-            {word}
-            </span>
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold }
         );
-        });
-    }
-    
-    // If children contains HTML elements (like our Dashboard title), wrap it
-    return <span className="word">{children}</span>;
-  }, [children]);
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [threshold]);
 
-    const scroller = scrollContainerRef && scrollContainerRef.current ? scrollContainerRef.current : window;
-
-    gsap.fromTo(
-      el,
-      { transformOrigin: '0% 50%', rotate: baseRotation },
-      {
-        ease: 'none',
-        rotate: 0,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: 'top bottom',
-          end: rotationEnd,
-          scrub: true
-        }
-      }
-    );
-
-    const wordElements = el.querySelectorAll('.word');
-
-    gsap.fromTo(
-      wordElements,
-      { opacity: baseOpacity, willChange: 'opacity' },
-      {
-        ease: 'none',
-        opacity: 1,
-        stagger: 0.05,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: 'top bottom-=20%',
-          end: wordAnimationEnd,
-          scrub: true
-        }
-      }
-    );
-
-    if (enableBlur) {
-      gsap.fromTo(
-        wordElements,
-        { filter: `blur(${blurStrength}px)` },
-        {
-          ease: 'none',
-          filter: 'blur(0px)',
-          stagger: 0.05,
-          scrollTrigger: {
-            trigger: el,
-            scroller,
-            start: 'top bottom-=20%',
-            end: wordAnimationEnd,
-            scrub: true
-          }
-        }
-      );
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    const hiddenStyle = {
+        opacity: baseOpacity,
+        filter: blurStrength ? `blur(${blurStrength}px)` : "none",
+        transform: `translateY(${translateY}px) rotate(${baseRotation}deg)`,
+        transition: `opacity ${duration}ms ease ${delay}ms, filter ${duration}ms ease ${delay}ms, transform ${duration}ms ease ${delay}ms`,
     };
-  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
 
-  return (
-    <div ref={containerRef} className={`scroll-reveal ${containerClassName}`}>
-      <div className={`scroll-reveal-text ${textClassName}`}>{splitText}</div>
-    </div>
-  );
-};
+    const visibleStyle = {
+        opacity: 1,
+        filter: "none",
+        transform: "translateY(0px) rotate(0deg)",
+        transition: `opacity ${duration}ms ease ${delay}ms, filter ${duration}ms ease ${delay}ms, transform ${duration}ms ease ${delay}ms`,
+    };
+
+    return (
+        <div ref={ref} style={visible ? visibleStyle : hiddenStyle}>
+            {children}
+        </div>
+    );
+}
 
 export default ScrollReveal;

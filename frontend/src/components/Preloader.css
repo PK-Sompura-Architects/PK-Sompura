@@ -1,63 +1,22 @@
-/* ============================================
-   PRELOADER (Airy / Minimalist Vibe)
-   Now uses the bright website background color
-   ============================================ */
-
 .preloader-container {
     position: fixed;
     inset: 0;
-    /* Uses the bright variable instead of black */
     background: var(--color-bg); 
     z-index: 99999;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
 }
 
-/* --- THE DEITIES (Text Blessings) --- */
-.preloader-deities {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 45%; /* Moved slightly up to make room for logo later */
-    transform: translateY(-50%);
-}
-
-.deity-text {
-    position: absolute;
-    font-family: var(--font-heading);
-    color: var(--color-gold); /* Deep navy accent */
-    font-size: clamp(24px, 4vw, 42px);
-    font-weight: 400;
-    letter-spacing: 4px;
-    opacity: 0;
-    text-align: center;
-    white-space: nowrap; /* Prevents text from wrapping */
-}
-
-/* --- THE LOGO --- */
 .preloader-logo-wrapper {
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0;
 }
 
 .preloader-logo {
     width: 320px;
     max-width: 85vw;
-    /* Uses luminosity blend to absorb the soft blue background veins */
-    mix-blend-mode: luminosity; 
-    opacity: 0.8;
-}
-
-/* --- REMOVED LOADING BAR (Keeping these classes for JS safety, but hiding them) --- */
-.preloader-progress-bar,
-.preloader-progress-fill {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
+    mix-blend-mode: normal;
 }

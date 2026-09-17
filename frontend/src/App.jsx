@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import About from "./pages/About";
 import Inquiry from "./pages/Inquiry";
+import AdminPage from "./pages/AdminPage";
 
 import "./global.css";
 
@@ -34,15 +35,15 @@ function SmoothScroll() {
 }
 
 function AppContent() {
-    const hasSeenIntro = false;
-    
-    const [isAppReady, setIsAppReady] = useState(!!hasSeenIntro);
-    const [showPreloader, setShowPreloader] = useState(!hasSeenIntro);
+    // Always show preloader once per page-load (clear on mount so it always fires)
+    const [showPreloader, setShowPreloader] = useState(true);
+    const [isAppReady, setIsAppReady] = useState(false);
     const mainRef = useRef(null);
     const dockRef = useRef(null);
 
     const handlePreloaderComplete = () => {
         setIsAppReady(true);
+        sessionStorage.setItem("introPlayed", "true");
 
         // Fade out the preloader smoothly
         setTimeout(() => {
@@ -59,20 +60,20 @@ function AppContent() {
     return (
         <>
             <SmoothScroll />
-            
+
             {showPreloader && (
                 <Preloader onComplete={handlePreloaderComplete} />
             )}
 
             {isAppReady && <Dock ref={dockRef} />}
 
-            <main 
+            <main
                 className="app-container"
                 ref={mainRef}
                 style={{
                     minHeight: '100vh',
                     position: 'relative',
-                    opacity: hasSeenIntro ? 1 : 0 
+                    opacity: 0  // GSAP animates this to 1 after preloader completes
                 }}
             >
                 {isAppReady && (
@@ -81,6 +82,7 @@ function AppContent() {
                         <Route path="/projects" element={<Projects />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/inquiry" element={<Inquiry />} />
+                        <Route path="/admin" element={<AdminPage />} />
                     </Routes>
                 )}
             </main>

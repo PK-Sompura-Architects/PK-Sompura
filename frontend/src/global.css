@@ -1,8 +1,37 @@
 /* ============================================
    PK SOMPURA — GLOBAL DESIGN SYSTEM
    Cinematic temple architecture theme
-   Luxury Sky Marble Palette
+   Light Premium Architectural Palette
    ============================================ */
+
+/* --- CSS TOKENS --- */
+:root {
+    /* Colors - The Light Premium Architectural Palette */
+    --color-bg: #EAF2F8;                  /* Soft, airy light blue/white architectural background */
+    --color-bg-elevated: #FFFFFF;         /* Pure white for elevated surfaces/cards */
+    --color-surface: #F8FAFC;             /* Very light surface for subtle contrast */
+    
+    /* The Accent (Premium Muted Architectural Gold) */
+    --color-gold: #B8965A;                /* Muted architectural gold */
+    --color-gold-light: #CDAC72;
+    --color-gold-dim: rgba(184, 150, 90, 0.15);
+    
+    /* Text (Dark for readability on light backgrounds) */
+    --color-text: #0F1C2E;                /* Deep slate/navy for primary text */
+    --color-text-muted: #4A5568;          /* Muted slate grey for paragraphs */
+    --color-text-dim: rgba(15, 28, 46, 0.4);
+
+    /* Typography Tokens */
+    --font-heading: '"Playfair Display"', 'Noto Serif Gujarati', 'Noto Serif Devanagari', serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+
+    /* Spacing & Transitions */
+    --section-padding: clamp(60px, 10vh, 120px);
+    --content-max-width: 1200px;
+    --content-padding: clamp(20px, 4vw, 60px);
+    --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-dramatic: cubic-bezier(0.76, 0, 0.24, 1);
+}
 
 /* --- RESET --- */
 *,
@@ -14,26 +43,29 @@
 }
 
 html {
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-bg) !important;
 }
 
-body {
+body, #root {
     margin: 0;
     padding: 0;
-    background-color: var(--color-bg);
-    color: var(--color-text);
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
     font-family: var(--font-body);
     overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     
-    /* Microscopic stone grain texture */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    /* Microscopic stone grain texture (inverted for light theme) */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
-/* Animated ambient orbs */
+/* Animated ambient orbs (Light theme variations) */
 body::before,
 body::after {
     content: '';
@@ -44,20 +76,20 @@ body::after {
     z-index: -1;
     pointer-events: none;
     filter: blur(120px);
-    opacity: 0.35;
+    opacity: 0.5;
     animation: slowDrift 20s infinite alternate ease-in-out;
 }
 
 body::before {
     top: -10%;
     left: -10%;
-    background: radial-gradient(circle, rgba(194, 232, 255, 0.4) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
 }
 
 body::after {
     bottom: -10%;
     right: -10%;
-    background: radial-gradient(circle, rgba(194, 155, 87, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(184, 150, 90, 0.08) 0%, transparent 70%);
     animation-delay: -10s;
 }
 
@@ -66,55 +98,18 @@ body::after {
     100% { transform: translate(5%, 10%) scale(1.1); }
 }
 
-/* --- CSS TOKENS --- */
-:root {
-    /* Colors - The Luxury Sky Marble Palette */
-    --color-bg: #C2E8FF;                  /* Custom light blue — the mandatory base */
-    --color-bg-elevated: #D6EFFF;         /* Softer blue for gentle depth / elevated surfaces */
-    --color-surface: #FFFFFF;             /* Pure white for floating cards/forms */
-    
-    /* The Accent (Premium Muted Architectural Gold) */
-    --color-gold: #B8965A;                /* Muted architectural gold — less brassy, more luxury */
-    --color-gold-light: #CDAC72;
-    --color-gold-dim: rgba(184, 150, 90, 0.2);
-    
-    /* Text (Deep Slate Blue) */
-    --color-text: #0F1C2E;                /* Deep ink-slate for headings — maximum authority */
-    --color-text-muted: #3A506B;          /* Steel blue for body text */
-    --color-text-dim: rgba(15, 28, 46, 0.35);
-
-    /* Typography Tokens */
-    --font-heading: 'Playfair Display', 'Noto Serif Gujarati', 'Noto Serif Devanagari', serif;
-    --font-body: 'Inter', sans-serif;
-
-    /* Spacing & Transitions */
-    --section-padding: clamp(60px, 10vh, 120px);
-    --content-max-width: 1200px;
-    --content-padding: clamp(20px, 4vw, 60px);
-    --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
-    --ease-dramatic: cubic-bezier(0.76, 0, 0.24, 1);
-}
-
 /* --- TYPOGRAPHY --- */
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading) !important;
     font-weight: 400;
     letter-spacing: -0.01em;
-    color: var(--color-text);
+    color: var(--color-gold) !important; /* Forces headers to stay gold */
     line-height: 1.1;
 }
 
-h1 {
-    font-size: clamp(36px, 5vw, 56px);
-}
-
-h2 {
-    font-size: clamp(28px, 4vw, 40px);
-}
-
-h3 {
-    font-size: clamp(22px, 3vw, 28px);
-}
+h1 { font-size: clamp(36px, 5vw, 56px); }
+h2 { font-size: clamp(28px, 4vw, 40px); }
+h3 { font-size: clamp(22px, 3vw, 28px); }
 
 p {
     font-size: 18px;
@@ -177,7 +172,7 @@ a:hover {
 
 /* --- SCROLLBAR --- */
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -185,19 +180,18 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--color-gold-dim);
-    border-radius: 2px;
+    background: var(--color-gold);
+    border-radius: 4px;
 }
 
 /* --- SELECTION --- */
 ::selection {
-    background: rgba(194, 232, 255, 0.5);
+    background: var(--color-gold-dim);
     color: var(--color-text);
 }
 
 /* --- PREFERS-REDUCED-MOTION --- */
 @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {

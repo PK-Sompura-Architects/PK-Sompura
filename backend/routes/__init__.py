@@ -1,1 +1,1 @@
-from . import temples, contact, upload
+from . import temples, lineage, galleries

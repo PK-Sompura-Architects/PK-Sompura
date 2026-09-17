@@ -3,7 +3,7 @@
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'motion/react';
 import { Children, cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Grid, Users, Mail } from 'lucide-react'; // Elegant icons
+import { Grid, Mail } from 'lucide-react'; // Elegant icons
 import './Dock.css';
 
 // --- Internal Helper Components ---
@@ -73,16 +73,14 @@ function DockIcon({ children, className = '' }) {
 export default function Dock() {
   const navigate = useNavigate();
 
-  // The Navigation Schema
+  // The Navigation Schema (Lineage Completely Removed)
   const items = [
     { 
-      // Using your transparent logo as the "Home" button
       icon: <img src="/LOGO_2.png" alt="Sompura Logo" />, 
       label: 'Dashboard', 
       onClick: () => navigate('/') 
     },
     { icon: <Grid size={22} strokeWidth={1.5} />, label: 'Projects', onClick: () => navigate('/projects') },
-    { icon: <Users size={22} strokeWidth={1.5} />, label: 'Lineage', onClick: () => navigate('/about') },
     { icon: <Mail size={22} strokeWidth={1.5} />, label: 'Inquiry', onClick: () => navigate('/inquiry') },
   ];
 

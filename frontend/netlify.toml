@@ -1,0 +1,29 @@
+# Netlify deployment configuration for PK Sompura Frontend
+
+[build]
+  # Directory containing the built files
+  publish = "dist"
+  # Build command
+  command = "npm run build"
+
+# Client-side routing — redirect all paths to index.html with 200 status
+# This ensures React Router works correctly on page refresh/direct URL access
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache static assets aggressively
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
