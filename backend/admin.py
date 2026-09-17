@@ -1,4 +1,5 @@
 import os
+import secrets
 import time
 from pathlib import Path
 from dotenv import load_dotenv
@@ -27,14 +28,38 @@ else:
 
 
 # --- AUTHENTICATION BACKEND ---
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+
+# Falling back to a default password would put a known credential on a panel
+# with full write access to every model, so an unset password disables login.
+if not ADMIN_PASSWORD:
+    print(
+        "WARNING: ADMIN_PASSWORD is not set. The /admin panel will reject "
+        "every login until it is configured in backend/.env."
+    )
+
+# Sessions are signed with this. A committed constant lets anyone forge an
+# admin cookie, so it comes from the environment; the random fallback keeps
+# the app bootable while simply invalidating sessions on restart.
+SESSION_SECRET = os.getenv("SESSION_SECRET") or secrets.token_urlsafe(32)
+
+
 class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         form = await request.form()
-        username = form.get("username")
-        password = form.get("password")
-        
-        if username == "admin" and password == "admin123":
-            request.session.update({"token": "admin_token"})
+        username = form.get("username") or ""
+        password = form.get("password") or ""
+
+        if not ADMIN_PASSWORD:
+            return False
+
+        # compare_digest avoids leaking the credentials through timing.
+        valid = secrets.compare_digest(username, ADMIN_USERNAME) and \
+            secrets.compare_digest(password, ADMIN_PASSWORD)
+
+        if valid:
+            request.session.update({"token": secrets.token_urlsafe(32)})
             return True
         return False
 
@@ -45,7 +70,8 @@ class AdminAuth(AuthenticationBackend):
     async def authenticate(self, request: Request) -> bool:
         return "token" in request.session
 
-authentication_backend = AdminAuth(secret_key="pk_sompura_secure_secret_key")
+
+authentication_backend = AdminAuth(secret_key=SESSION_SECRET)
 
 
 # --- CLOUD UPLOAD HELPER ---
