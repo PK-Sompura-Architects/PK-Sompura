@@ -13,8 +13,10 @@ from backend.admin import (
     SESSION_SECRET,
     LineageMemberAdmin,
     TempleProjectAdmin,
+    TempleImageAdmin,
     DashboardGalleryAdmin,
-    GalleryImageAdmin
+    GalleryImageAdmin,
+    ContactSubmissionAdmin,
 )
 
 Base.metadata.create_all(bind=engine)
