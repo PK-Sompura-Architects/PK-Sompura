@@ -12,6 +12,7 @@ from markupsafe import Markup
 from supabase import create_client, Client
 
 from backend.models import LineageMember, TempleProject, DashboardGallery, GalleryImage
+from backend.security import verify_password
 
 # --- SUPABASE CONFIGURATION ---
 env_path = Path(__file__).resolve().parent / ".env"
@@ -29,15 +30,35 @@ else:
 
 # --- AUTHENTICATION BACKEND ---
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 
 # Falling back to a default password would put a known credential on a panel
-# with full write access to every model, so an unset password disables login.
-if not ADMIN_PASSWORD:
+# with full write access to every model, so an unset hash disables login.
+if not ADMIN_PASSWORD_HASH:
     print(
-        "WARNING: ADMIN_PASSWORD is not set. The /admin panel will reject "
-        "every login until it is configured in backend/.env."
+        "WARNING: ADMIN_PASSWORD_HASH is not set. The /admin panel will reject "
+        "every login. Generate one with: python -m backend.security"
     )
+
+# Throttle repeated failures per client so the panel cannot be brute forced.
+MAX_ATTEMPTS = 5
+LOCKOUT_SECONDS = 300
+_failures: dict[str, list[float]] = {}
+
+
+def _client_key(request: Request) -> str:
+    return request.client.host if request.client else "unknown"
+
+
+def _is_locked(key: str) -> bool:
+    now = time.time()
+    recent = [t for t in _failures.get(key, []) if now - t < LOCKOUT_SECONDS]
+    _failures[key] = recent
+    return len(recent) >= MAX_ATTEMPTS
+
+
+def _record_failure(key: str) -> None:
+    _failures.setdefault(key, []).append(time.time())
 
 # Sessions are signed with this. A committed constant lets anyone forge an
 # admin cookie, so it comes from the environment; the random fallback keeps
@@ -51,16 +72,21 @@ class AdminAuth(AuthenticationBackend):
         username = form.get("username") or ""
         password = form.get("password") or ""
 
-        if not ADMIN_PASSWORD:
+        key = _client_key(request)
+        if not ADMIN_PASSWORD_HASH or _is_locked(key):
             return False
 
-        # compare_digest avoids leaking the credentials through timing.
-        valid = secrets.compare_digest(username, ADMIN_USERNAME) and \
-            secrets.compare_digest(password, ADMIN_PASSWORD)
+        # Both checks always run, so a wrong username and a wrong password
+        # cost the same time and cannot be told apart.
+        user_ok = secrets.compare_digest(username, ADMIN_USERNAME)
+        pass_ok = verify_password(password, ADMIN_PASSWORD_HASH)
 
-        if valid:
+        if user_ok and pass_ok:
+            _failures.pop(key, None)
             request.session.update({"token": secrets.token_urlsafe(32)})
             return True
+
+        _record_failure(key)
         return False
 
     async def logout(self, request: Request) -> bool:
