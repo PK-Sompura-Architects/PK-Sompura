@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+      - run: npm run lint --if-present
+      - run: npm run build
+
+      - name: Guard against secrets in the bundle
+        run: |
+          # Vite inlines every VITE_* value at build time, so anything secret
+          # in one is published. Fail the build rather than ship it.
+          if grep -rlE "(SUPABASE_SERVICE|SERVICE_ROLE|BOT_TOKEN|ADMIN_PASSWORD)" dist/ 2>/dev/null; then
+            echo "::error::A secret-looking value was found in the built bundle."
+            exit 1
+          fi
+          echo "No secret-looking values in dist/."
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet -r backend/requirements.txt
+
+      - name: Import the app
+        env:
+          # Import-time only: the app must construct without real credentials.
+          DATABASE_URL: sqlite:///./ci-check.db
+          ADMIN_PASSWORD_HASH: ""
+          SESSION_SECRET: ci-placeholder
+        run: python -c "import backend.main; print('backend imports OK')"
+
+      - name: Check the password hashing round-trips
+        run: |
+          python -c "
+          from backend.security import hash_password, verify_password
+          h = hash_password('correct horse')
+          assert verify_password('correct horse', h), 'valid password rejected'
+          assert not verify_password('wrong', h), 'invalid password accepted'
+          print('security.py OK')
+          "

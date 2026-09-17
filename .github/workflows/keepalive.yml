@@ -1,0 +1,41 @@
+name: Keep Supabase awake
+
+# Supabase pauses free-tier projects after ~7 days without activity, which
+# takes the live site down until someone restores it by hand. A real query
+# every few days is what actually counts as activity — merely reaching the
+# REST endpoint is not reliable.
+on:
+  schedule:
+    - cron: "17 3 */3 * *"   # every 3rd day, 03:17 UTC
+  workflow_dispatch:          # and on demand from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet "psycopg[binary]"
+
+      - name: Query the database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python - <<'PY'
+          import os, sys, psycopg
+
+          url = os.environ.get("DATABASE_URL")
+          if not url:
+              sys.exit("DATABASE_URL secret is not set on this repository.")
+
+          # psycopg3 wants a plain postgresql:// DSN.
+          url = url.replace("postgresql+psycopg2://", "postgresql://")
+
+          with psycopg.connect(url, connect_timeout=20) as conn:
+              with conn.cursor() as cur:
+                  cur.execute("SELECT count(*) FROM temples;")
+                  print("temples rows:", cur.fetchone()[0])
+          print("Supabase reached; inactivity timer reset.")
+          PY

@@ -1,0 +1,56 @@
+# Render blueprint — https://render.com/docs/blueprint-spec
+#
+# Connect this repository at dashboard.render.com > New > Blueprint.
+# Render then redeploys automatically on every push to main.
+#
+# Secrets are NOT in this file. Set them in the Render dashboard under
+# Environment; each one marked `sync: false` below must be filled in there.
+
+services:
+  - type: web
+    name: pk-sompura-api
+    runtime: python
+    plan: free
+    region: singapore          # closest Render region to the Supabase ap-south-1 database
+    branch: main
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+
+      # Supabase Postgres session-pooler URI. Must start postgresql:// and
+      # have any special characters in the password percent-encoded.
+      - key: DATABASE_URL
+        sync: false
+
+      # Generate with: python -m backend.security
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+
+      # python -c "import secrets; print(secrets.token_urlsafe(32))"
+      # Must be set here, not left to the random per-process fallback, or
+      # admin sessions break on every restart and across instances.
+      - key: SESSION_SECRET
+        sync: false
+      - key: SESSION_HTTPS_ONLY
+        value: "true"
+
+      # Comma-separated front-end origins. Never "*" with credentials.
+      - key: ALLOWED_ORIGINS
+        sync: false
+
+      # Server-side image uploads from the admin panel.
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+
+      # Inquiry relay. Server-side only — never a VITE_ variable.
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
