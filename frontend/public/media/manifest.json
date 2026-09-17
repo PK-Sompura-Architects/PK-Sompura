@@ -1,0 +1,1014 @@
+{
+ "adpur-dheti-pag": {
+  "folder": "ADPUR DHETI PAG",
+  "cover": "/media/adpur-dheti-pag/01.webp",
+  "cover_thumb": "/media/adpur-dheti-pag/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/adpur-dheti-pag/01.webp",
+    "thumb": "/media/adpur-dheti-pag/01-thumb.webp",
+    "landscape": true,
+    "source": "99IPJD.JPG"
+   },
+   {
+    "full": "/media/adpur-dheti-pag/02.webp",
+    "thumb": "/media/adpur-dheti-pag/02-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5700.JPG"
+   },
+   {
+    "full": "/media/adpur-dheti-pag/03.webp",
+    "thumb": "/media/adpur-dheti-pag/03-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5703.JPG"
+   }
+  ]
+ },
+ "asha-life-mission": {
+  "folder": "Asha life mission",
+  "cover": "/media/asha-life-mission/02.webp",
+  "cover_thumb": "/media/asha-life-mission/02-thumb.webp",
+  "images": [
+   {
+    "full": "/media/asha-life-mission/01.webp",
+    "thumb": "/media/asha-life-mission/01-thumb.webp",
+    "landscape": false,
+    "source": "20191011_104946.jpg"
+   },
+   {
+    "full": "/media/asha-life-mission/02.webp",
+    "thumb": "/media/asha-life-mission/02-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20230224-WA0015.jpg"
+   },
+   {
+    "full": "/media/asha-life-mission/03.webp",
+    "thumb": "/media/asha-life-mission/03-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20230226-WA0003.jpg"
+   },
+   {
+    "full": "/media/asha-life-mission/04.webp",
+    "thumb": "/media/asha-life-mission/04-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20230509-WA0000.jpg"
+   },
+   {
+    "full": "/media/asha-life-mission/05.webp",
+    "thumb": "/media/asha-life-mission/05-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20230509-WA0001.jpg"
+   },
+   {
+    "full": "/media/asha-life-mission/06.webp",
+    "thumb": "/media/asha-life-mission/06-thumb.webp",
+    "landscape": false,
+    "source": "IMG_20230222_183739.jpg"
+   },
+   {
+    "full": "/media/asha-life-mission/07.webp",
+    "thumb": "/media/asha-life-mission/07-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20230223_103636.jpg"
+   }
+  ]
+ },
+ "bhamriya": {
+  "folder": "BHAMRIYA",
+  "cover": "/media/bhamriya/02.webp",
+  "cover_thumb": "/media/bhamriya/02-thumb.webp",
+  "images": [
+   {
+    "full": "/media/bhamriya/01.webp",
+    "thumb": "/media/bhamriya/01-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230321-WA0002.jpg"
+   },
+   {
+    "full": "/media/bhamriya/02.webp",
+    "thumb": "/media/bhamriya/02-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20230421-WA0008.jpg"
+   },
+   {
+    "full": "/media/bhamriya/03.webp",
+    "thumb": "/media/bhamriya/03-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230424-WA0002.jpg"
+   },
+   {
+    "full": "/media/bhamriya/04.webp",
+    "thumb": "/media/bhamriya/04-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230424-WA0004.jpg"
+   },
+   {
+    "full": "/media/bhamriya/05.webp",
+    "thumb": "/media/bhamriya/05-thumb.webp",
+    "landscape": false,
+    "source": "IMG_20230430_142139.jpg"
+   }
+  ]
+ },
+ "cnc-works": {
+  "folder": "CNC Works",
+  "cover": "/media/cnc-works/01.webp",
+  "cover_thumb": "/media/cnc-works/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/cnc-works/01.webp",
+    "thumb": "/media/cnc-works/01-thumb.webp",
+    "landscape": true,
+    "source": "DSCN4131.JPG"
+   },
+   {
+    "full": "/media/cnc-works/02.webp",
+    "thumb": "/media/cnc-works/02-thumb.webp",
+    "landscape": true,
+    "source": "DSCN4135.JPG"
+   },
+   {
+    "full": "/media/cnc-works/03.webp",
+    "thumb": "/media/cnc-works/03-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20170727-WA0000.jpg"
+   },
+   {
+    "full": "/media/cnc-works/04.webp",
+    "thumb": "/media/cnc-works/04-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20220807-WA0014.jpg"
+   },
+   {
+    "full": "/media/cnc-works/05.webp",
+    "thumb": "/media/cnc-works/05-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20190618_172427.jpg"
+   },
+   {
+    "full": "/media/cnc-works/06.webp",
+    "thumb": "/media/cnc-works/06-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20210217_140318.jpg"
+   },
+   {
+    "full": "/media/cnc-works/07.webp",
+    "thumb": "/media/cnc-works/07-thumb.webp",
+    "landscape": false,
+    "source": "IMG_20221002_102410.jpg"
+   }
+  ]
+ },
+ "devilaya": {
+  "folder": "DEVILAYA",
+  "cover": "/media/devilaya/02.webp",
+  "cover_thumb": "/media/devilaya/02-thumb.webp",
+  "images": [
+   {
+    "full": "/media/devilaya/01.webp",
+    "thumb": "/media/devilaya/01-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20190221-WA0002.jpg"
+   },
+   {
+    "full": "/media/devilaya/02.webp",
+    "thumb": "/media/devilaya/02-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20190612_105512.jpg"
+   },
+   {
+    "full": "/media/devilaya/03.webp",
+    "thumb": "/media/devilaya/03-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20190612_105515.jpg"
+   },
+   {
+    "full": "/media/devilaya/04.webp",
+    "thumb": "/media/devilaya/04-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20190612_114304.jpg"
+   },
+   {
+    "full": "/media/devilaya/05.webp",
+    "thumb": "/media/devilaya/05-thumb.webp",
+    "landscape": false,
+    "source": "IMG_20190612_115357.jpg"
+   }
+  ]
+ },
+ "dhola": {
+  "folder": "Dhola",
+  "cover": "/media/dhola/05.webp",
+  "cover_thumb": "/media/dhola/05-thumb.webp",
+  "images": [
+   {
+    "full": "/media/dhola/01.webp",
+    "thumb": "/media/dhola/01-thumb.webp",
+    "landscape": false,
+    "source": "20140802_171539.jpg"
+   },
+   {
+    "full": "/media/dhola/02.webp",
+    "thumb": "/media/dhola/02-thumb.webp",
+    "landscape": false,
+    "source": "20161020_164919.jpg"
+   },
+   {
+    "full": "/media/dhola/03.webp",
+    "thumb": "/media/dhola/03-thumb.webp",
+    "landscape": false,
+    "source": "20161020_171137.jpg"
+   },
+   {
+    "full": "/media/dhola/04.webp",
+    "thumb": "/media/dhola/04-thumb.webp",
+    "landscape": false,
+    "source": "20161110_130153.jpg"
+   },
+   {
+    "full": "/media/dhola/05.webp",
+    "thumb": "/media/dhola/05-thumb.webp",
+    "landscape": true,
+    "source": "20161110_131051.jpg"
+   },
+   {
+    "full": "/media/dhola/06.webp",
+    "thumb": "/media/dhola/06-thumb.webp",
+    "landscape": true,
+    "source": "20170211_131907.jpg"
+   }
+  ]
+ },
+ "digamabar-jain-derasar-baroda": {
+  "folder": "DIGAMABAR JAIN DERASAR BARODA",
+  "cover": "/media/digamabar-jain-derasar-baroda/02.webp",
+  "cover_thumb": "/media/digamabar-jain-derasar-baroda/02-thumb.webp",
+  "images": [
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/01.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/01-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0290.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/02.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/02-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0291.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/03.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/03-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0299.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/04.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/04-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0306.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/05.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/05-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0307.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/06.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/06-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0311.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/07.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/07-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0312.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/08.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/08-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0315.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/09.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/09-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0324.jpg"
+   },
+   {
+    "full": "/media/digamabar-jain-derasar-baroda/10.webp",
+    "thumb": "/media/digamabar-jain-derasar-baroda/10-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0339.jpg"
+   }
+  ]
+ },
+ "gelmata-rajkot": {
+  "folder": "Gelmata Rajkot",
+  "cover": "/media/gelmata-rajkot/01.webp",
+  "cover_thumb": "/media/gelmata-rajkot/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/gelmata-rajkot/01.webp",
+    "thumb": "/media/gelmata-rajkot/01-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20170818-WA0013.jpg"
+   },
+   {
+    "full": "/media/gelmata-rajkot/02.webp",
+    "thumb": "/media/gelmata-rajkot/02-thumb.webp",
+    "landscape": true,
+    "source": "WhatsApp Image .jpeg"
+   },
+   {
+    "full": "/media/gelmata-rajkot/03.webp",
+    "thumb": "/media/gelmata-rajkot/03-thumb.webp",
+    "landscape": true,
+    "source": "WhatsApp Image 2026-04-16 at 6.33.51 PM.jpeg"
+   },
+   {
+    "full": "/media/gelmata-rajkot/04.webp",
+    "thumb": "/media/gelmata-rajkot/04-thumb.webp",
+    "landscape": false,
+    "source": "WhatsApp Image 2026-04-16 at 6.33.52 PM.jpeg"
+   },
+   {
+    "full": "/media/gelmata-rajkot/05.webp",
+    "thumb": "/media/gelmata-rajkot/05-thumb.webp",
+    "landscape": false,
+    "source": "WhatsApp Image 2026-04-16 at 6.33.53 PM (1).jpeg"
+   },
+   {
+    "full": "/media/gelmata-rajkot/06.webp",
+    "thumb": "/media/gelmata-rajkot/06-thumb.webp",
+    "landscape": true,
+    "source": "WhatsApp Image 2026-04-16 at 6.33.53 PM.jpeg"
+   }
+  ]
+ },
+ "gulbarga": {
+  "folder": "Gulbarga",
+  "cover": "/media/gulbarga/01.webp",
+  "cover_thumb": "/media/gulbarga/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/gulbarga/01.webp",
+    "thumb": "/media/gulbarga/01-thumb.webp",
+    "landscape": true,
+    "source": "20140815_112649.jpg"
+   },
+   {
+    "full": "/media/gulbarga/02.webp",
+    "thumb": "/media/gulbarga/02-thumb.webp",
+    "landscape": true,
+    "source": "20140815_112701.jpg"
+   },
+   {
+    "full": "/media/gulbarga/03.webp",
+    "thumb": "/media/gulbarga/03-thumb.webp",
+    "landscape": false,
+    "source": "20140815_112711.jpg"
+   },
+   {
+    "full": "/media/gulbarga/04.webp",
+    "thumb": "/media/gulbarga/04-thumb.webp",
+    "landscape": true,
+    "source": "20140815_112738.jpg"
+   },
+   {
+    "full": "/media/gulbarga/05.webp",
+    "thumb": "/media/gulbarga/05-thumb.webp",
+    "landscape": false,
+    "source": "20140815_112748.jpg"
+   },
+   {
+    "full": "/media/gulbarga/06.webp",
+    "thumb": "/media/gulbarga/06-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20180619-WA0016.jpg"
+   },
+   {
+    "full": "/media/gulbarga/07.webp",
+    "thumb": "/media/gulbarga/07-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20180620_173801.jpg"
+   },
+   {
+    "full": "/media/gulbarga/08.webp",
+    "thumb": "/media/gulbarga/08-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20180620_173811.jpg"
+   },
+   {
+    "full": "/media/gulbarga/09.webp",
+    "thumb": "/media/gulbarga/09-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20180620_175259.jpg"
+   },
+   {
+    "full": "/media/gulbarga/10.webp",
+    "thumb": "/media/gulbarga/10-thumb.webp",
+    "landscape": false,
+    "source": "IMG_20180620_175526_BURST1.jpg"
+   },
+   {
+    "full": "/media/gulbarga/11.webp",
+    "thumb": "/media/gulbarga/11-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20180620_175543.jpg"
+   }
+  ]
+ },
+ "hastgiri": {
+  "folder": "Hastgiri",
+  "cover": "/media/hastgiri/01.webp",
+  "cover_thumb": "/media/hastgiri/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/hastgiri/01.webp",
+    "thumb": "/media/hastgiri/01-thumb.webp",
+    "landscape": true,
+    "source": "44S1.jpg"
+   },
+   {
+    "full": "/media/hastgiri/02.webp",
+    "thumb": "/media/hastgiri/02-thumb.webp",
+    "landscape": true,
+    "source": "44S2.JPG"
+   },
+   {
+    "full": "/media/hastgiri/03.webp",
+    "thumb": "/media/hastgiri/03-thumb.webp",
+    "landscape": true,
+    "source": "DK2.JPG"
+   },
+   {
+    "full": "/media/hastgiri/04.webp",
+    "thumb": "/media/hastgiri/04-thumb.webp",
+    "landscape": false,
+    "source": "DSCF5577.jpg"
+   },
+   {
+    "full": "/media/hastgiri/05.webp",
+    "thumb": "/media/hastgiri/05-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5590.JPG"
+   },
+   {
+    "full": "/media/hastgiri/06.webp",
+    "thumb": "/media/hastgiri/06-thumb.webp",
+    "landscape": true,
+    "source": "GN1.JPG"
+   },
+   {
+    "full": "/media/hastgiri/07.webp",
+    "thumb": "/media/hastgiri/07-thumb.webp",
+    "landscape": true,
+    "source": "GN2.JPG"
+   }
+  ]
+ },
+ "jaliya": {
+  "folder": "JALIYA",
+  "cover": "/media/jaliya/01.webp",
+  "cover_thumb": "/media/jaliya/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/jaliya/01.webp",
+    "thumb": "/media/jaliya/01-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20220311-WA0022.jpg"
+   },
+   {
+    "full": "/media/jaliya/02.webp",
+    "thumb": "/media/jaliya/02-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20220423-WA0020.jpg"
+   },
+   {
+    "full": "/media/jaliya/03.webp",
+    "thumb": "/media/jaliya/03-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20220428-WA0005.jpg"
+   },
+   {
+    "full": "/media/jaliya/04.webp",
+    "thumb": "/media/jaliya/04-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20221208-WA0024.jpg"
+   },
+   {
+    "full": "/media/jaliya/05.webp",
+    "thumb": "/media/jaliya/05-thumb.webp",
+    "landscape": false,
+    "source": "IMG_20220425_165659.jpg"
+   }
+  ]
+ },
+ "jambudip": {
+  "folder": "JAMBUDIP",
+  "cover": "/media/jambudip/01.webp",
+  "cover_thumb": "/media/jambudip/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/jambudip/01.webp",
+    "thumb": "/media/jambudip/01-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5622.JPG"
+   },
+   {
+    "full": "/media/jambudip/02.webp",
+    "thumb": "/media/jambudip/02-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5625.JPG"
+   }
+  ]
+ },
+ "kachchhi-bhavan": {
+  "folder": "Kachchhi bhavan",
+  "cover": "/media/kachchhi-bhavan/01.webp",
+  "cover_thumb": "/media/kachchhi-bhavan/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/kachchhi-bhavan/01.webp",
+    "thumb": "/media/kachchhi-bhavan/01-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5656.JPG"
+   },
+   {
+    "full": "/media/kachchhi-bhavan/02.webp",
+    "thumb": "/media/kachchhi-bhavan/02-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5663.JPG"
+   },
+   {
+    "full": "/media/kachchhi-bhavan/03.webp",
+    "thumb": "/media/kachchhi-bhavan/03-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5664.JPG"
+   },
+   {
+    "full": "/media/kachchhi-bhavan/04.webp",
+    "thumb": "/media/kachchhi-bhavan/04-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5671.JPG"
+   },
+   {
+    "full": "/media/kachchhi-bhavan/05.webp",
+    "thumb": "/media/kachchhi-bhavan/05-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5675.JPG"
+   }
+  ]
+ },
+ "kachhi-bhavan-junaghath": {
+  "folder": "KACHHI BHAVAN JUNAGHATH",
+  "cover": "/media/kachhi-bhavan-junaghath/01.webp",
+  "cover_thumb": "/media/kachhi-bhavan-junaghath/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/kachhi-bhavan-junaghath/01.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/01-thumb.webp",
+    "landscape": true,
+    "source": "20140613_170133.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/02.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/02-thumb.webp",
+    "landscape": true,
+    "source": "20140613_170158.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/03.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/03-thumb.webp",
+    "landscape": true,
+    "source": "20140613_170205.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/04.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/04-thumb.webp",
+    "landscape": true,
+    "source": "20140613_170218.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/05.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/05-thumb.webp",
+    "landscape": false,
+    "source": "20140613_174005.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/06.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/06-thumb.webp",
+    "landscape": false,
+    "source": "20140613_174045.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/07.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/07-thumb.webp",
+    "landscape": false,
+    "source": "20140613_174141.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/08.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/08-thumb.webp",
+    "landscape": false,
+    "source": "20140613_174147.jpg"
+   },
+   {
+    "full": "/media/kachhi-bhavan-junaghath/09.webp",
+    "thumb": "/media/kachhi-bhavan-junaghath/09-thumb.webp",
+    "landscape": true,
+    "source": "20140613_181611.jpg"
+   }
+  ]
+ },
+ "khajuri": {
+  "folder": "KHAJURI",
+  "cover": "/media/khajuri/02.webp",
+  "cover_thumb": "/media/khajuri/02-thumb.webp",
+  "images": [
+   {
+    "full": "/media/khajuri/01.webp",
+    "thumb": "/media/khajuri/01-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20221202-WA0003.jpg"
+   },
+   {
+    "full": "/media/khajuri/02.webp",
+    "thumb": "/media/khajuri/02-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20221202-WA0004.jpg"
+   },
+   {
+    "full": "/media/khajuri/03.webp",
+    "thumb": "/media/khajuri/03-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20221202-WA0005.jpg"
+   },
+   {
+    "full": "/media/khajuri/04.webp",
+    "thumb": "/media/khajuri/04-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20221202-WA0006.jpg"
+   },
+   {
+    "full": "/media/khajuri/05.webp",
+    "thumb": "/media/khajuri/05-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20221202-WA0010.jpg"
+   },
+   {
+    "full": "/media/khajuri/06.webp",
+    "thumb": "/media/khajuri/06-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230428-WA0026.jpg"
+   },
+   {
+    "full": "/media/khajuri/07.webp",
+    "thumb": "/media/khajuri/07-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230502-WA0017.jpg"
+   },
+   {
+    "full": "/media/khajuri/08.webp",
+    "thumb": "/media/khajuri/08-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230502-WA0018.jpg"
+   },
+   {
+    "full": "/media/khajuri/09.webp",
+    "thumb": "/media/khajuri/09-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230502-WA0023.jpg"
+   },
+   {
+    "full": "/media/khajuri/10.webp",
+    "thumb": "/media/khajuri/10-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230502-WA0025.jpg"
+   },
+   {
+    "full": "/media/khajuri/11.webp",
+    "thumb": "/media/khajuri/11-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20230502-WA0027.jpg"
+   }
+  ]
+ },
+ "kotadi": {
+  "folder": "Kotadi",
+  "cover": "/media/kotadi/01.webp",
+  "cover_thumb": "/media/kotadi/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/kotadi/01.webp",
+    "thumb": "/media/kotadi/01-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0605.jpg"
+   },
+   {
+    "full": "/media/kotadi/02.webp",
+    "thumb": "/media/kotadi/02-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0609.jpg"
+   },
+   {
+    "full": "/media/kotadi/03.webp",
+    "thumb": "/media/kotadi/03-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0610.jpg"
+   },
+   {
+    "full": "/media/kotadi/04.webp",
+    "thumb": "/media/kotadi/04-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0616.jpg"
+   },
+   {
+    "full": "/media/kotadi/05.webp",
+    "thumb": "/media/kotadi/05-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0617.jpg"
+   },
+   {
+    "full": "/media/kotadi/06.webp",
+    "thumb": "/media/kotadi/06-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0618.jpg"
+   },
+   {
+    "full": "/media/kotadi/07.webp",
+    "thumb": "/media/kotadi/07-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0624.jpg"
+   },
+   {
+    "full": "/media/kotadi/08.webp",
+    "thumb": "/media/kotadi/08-thumb.webp",
+    "landscape": true,
+    "source": "DSCN0654.jpg"
+   },
+   {
+    "full": "/media/kotadi/09.webp",
+    "thumb": "/media/kotadi/09-thumb.webp",
+    "landscape": false,
+    "source": "DSCN0658.jpg"
+   }
+  ]
+ },
+ "liliya": {
+  "folder": "Liliya",
+  "cover": "/media/liliya/01.webp",
+  "cover_thumb": "/media/liliya/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/liliya/01.webp",
+    "thumb": "/media/liliya/01-thumb.webp",
+    "landscape": true,
+    "source": "20140702_184911.jpg"
+   },
+   {
+    "full": "/media/liliya/02.webp",
+    "thumb": "/media/liliya/02-thumb.webp",
+    "landscape": false,
+    "source": "20140925_141006.jpg"
+   },
+   {
+    "full": "/media/liliya/03.webp",
+    "thumb": "/media/liliya/03-thumb.webp",
+    "landscape": false,
+    "source": "20140925_141058.jpg"
+   },
+   {
+    "full": "/media/liliya/04.webp",
+    "thumb": "/media/liliya/04-thumb.webp",
+    "landscape": false,
+    "source": "20140925_141150.jpg"
+   },
+   {
+    "full": "/media/liliya/05.webp",
+    "thumb": "/media/liliya/05-thumb.webp",
+    "landscape": false,
+    "source": "20140925_141305.jpg"
+   },
+   {
+    "full": "/media/liliya/06.webp",
+    "thumb": "/media/liliya/06-thumb.webp",
+    "landscape": true,
+    "source": "DSCN4224.JPG"
+   },
+   {
+    "full": "/media/liliya/07.webp",
+    "thumb": "/media/liliya/07-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20210703-WA0010.jpg"
+   },
+   {
+    "full": "/media/liliya/08.webp",
+    "thumb": "/media/liliya/08-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20210703-WA0011.jpg"
+   },
+   {
+    "full": "/media/liliya/09.webp",
+    "thumb": "/media/liliya/09-thumb.webp",
+    "landscape": false,
+    "source": "IMG-20210703-WA0012.jpg"
+   }
+  ]
+ },
+ "malav": {
+  "folder": "Malav",
+  "cover": "/media/malav/03.webp",
+  "cover_thumb": "/media/malav/03-thumb.webp",
+  "images": [
+   {
+    "full": "/media/malav/01.webp",
+    "thumb": "/media/malav/01-thumb.webp",
+    "landscape": false,
+    "source": "WhatsApp Image 2026-05-12 at 11.01.27 AM.jpeg"
+   },
+   {
+    "full": "/media/malav/02.webp",
+    "thumb": "/media/malav/02-thumb.webp",
+    "landscape": false,
+    "source": "WhatsApp Image 2026-05-12 at 11.01.28 AM.jpeg"
+   },
+   {
+    "full": "/media/malav/03.webp",
+    "thumb": "/media/malav/03-thumb.webp",
+    "landscape": true,
+    "source": "WhatsApp Image 2026-05-12 at 11.01.29 AM.jpeg"
+   },
+   {
+    "full": "/media/malav/04.webp",
+    "thumb": "/media/malav/04-thumb.webp",
+    "landscape": true,
+    "source": "WhatsApp Image 2026-05-12 at 11.05.47 AM.jpeg"
+   },
+   {
+    "full": "/media/malav/05.webp",
+    "thumb": "/media/malav/05-thumb.webp",
+    "landscape": true,
+    "source": "WhatsApp Image 2026-05-12 at 11.14.01 AM.jpeg"
+   }
+  ]
+ },
+ "osval-palitana": {
+  "folder": "OSVAL PALITANA",
+  "cover": "/media/osval-palitana/01.webp",
+  "cover_thumb": "/media/osval-palitana/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/osval-palitana/01.webp",
+    "thumb": "/media/osval-palitana/01-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5634.JPG"
+   },
+   {
+    "full": "/media/osval-palitana/02.webp",
+    "thumb": "/media/osval-palitana/02-thumb.webp",
+    "landscape": false,
+    "source": "DSCF5638.jpg"
+   },
+   {
+    "full": "/media/osval-palitana/03.webp",
+    "thumb": "/media/osval-palitana/03-thumb.webp",
+    "landscape": false,
+    "source": "DSCF5639.jpg"
+   },
+   {
+    "full": "/media/osval-palitana/04.webp",
+    "thumb": "/media/osval-palitana/04-thumb.webp",
+    "landscape": false,
+    "source": "IMG_20190104_093818.jpg"
+   }
+  ]
+ },
+ "rampara": {
+  "folder": "Rampara",
+  "cover": "/media/rampara/04.webp",
+  "cover_thumb": "/media/rampara/04-thumb.webp",
+  "images": [
+   {
+    "full": "/media/rampara/01.webp",
+    "thumb": "/media/rampara/01-thumb.webp",
+    "landscape": false,
+    "source": "20160218_105025.jpg"
+   },
+   {
+    "full": "/media/rampara/02.webp",
+    "thumb": "/media/rampara/02-thumb.webp",
+    "landscape": false,
+    "source": "20160228_182302.jpg"
+   },
+   {
+    "full": "/media/rampara/03.webp",
+    "thumb": "/media/rampara/03-thumb.webp",
+    "landscape": false,
+    "source": "20160302_104729.jpg"
+   },
+   {
+    "full": "/media/rampara/04.webp",
+    "thumb": "/media/rampara/04-thumb.webp",
+    "landscape": true,
+    "source": "20160308_162822.jpg"
+   },
+   {
+    "full": "/media/rampara/05.webp",
+    "thumb": "/media/rampara/05-thumb.webp",
+    "landscape": true,
+    "source": "20161113_131507.jpg"
+   },
+   {
+    "full": "/media/rampara/06.webp",
+    "thumb": "/media/rampara/06-thumb.webp",
+    "landscape": true,
+    "source": "20200218_111731.jpg"
+   },
+   {
+    "full": "/media/rampara/07.webp",
+    "thumb": "/media/rampara/07-thumb.webp",
+    "landscape": false,
+    "source": "20200320_073818.jpg"
+   },
+   {
+    "full": "/media/rampara/08.webp",
+    "thumb": "/media/rampara/08-thumb.webp",
+    "landscape": true,
+    "source": "20200320_074615.jpg"
+   },
+   {
+    "full": "/media/rampara/09.webp",
+    "thumb": "/media/rampara/09-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20200323-WA0011.jpg"
+   },
+   {
+    "full": "/media/rampara/10.webp",
+    "thumb": "/media/rampara/10-thumb.webp",
+    "landscape": true,
+    "source": "IMG-20220415-WA0000.jpg"
+   },
+   {
+    "full": "/media/rampara/11.webp",
+    "thumb": "/media/rampara/11-thumb.webp",
+    "landscape": false,
+    "source": "WhatsApp Image 2026-05-12 at 11.14.02 AM.jpeg"
+   },
+   {
+    "full": "/media/rampara/12.webp",
+    "thumb": "/media/rampara/12-thumb.webp",
+    "landscape": true,
+    "source": "WhatsApp Image 2026-05-12 at 11.14.03 AM.jpeg"
+   }
+  ]
+ },
+ "rrd-limbdi": {
+  "folder": "RRD-limbdi",
+  "cover": "/media/rrd-limbdi/01.webp",
+  "cover_thumb": "/media/rrd-limbdi/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/rrd-limbdi/01.webp",
+    "thumb": "/media/rrd-limbdi/01-thumb.webp",
+    "landscape": true,
+    "source": "1 (8).JPG"
+   },
+   {
+    "full": "/media/rrd-limbdi/02.webp",
+    "thumb": "/media/rrd-limbdi/02-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20240118_121834.jpg"
+   },
+   {
+    "full": "/media/rrd-limbdi/03.webp",
+    "thumb": "/media/rrd-limbdi/03-thumb.webp",
+    "landscape": true,
+    "source": "IMG_20240118_122022.jpg"
+   }
+  ]
+ },
+ "taleti": {
+  "folder": "Taleti",
+  "cover": "/media/taleti/01.webp",
+  "cover_thumb": "/media/taleti/01-thumb.webp",
+  "images": [
+   {
+    "full": "/media/taleti/01.webp",
+    "thumb": "/media/taleti/01-thumb.webp",
+    "landscape": true,
+    "source": "DSCF5601.JPG"
+   },
+   {
+    "full": "/media/taleti/02.webp",
+    "thumb": "/media/taleti/02-thumb.webp",
+    "landscape": false,
+    "source": "DSCF5606.jpg"
+   }
+  ]
+ }
+}
