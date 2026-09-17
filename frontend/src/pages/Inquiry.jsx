@@ -2,8 +2,7 @@ import { useState } from "react";
 import ScrollReveal from "../components/ScrollReveal";
 import "./Inquiry.css";
 
-const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-const CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+const API_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 function Inquiry() {
     const [formData, setFormData] = useState({
@@ -40,12 +39,6 @@ function Inquiry() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 🚨 THE SECRET ADMIN BACKDOOR 🚨
-        if (formData.name === "admin" && formData.email === "admin@pksompura.com") {
-            window.location.href = "/admin";
-            return;
-        }
-
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -55,44 +48,30 @@ function Inquiry() {
         setStatus("submitting");
         setErrors({});
 
-        const cleanPhone = formData.phone.replace(/[\s\-\+]/g, "");
-        const emailDisplay = formData.email.trim() || "N/A";
-        const templeTypeDisplay = formData.templeType || "Not specified";
-
-        const text =
-            `🏛️ *P.K. Sompura - New Website Inquiry*\n\n` +
-            `*Status:* 🟢 RECEIVED\n` +
-            `*Client Name:* ${formData.name}\n` +
-            `*Phone Number:* +91 ${cleanPhone}\n` +
-            `*Email:* ${emailDisplay}\n` +
-            `*Project Type:* ${templeTypeDisplay}\n\n` +
-            `💬 *Click to Open WhatsApp Chat:*\n` +
-            `https://wa.me/91${cleanPhone}`;
+        const cleanPhone = formData.phone.replace(/[\s\-+]/g, "");
 
         try {
-            const response = await fetch(
-                `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text,
-                        parse_mode: "Markdown",
-                    }),
-                }
-            );
+            // Posts to our own API, which relays to Telegram server-side. The
+            // bot token must never reach the browser.
+            const response = await fetch(`${API_URL}/contact/`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: formData.name,
+                    phone: cleanPhone ? `+91 ${cleanPhone}` : "",
+                    email: formData.email.trim(),
+                    temple_type: formData.templeType,
+                    message: formData.message,
+                }),
+            });
 
             if (response.ok) {
                 setStatus("success");
                 setFormData({ name: "", email: "", phone: "", templeType: "", message: "" });
             } else {
-                const errData = await response.json();
-                console.error("Telegram API error:", errData);
                 setStatus("error");
             }
-        } catch (error) {
-            console.error("Network error:", error);
+        } catch {
             setStatus("error");
         }
     };

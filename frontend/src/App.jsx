@@ -9,12 +9,12 @@ import Dock from "./components/Dock";
 import { LanguageProvider } from "./context/LanguageContext";
 
 // Pages — split per route so a visitor only downloads the one they open.
-// AdminPage in particular drags in the whole Supabase client.
+// /admin is intentionally absent: it is served by the FastAPI admin panel,
+// and a client route of the same name would shadow it in production.
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Projects = lazy(() => import("./pages/Projects"));
 const About = lazy(() => import("./pages/About"));
 const Inquiry = lazy(() => import("./pages/Inquiry"));
-const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 import "./global.css";
 
@@ -93,7 +93,6 @@ function AppContent() {
                             <Route path="/projects" element={<Projects />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/inquiry" element={<Inquiry />} />
-                            <Route path="/admin" element={<AdminPage />} />
                         </Routes>
                     </Suspense>
                 )}

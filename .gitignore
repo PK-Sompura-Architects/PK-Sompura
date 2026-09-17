@@ -12,3 +12,10 @@ master_codebase.txt
 frontend/.next/
 frontend/dist/
 *.tsbuildinfo
+
+# Local database (kept on disk, not tracked)
+pk_sompura.db
+
+# Env backups
+.env.*
+!.env.example

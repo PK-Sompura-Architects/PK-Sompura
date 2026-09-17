@@ -11,6 +11,7 @@ export default defineConfig({
       '/lineage': 'http://127.0.0.1:8000',
       '/projects': 'http://127.0.0.1:8000',
       '/galleries': 'http://127.0.0.1:8000',
+      '/contact': 'http://127.0.0.1:8000',
       '/statics': 'http://127.0.0.1:8000',
     }
   },
@@ -22,7 +23,6 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'gsap-vendor': ['gsap'],
-          'supabase-vendor': ['@supabase/supabase-js'],
         }
       }
     },
