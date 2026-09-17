@@ -57,6 +57,10 @@
     --color-gold-light:    var(--c-marigold-600);
     --color-gold-dim:      rgba(245, 158, 11, 0.16);
 
+    /* marigold-700 is tuned for ivory and goes muddy on the dark peacock
+       cards, so anything sitting on a dark surface uses this instead. */
+    --color-gold-on-dark:  var(--c-marigold-300);
+
     /* ---- TYPOGRAPHY ---- */
     --font-heading: 'Cinzel', 'Noto Serif Gujarati', 'Noto Serif Devanagari', Georgia, serif;
     --font-body:    'Outfit', 'Noto Serif Gujarati', 'Noto Serif Devanagari', system-ui, sans-serif;

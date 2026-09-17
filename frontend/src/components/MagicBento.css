@@ -84,11 +84,11 @@
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-on-dark);
   background: rgba(0, 0, 0, 0.6);
   padding: 4px 10px;
   border-radius: 4px;
-  border: 1px solid var(--color-gold-dim);
+  border: 1px solid rgba(245, 158, 11, 0.45);
 }
 
 .magic-bento-card__title,
@@ -103,6 +103,9 @@
   font-size: clamp(20px, 2vw, 24px);
   margin: 0 0 0.25em;
   letter-spacing: 1px;
+  /* This is an h2, so the global heading colour would otherwise win over the
+     white inherited from the dark card and leave the title unreadable. */
+  color: inherit;
 }
 
 .magic-bento-card__description {
