@@ -38,6 +38,24 @@ def role_of(key: str) -> str:
         return ""
 
 
+def usable(key: str) -> bool:
+    """Catch the failure that actually happens: a hidden prompt that captured a
+    stray control character instead of the pasted key."""
+    return (len(key) >= 20
+            and not any(ord(c) < 32 or ord(c) == 127 for c in key)
+            and " " not in key)
+
+
+def describe(key: str) -> str:
+    if not key:
+        return "empty"
+    if any(ord(c) < 32 or ord(c) == 127 for c in key):
+        return "contains control characters, so the paste did not register"
+    if " " in key:
+        return "contains a space"
+    return f"only {len(key)} characters long"
+
+
 def put(lines, key, value):
     """Replace KEY= in place, or append it if absent."""
     out, done = [], False
@@ -58,9 +76,16 @@ def main():
 
     key = os.environ.get("SUPABASE_SERVICE_KEY_INPUT", "").strip()
     if not key:
+        print("Ctrl+V does not work at a hidden prompt on Windows -- paste "
+              "with a right-click, or press Enter to type it visibly instead.")
         key = getpass.getpass("Paste the Supabase secret key (input hidden): ").strip()
-    if not key:
-        sys.exit("Nothing entered.")
+        if not usable(key):
+            # getpass swallowed a control character (Ctrl+V sends 0x16) or the
+            # paste never arrived. Fall back to a visible prompt rather than
+            # writing junk into .env.
+            key = input("Paste the key here (visible): ").strip()
+    if not usable(key):
+        sys.exit(f"That is not a usable key ({describe(key)}). Nothing was written.")
 
     role = role_of(key)
     if role == "anon":
