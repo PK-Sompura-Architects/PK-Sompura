@@ -27,6 +27,15 @@ function Dashboard() {
 
                 <div className="dashboard-bg" aria-hidden="true" />
 
+                <img
+                    className="dashboard-watermark"
+                    src="/logo-mark.webp"
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                />
+
                 <HeroNav />
 
                 {/* Animated Scroll Down Indicator */}

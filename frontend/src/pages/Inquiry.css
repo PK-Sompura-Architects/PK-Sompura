@@ -1,6 +1,6 @@
 .inquiry-wrapper {
     min-height: 100vh;
-    padding: 12vh var(--content-padding) 160px;
+    padding: 12vh var(--content-padding) var(--space-2xl);
     display: flex;
     justify-content: center;
     align-items: center;

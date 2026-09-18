@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { gsap } from "gsap";
 import Lenis from "lenis";
 
 // Components
 import Preloader from "./components/Preloader";
 import Dock from "./components/Dock";
+import Footer from "./components/Footer";
 import { LanguageProvider } from "./context/LanguageContext";
 
 // Pages — split per route so a visitor only downloads the one they open.
@@ -39,30 +39,21 @@ function AppContent() {
     // Always show preloader once per page-load (clear on mount so it always fires)
     const [showPreloader, setShowPreloader] = useState(true);
     const [isAppReady, setIsAppReady] = useState(false);
-    const mainRef = useRef(null);
     const dockRef = useRef(null);
 
-    // Stable identity: Preloader keys its GSAP effect on this callback, so a new
-    // function each render would kill and restart the intro timeline mid-flight.
+    // Stable identity: Preloader registers a listener keyed on this callback,
+    // so a new function each render would tear it down mid-sequence.
     const handlePreloaderComplete = useCallback(() => {
         setIsAppReady(true);
-        sessionStorage.setItem("introPlayed", "true");
-
         setTimeout(() => setShowPreloader(false), 300);
-
-        gsap.fromTo(mainRef.current,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 1.8, ease: "power3.out", delay: 0.3 }
-        );
     }, []);
 
-    // The intro is rAF-driven, so a suspended tab or a stalled timeline would
-    // otherwise leave the site permanently blank. Reveal regardless after 4s.
+    // The intro can stall — a backgrounded tab, a failed image, a dropped
+    // animationend. Without this the site would stay blank for good.
     useEffect(() => {
         const failsafe = setTimeout(() => {
             setIsAppReady(true);
             setShowPreloader(false);
-            if (mainRef.current) gsap.set(mainRef.current, { opacity: 1, y: 0 });
         }, 4000);
         return () => clearTimeout(failsafe);
     }, []);
@@ -77,15 +68,7 @@ function AppContent() {
 
             {isAppReady && <Dock ref={dockRef} />}
 
-            <main
-                className="app-container"
-                ref={mainRef}
-                style={{
-                    minHeight: '100vh',
-                    position: 'relative',
-                    opacity: 0  // GSAP animates this to 1 after preloader completes
-                }}
-            >
+            <main className={`app-container${isAppReady ? " is-ready" : ""}`}>
                 {isAppReady && (
                     <Suspense fallback={null}>
                         <Routes>
@@ -94,6 +77,7 @@ function AppContent() {
                             <Route path="/about" element={<About />} />
                             <Route path="/inquiry" element={<Inquiry />} />
                         </Routes>
+                        <Footer />
                     </Suspense>
                 )}
             </main>

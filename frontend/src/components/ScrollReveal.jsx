@@ -22,7 +22,12 @@ function ScrollReveal({
     threshold = 0.15,
 }) {
     const ref = useRef(null);
-    const [visible, setVisible] = useState(false);
+    // Start visible when motion is reduced: the reveal is decoration, and
+    // hiding content behind an animation nobody wants is worse than no reveal.
+    const [visible, setVisible] = useState(
+        () => typeof window !== "undefined" &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
 
     useEffect(() => {
         const el = ref.current;

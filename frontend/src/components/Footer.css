@@ -1,0 +1,86 @@
+.site-footer {
+    position: relative;
+    z-index: 2;
+    margin-top: var(--space-2xl);
+    padding: var(--space-xl) var(--content-padding) 140px; /* 140px clears the fixed dock */
+    background: var(--c-peacock-900);
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.site-footer__inner {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr 1fr;
+    gap: var(--space-lg);
+    align-items: start;
+}
+
+.site-footer__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.site-footer__brand img {
+    height: 52px;
+    width: auto;
+    /* The mark is dark-on-transparent; invert it to read on peacock. */
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+.site-footer__name {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.site-footer__tag {
+    font-size: var(--text-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-gold-on-dark);
+    margin: 0;
+}
+
+.site-footer__links,
+.site-footer__contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    list-style: none;
+}
+
+.site-footer__links a,
+.site-footer__contact a,
+.site-footer__contact li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.82);
+    transition: color var(--dur-base) var(--ease-smooth);
+}
+
+.site-footer__links a:hover,
+.site-footer__contact a:hover {
+    color: var(--color-gold-on-dark);
+}
+
+.site-footer__legal {
+    max-width: var(--content-max-width);
+    margin: var(--space-lg) auto 0;
+    padding-top: var(--space-sm);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: var(--text-xs);
+    color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 760px) {
+    .site-footer__inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+}
