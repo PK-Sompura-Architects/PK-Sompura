@@ -11,7 +11,10 @@
     position: relative;
     width: 100%;
     min-height: 100vh;
-    overflow: hidden;
+    /* `clip` keeps the watermark's overhang trimmed without making this section
+       a scroll container -- `hidden` would, and the watermark's view() timeline
+       would then track this never-scrolling box instead of the viewport. */
+    overflow: clip;
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
     align-items: center;
@@ -220,6 +223,10 @@
     right: -6%;
     top: 12%;
     width: min(46vw, 560px);
+    /* Reserve the box up front. Without it the element is 0px tall until the
+       image decodes, and a zero-height subject makes view() inactive, so the
+       parallax silently never runs. */
+    aspect-ratio: 553 / 451;
     z-index: 0;
     pointer-events: none;
     opacity: 0.06;

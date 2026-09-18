@@ -14,7 +14,7 @@ function Preloader({ onComplete }) {
 
         const el = containerRef.current;
         const finish = () => {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "";
             onComplete?.();
         };
 
@@ -23,7 +23,7 @@ function Preloader({ onComplete }) {
 
         return () => {
             el?.removeEventListener("animationend", finish);
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "";
         };
     }, [onComplete]);
 

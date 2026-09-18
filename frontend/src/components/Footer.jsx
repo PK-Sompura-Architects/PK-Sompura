@@ -1,14 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, Phone, Mail, MapPin } from "lucide-react";
+import { CONTACT } from "../siteContact";
 import "./Footer.css";
-
-// Edit these four lines to change what the footer shows everywhere.
-const CONTACT = {
-    instagram: "https://instagram.com/pksompura",
-    phone: "+91 98240 00000",
-    email: "info@pksompura.com",
-    place: "Palitana, Gujarat, India",
-};
 
 export default function Footer() {
     return (
@@ -30,28 +23,36 @@ export default function Footer() {
                 </nav>
 
                 <ul className="site-footer__contact">
-                    <li>
-                        <a href={CONTACT.instagram} target="_blank" rel="noreferrer noopener">
-                            <Instagram size={16} strokeWidth={1.6} aria-hidden="true" />
-                            Instagram
-                        </a>
-                    </li>
-                    <li>
-                        <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}>
-                            <Phone size={16} strokeWidth={1.6} aria-hidden="true" />
-                            {CONTACT.phone}
-                        </a>
-                    </li>
-                    <li>
-                        <a href={`mailto:${CONTACT.email}`}>
-                            <Mail size={16} strokeWidth={1.6} aria-hidden="true" />
-                            {CONTACT.email}
-                        </a>
-                    </li>
-                    <li>
-                        <MapPin size={16} strokeWidth={1.6} aria-hidden="true" />
-                        {CONTACT.place}
-                    </li>
+                    {CONTACT.instagram && (
+                        <li>
+                            <a href={CONTACT.instagram} target="_blank" rel="noreferrer noopener">
+                                <Instagram size={16} strokeWidth={1.6} aria-hidden="true" />
+                                Instagram
+                            </a>
+                        </li>
+                    )}
+                    {CONTACT.phone && (
+                        <li>
+                            <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}>
+                                <Phone size={16} strokeWidth={1.6} aria-hidden="true" />
+                                {CONTACT.phone}
+                            </a>
+                        </li>
+                    )}
+                    {CONTACT.email && (
+                        <li>
+                            <a href={`mailto:${CONTACT.email}`}>
+                                <Mail size={16} strokeWidth={1.6} aria-hidden="true" />
+                                {CONTACT.email}
+                            </a>
+                        </li>
+                    )}
+                    {CONTACT.place && (
+                        <li>
+                            <MapPin size={16} strokeWidth={1.6} aria-hidden="true" />
+                            {CONTACT.place}
+                        </li>
+                    )}
                 </ul>
             </div>
 

@@ -32,7 +32,8 @@ function Dashboard() {
                     src="/logo-mark.webp"
                     alt=""
                     aria-hidden="true"
-                    loading="lazy"
+                    width="553"
+                    height="451"
                     decoding="async"
                 />
 

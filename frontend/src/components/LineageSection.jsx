@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChromaGrid from './ChromaGrid';
 import ScrollReveal from "./ScrollReveal";
-
-// Primary contact numbers associated with the Sompura family
-const CONTACT_NUMBERS = [
-    "9227866635",
-    "9227866634",
-    "9427287387",
-    "9429638738",
-];
+import { CONTACT_NUMBERS } from "../siteContact";
 
 export default function LineageSection() {
     const [members, setMembers] = useState([]);

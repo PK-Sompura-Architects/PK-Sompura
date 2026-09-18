@@ -127,7 +127,10 @@
 }
 
 html {
-    scroll-behavior: smooth;
+    /* No scroll-behavior here. Lenis drives the scroll position every frame,
+       and native smooth scrolling re-animates each of those writes, so they
+       never land and the page cannot scroll at all. The reduced-motion block
+       below restores `auto`, which is what Lenis-disabled visitors get. */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--color-bg);
@@ -143,7 +146,10 @@ body,
     font-size: var(--text-base);
     font-weight: 300;
     line-height: 1.65;
-    overflow-x: hidden;
+    /* `clip`, not `hidden`: hidden forces overflow-y to compute to `auto`, which
+       turns #root into a scroll container and steals `view()` timelines away
+       from the viewport, so scroll-driven animations never advance. */
+    overflow-x: clip;
     width: 100%;
     min-height: 100vh;
 }
