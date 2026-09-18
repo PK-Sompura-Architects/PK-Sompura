@@ -1,4 +1,5 @@
 import os
+import mimetypes
 import re
 import secrets
 import time
@@ -124,11 +125,19 @@ async def upload_to_supabase(file, bucket_name: str) -> str:
             "SUPABASE_SERVICE_KEY in backend/.env."
         )
 
-    timestamp = int(time.time())
+    # Seconds alone collide when two files of the same name are uploaded in the
+    # same second, and Supabase rejects the second one as a duplicate.
+    stamp = f"{int(time.time())}{secrets.token_hex(3)}"
     clean_name = re.sub(r"[^A-Za-z0-9._-]", "_", file.filename or "upload")
-    filename = f"{timestamp}_{clean_name}"
+    filename = f"{stamp}_{clean_name}"
     content = await file.read()
-    content_type = getattr(file, "content_type", None) or "application/octet-stream"
+    # The buckets only accept image MIME types, so a generic octet-stream is
+    # rejected with a 415 that reads like a permissions problem. Browsers set
+    # this header correctly; fall back to the extension for anything that does
+    # not, rather than sending a type the bucket is guaranteed to refuse.
+    content_type = getattr(file, "content_type", None)
+    if not content_type or content_type == "application/octet-stream":
+        content_type = mimetypes.guess_type(filename)[0] or "application/octet-stream"
 
     try:
         supabase.storage.from_(bucket_name).upload(

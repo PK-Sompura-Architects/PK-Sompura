@@ -1,0 +1,954 @@
+[
+ {
+  "id": 1,
+  "temple_id": 5,
+  "url": "/media/adpur-dheti-pag/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 2,
+  "temple_id": 5,
+  "url": "/media/adpur-dheti-pag/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 3,
+  "temple_id": 5,
+  "url": "/media/adpur-dheti-pag/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 4,
+  "temple_id": 6,
+  "url": "/media/asha-life-mission/02.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 5,
+  "temple_id": 6,
+  "url": "/media/asha-life-mission/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 6,
+  "temple_id": 6,
+  "url": "/media/asha-life-mission/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 7,
+  "temple_id": 6,
+  "url": "/media/asha-life-mission/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 8,
+  "temple_id": 6,
+  "url": "/media/asha-life-mission/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 9,
+  "temple_id": 6,
+  "url": "/media/asha-life-mission/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 10,
+  "temple_id": 6,
+  "url": "/media/asha-life-mission/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 11,
+  "temple_id": 7,
+  "url": "/media/bhamriya/02.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 12,
+  "temple_id": 7,
+  "url": "/media/bhamriya/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 13,
+  "temple_id": 7,
+  "url": "/media/bhamriya/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 14,
+  "temple_id": 7,
+  "url": "/media/bhamriya/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 15,
+  "temple_id": 7,
+  "url": "/media/bhamriya/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 16,
+  "temple_id": 8,
+  "url": "/media/devilaya/02.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 17,
+  "temple_id": 8,
+  "url": "/media/devilaya/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 18,
+  "temple_id": 8,
+  "url": "/media/devilaya/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 19,
+  "temple_id": 8,
+  "url": "/media/devilaya/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 20,
+  "temple_id": 8,
+  "url": "/media/devilaya/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 21,
+  "temple_id": 9,
+  "url": "/media/dhola/05.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 22,
+  "temple_id": 9,
+  "url": "/media/dhola/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 23,
+  "temple_id": 9,
+  "url": "/media/dhola/02.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 24,
+  "temple_id": 9,
+  "url": "/media/dhola/03.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 25,
+  "temple_id": 9,
+  "url": "/media/dhola/04.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 26,
+  "temple_id": 9,
+  "url": "/media/dhola/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 27,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/02.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 28,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 29,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 30,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 31,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 32,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 33,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 34,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/08.webp",
+  "is_cutout": false,
+  "order_index": 7
+ },
+ {
+  "id": 35,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/09.webp",
+  "is_cutout": false,
+  "order_index": 8
+ },
+ {
+  "id": 36,
+  "temple_id": 10,
+  "url": "/media/digamabar-jain-derasar-baroda/10.webp",
+  "is_cutout": false,
+  "order_index": 9
+ },
+ {
+  "id": 37,
+  "temple_id": 11,
+  "url": "/media/gelmata-rajkot/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 38,
+  "temple_id": 11,
+  "url": "/media/gelmata-rajkot/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 39,
+  "temple_id": 11,
+  "url": "/media/gelmata-rajkot/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 40,
+  "temple_id": 11,
+  "url": "/media/gelmata-rajkot/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 41,
+  "temple_id": 11,
+  "url": "/media/gelmata-rajkot/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 42,
+  "temple_id": 11,
+  "url": "/media/gelmata-rajkot/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 43,
+  "temple_id": 12,
+  "url": "/media/gulbarga/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 44,
+  "temple_id": 12,
+  "url": "/media/gulbarga/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 45,
+  "temple_id": 12,
+  "url": "/media/gulbarga/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 46,
+  "temple_id": 12,
+  "url": "/media/gulbarga/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 47,
+  "temple_id": 12,
+  "url": "/media/gulbarga/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 48,
+  "temple_id": 12,
+  "url": "/media/gulbarga/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 49,
+  "temple_id": 12,
+  "url": "/media/gulbarga/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 50,
+  "temple_id": 12,
+  "url": "/media/gulbarga/08.webp",
+  "is_cutout": false,
+  "order_index": 7
+ },
+ {
+  "id": 51,
+  "temple_id": 12,
+  "url": "/media/gulbarga/09.webp",
+  "is_cutout": false,
+  "order_index": 8
+ },
+ {
+  "id": 52,
+  "temple_id": 12,
+  "url": "/media/gulbarga/10.webp",
+  "is_cutout": false,
+  "order_index": 9
+ },
+ {
+  "id": 53,
+  "temple_id": 12,
+  "url": "/media/gulbarga/11.webp",
+  "is_cutout": false,
+  "order_index": 10
+ },
+ {
+  "id": 54,
+  "temple_id": 13,
+  "url": "/media/hastgiri/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 55,
+  "temple_id": 13,
+  "url": "/media/hastgiri/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 56,
+  "temple_id": 13,
+  "url": "/media/hastgiri/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 57,
+  "temple_id": 13,
+  "url": "/media/hastgiri/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 58,
+  "temple_id": 13,
+  "url": "/media/hastgiri/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 59,
+  "temple_id": 13,
+  "url": "/media/hastgiri/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 60,
+  "temple_id": 13,
+  "url": "/media/hastgiri/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 61,
+  "temple_id": 14,
+  "url": "/media/jaliya/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 62,
+  "temple_id": 14,
+  "url": "/media/jaliya/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 63,
+  "temple_id": 14,
+  "url": "/media/jaliya/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 64,
+  "temple_id": 14,
+  "url": "/media/jaliya/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 65,
+  "temple_id": 14,
+  "url": "/media/jaliya/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 66,
+  "temple_id": 15,
+  "url": "/media/jambudip/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 67,
+  "temple_id": 15,
+  "url": "/media/jambudip/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 68,
+  "temple_id": 16,
+  "url": "/media/kachchhi-bhavan/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 69,
+  "temple_id": 16,
+  "url": "/media/kachchhi-bhavan/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 70,
+  "temple_id": 16,
+  "url": "/media/kachchhi-bhavan/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 71,
+  "temple_id": 16,
+  "url": "/media/kachchhi-bhavan/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 72,
+  "temple_id": 16,
+  "url": "/media/kachchhi-bhavan/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 73,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 74,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 75,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 76,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 77,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 78,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 79,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 80,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/08.webp",
+  "is_cutout": false,
+  "order_index": 7
+ },
+ {
+  "id": 81,
+  "temple_id": 17,
+  "url": "/media/kachhi-bhavan-junaghath/09.webp",
+  "is_cutout": false,
+  "order_index": 8
+ },
+ {
+  "id": 82,
+  "temple_id": 18,
+  "url": "/media/khajuri/02.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 83,
+  "temple_id": 18,
+  "url": "/media/khajuri/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 84,
+  "temple_id": 18,
+  "url": "/media/khajuri/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 85,
+  "temple_id": 18,
+  "url": "/media/khajuri/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 86,
+  "temple_id": 18,
+  "url": "/media/khajuri/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 87,
+  "temple_id": 18,
+  "url": "/media/khajuri/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 88,
+  "temple_id": 18,
+  "url": "/media/khajuri/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 89,
+  "temple_id": 18,
+  "url": "/media/khajuri/08.webp",
+  "is_cutout": false,
+  "order_index": 7
+ },
+ {
+  "id": 90,
+  "temple_id": 18,
+  "url": "/media/khajuri/09.webp",
+  "is_cutout": false,
+  "order_index": 8
+ },
+ {
+  "id": 91,
+  "temple_id": 18,
+  "url": "/media/khajuri/10.webp",
+  "is_cutout": false,
+  "order_index": 9
+ },
+ {
+  "id": 92,
+  "temple_id": 18,
+  "url": "/media/khajuri/11.webp",
+  "is_cutout": false,
+  "order_index": 10
+ },
+ {
+  "id": 93,
+  "temple_id": 19,
+  "url": "/media/kotadi/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 94,
+  "temple_id": 19,
+  "url": "/media/kotadi/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 95,
+  "temple_id": 19,
+  "url": "/media/kotadi/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 96,
+  "temple_id": 19,
+  "url": "/media/kotadi/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 97,
+  "temple_id": 19,
+  "url": "/media/kotadi/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 98,
+  "temple_id": 19,
+  "url": "/media/kotadi/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 99,
+  "temple_id": 19,
+  "url": "/media/kotadi/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 100,
+  "temple_id": 19,
+  "url": "/media/kotadi/08.webp",
+  "is_cutout": false,
+  "order_index": 7
+ },
+ {
+  "id": 101,
+  "temple_id": 19,
+  "url": "/media/kotadi/09.webp",
+  "is_cutout": false,
+  "order_index": 8
+ },
+ {
+  "id": 102,
+  "temple_id": 20,
+  "url": "/media/liliya/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 103,
+  "temple_id": 20,
+  "url": "/media/liliya/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 104,
+  "temple_id": 20,
+  "url": "/media/liliya/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 105,
+  "temple_id": 20,
+  "url": "/media/liliya/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 106,
+  "temple_id": 20,
+  "url": "/media/liliya/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 107,
+  "temple_id": 20,
+  "url": "/media/liliya/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 108,
+  "temple_id": 20,
+  "url": "/media/liliya/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 109,
+  "temple_id": 20,
+  "url": "/media/liliya/08.webp",
+  "is_cutout": false,
+  "order_index": 7
+ },
+ {
+  "id": 110,
+  "temple_id": 20,
+  "url": "/media/liliya/09.webp",
+  "is_cutout": false,
+  "order_index": 8
+ },
+ {
+  "id": 111,
+  "temple_id": 21,
+  "url": "/media/malav/03.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 112,
+  "temple_id": 21,
+  "url": "/media/malav/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 113,
+  "temple_id": 21,
+  "url": "/media/malav/02.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 114,
+  "temple_id": 21,
+  "url": "/media/malav/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 115,
+  "temple_id": 21,
+  "url": "/media/malav/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 116,
+  "temple_id": 22,
+  "url": "/media/osval-palitana/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 117,
+  "temple_id": 22,
+  "url": "/media/osval-palitana/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 118,
+  "temple_id": 22,
+  "url": "/media/osval-palitana/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 119,
+  "temple_id": 22,
+  "url": "/media/osval-palitana/04.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 120,
+  "temple_id": 23,
+  "url": "/media/rampara/04.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 121,
+  "temple_id": 23,
+  "url": "/media/rampara/01.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 122,
+  "temple_id": 23,
+  "url": "/media/rampara/02.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 123,
+  "temple_id": 23,
+  "url": "/media/rampara/03.webp",
+  "is_cutout": false,
+  "order_index": 3
+ },
+ {
+  "id": 124,
+  "temple_id": 23,
+  "url": "/media/rampara/05.webp",
+  "is_cutout": false,
+  "order_index": 4
+ },
+ {
+  "id": 125,
+  "temple_id": 23,
+  "url": "/media/rampara/06.webp",
+  "is_cutout": false,
+  "order_index": 5
+ },
+ {
+  "id": 126,
+  "temple_id": 23,
+  "url": "/media/rampara/07.webp",
+  "is_cutout": false,
+  "order_index": 6
+ },
+ {
+  "id": 127,
+  "temple_id": 23,
+  "url": "/media/rampara/08.webp",
+  "is_cutout": false,
+  "order_index": 7
+ },
+ {
+  "id": 128,
+  "temple_id": 23,
+  "url": "/media/rampara/09.webp",
+  "is_cutout": false,
+  "order_index": 8
+ },
+ {
+  "id": 129,
+  "temple_id": 23,
+  "url": "/media/rampara/10.webp",
+  "is_cutout": false,
+  "order_index": 9
+ },
+ {
+  "id": 130,
+  "temple_id": 23,
+  "url": "/media/rampara/11.webp",
+  "is_cutout": false,
+  "order_index": 10
+ },
+ {
+  "id": 131,
+  "temple_id": 23,
+  "url": "/media/rampara/12.webp",
+  "is_cutout": false,
+  "order_index": 11
+ },
+ {
+  "id": 132,
+  "temple_id": 24,
+  "url": "/media/rrd-limbdi/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 133,
+  "temple_id": 24,
+  "url": "/media/rrd-limbdi/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ },
+ {
+  "id": 134,
+  "temple_id": 24,
+  "url": "/media/rrd-limbdi/03.webp",
+  "is_cutout": false,
+  "order_index": 2
+ },
+ {
+  "id": 135,
+  "temple_id": 25,
+  "url": "/media/taleti/01.webp",
+  "is_cutout": false,
+  "order_index": 0
+ },
+ {
+  "id": 136,
+  "temple_id": 25,
+  "url": "/media/taleti/02.webp",
+  "is_cutout": false,
+  "order_index": 1
+ }
+]

@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import ChromaGrid from './ChromaGrid';
 import ScrollReveal from "./ScrollReveal";
 import { CONTACT_NUMBERS } from "../siteContact";
+import { API_URL } from "../apiBase";
 
 export default function LineageSection() {
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
         fetch(`${API_URL}/api/lineage/`)
             .then(res => res.json())
             .then(data => {
@@ -30,6 +30,10 @@ export default function LineageSection() {
         borderColor: "var(--c-marigold-500)",
         gradient: "linear-gradient(145deg, #0F766E, #134E4A)",
     }));
+
+    // Nothing to show yet: render nothing at all rather than a heading floating
+    // over an empty grid. The section reappears as soon as members are added.
+    if (!loading && members.length === 0) return null;
 
     return (
         <section style={{ padding: 'var(--section-padding) 0', background: 'transparent' }}>

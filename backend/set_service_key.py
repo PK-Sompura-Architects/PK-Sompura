@@ -70,7 +70,61 @@ def put(lines, key, value):
     return out
 
 
+def verify(url, key):
+    """Upload and delete a probe object in every bucket admin.py writes to."""
+    from supabase import create_client
+
+    client = create_client(url, key)
+    png = base64.b64decode(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk"
+        "YPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+    )
+    ok = True
+    for bucket in BUCKETS:
+        probe = ".keycheck.png"
+        try:
+            client.storage.from_(bucket).upload(
+                probe, png, {"upsert": "true", "content-type": "image/png"}
+            )
+            client.storage.from_(bucket).remove([probe])
+            print(f"  {bucket}: write OK")
+        except Exception as exc:
+            print(f"  {bucket}: FAILED - {exc}")
+            ok = False
+    return ok
+
+
+def read_env():
+    values = {}
+    for line in ENV.read_text(encoding="utf-8").splitlines():
+        if "=" in line and not line.strip().startswith("#"):
+            k, _, v = line.partition("=")
+            values[k.strip()] = v.strip().strip('"').strip("'")
+    return values
+
+
+def check():
+    """Verify whatever is already in .env, without changing it."""
+    env = read_env()
+    key = env.get("SUPABASE_SERVICE_KEY", "")
+    if not usable(key):
+        print(f"SUPABASE_SERVICE_KEY is not usable: {describe(key)}")
+        print(f"Edit {ENV} and set it to the whole sb_secret_... value.")
+        return 1
+    if not key.startswith("sb_secret_") and role_of(key) != "service_role":
+        print("This is not a whole secret key -- the 'sb_secret_' prefix is "
+              "missing, so only part of the value was pasted.")
+        print(f"Edit {ENV} and set SUPABASE_SERVICE_KEY to the entire value, "
+              "prefix included, unquoted.")
+        return 1
+    print(f"Key looks well-formed ({len(key)} chars). Testing the buckets:")
+    return 0 if verify(env.get("SUPABASE_URL", ""), key) else 1
+
+
 def main():
+    if "--check" in sys.argv:
+        return check()
+
     if not ENV.exists():
         sys.exit(f"No {ENV}. Create it first.")
 
@@ -104,28 +158,8 @@ def main():
     if not url:
         sys.exit("SUPABASE_URL is not set, so the key cannot be verified.")
 
-    try:
-        from supabase import create_client
-    except ImportError:
-        sys.exit("supabase package not installed; key written but unverified.")
-
-    client = create_client(url, key)
-    # The buckets only accept images, so probe with a real 1x1 PNG.
-    png = base64.b64decode(
-        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk"
-        "YPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
-    )
-    for bucket in BUCKETS:
-        probe = ".keycheck.png"
-        try:
-            client.storage.from_(bucket).upload(
-                probe, png, {"upsert": "true", "content-type": "image/png"}
-            )
-            client.storage.from_(bucket).remove([probe])
-            print(f"  {bucket}: write OK")
-        except Exception as exc:
-            print(f"  {bucket}: FAILED - {exc}")
-            return 1
+    if not verify(url, key):
+        return 1
     print("\nService key works. Restart the backend and admin uploads will go through.")
     return 0
 

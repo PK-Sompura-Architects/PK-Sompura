@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import ProfileCard from "../components/ProfileCard";
 import ScrollReveal from "../components/ScrollReveal";
 import "./About.css";
+import { API_URL } from "../apiBase";
 
 function About() {
     const [lineage, setLineage] = useState([]);
@@ -10,7 +11,6 @@ function About() {
     useEffect(() => {
         const fetchLineage = async () => {
             try {
-                const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
                 const response = await fetch(`${API_URL}/api/lineage`);
                 const data = await response.json();
                 setLineage(data);
@@ -40,6 +40,10 @@ function About() {
 
             {loading ? (
                 <div style={{ color: "var(--color-gold)" }}>Loading Legacy...</div>
+            ) : lineage.length === 0 ? (
+                <p className="about-lineage-empty">
+                    The family profiles are being prepared and will appear here shortly.
+                </p>
             ) : (
                 <div className="about-lineage-grid">
                     {lineage.map((member) => (

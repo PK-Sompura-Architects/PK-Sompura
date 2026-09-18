@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import MagicBento from './MagicBento';
 import GalleryModal from './GalleryModal';
+import { API_URL } from "../apiBase";
 
 export default function DashboardGalleries() {
     const [galleries, setGalleries] = useState([]);
     const [selectedGallery, setSelectedGallery] = useState(null);
 
     useEffect(() => {
-        const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
         fetch(`${API_URL}/api/galleries/`)
             .then(res => res.json())
             .then(data => setGalleries(data.galleries || []))

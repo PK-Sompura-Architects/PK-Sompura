@@ -3,8 +3,8 @@ import MagicBento from '../components/MagicBento';
 import GalleryModal from '../components/GalleryModal';
 import { useLanguage } from '../context/LanguageContext';
 import './Projects.css';
+import { API_URL } from "../apiBase";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export default function Projects() {
     const { language } = useLanguage();

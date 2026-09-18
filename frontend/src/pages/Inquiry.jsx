@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ScrollReveal from "../components/ScrollReveal";
 import "./Inquiry.css";
+import { API_URL } from "../apiBase";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 function Inquiry() {
     const [formData, setFormData] = useState({
