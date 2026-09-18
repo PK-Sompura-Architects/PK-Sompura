@@ -210,8 +210,10 @@ const ParticleCard = ({
       }
     };
 
+    // Opening the card is handled on the element itself, not here -- this
+    // effect is skipped entirely when animations are off, which used to leave
+    // the cards unclickable on mobile. This only draws the ripple.
     const handleClick = e => {
-      if (onClick) onClick();
       if (!clickEffect) return;
 
       const rect = element.getBoundingClientRect();
@@ -273,6 +275,15 @@ const ParticleCard = ({
       ref={cardRef}
       className={`${className} particle-container`}
       style={{ ...style, position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
+      onClick={onClick}
+      onKeyDown={e => {
+        if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
     >
       {bgImage && (
         <>
