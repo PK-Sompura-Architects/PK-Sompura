@@ -26,6 +26,7 @@ Lenis, three.js 0.183 + @react-three/fiber 9 + drei 10, ogl.
 | Text | `--color-text` / `--c-navy-900` | `#16202E` | Body/headings |
 | Muted | `--color-text-muted` / `--c-slate-600` | `#4A637A` | Paragraphs |
 | On dark | `--color-primary-on-dark` / `--c-sky-200` | `#B4D8E4` | Accents on navy |
+| Error | `--color-error` | `#C53030` | Form errors, required marks |
 
 ### Contrast rules (validated, WCAG AA)
 
@@ -39,6 +40,8 @@ Measured against the page background `#F7FAFC`, not estimated. Do not violate:
 - `#8A6E4D` sand-700 = **4.53:1** → text-safe warm accent.
 - `#C8A070` sand-500 = **2.30:1** → fill only.
 - `#90C8D8` sky-300 = fill only; on it, use navy-900 text (**8.94:1**).
+- `#C53030` error red = **5.47:1** on white. Replaced `#E53E3E`, which was
+  4.13:1 and failed AA for the required-field markers on the inquiry form.
 
 On the dark navy surfaces (`#1E2D40`): white is **13.96:1**, sky-200 is
 **9.23:1**, sand-300 is **8.70:1**. navy-700 disappears there, which is what
@@ -104,6 +107,17 @@ site re-skins at once. Keep these aliases until components are migrated.
 - `public/indian-temple/source/new_lns_glb-hex.glb` (9.7MB) is unused but kept
   as a source asset. Anything using it must be Draco-compressed first — doing so
   took it to 582 KB with geometry intact.
+- **Locking the page behind an overlay takes two things, not one.** Lenis
+  handles the wheel itself and scrolls the document programmatically, and
+  `overflow: hidden` does not stop a programmatic scroll -- so the overlay
+  also needs `data-lenis-prevent`, Lenis's own opt-out. Put the overflow lock
+  on `<html>`, never on `<body>`: body's `overflow-x: clip` computes to
+  `hidden` the moment the other axis is set, which is what made the whole page
+  unscrollable once before. `html` carries `scrollbar-gutter: stable` so the
+  page does not jump when the bar goes. See `GalleryModal.jsx`.
+- **The dock claims `z-index: 99999`.** Anything meant to cover the page has to
+  beat it; the gallery lightbox sat at 1000 and the dock floated over the open
+  photos with its buttons still tappable. `GalleryModal.css` now uses 100000.
 - `.dashboard-bg` must stay `position: absolute`. As a static grid item it
   consumes a column and displaces the hero nav onto a second row.
 - The hero backdrop is a **CSS aurora**, not WebGL. `Prism` (an OGL shader) was

@@ -196,7 +196,7 @@ function Inquiry() {
                         </button>
 
                         {status === "error" && (
-                            <p style={{ color: "#e53e3e", textAlign: "center", fontSize: "14px", marginTop: "10px" }}>
+                            <p style={{ color: "var(--color-error)", textAlign: "center", fontSize: "14px", marginTop: "10px" }}>
                                 Something went wrong. Please check your connection and try again.
                             </p>
                         )}

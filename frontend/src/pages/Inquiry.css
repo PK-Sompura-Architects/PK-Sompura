@@ -42,7 +42,7 @@
 }
 
 .required-star {
-    color: #e53e3e;
+    color: var(--color-error);
     font-size: 14px;
 }
 
@@ -79,12 +79,12 @@
 
 .form-group input.input-error,
 .form-group textarea.input-error {
-    border-color: #e53e3e;
-    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15);
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(197, 48, 48, 0.15);
 }
 
 .field-error {
-    color: #e53e3e;
+    color: var(--color-error);
     font-size: 12px;
     font-family: var(--font-body);
     letter-spacing: 0;

@@ -67,6 +67,10 @@
        dark surface uses this instead. */
     --color-primary-on-dark: var(--c-sky-200);
 
+    /* Form errors and required markers. The previous #E53E3E only reached
+       4.13:1 on white, under AA for body text; this is 5.47:1. */
+    --color-error:           #C53030;
+
     /* ---- TYPOGRAPHY ---- */
     --font-heading: 'Cinzel', 'Noto Serif Gujarati', 'Noto Serif Devanagari', Georgia, serif;
     --font-body:    'Outfit', 'Noto Serif Gujarati', 'Noto Serif Devanagari', system-ui, sans-serif;
@@ -140,6 +144,9 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--color-bg);
+    /* Reserve the scrollbar gutter permanently, so locking the scroll behind
+       the gallery lightbox does not widen the page underneath it. */
+    scrollbar-gutter: stable;
 }
 
 body,

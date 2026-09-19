@@ -5,7 +5,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    /* Above the dock, which claims 99999. The dock floated over the
+       open lightbox and its buttons stayed tappable through it. */
+    z-index: 100000;
     padding: 2rem;
 }
 .modal-container {
