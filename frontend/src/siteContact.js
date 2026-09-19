@@ -12,6 +12,18 @@ export const CONTACT = {
     place: "Palitana, Gujarat, India",
 };
 
+// Where the inquiry form sends people, in order. The first is opened
+// automatically; the rest are offered as alternatives on the confirmation
+// screen. A wa.me link addresses exactly one chat -- WhatsApp has no
+// multi-recipient deep link, and a group invite link cannot carry a prefilled
+// message -- so reaching two people means offering a choice, not one link that
+// hits both. Every inquiry is recorded in the admin panel either way, so
+// nobody depends on being the one the visitor picked.
+export const INQUIRY_NUMBERS = [
+    { display: "+91 92278 66634", wa: "919227866634" },
+    { display: "+91 92278 66635", wa: "919227866635" },
+];
+
 // Numbers shown on the individual lineage cards.
 // Kept as the record of the office numbers. The lineage cards no longer
 // read this -- a card shows the number stored on that person in the admin

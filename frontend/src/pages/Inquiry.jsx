@@ -2,7 +2,7 @@ import { useState } from "react";
 import ScrollReveal from "../components/ScrollReveal";
 import "./Inquiry.css";
 import { API_URL } from "../apiBase";
-import { CONTACT } from "../siteContact";
+import { INQUIRY_NUMBERS } from "../siteContact";
 
 
 function Inquiry() {
@@ -15,7 +15,7 @@ function Inquiry() {
     });
     const [status, setStatus] = useState("idle"); // idle | success
     const [errors, setErrors] = useState({});
-    const [whatsappUrl, setWhatsappUrl] = useState("");
+    const [whatsappLinks, setWhatsappLinks] = useState([]);
 
 
     const handleChange = (e) => {
@@ -39,7 +39,7 @@ function Inquiry() {
     // The visitor sends this from their own WhatsApp, so it lands in a real
     // thread the family can reply to -- no Meta Cloud API, no message
     // template, no dedicated sender number.
-    const buildWhatsAppUrl = () => {
+    const buildWhatsAppUrl = (waNumber) => {
         const lines = [
             "Hello P.K. Sompura, I would like to enquire about a project.",
             "",
@@ -55,8 +55,7 @@ function Inquiry() {
             // admin panel through the save below.
             lines.push(formData.message.trim().slice(0, 700));
         }
-        const number = CONTACT.phone.replace(/[^\d]/g, "");
-        return `https://wa.me/${number}?text=${encodeURIComponent(lines.join("\n"))}`;
+        return `https://wa.me/${waNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
     };
 
     const handleSubmit = (e) => {
@@ -69,8 +68,10 @@ function Inquiry() {
         }
         setErrors({});
 
-        const waUrl = buildWhatsAppUrl();
-        setWhatsappUrl(waUrl);
+        // One link per recipient, built while the form values are still here.
+        const links = INQUIRY_NUMBERS.map((n) => ({ ...n, url: buildWhatsAppUrl(n.wa) }));
+        setWhatsappLinks(links);
+        const waUrl = links[0].url;
 
         const cleanPhone = formData.phone.replace(/[\s\-+]/g, "");
         // keepalive, because the navigation below would otherwise cancel this
@@ -124,17 +125,29 @@ function Inquiry() {
                             Press send there and it reaches us straight away.
                         </p>
                         <p style={{ color: "var(--color-text-muted)", fontSize: "14px" }}>
-                            If it did not open, use the link below. We have your details either way.
+                            If it did not open, use a link below. We have your details either way.
                         </p>
-                        <a
-                            className="submit-btn"
-                            href={whatsappUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ marginTop: "30px", display: "inline-block", textDecoration: "none" }}
-                        >
-                            Open WhatsApp
-                        </a>
+                        {whatsappLinks.map((link, i) => (
+                            <a
+                                key={link.wa}
+                                className="submit-btn"
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    marginTop: i === 0 ? "30px" : "12px",
+                                    display: "inline-block",
+                                    textDecoration: "none",
+                                    // Only the first was opened for them; the rest are a
+                                    // second door, not a second instruction.
+                                    ...(i > 0
+                                        ? { background: "transparent", color: "var(--color-accent)" }
+                                        : {}),
+                                }}
+                            >
+                                {i === 0 ? "Open WhatsApp" : `Or message ${link.display}`}
+                            </a>
+                        ))}
                         <button
                             className="submit-btn"
                             onClick={() => setStatus("idle")}
