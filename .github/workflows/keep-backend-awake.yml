@@ -14,10 +14,12 @@ name: Keep Render services awake
 # > Actions > Variables) to a comma-separated list of service URLs, e.g.
 #   https://pk-sompura-api.onrender.com,https://the-privacy-toolkit.onrender.com
 #
-# GitHub does not promise punctual schedules -- runs are queued and can be late
-# under load, so a service may still nap occasionally. For a firm guarantee
-# point an external monitor (cron-job.org, UptimeRobot) at the same URLs
-# instead, and unset the variable here so the hours are not spent twice.
+# THIS DOES NOT WORK RELIABLY, and is kept only as a backup. Measured on
+# 19 Sep 2026: pushed 05:13 UTC, and by 12:58 UTC the */10 schedule should have
+# fired about 46 times. It had run once. GitHub treats schedules on free public
+# repositories as best effort and drops high-frequency crons under load. The
+# real pinger is an external monitor on the same window -- see DEPLOYMENT.md.
+# Keep both on the same hours or the pooled instance hours are spent twice.
 on:
   schedule:
     - cron: "30,40,50 4 * * *"      # 10:00-10:20 IST

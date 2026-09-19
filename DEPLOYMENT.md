@@ -102,24 +102,50 @@ Then go back to Render and set `ALLOWED_ORIGINS` to the Netlify origin.
 
 ## 3. Keeping the free tiers alive
 
-Two scheduled workflows, both harmless until configured:
+Render stops a free web service after **15 minutes** without traffic, and the
+next visitor waits while it restarts. That restart is not merely slow: Netlify
+gives up on a proxied request at around 30 seconds, so a cold start slower than
+that returns an error to the visitor rather than late data.
 
-- `.github/workflows/keepalive.yml` runs a real `SELECT` against Postgres
-  every three days. Supabase pauses a project after about seven days of
-  inactivity, and a REST ping does not reliably count. Needs the `DATABASE_URL`
-  repository **secret**.
-- `.github/workflows/keep-backend-awake.yml` pings each service every ten
-  minutes between 10:00 and 19:00 IST. Needs the `KEEPALIVE_URLS` repository
-  **variable**, comma-separated.
+### The pinger is cron-job.org, not GitHub Actions
+
+`.github/workflows/keep-backend-awake.yml` was the first attempt and it does
+not work. Measured on 19 Sep 2026: the workflow was pushed at 05:13 UTC, and by
+12:58 UTC its `*/10` schedule should have fired about 46 times. It had run
+**once**. GitHub treats scheduled workflows on free public repositories as
+best effort and drops high-frequency crons under load, so the backend was still
+cold at 18:28 IST -- inside the window -- and took 20 seconds to answer.
+
+Use an external monitor instead. Settings that match the intended window:
+
+| Field | Value |
+|---|---|
+| URL | `https://pk-sompura-api.onrender.com/` |
+| Timezone | Asia/Kolkata (so the hours below are IST, no UTC arithmetic) |
+| Minutes | `0,10,20,30,40,50` |
+| Hours | `10-19` |
+| Days | every day |
+
+One job per Render service. A ping that times out still counts as traffic and
+still wakes the service, so an occasional red mark in the monitor's history is
+not a failure of the keepalive.
 
 The 750 instance hours are pooled across the whole Render workspace, not per
 service. Two services awake nine hours a day costs about 562 a month; awake
 around the clock would need about 1,460 and both would be suspended partway
-through the month.
+through the month. Keep every pinger on the same window, or the hours are spent
+twice.
 
-GitHub does not promise punctual schedules. For a firm guarantee point an
-external monitor (cron-job.org, UptimeRobot) at the same URLs and leave
-`KEEPALIVE_URLS` unset, so the hours are not spent twice.
+`$7/month` per service on Render's Starter plan removes the sleep entirely and
+is worth weighing against a prospective client's first click hanging.
+
+### Supabase
+
+`.github/workflows/keepalive.yml` runs a real `SELECT` against Postgres every
+three days. Supabase pauses a project after about seven days of inactivity, and
+a REST ping does not reliably count. Needs the `DATABASE_URL` repository
+**secret**. Three days is far enough inside seven that GitHub's unreliable
+scheduling still leaves room to miss a run or two.
 
 ---
 
