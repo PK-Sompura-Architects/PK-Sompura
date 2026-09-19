@@ -70,6 +70,9 @@ if __name__ == "__main__":
     # either generated here or typed at a hidden prompt.
     if "--own" in sys.argv:
         import getpass
+        # Ctrl+V does not paste at a hidden prompt on Windows; it delivers a
+        # lone control byte, which the length check below then rejects.
+        print("Type it, or paste with a right-click. Ctrl+V will not work here.")
         pw = getpass.getpass("New admin password (hidden): ").strip()
         if len(pw) < 12:
             sys.exit("Too short. Use at least 12 characters.")
