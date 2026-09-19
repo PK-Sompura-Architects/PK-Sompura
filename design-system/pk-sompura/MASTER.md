@@ -5,9 +5,9 @@ Read this file before starting any redesign phase instead of re-deriving decisio
 
 ## Direction
 
-Bright architectural heritage. **Marigold & Peacock** on ivory — festival-bright
-and unmistakably Indian, with peacock teal supplying the contrast the previous
-all-gold scheme lacked. Type references carved temple inscription.
+Drawn from the company mark: its indigo figure, its sky-blue ground, and the
+carved stone of the temples themselves. Cool, quiet and architectural rather
+than festival-bright. Type references carved temple inscription.
 
 Stack: Vite + React 19, GSAP 3.14 (Flip/ScrollTrigger/SplitText all bundled),
 Lenis, three.js 0.183 + @react-three/fiber 9 + drei 10, ogl.
@@ -16,28 +16,42 @@ Lenis, three.js 0.183 + @react-three/fiber 9 + drei 10, ogl.
 
 | Role | Token | Hex | Rule |
 |---|---|---|---|
-| Background | `--color-bg` | `#FFFBF3` | Page ivory |
-| Surface | `--color-surface` | `#FDF4E3` | Sunken panels |
+| Background | `--color-bg` / `--c-paper` | `#F7FAFC` | Page |
+| Surface | `--color-surface` / `--c-sky-50` | `#E9F0F5` | Sunken panels |
 | Elevated | `--color-bg-elevated` | `#FFFFFF` | Cards |
-| Fill | `--color-fill` / `--c-marigold-500` | `#F59E0B` | **Decorative fill only** |
-| Accent text | `--color-gold` / `--c-marigold-700` | `#B45309` | Text-safe marigold |
-| Interactive | `--color-accent` / `--c-peacock-700` | `#0F766E` | Links, buttons |
-| Text | `--color-text` | `#1C1917` | Body/headings |
-| Muted | `--color-text-muted` | `#57534E` | Paragraphs |
+| Dark surface | `--c-navy-800` | `#1E2D40` | Dark cards, dock, footer |
+| Fill | `--color-fill` / `--c-sky-300` | `#90C8D8` | **Decorative fill only** |
+| Headline accent | `--color-primary` / `--c-navy-700` | `#283848` | Titles, eyebrows |
+| Interactive | `--color-accent` / `--c-slate-600` | `#4A637A` | Links, buttons |
+| Text | `--color-text` / `--c-navy-900` | `#16202E` | Body/headings |
+| Muted | `--color-text-muted` / `--c-slate-600` | `#4A637A` | Paragraphs |
+| On dark | `--color-primary-on-dark` / `--c-sky-200` | `#B4D8E4` | Accents on navy |
 
 ### Contrast rules (validated, WCAG AA)
 
-These are measured, not estimated. Do not violate them:
+Measured against the page background `#F7FAFC`, not estimated. Do not violate:
 
-- `#F59E0B` marigold-500 on ivory = **2.08:1** → never use for text. Fill only.
-- `#D97706` marigold-600 on ivory = **3.09:1** → large text (24px+) only.
-- `#B45309` marigold-700 on ivory = **4.87:1** → text-safe. This is why
-  `--color-gold` maps here and not to marigold-500.
-- `#0F766E` peacock-700 on ivory = **5.30:1** → text-safe.
-- `#0D9488` peacock-600 on ivory = **3.63:1** → large text / non-text only.
-- On a marigold-500 fill, use **stone `#1C1917`** text (8.14:1). White fails (2.15:1).
+- `#16202E` navy-900 = **15.65:1** → body text.
+- `#283848` navy-700 = **11.45:1** → headings, the primary accent.
+- `#4A637A` slate-600 = **5.97:1** → text-safe. Links and muted copy.
+- `#647484` slate-500 = **4.58:1** → text-safe, the lightest that is.
+- `#8AA0B5` slate-400 = **2.58:1** → never for text. Borders and icons only.
+- `#8A6E4D` sand-700 = **4.53:1** → text-safe warm accent.
+- `#C8A070` sand-500 = **2.30:1** → fill only.
+- `#90C8D8` sky-300 = fill only; on it, use navy-900 text (**8.94:1**).
+
+On the dark navy surfaces (`#1E2D40`): white is **13.96:1**, sky-200 is
+**9.23:1**, sand-300 is **8.70:1**. navy-700 disappears there, which is what
+`--color-primary-on-dark` exists to prevent.
 
 Re-run the validator after any palette change before shipping.
+
+### Naming
+
+The tokens were once `--color-gold*`, from a marigold palette. When the palette
+moved to indigo those names actively lied about their values, so they are now
+`--color-primary*`, named for the job rather than the colour. If the palette
+shifts again, the names still hold.
 
 ## Typography
 

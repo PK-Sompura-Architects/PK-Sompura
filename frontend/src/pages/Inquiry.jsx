@@ -91,7 +91,7 @@ function Inquiry() {
                 {status === "success" ? (
                     <div className="inquiry-success">
                         <div className="success-icon">🏛️</div>
-                        <h2 style={{ fontFamily: "var(--font-heading)", marginBottom: "12px", color: "var(--color-gold)" }}>
+                        <h2 style={{ fontFamily: "var(--font-heading)", marginBottom: "12px", color: "var(--color-primary)" }}>
                             Inquiry Received!
                         </h2>
                         <p style={{ color: "var(--color-text-muted)", marginBottom: "8px" }}>

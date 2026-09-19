@@ -1,7 +1,7 @@
 :root {
-  --purple-glow: rgba(245, 158, 11, 0.2); /* Adapted to Sompura Gold */
-  --border-color: rgba(245, 158, 11, 0.3);
-  --background-dark: #134E4A;
+  --purple-glow: rgba(144, 200, 216, 0.2); /* Adapted to Sompura Gold */
+  --border-color: rgba(144, 200, 216, 0.3);
+  --background-dark: #1E2D40;
 }
 
 .card-grid {
@@ -84,11 +84,11 @@
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--color-gold-on-dark);
+  color: var(--color-primary-on-dark);
   background: rgba(0, 0, 0, 0.6);
   padding: 4px 10px;
   border-radius: 4px;
-  border: 1px solid rgba(245, 158, 11, 0.45);
+  border: 1px solid rgba(144, 200, 216, 0.45);
 }
 
 .magic-bento-card__title,
@@ -162,8 +162,8 @@
   padding: 2px; /* Thinner elegant border */
   background: radial-gradient(
     var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-    rgba(245, 158, 11, calc(var(--glow-intensity) * 0.8)) 0%,
-    rgba(245, 158, 11, calc(var(--glow-intensity) * 0.4)) 30%,
+    rgba(144, 200, 216, calc(var(--glow-intensity) * 0.8)) 0%,
+    rgba(144, 200, 216, calc(var(--glow-intensity) * 0.4)) 30%,
     transparent 60%
   );
   border-radius: inherit;
@@ -203,7 +203,7 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: rgba(245, 158, 11, 0.2);
+  background: rgba(144, 200, 216, 0.2);
   border-radius: 50%;
   z-index: -1;
 }

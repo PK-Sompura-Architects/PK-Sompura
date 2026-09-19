@@ -1,6 +1,6 @@
 /* ============================================
    PK SOMPURA — GLOBAL DESIGN SYSTEM
-   Marigold & Peacock · bright architectural heritage
+   Indigo, sky and temple stone — drawn from the company mark
    Contrast-validated against WCAG AA (see MASTER.md)
    ============================================ */
 
@@ -8,58 +8,64 @@
    the font request behind this stylesheet and delay first paint. */
 
 :root {
-    /* ---- COLOR PRIMITIVES ---- */
-    --c-ivory:          #FFFBF3;
-    --c-ivory-sunken:   #FDF4E3;
+    /* ---- COLOR PRIMITIVES ----
+       Drawn from the logo (indigo mark, sky-blue ground) and the temple
+       stone in the reference design. Every value used for text is measured
+       against its background, not estimated; the ratios are in MASTER.md. */
+
+    --c-paper:          #F7FAFC;
     --c-white:          #FFFFFF;
 
-    --c-marigold-50:    #FEF6E7;
-    --c-marigold-100:   #FDEBC8;
-    --c-marigold-300:   #F8C566;
-    --c-marigold-500:   #F59E0B;   /* fill only — 2.08:1 on ivory, never use for text */
-    --c-marigold-600:   #D97706;   /* large text / non-text only */
-    --c-marigold-700:   #B45309;   /* text-safe on ivory (4.87:1) */
-    --c-marigold-900:   #78350F;
+    /* Ink — the logo's indigo, cooled toward the design's slate */
+    --c-navy-900:       #16202E;   /* body text, 15.65:1 on paper */
+    --c-navy-800:       #1E2D40;   /* dark surfaces */
+    --c-navy-700:       #283848;   /* the dark band in the reference */
+    --c-navy-600:       #34465A;
 
-    --c-peacock-50:     #ECFDF8;
-    --c-peacock-100:    #CCFBF1;
-    --c-peacock-300:    #5EEAD4;
-    --c-peacock-500:    #14B8A6;
-    --c-peacock-600:    #0D9488;   /* large text / non-text only */
-    --c-peacock-700:    #0F766E;   /* text-safe on ivory (5.30:1) */
-    --c-peacock-900:    #134E4A;
+    /* Slate — interactive */
+    --c-slate-600:      #4A637A;   /* text-safe on paper (5.97:1) */
+    --c-slate-500:      #647484;   /* text-safe on paper (4.58:1) */
+    --c-slate-400:      #8AA0B5;   /* non-text only (2.58:1) */
 
-    --c-stone-900:      #1C1917;
-    --c-stone-600:      #57534E;
-    --c-stone-500:      #78716C;
-    --c-stone-200:      #E7E0D5;
-    --c-stone-100:      #F2EDE4;
+    /* Sky — straight from the logo's ground */
+    --c-sky-300:        #90C8D8;
+    --c-sky-200:        #B4D8E4;
+    --c-sky-100:        #D8EAF2;
+    --c-sky-50:         #E9F0F5;
+
+    /* Sand — carved temple stone, and the saffron in the mark */
+    --c-sand-700:       #8A6E4D;   /* text-safe on paper (4.53:1) */
+    --c-sand-500:       #C8A070;   /* fill only (2.30:1) — never for text */
+    --c-sand-300:       #E0C9A8;   /* for dark surfaces (8.70:1 on navy-800) */
+
+    --c-border:         #DCE5EC;
 
     /* ---- SEMANTIC ---- */
-    --color-bg:            var(--c-ivory);
+    --color-bg:            var(--c-paper);
     --color-bg-elevated:   var(--c-white);
-    --color-surface:       var(--c-ivory-sunken);
-    --color-border:        var(--c-stone-200);
+    --color-surface:       var(--c-sky-50);
+    --color-border:        var(--c-border);
 
-    --color-text:          var(--c-stone-900);
-    --color-text-muted:    var(--c-stone-600);
-    --color-text-subtle:   var(--c-stone-500);
-    --color-text-dim:      rgba(28, 25, 23, 0.45);
+    --color-text:          var(--c-navy-900);
+    --color-text-muted:    var(--c-slate-600);
+    --color-text-subtle:   var(--c-slate-500);
+    --color-text-dim:      rgba(22, 32, 46, 0.45);
 
-    --color-accent:        var(--c-peacock-700);   /* interactive / links */
-    --color-accent-hover:  var(--c-peacock-900);
-    --color-fill:          var(--c-marigold-500);  /* decorative fills */
-    --color-on-fill:       var(--c-stone-900);     /* 8.14:1 on marigold-500 */
+    --color-accent:        var(--c-slate-600);   /* links */
+    --color-accent-hover:  var(--c-navy-800);
+    --color-fill:          var(--c-sky-300);     /* decorative fills */
+    --color-on-fill:       var(--c-navy-900);    /* 8.94:1 on sky-300 */
 
-    /* Legacy aliases — 51 components still reference --color-gold.
-       Mapped to marigold-700 so every existing usage is contrast-safe. */
-    --color-gold:          var(--c-marigold-700);
-    --color-gold-light:    var(--c-marigold-600);
-    --color-gold-dim:      rgba(245, 158, 11, 0.16);
+    /* The headline accent. Named for its job rather than its colour, which
+       is what made the previous "gold" tokens misleading once the palette
+       moved. 25 components reference these. */
+    --color-primary:         var(--c-navy-700);
+    --color-primary-soft:    var(--c-slate-600);
+    --color-primary-dim:     rgba(74, 99, 122, 0.16);
 
-    /* marigold-700 is tuned for ivory and goes muddy on the dark peacock
-       cards, so anything sitting on a dark surface uses this instead. */
-    --color-gold-on-dark:  var(--c-marigold-300);
+    /* navy-700 disappears against the dark cards, so anything sitting on a
+       dark surface uses this instead. */
+    --color-primary-on-dark: var(--c-sky-200);
 
     /* ---- TYPOGRAPHY ---- */
     --font-heading: 'Cinzel', 'Noto Serif Gujarati', 'Noto Serif Devanagari', Georgia, serif;
@@ -74,7 +80,7 @@
     --text-3xl:  clamp(2.25rem, 1.6rem + 3vw, 4rem);
     --text-4xl:  clamp(2.75rem, 1.7rem + 5vw, 6rem);
 
-    /* ---- SPACE (spacious scale) ---- */
+    /* ---- SPACE ---- */
     --space-2xs: 0.5rem;
     --space-xs:  0.75rem;
     --space-sm:  1.25rem;
@@ -93,15 +99,15 @@
     --radius-lg: 20px;
     --radius-xl: 32px;
 
-    /* ---- ELEVATION (warm-tinted, for depth) ---- */
-    --shadow-sm: 0 1px 2px rgba(120, 53, 15, 0.06),
-                 0 2px 6px rgba(120, 53, 15, 0.04);
-    --shadow-md: 0 4px 12px rgba(120, 53, 15, 0.08),
-                 0 12px 28px rgba(120, 53, 15, 0.06);
-    --shadow-lg: 0 12px 32px rgba(120, 53, 15, 0.10),
-                 0 32px 64px rgba(120, 53, 15, 0.08);
-    --shadow-glow: 0 0 0 1px rgba(245, 158, 11, 0.18),
-                   0 8px 32px rgba(245, 158, 11, 0.16);
+    /* ---- ELEVATION (cool-tinted, to sit under a blue palette) ---- */
+    --shadow-sm: 0 1px 2px rgba(22, 32, 46, 0.06),
+                 0 2px 6px rgba(22, 32, 46, 0.04);
+    --shadow-md: 0 4px 12px rgba(22, 32, 46, 0.08),
+                 0 12px 28px rgba(22, 32, 46, 0.06);
+    --shadow-lg: 0 12px 32px rgba(22, 32, 46, 0.10),
+                 0 32px 64px rgba(22, 32, 46, 0.08);
+    --shadow-glow: 0 0 0 1px rgba(144, 200, 216, 0.30),
+                   0 8px 32px rgba(74, 99, 122, 0.16);
 
     /* ---- 3D / DEPTH ---- */
     --perspective:      1200px;
@@ -159,7 +165,7 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
 }
 
-/* Ambient colour wash — marigold + peacock */
+/* Ambient colour wash — sky and stone */
 body::before,
 body::after {
     content: '';
@@ -177,14 +183,14 @@ body::before {
     top: -15%;
     left: -12%;
     opacity: 0.5;
-    background: radial-gradient(circle, rgba(245, 158, 11, 0.28) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(144, 200, 216, 0.38) 0%, transparent 70%);
 }
 
 body::after {
     bottom: -15%;
     right: -12%;
     opacity: 0.4;
-    background: radial-gradient(circle, rgba(13, 148, 136, 0.22) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(200, 160, 112, 0.20) 0%, transparent 70%);
     animation-delay: -12s;
 }
 
@@ -216,13 +222,13 @@ p {
     max-width: 68ch;
 }
 
-/* Eyebrow / kicker — the marigold accent lives here, not on headings */
+/* Eyebrow / kicker — the accent lives here, not on headings */
 .eyebrow {
     display: block;
     font-family: var(--font-body);
     font-size: var(--text-xs);
     font-weight: 500;
-    color: var(--color-gold);
+    color: var(--color-primary);
     letter-spacing: 0.18em;
     text-transform: uppercase;
 }
@@ -238,7 +244,7 @@ a:hover { color: var(--color-accent-hover); }
 
 /* --- FOCUS (never removed) --- */
 :focus-visible {
-    outline: 3px solid var(--c-peacock-600);
+    outline: 3px solid var(--c-slate-600);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
 }
@@ -264,10 +270,10 @@ a:hover { color: var(--color-accent-hover); }
 }
 
 /* Accent rule */
-.gold-line {
+.accent-line {
     width: 72px;
     height: 2px;
-    background: linear-gradient(90deg, var(--c-marigold-500), var(--c-peacock-500));
+    background: linear-gradient(90deg, var(--c-navy-700), var(--c-sky-300));
     border-radius: 2px;
     margin: var(--space-sm) 0;
 }
@@ -275,18 +281,18 @@ a:hover { color: var(--color-accent-hover); }
 /* Depth helper — opt-in 3D lift for cards */
 /* --- SCROLLBAR --- */
 ::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--c-ivory-sunken); }
+::-webkit-scrollbar-track { background: var(--c-sky-50); }
 ::-webkit-scrollbar-thumb {
-    background: var(--c-marigold-500);
-    border: 3px solid var(--c-ivory-sunken);
+    background: var(--c-slate-400);
+    border: 3px solid var(--c-sky-50);
     border-radius: 8px;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--c-marigold-600); }
+::-webkit-scrollbar-thumb:hover { background: var(--c-slate-600); }
 
 /* --- SELECTION --- */
 ::selection {
-    background: var(--c-marigold-300);
-    color: var(--c-stone-900);
+    background: var(--c-sky-200);
+    color: var(--c-navy-900);
 }
 
 /* --- REDUCED MOTION --- */

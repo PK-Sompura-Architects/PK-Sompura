@@ -4,8 +4,8 @@ import './MagicBento.css';
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-// Adapted to Sompura Gold (RGB for #B45309)
-const DEFAULT_GLOW_COLOR = '245, 158, 11';
+// The logo's sky blue, as an RGB triplet for rgba() interpolation
+const DEFAULT_GLOW_COLOR = '144, 200, 216';
 const MOBILE_BREAKPOINT = 768;
 
 const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
@@ -488,7 +488,7 @@ const MagicBento = ({
           const cardProps = {
             className: baseClassName,
             style: {
-              backgroundColor: '#134E4A', // Deep peacock base
+              backgroundColor: '#1E2D40', // Deep peacock base
               '--glow-color': glowColor
             }
           };

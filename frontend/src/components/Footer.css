@@ -3,7 +3,7 @@
     z-index: 2;
     margin-top: var(--space-2xl);
     padding: var(--space-xl) var(--content-padding) 140px; /* 140px clears the fixed dock */
-    background: var(--c-peacock-900);
+    background: var(--c-navy-800);
     color: rgba(255, 255, 255, 0.82);
 }
 
@@ -41,7 +41,7 @@
     font-size: var(--text-xs);
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-gold-on-dark);
+    color: var(--color-primary-on-dark);
     margin: 0;
 }
 
@@ -66,7 +66,7 @@
 
 .site-footer__links a:hover,
 .site-footer__contact a:hover {
-    color: var(--color-gold-on-dark);
+    color: var(--color-primary-on-dark);
 }
 
 .site-footer__legal {

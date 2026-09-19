@@ -52,7 +52,7 @@ export default function Projects() {
             <header className="projects-header">
                 <span className="eyebrow">Portfolio</span>
                 <h1>Sacred Monuments</h1>
-                <div className="gold-line" style={{ margin: 'var(--space-sm) auto' }} />
+                <div className="accent-line" style={{ margin: 'var(--space-sm) auto' }} />
             </header>
 
             {loading ? (
@@ -67,7 +67,7 @@ export default function Projects() {
                 <div className="projects-grid-wrap">
                     <MagicBento
                         items={bentoItems}
-                        glowColor="245, 158, 11"
+                        glowColor="144, 200, 216"
                         enableTilt={true}
                         enableStars={true}
                         onCardClick={(item) => setSelectedProject(item.rawData)}

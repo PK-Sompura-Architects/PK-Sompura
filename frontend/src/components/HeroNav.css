@@ -17,7 +17,7 @@
     background: linear-gradient(
         145deg,
         rgba(255, 255, 255, 0.92),
-        rgba(253, 244, 227, 0.78)
+        rgba(233, 240, 245, 0.78)
     );
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -38,7 +38,7 @@
 
 .hero-nav__card:hover,
 .hero-nav__card:focus-visible {
-    border-color: var(--c-marigold-300);
+    border-color: var(--c-sky-300);
     box-shadow: var(--shadow-lg);
 }
 
@@ -50,7 +50,7 @@
     opacity: 0;
     background: radial-gradient(
         320px circle at var(--gx, 50%) var(--gy, 50%),
-        rgba(245, 158, 11, 0.22),
+        rgba(144, 200, 216, 0.22),
         transparent 62%
     );
     transition: opacity var(--dur-base) var(--ease-smooth);
@@ -67,8 +67,8 @@
     width: 52px;
     height: 52px;
     border-radius: var(--radius-md);
-    background: var(--c-marigold-100);
-    color: var(--c-marigold-700);
+    background: var(--c-sky-100);
+    color: var(--c-navy-700);
     transform: translateZ(28px);
     transition: background var(--dur-base) var(--ease-smooth),
                 color var(--dur-base) var(--ease-smooth);
@@ -76,7 +76,7 @@
 
 .hero-nav__card:hover .hero-nav__icon,
 .hero-nav__card:focus-visible .hero-nav__icon {
-    background: var(--c-peacock-700);
+    background: var(--c-slate-600);
     color: #FFFFFF;
 }
 

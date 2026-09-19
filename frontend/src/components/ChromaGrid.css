@@ -32,14 +32,14 @@
   height: auto;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(245, 158, 11, 0.2); /* Dim Gold */
+  border: 1px solid rgba(144, 200, 216, 0.2); /* Dim Gold */
   transition: border-color 0.3s ease, transform 0.3s ease;
   background: var(--card-gradient);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
   --mouse-x: 50%;
   --mouse-y: 50%;
-  --spotlight-color: rgba(248, 197, 102, 0.15); /* Soft Gold Spotlight */
+  --spotlight-color: rgba(180, 216, 228, 0.18); /* soft sky spotlight */
 }
 
 .chroma-card:hover {
@@ -99,7 +99,7 @@
 }
 
 .chroma-info .role {
-  color: var(--color-gold);
+  color: var(--color-primary);
   font-family: var(--font-body);
   font-size: 12px;
   text-transform: uppercase;
@@ -142,7 +142,7 @@
 }
 
 .chroma-phone-num {
-  color: var(--color-gold);
+  color: var(--color-primary);
   font-family: var(--font-body);
   font-size: 13px;
   letter-spacing: 0.5px;

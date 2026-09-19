@@ -12,17 +12,17 @@
   --grain: none;
   --icon: none;
   --behind-gradient: none;
-  --behind-glow-color: rgba(19, 78, 74, 0.4); /* Deep Slate Glow */
+  --behind-glow-color: rgba(30, 45, 64, 0.4); /* Deep Slate Glow */
   --behind-glow-size: 35%;
   --inner-gradient: none;
   
-  /* Sompura Dark Gold Holographic Colors */
-  --sunpillar-1: #134E4A; 
-  --sunpillar-2: #0F766E;
-  --sunpillar-3: #B45309;
-  --sunpillar-4: #D97706;
-  --sunpillar-5: #F8C566;
-  --sunpillar-6: #134E4A;
+  /* Holographic sweep, keyed to the logo's indigo and sky */
+  --sunpillar-1: #1E2D40; 
+  --sunpillar-2: #4A637A;
+  --sunpillar-3: #283848;
+  --sunpillar-4: #8A6E4D;
+  --sunpillar-5: #B4D8E4;
+  --sunpillar-6: #1E2D40;
   --sunpillar-clr-1: var(--sunpillar-1);
   --sunpillar-clr-2: var(--sunpillar-2);
   --sunpillar-clr-3: var(--sunpillar-3);
@@ -68,10 +68,10 @@
   position: relative;
   background-blend-mode: color-dodge, normal, normal, normal;
   animation: glow-bg 12s linear infinite;
-  box-shadow: 0 20px 40px rgba(19, 78, 74, 0.2);
+  box-shadow: 0 20px 40px rgba(30, 45, 64, 0.2);
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   transform: translateZ(0) rotateX(0deg) rotateY(0deg);
-  background: rgba(19, 78, 74, 0.95); /* Deep peacock base */
+  background: rgba(30, 45, 64, 0.95); /* Deep peacock base */
   backface-visibility: hidden;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -149,7 +149,7 @@
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--color-gold-dim);
+  border: 2px solid var(--color-primary-dim);
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   margin-top: 20px;
 }
@@ -170,7 +170,7 @@
 .pc-details p {
   font-family: var(--font-body);
   font-size: 13px;
-  color: var(--c-marigold-300);
+  color: var(--c-sky-300);
   text-transform: uppercase;
   letter-spacing: 4px;
   margin: 0 0 15px 0;

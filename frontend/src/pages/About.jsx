@@ -39,7 +39,7 @@ function About() {
             </div>
 
             {loading ? (
-                <div style={{ color: "var(--color-gold)" }}>Loading Legacy...</div>
+                <div style={{ color: "var(--color-primary)" }}>Loading Legacy...</div>
             ) : lineage.length === 0 ? (
                 <p className="about-lineage-empty">
                     The family profiles are being prepared and will appear here shortly.

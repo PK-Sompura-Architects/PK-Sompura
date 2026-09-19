@@ -27,8 +27,8 @@ export default function LineageSection() {
         title: member.name,
         subtitle: member.role,
         phone: CONTACT_NUMBERS[index % CONTACT_NUMBERS.length],
-        borderColor: "var(--c-marigold-500)",
-        gradient: "linear-gradient(145deg, #0F766E, #134E4A)",
+        borderColor: "var(--c-sky-300)",
+        gradient: "linear-gradient(145deg, #4A637A, #1E2D40)",
     }));
 
     // Nothing to show yet: render nothing at all rather than a heading floating

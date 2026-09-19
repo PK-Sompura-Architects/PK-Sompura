@@ -55,16 +55,16 @@
 
 .dashboard-bg::before {
     background-image:
-        radial-gradient(38% 46% at 22% 30%, rgba(245, 158, 11, 0.50), transparent 70%),
-        radial-gradient(34% 40% at 74% 26%, rgba(248, 197, 102, 0.42), transparent 72%),
-        radial-gradient(42% 44% at 60% 72%, rgba(234, 140, 30, 0.34), transparent 70%);
+        radial-gradient(38% 46% at 22% 30%, rgba(144, 200, 216, 0.52), transparent 70%),
+        radial-gradient(34% 40% at 74% 26%, rgba(180, 216, 228, 0.46), transparent 72%),
+        radial-gradient(42% 44% at 60% 72%, rgba(200, 160, 112, 0.26), transparent 70%);
     animation: auroraDriftA 26s ease-in-out infinite alternate;
 }
 
 .dashboard-bg::after {
     background-image:
-        radial-gradient(34% 38% at 78% 62%, rgba(13, 148, 136, 0.28), transparent 70%),
-        radial-gradient(30% 34% at 30% 74%, rgba(94, 234, 212, 0.24), transparent 72%);
+        radial-gradient(34% 38% at 78% 62%, rgba(74, 99, 122, 0.22), transparent 70%),
+        radial-gradient(30% 34% at 30% 74%, rgba(216, 234, 242, 0.40), transparent 72%);
     animation: auroraDriftB 34s ease-in-out infinite alternate;
 }
 
@@ -106,7 +106,7 @@
 
 .sompura-title {
     font-family: 'Cinzel Decorative', var(--font-heading);
-    color: var(--color-gold);
+    color: var(--color-primary);
     font-size: clamp(40px, 6vw, 90px);
     font-weight: 700;
     text-transform: uppercase;
@@ -162,7 +162,7 @@
 }
 
 .dashboard-scroll-indicator:hover .scroll-text {
-    color: var(--color-gold);
+    color: var(--color-primary);
 }
 
 .scroll-chevron-wrapper {
@@ -175,8 +175,8 @@
     position: absolute;
     width: 14px;
     height: 14px;
-    border-left: 2px solid var(--color-gold);
-    border-bottom: 2px solid var(--color-gold);
+    border-left: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
     transform: rotate(-45deg);
     left: 50%;
     margin-left: -7px;

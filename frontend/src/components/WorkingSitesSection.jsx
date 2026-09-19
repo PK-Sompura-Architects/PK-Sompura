@@ -119,7 +119,7 @@ export default function WorkingSitesSection() {
                         Precision craftsmanship powered by modern machinery and centuries of tradition
                     </p>
                 </ScrollReveal>
-                <div className="gold-line" style={{ margin: "24px auto" }} />
+                <div className="accent-line" style={{ margin: "24px auto" }} />
             </div>
 
             {/* Stats Bar */}

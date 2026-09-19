@@ -32,7 +32,7 @@ export default function DashboardGalleries() {
             <div className="max-w-7xl mx-auto px-4">
                 <MagicBento 
                     items={bentoItems}
-                    glowColor="245, 158, 11" 
+                    glowColor="144, 200, 216" 
                     enableTilt={true}
                     onCardClick={(item) => setSelectedGallery(item.rawData)}
                 />
