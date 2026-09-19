@@ -72,8 +72,8 @@
     --color-error:           #C53030;
 
     /* ---- TYPOGRAPHY ---- */
-    --font-heading: 'Cinzel', 'Noto Serif Gujarati', 'Noto Serif Devanagari', Georgia, serif;
-    --font-body:    'Outfit', 'Noto Serif Gujarati', 'Noto Serif Devanagari', system-ui, sans-serif;
+    --font-heading: 'Cinzel', Georgia, serif;
+    --font-body:    'Outfit', system-ui, sans-serif;
 
     --text-xs:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
     --text-sm:   clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);

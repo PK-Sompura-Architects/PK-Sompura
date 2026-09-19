@@ -64,7 +64,3 @@ def get_milestones(
     )
     return {"lang": lang, "projects": [_serialise(p, lang) for p in projects]}
 
-
-@router.get("/languages")
-def get_languages():
-    return {"languages": list(SUPPORTED_LANGS)}

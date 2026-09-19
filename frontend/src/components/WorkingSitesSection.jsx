@@ -1,4 +1,3 @@
-import { useRef, useEffect, useState } from 'react';
 import { Cpu } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
 import './WorkingSitesSection.css';
@@ -24,58 +23,9 @@ const STATS = [
     { icon: <Cpu size={22} strokeWidth={1.5} />, value: "5", label: "CNC Machines" },
 ];
 
-// Simple counter animation hook
-function useCounter(target, duration = 1500, active = false) {
-    const [count, setCount] = useState("0");
-
-    // Parsed during render, not inside the effect: a target with no digits has
-    // nothing to count up to, so it is returned as-is below rather than being
-    // written to state from an effect and costing an extra render.
-    const numericPart = parseFloat(target.replace(/[^\d.]/g, ''));
-    const suffix = target.replace(/[\d.]/g, '');
-
-    useEffect(() => {
-        if (!active || isNaN(numericPart)) return;
-
-        const step = numericPart / (duration / 16);
-        let current = 0;
-        const timer = setInterval(() => {
-            current = Math.min(current + step, numericPart);
-            setCount(`${Math.floor(current)}${suffix}`);
-            if (current >= numericPart) clearInterval(timer);
-        }, 16);
-        return () => clearInterval(timer);
-    }, [active, duration, numericPart, suffix]);
-
-    return isNaN(numericPart) ? target : count;
-}
-
-function StatCard({ stat, active }) {
-    const count = useCounter(stat.value, 1200, active);
-    return (
-        <div className="wss-stat-card">
-            <span className="wss-stat-icon">{stat.icon}</span>
-            <span className="wss-stat-value">{count}</span>
-            <span className="wss-stat-label">{stat.label}</span>
-        </div>
-    );
-}
-
 export default function WorkingSitesSection() {
-    const sectionRef = useRef(null);
-    const [statsActive, setStatsActive] = useState(false);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => { if (entry.isIntersecting) setStatsActive(true); },
-            { threshold: 0.2 }
-        );
-        if (sectionRef.current) observer.observe(sectionRef.current);
-        return () => observer.disconnect();
-    }, []);
-
     return (
-        <section className="wss-section" ref={sectionRef}>
+        <section className="wss-section">
             {/* Section Header */}
             <div className="wss-header">
                 <ScrollReveal baseOpacity={0} blurStrength={10} baseRotation={2}>
@@ -94,8 +44,12 @@ export default function WorkingSitesSection() {
             {/* Stats Bar */}
             {STATS.length > 0 && (
                 <div className="wss-stats-bar">
-                    {STATS.map((stat, i) => (
-                        <StatCard key={i} stat={stat} active={statsActive} />
+                    {STATS.map((stat) => (
+                        <div className="wss-stat-card" key={stat.label}>
+                            <span className="wss-stat-icon">{stat.icon}</span>
+                            <span className="wss-stat-value">{stat.value}</span>
+                            <span className="wss-stat-label">{stat.label}</span>
+                        </div>
                     ))}
                 </div>
             )}

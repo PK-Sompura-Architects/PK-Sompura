@@ -1,43 +1,39 @@
 import { useState, useEffect } from 'react';
 import MagicBento from '../components/MagicBento';
 import GalleryModal from '../components/GalleryModal';
-import { useLanguage } from '../context/LanguageContext';
 import './Projects.css';
 import { API_URL } from "../apiBase";
 
 
 export default function Projects() {
-    const { language } = useLanguage();
-    // One piece of state carrying the language its contents belong to, so
-    // `loading` is derived rather than set from inside the effect. Switching
-    // language now shows the loading state on the very render that changes it,
-    // instead of one render later.
-    const [result, setResult] = useState({ lang: null, projects: [], error: false });
+    // One object, so `loading` is derived rather than set from inside the
+    // effect -- a null `projects` means the fetch has not landed yet.
+    const [result, setResult] = useState({ projects: null, error: false });
     const [selectedProject, setSelectedProject] = useState(null);
 
-    const loading = result.lang !== language;
+    const loading = result.projects === null;
     const { projects, error } = result;
 
     useEffect(() => {
-        // The API resolves translations server-side, so switching language
-        // refetches rather than shipping all three up front.
         const controller = new AbortController();
 
-        fetch(`${API_URL}/api/projects/?lang=${language}`, { signal: controller.signal })
+        fetch(`${API_URL}/api/projects/`, { signal: controller.signal })
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();
             })
-            .then(data => setResult({ lang: language, projects: data.projects || [], error: false }))
+            .then(data => setResult({ projects: data.projects || [], error: false }))
             .catch(err => {
                 if (err.name === 'AbortError') return;
-                setResult({ lang: language, projects: [], error: true });
+                setResult({ projects: [], error: true });
             });
 
         return () => controller.abort();
-    }, [language]);
+    }, []);
 
-    const bentoItems = projects.map(p => ({
+    // `projects` is null until the fetch lands, and this runs on that first
+    // render too.
+    const bentoItems = (projects ?? []).map(p => ({
         id: p.id,
         title: p.name,
         description: [p.city, p.state].filter(Boolean).join(' • '),

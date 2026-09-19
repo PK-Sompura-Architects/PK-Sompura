@@ -61,8 +61,11 @@ shifts again, the names still hold.
 - Headings — **Cinzel** (`--font-heading`), weight 500–600, tracking `-0.015em`
 - Display — **Cinzel Decorative** 700, hero wordmark only
 - Body — **Outfit** (`--font-body`), weight 300, line-height 1.65
-- Indic — **Noto Serif Gujarati / Devanagari** must stay in both stacks;
-  the site has a `LanguageContext` and drops to these for gu/hi text
+- **English only.** The language toggle was removed, so the Noto Serif
+  Gujarati and Devanagari webfonts went with it -- they were downloaded on
+  every visit to render text no page asked for. The `name_gu`/`name_hi`
+  columns and the API's `?lang=` parameter were kept: dropping columns is
+  irreversible, and they are the way back if the decision changes.
 
 Loaded via `<link>` in `index.html`, **not** a CSS `@import` (an `@import`
 serializes the font request behind the stylesheet and delays first paint).

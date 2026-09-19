@@ -7,7 +7,6 @@ import "lenis/dist/lenis.css";
 import Preloader from "./components/Preloader";
 import Dock from "./components/Dock";
 import Footer from "./components/Footer";
-import { LanguageProvider } from "./context/LanguageProvider";
 
 // Pages — split per route so a visitor only downloads the one they open.
 // /admin is intentionally absent: it is served by the FastAPI admin panel,
@@ -97,11 +96,9 @@ function AppContent() {
 
 function App() {
     return (
-        <LanguageProvider>
-            <Router>
-                <AppContent />
-            </Router>
-        </LanguageProvider>
+        <Router>
+            <AppContent />
+        </Router>
     );
 }
 
