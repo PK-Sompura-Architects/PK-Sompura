@@ -16,6 +16,7 @@ env file does not hand over the password itself.
 import base64
 import hashlib
 import secrets
+import pathlib
 import sys
 
 # ~64MB of memory per verification. High enough to make bulk guessing
@@ -65,6 +66,42 @@ def verify_password(password: str, encoded: str) -> bool:
 
 
 if __name__ == "__main__":
-    pw = sys.argv[1] if len(sys.argv) > 1 else secrets.token_urlsafe(18)
-    print("password:", pw)
-    print("ADMIN_PASSWORD_HASH=" + hash_password(pw))
+    # A password passed as an argument ends up in shell history, so it is
+    # either generated here or typed at a hidden prompt.
+    if "--own" in sys.argv:
+        import getpass
+        pw = getpass.getpass("New admin password (hidden): ").strip()
+        if len(pw) < 12:
+            sys.exit("Too short. Use at least 12 characters.")
+    else:
+        pw = secrets.token_urlsafe(18)
+
+    digest = hash_password(pw)
+    assert verify_password(pw, digest), "hash did not verify"
+
+    print()
+    print("  Password - save this in your password manager now:")
+    print()
+    print("      " + pw)
+    print()
+    print("  Put this line in Render > Environment:")
+    print()
+    print("      ADMIN_PASSWORD_HASH=" + digest)
+    print()
+
+    env = pathlib.Path(__file__).with_name(".env")
+    if "--set" in sys.argv and env.exists():
+        lines, done = [], False
+        for line in env.read_text(encoding="utf-8").splitlines():
+            if line.partition("=")[0].strip() == "ADMIN_PASSWORD_HASH":
+                lines.append("ADMIN_PASSWORD_HASH=" + digest)
+                done = True
+            else:
+                lines.append(line)
+        if not done:
+            lines.append("ADMIN_PASSWORD_HASH=" + digest)
+        env.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        print("  Also written to backend/.env for local use.")
+    else:
+        print("  (Add --set to also update backend/.env for local use.)")
+    print()
