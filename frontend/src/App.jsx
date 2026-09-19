@@ -16,6 +16,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Projects = lazy(() => import("./pages/Projects"));
 const About = lazy(() => import("./pages/About"));
 const Inquiry = lazy(() => import("./pages/Inquiry"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 import "./global.css";
 
@@ -81,6 +82,10 @@ function AppContent() {
                             <Route path="/projects" element={<Projects />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/inquiry" element={<Inquiry />} />
+                            {/* Without this, a mistyped or stale URL rendered
+                                the header and footer around nothing, with no
+                                sign that the page did not exist. */}
+                            <Route path="*" element={<NotFound />} />
                         </Routes>
                         <Footer />
                     </Suspense>
