@@ -1,92 +1,142 @@
 # Deployment
 
 Three pieces: a static front end, a FastAPI back end, and Supabase (Postgres
-plus image storage). All three have free tiers, and both app pieces redeploy
-on push to `main`.
+plus image storage). All have free tiers, and both app pieces redeploy on push
+to `main`.
 
 | Piece | Host | Free tier | Auto-deploy |
 |---|---|---|---|
 | Front end | **Netlify** | 100 GB bandwidth/mo, always on | on push to `main` |
-| Back end | **Render** | 750 instance-hours/mo, sleeps after 15 min idle | on push to `main` |
+| Back end | **Render** | 750 instance-hours/mo *pooled per workspace*, sleeps after 15 min idle | on push to `main` |
 | Database + images | **Supabase** | 500 MB DB, 1 GB storage, pauses after ~7 days idle | n/a |
 
-Netlify and Vercel are interchangeable for the front end; `vercel.json` is kept
-so either works. Netlify is assumed below because `netlify.toml` also proxies
-the API, which avoids CORS entirely.
+`netlify.toml` proxies `/api/*` and `/admin/*` to Render, so the browser only
+ever talks to one origin. That avoids CORS entirely and keeps the admin
+session cookie same-origin.
 
 ---
 
-## 1. Back end — Render
+## 0. Before anything is public
 
-1. dashboard.render.com → **New** → **Blueprint** → pick this repository.
-   Render reads `render.yaml` and creates the service.
-2. Set every variable marked `sync: false` under **Environment**:
+Set the admin password. Until this is done the panel is reachable by anyone
+who finds the URL, with full write access to every record.
 
-   | Variable | Where it comes from |
-   |---|---|
-   | `DATABASE_URL` | Supabase → Connect → **Session pooler** URI. Must begin `postgresql://`, and any special character in the password must be percent-encoded (`@` → `%40`). |
-   | `ADMIN_USERNAME` | your choice |
-   | `ADMIN_PASSWORD_HASH` | `python -m backend.security` — store the printed password in a password manager, put only the hash here |
-   | `SESSION_SECRET` | `python -c "import secrets; print(secrets.token_urlsafe(32))"` |
-   | `ALLOWED_ORIGINS` | your Netlify URL, e.g. `https://pk-sompura.netlify.app` |
-   | `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` | Supabase → Project Settings → API keys. Use **service_role**, not anon: the storage buckets have no write policy, so anon uploads are rejected. |
-   | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | BotFather, if you want inquiry notifications |
+```bash
+python -m backend.security --own --set
+```
 
-   `SESSION_SECRET` must be set explicitly. Left unset the app generates a
-   random one per process, so admin sessions drop on every restart.
-
-3. Note the service URL, e.g. `https://pk-sompura-api.onrender.com`.
-
-## 2. Front end — Netlify
-
-1. app.netlify.com → **Add new site** → **Import an existing project** → this repo.
-2. **Base directory** `frontend`. Build command and publish directory come from
-   `netlify.toml`.
-3. Edit `frontend/netlify.toml` and replace the three
-   `https://pk-sompura-api.onrender.com` hosts with your real Render URL, then
-   push. Those rules proxy `/api/*` and `/admin/*` to the back end through this
-   origin, so the browser makes no cross-origin request.
-4. Leave `VITE_API_BASE_URL` unset. Empty means same-origin, which is what the
-   proxy provides.
-
-## 3. GitHub secrets
-
-Repository → Settings → Secrets and variables → Actions:
-
-- `DATABASE_URL` — same value as on Render. Used by the keep-alive workflow.
+Type the password; Ctrl+V does not paste at a hidden prompt on Windows. It
+writes the hash to `backend/.env` and prints the line for Render. Save the
+password in a password manager -- only the scrypt hash is stored, and it
+cannot be reversed.
 
 ---
 
-## Keeping things awake
+## 1. Back end -- Render
 
-**Supabase** pauses a free project after roughly 7 days without activity, and
-the site goes down until someone restores it by hand.
-`.github/workflows/keepalive.yml` runs a real `SELECT` every 3 days, which is
-what actually resets that timer — merely requesting the REST endpoint is not
-reliable. Check it under the Actions tab after the first run.
+**New + > Blueprint** (not "Web Service"; `render.yaml` already declares the
+runtime, build and start commands, health check and region). Connect the
+repository and apply.
 
-**Render** free services sleep after 15 minutes idle and take roughly 50
-seconds to wake, so the first visitor after a quiet spell waits. Options:
+To deploy from an organisation the Render GitHub App has to be installed on
+it: on the repository picker use **Configure account**, choose the org, and
+grant access to this repository. An existing personal connection is unaffected.
 
-- Accept it. Simplest, and fine for a low-traffic brochure site.
-- Ping `/` every 10 minutes from a free external monitor such as
-  UptimeRobot or cron-job.org. Do **not** do this from GitHub Actions: at that
-  frequency it burns Actions minutes for no reason, and scheduled runs are
-  throttled under load anyway. 750 instance-hours/month is enough to keep one
-  service up continuously.
-- Upgrade to Render's paid tier.
+### Environment variables
+
+Every secret is marked `sync: false` in `render.yaml`, so none of them live in
+the repository. Set them under **Environment**, without quotes:
+
+| Key | Value |
+|---|---|
+| `DATABASE_URL` | Supabase session-pooler URI. Must start `postgresql://` and have any special characters in the password percent-encoded |
+| `SUPABASE_URL` | `https://<project-ref>.supabase.co` |
+| `SUPABASE_SERVICE_KEY` | the secret key, not the publishable one -- storage writes are rejected without it |
+| `ADMIN_USERNAME` | admin login name |
+| `ADMIN_PASSWORD_HASH` | from step 0, the part after `ADMIN_PASSWORD_HASH=` |
+| `SESSION_SECRET` | `python -c "import secrets; print(secrets.token_urlsafe(32))"` |
+| `SESSION_HTTPS_ONLY` | `true` (already set in `render.yaml`) |
+| `ALLOWED_ORIGINS` | the Netlify origin, once it exists. Never `*` |
+
+`SESSION_SECRET` is not optional. Unset, the app falls back to a random value
+per process, so every restart invalidates every admin session.
+
+### Verify before moving on
+
+```
+https://<service>.onrender.com/              -> {"message":"PK Sompura Backend API is running"}
+https://<service>.onrender.com/api/projects/ -> the project list, NOT []
+```
+
+An empty list means `DATABASE_URL` is not reaching the app. The service now
+refuses to start in that case rather than silently serving an empty site from
+a fresh SQLite file, so check the deploy log for the `DATABASE_URL is not set`
+error.
 
 ---
 
-## Before going live
+## 2. Front end -- Netlify
 
-- [ ] `ADMIN_PASSWORD_HASH` set on Render, and the password saved somewhere safe
-- [ ] `SESSION_SECRET` set explicitly, not left to the random fallback
-- [ ] `SESSION_HTTPS_ONLY=true` (already in `render.yaml`)
-- [ ] `ALLOWED_ORIGINS` lists only your real front-end origin, never `*`
-- [ ] `netlify.toml` points at the real Render URL
-- [ ] Row Level Security on for every Supabase table — it is currently enabled
-      with no policies, which denies anon-key access while the back end, which
-      connects directly to Postgres, is unaffected
-- [ ] No secret in any `VITE_*` variable. Vite inlines those into the bundle in
-      plain text; CI fails the build if it spots one.
+**Add new site > Import an existing project** > GitHub > this repository.
+
+| Setting | Value |
+|---|---|
+| Base directory | `frontend` |
+| Build command | `npm run build` |
+| Publish directory | `frontend/dist` |
+
+The base directory matters: without it Netlify runs the build at the
+repository root, where there is no `package.json`.
+
+Leave `VITE_API_BASE_URL` **unset**. `VITE_*` values are inlined at build time
+and the code falls back to a relative base in production, which is what the
+proxy in `netlify.toml` expects. Setting it to the Render URL would work but
+reintroduces cross-origin requests and breaks the admin cookie.
+
+If the Render service is not named `pk-sompura-api`, update the three redirect
+targets in `frontend/netlify.toml` to match.
+
+Then go back to Render and set `ALLOWED_ORIGINS` to the Netlify origin.
+
+---
+
+## 3. Keeping the free tiers alive
+
+Two scheduled workflows, both harmless until configured:
+
+- `.github/workflows/keepalive.yml` runs a real `SELECT` against Postgres
+  every three days. Supabase pauses a project after about seven days of
+  inactivity, and a REST ping does not reliably count. Needs the `DATABASE_URL`
+  repository **secret**.
+- `.github/workflows/keep-backend-awake.yml` pings each service every ten
+  minutes between 10:00 and 19:00 IST. Needs the `KEEPALIVE_URLS` repository
+  **variable**, comma-separated.
+
+The 750 instance hours are pooled across the whole Render workspace, not per
+service. Two services awake nine hours a day costs about 562 a month; awake
+around the clock would need about 1,460 and both would be suspended partway
+through the month.
+
+GitHub does not promise punctual schedules. For a firm guarantee point an
+external monitor (cron-job.org, UptimeRobot) at the same URLs and leave
+`KEEPALIVE_URLS` unset, so the hours are not spent twice.
+
+---
+
+## 4. Custom domain
+
+Buy the domain only -- the hosting upsells are for a service Netlify already
+provides free.
+
+Add it in **Netlify > Domain management**, point the registrar's nameservers
+or records at Netlify as instructed there, and let Netlify issue the
+certificate. The domain points at Netlify alone; the API and admin panel
+continue to arrive through the proxy on the same hostname.
+
+---
+
+## Deploying afterwards
+
+Push to `main`. Netlify and Render both rebuild on their own. Environment
+variables are not in the repository, so changing one means editing it in the
+dashboard, which triggers its own redeploy.
