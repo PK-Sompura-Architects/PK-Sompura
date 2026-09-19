@@ -28,6 +28,10 @@ class LineageMember(Base):
     role = Column(String, nullable=False)
     image_url = Column(String, nullable=True)
     rank = Column(Integer, default=1)
+    # The site used to hand out numbers from a hardcoded list by list
+    # position, so the card showed whichever number happened to land on that
+    # index. The number belongs to the person, so it is stored with them.
+    phone = Column(String, nullable=True)
 
     def __str__(self):
         return f"{self.rank}. {self.name}"
@@ -102,8 +106,12 @@ class TempleImage(Base):
     temple = relationship("TempleProject", back_populates="images")
 
     def __str__(self):
-        label = self.temple.__str__() if self.temple else "Unassigned"
-        return f"{'Cutout' if self.is_cutout else 'Image'} -> {label}"
+        # Only columns already loaded on this row. Reaching through .temple
+        # lazy loads, and the admin renders its templates after the session
+        # has closed, so that raised DetachedInstanceError and 500'd the
+        # temple list and every page that embeds an image label.
+        kind = "Cutout" if self.is_cutout else "Image"
+        return f"{kind} #{self.id}" if self.temple_id else f"{kind} (unassigned)"
 
 
 class DashboardGallery(Base):
@@ -132,8 +140,9 @@ class GalleryImage(Base):
     gallery = relationship("DashboardGallery", back_populates="images")
 
     def __str__(self):
+        # Same reason as TempleImage.__str__: no relationship traversal here.
         if self.gallery_id is not None:
-            return f"Gallery Image -> {self.gallery.title if self.gallery else 'Gallery'}"
+            return f"Gallery Image #{self.id}"
         return "Unassigned Image"
 
 

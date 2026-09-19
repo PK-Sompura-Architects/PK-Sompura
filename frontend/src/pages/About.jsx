@@ -11,7 +11,7 @@ function About() {
     useEffect(() => {
         const fetchLineage = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/lineage`);
+                const response = await fetch(`${API_URL}/api/lineage/`);
                 const data = await response.json();
                 setLineage(data);
             } catch (error) {

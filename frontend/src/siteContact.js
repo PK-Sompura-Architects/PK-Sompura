@@ -13,6 +13,9 @@ export const CONTACT = {
 };
 
 // Numbers shown on the individual lineage cards.
+// Kept as the record of the office numbers. The lineage cards no longer
+// read this -- a card shows the number stored on that person in the admin
+// panel, because this list has no way of saying whose number is whose.
 export const CONTACT_NUMBERS = [
     "9227866635",
     "9227866634",

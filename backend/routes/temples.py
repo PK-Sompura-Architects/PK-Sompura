@@ -24,6 +24,7 @@ def _serialise(project: TempleProject, lang: str) -> dict:
     }
 
 
+@router.get("")
 @router.get("/")
 def get_projects(
     lang: str = Query("en", pattern="^(en|gu|hi)$"),

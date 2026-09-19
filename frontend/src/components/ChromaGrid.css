@@ -99,7 +99,10 @@
 }
 
 .chroma-info .role {
-  color: var(--color-primary);
+  /* navy-700 used to sit here, on a navy card: 1.16:1, invisible. sky-100
+     clears AA (5.06:1) even at the light end of the card gradient, where
+     sky-200 would only reach 4.14:1. */
+  color: var(--c-sky-100);
   font-family: var(--font-body);
   font-size: 12px;
   text-transform: uppercase;
@@ -142,7 +145,7 @@
 }
 
 .chroma-phone-num {
-  color: var(--color-primary);
+  color: var(--c-sky-100);
   font-family: var(--font-body);
   font-size: 13px;
   letter-spacing: 0.5px;

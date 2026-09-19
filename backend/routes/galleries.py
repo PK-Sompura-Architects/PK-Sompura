@@ -5,6 +5,7 @@ from backend.models import DashboardGallery
 
 router = APIRouter()
 
+@router.get("")
 @router.get("/")
 def get_galleries(db: Session = Depends(get_db)):
     galleries = db.query(DashboardGallery).all()

@@ -167,9 +167,9 @@ async def upload_to_supabase(file, bucket_name: str) -> str:
 # --- ADMIN VIEWS ---
 
 class LineageMemberAdmin(ModelView, model=LineageMember):
-    column_list = ["id", "rank", "name", "role"]
+    column_list = ["id", "rank", "name", "role", "phone"]
     column_sortable_list = ["rank", "name"]
-    form_columns = ["rank", "name", "role", "image_url"]
+    form_columns = ["rank", "name", "role", "phone", "image_url"]
     icon = "fa-solid fa-users"
 
     column_formatters = {

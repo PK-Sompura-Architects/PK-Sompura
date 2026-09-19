@@ -44,6 +44,7 @@ def _format(payload: ContactMessage) -> str:
     return "\n".join(lines)
 
 
+@router.post("")
 @router.post("/")
 async def submit_contact(payload: ContactMessage):
     """

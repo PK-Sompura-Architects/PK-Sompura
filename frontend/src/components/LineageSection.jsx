@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ChromaGrid from './ChromaGrid';
 import ScrollReveal from "./ScrollReveal";
-import { CONTACT_NUMBERS } from "../siteContact";
 import { API_URL } from "../apiBase";
 
 export default function LineageSection() {
@@ -21,12 +20,14 @@ export default function LineageSection() {
             });
     }, []);
 
-    // Map each member to a ChromaGrid item, attaching a contact number
-    const gridItems = members.map((member, index) => ({
+    // Map each member to a ChromaGrid item
+    const gridItems = members.map((member) => ({
         image: member.image_url || "/placeholder.jpg",
         title: member.name,
         subtitle: member.role,
-        phone: CONTACT_NUMBERS[index % CONTACT_NUMBERS.length],
+        // Blank until someone sets it in the admin panel. The card hides the
+        // button rather than showing a number that is not this person's.
+        phone: member.phone || null,
         borderColor: "var(--c-sky-300)",
         gradient: "linear-gradient(145deg, #4A637A, #1E2D40)",
     }));
