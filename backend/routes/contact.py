@@ -3,8 +3,12 @@ from pathlib import Path
 
 import httpx
 from dotenv import load_dotenv
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+
+from backend.database import get_db
+from backend.models import ContactSubmission
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 
@@ -46,38 +50,42 @@ def _format(payload: ContactMessage) -> str:
 
 @router.post("")
 @router.post("/")
-async def submit_contact(payload: ContactMessage):
+async def submit_contact(payload: ContactMessage, db: Session = Depends(get_db)):
     """
-    Relays an inquiry to Telegram from the server.
+    Stores an inquiry, then tries to announce it on Telegram.
 
-    The browser must never hold the bot token: anything shipped to the client
-    is readable, and a leaked token lets anyone post as the bot or read its
-    chats. The front end posts here instead.
+    The store comes first and is the only thing that can fail the request.
+    This used to relay to Telegram and nothing else, so an unset bot token
+    returned 503 and the inquiry was gone -- and the admin panel's Inquiries
+    page, which has a table waiting for exactly these rows, stayed empty
+    however many people wrote in.
     """
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-        # Fail loudly rather than pretend, so a real enquiry is never
-        # silently dropped without the sender knowing.
-        raise HTTPException(
-            status_code=503,
-            detail="Inquiry delivery is not configured. Please call or email instead.",
-        )
+    row = ContactSubmission(
+        name=payload.name,
+        email=payload.email or None,
+        phone=payload.phone or None,
+        temple_type=payload.temple_type or None,
+        message=payload.message or None,
+    )
+    db.add(row)
+    db.commit()
 
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            response = await client.post(
-                url,
-                json={
-                    "chat_id": TELEGRAM_CHAT_ID,
-                    "text": _format(payload),
-                    "parse_mode": "Markdown",
-                },
-            )
-        response.raise_for_status()
-    except httpx.HTTPError as exc:
-        raise HTTPException(
-            status_code=502,
-            detail="Could not deliver the inquiry. Please try again shortly.",
-        ) from exc
+    if TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID:
+        # Best effort. The inquiry is already saved, so a Telegram outage must
+        # not be reported to the visitor as a failure to send.
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+        try:
+            async with httpx.AsyncClient(timeout=10) as client:
+                response = await client.post(
+                    url,
+                    json={
+                        "chat_id": TELEGRAM_CHAT_ID,
+                        "text": _format(payload),
+                        "parse_mode": "Markdown",
+                    },
+                )
+            response.raise_for_status()
+        except httpx.HTTPError as exc:  # noqa: BLE001 - logged, not surfaced
+            print(f"WARNING: inquiry {row.id} saved but not relayed to Telegram: {exc}")
 
-    return {"status": "ok"}
+    return {"status": "ok", "id": row.id}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import ScrollReveal from "../components/ScrollReveal";
 import "./Inquiry.css";
 import { API_URL } from "../apiBase";
+import { CONTACT } from "../siteContact";
 
 
 function Inquiry() {
@@ -12,8 +13,9 @@ function Inquiry() {
         templeType: "",
         message: "",
     });
-    const [status, setStatus] = useState("idle"); // idle | submitting | success | error
+    const [status, setStatus] = useState("idle"); // idle | success
     const [errors, setErrors] = useState({});
+    const [whatsappUrl, setWhatsappUrl] = useState("");
 
 
     const handleChange = (e) => {
@@ -27,14 +29,37 @@ function Inquiry() {
         const newErrors = {};
         if (!formData.name.trim()) newErrors.name = "Full name is required.";
         if (!formData.phone.trim()) newErrors.phone = "Phone number is required.";
-        // Basic phone check — at least 7 digits
-        if (formData.phone.trim() && !/^\d{7,15}$/.test(formData.phone.replace(/[\s\-\+]/g, ""))) {
+        // Basic phone check — exactly 10 digits
+        if (formData.phone.trim() && !/^\d{10}$/.test(formData.phone.replace(/[\s\-\+]/g, ""))) {
             newErrors.phone = "Enter a valid phone number.";
         }
         return newErrors;
     };
 
-    const handleSubmit = async (e) => {
+    // The visitor sends this from their own WhatsApp, so it lands in a real
+    // thread the family can reply to -- no Meta Cloud API, no message
+    // template, no dedicated sender number.
+    const buildWhatsAppUrl = () => {
+        const lines = [
+            "Hello P.K. Sompura, I would like to enquire about a project.",
+            "",
+            `Name: ${formData.name.trim()}`,
+            `Phone: +91 ${formData.phone.replace(/[\s\-+]/g, "")}`,
+        ];
+        if (formData.email.trim()) lines.push(`Email: ${formData.email.trim()}`);
+        if (formData.templeType) lines.push(`Type: ${formData.templeType}`);
+        if (formData.message.trim()) {
+            lines.push("", "Details:");
+            // A wa.me link is a URL, and long ones get truncated by the OS
+            // before WhatsApp ever sees them. The full text still reaches the
+            // admin panel through the save below.
+            lines.push(formData.message.trim().slice(0, 700));
+        }
+        const number = CONTACT.phone.replace(/[^\d]/g, "");
+        return `https://wa.me/${number}?text=${encodeURIComponent(lines.join("\n"))}`;
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const validationErrors = validate();
@@ -42,36 +67,36 @@ function Inquiry() {
             setErrors(validationErrors);
             return;
         }
-
-        setStatus("submitting");
         setErrors({});
 
+        const waUrl = buildWhatsAppUrl();
+        setWhatsappUrl(waUrl);
+
         const cleanPhone = formData.phone.replace(/[\s\-+]/g, "");
+        // keepalive, because the navigation below would otherwise cancel this
+        // in flight. The record is what makes an abandoned inquiry -- one
+        // where WhatsApp never opened, or the visitor never pressed send --
+        // still reach the family through the admin panel.
+        fetch(`${API_URL}/api/contact/`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            keepalive: true,
+            body: JSON.stringify({
+                name: formData.name,
+                phone: cleanPhone ? `+91 ${cleanPhone}` : "",
+                email: formData.email.trim(),
+                temple_type: formData.templeType,
+                message: formData.message,
+            }),
+        }).catch(() => {
+            // Already handed to WhatsApp; a failed record must not look like a
+            // failed inquiry to the person who wrote it.
+        });
 
-        try {
-            // Posts to our own API, which relays to Telegram server-side. The
-            // bot token must never reach the browser.
-            const response = await fetch(`${API_URL}/api/contact/`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: formData.name,
-                    phone: cleanPhone ? `+91 ${cleanPhone}` : "",
-                    email: formData.email.trim(),
-                    temple_type: formData.templeType,
-                    message: formData.message,
-                }),
-            });
-
-            if (response.ok) {
-                setStatus("success");
-                setFormData({ name: "", email: "", phone: "", templeType: "", message: "" });
-            } else {
-                setStatus("error");
-            }
-        } catch {
-            setStatus("error");
-        }
+        setStatus("success");
+        // Assigned in the same tick as the click, so this counts as a
+        // navigation rather than a pop-up and no blocker intercepts it.
+        window.location.href = waUrl;
     };
 
     return (
@@ -92,18 +117,28 @@ function Inquiry() {
                     <div className="inquiry-success">
                         <div className="success-icon">🏛️</div>
                         <h2 style={{ fontFamily: "var(--font-heading)", marginBottom: "12px", color: "var(--color-primary)" }}>
-                            Inquiry Received!
+                            One last step
                         </h2>
                         <p style={{ color: "var(--color-text-muted)", marginBottom: "8px" }}>
-                            We have received your inquiry and will contact you shortly.
+                            WhatsApp should have opened with your inquiry already written out.
+                            Press send there and it reaches us straight away.
                         </p>
                         <p style={{ color: "var(--color-text-muted)", fontSize: "14px" }}>
-                            You may also reach us directly via WhatsApp for a faster response.
+                            If it did not open, use the link below. We have your details either way.
                         </p>
+                        <a
+                            className="submit-btn"
+                            href={whatsappUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ marginTop: "30px", display: "inline-block", textDecoration: "none" }}
+                        >
+                            Open WhatsApp
+                        </a>
                         <button
                             className="submit-btn"
                             onClick={() => setStatus("idle")}
-                            style={{ marginTop: "30px" }}
+                            style={{ marginTop: "12px", background: "transparent", color: "var(--color-accent)" }}
                         >
                             Send Another Inquiry
                         </button>
@@ -170,8 +205,7 @@ function Inquiry() {
                             >
                                 <option value="" disabled>Select a category...</option>
                                 <option value="New Temple">New Temple Construction</option>
-                                <option value="Restoration">Heritage Restoration</option>
-                                <option value="Monument">Monument / Memorial</option>
+                                <option value="Renovation">Renovation</option>
                                 <option value="Consultation">Architectural Consultation</option>
                             </select>
                         </div>
@@ -187,19 +221,9 @@ function Inquiry() {
                             ></textarea>
                         </div>
 
-                        <button
-                            type="submit"
-                            className="submit-btn"
-                            disabled={status === "submitting"}
-                        >
-                            {status === "submitting" ? "Sending..." : "Submit Inquiry"}
+                        <button type="submit" className="submit-btn">
+                            Send on WhatsApp
                         </button>
-
-                        {status === "error" && (
-                            <p style={{ color: "var(--color-error)", textAlign: "center", fontSize: "14px", marginTop: "10px" }}>
-                                Something went wrong. Please check your connection and try again.
-                            </p>
-                        )}
 
                         <p className="inquiry-disclaimer">
                             <span className="required-star">*</span> Required fields. Your information is kept private and used only to respond to your inquiry.

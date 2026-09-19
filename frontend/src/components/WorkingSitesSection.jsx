@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import { Cpu } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
 import './WorkingSitesSection.css';
 
@@ -16,11 +17,12 @@ const SITE_IMAGES = [
     { url: "/media/work-sites/carved-torana.webp", label: "Carved torana", size: "medium" },
 ];
 
-// Removed: the figures here (12+ active sites, 500T of stone a year, 40+
-// machines, 3 states) were never supplied by the business and were not
-// true. Restore this bar once real numbers are known -- StatCard and the
-// counter animation are kept below for that.
-const STATS = [];
+// Only what the business actually confirmed. This replaced four invented
+// figures (12+ active sites, 500T of stone a year, 40+ machines, 3 states);
+// anything added here has to come from them the same way.
+const STATS = [
+    { icon: <Cpu size={22} strokeWidth={1.5} />, value: "5", label: "CNC Machines" },
+];
 
 // Simple counter animation hook
 function useCounter(target, duration = 1500, active = false) {
@@ -78,7 +80,9 @@ export default function WorkingSitesSection() {
                 </ScrollReveal>
                 <ScrollReveal baseOpacity={0} blurStrength={5}>
                     <p className="wss-subtitle">
-                        Precision craftsmanship powered by modern machinery and centuries of tradition
+                        Stone cut and dressed in-house on our own CNC machines, at a
+                        working site adjoining the family's PVC pipe manufacturing
+                        factory and office.
                     </p>
                 </ScrollReveal>
                 <div className="accent-line" style={{ margin: "24px auto" }} />
