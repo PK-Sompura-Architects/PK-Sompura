@@ -1,0 +1,42 @@
+[
+  {
+    "url": "/media/work-sites/stone-yard.webp",
+    "label": "Stone yard, cutting in progress",
+    "size": "large"
+  },
+  {
+    "url": "/media/work-sites/cutting-dressing.webp",
+    "label": "Cutting and dressing",
+    "size": "medium"
+  },
+  {
+    "url": "/media/work-sites/cnc-carved-panel.webp",
+    "label": "CNC carved panel",
+    "size": "medium"
+  },
+  {
+    "url": "/media/work-sites/cnc-relief.webp",
+    "label": "CNC relief work",
+    "size": "small"
+  },
+  {
+    "url": "/media/work-sites/stone-yard-crew.webp",
+    "label": "Stone yard crew",
+    "size": "medium"
+  },
+  {
+    "url": "/media/work-sites/temple-under-build.webp",
+    "label": "Temple under construction",
+    "size": "large"
+  },
+  {
+    "url": "/media/work-sites/workshop-floor.webp",
+    "label": "Workshop floor",
+    "size": "small"
+  },
+  {
+    "url": "/media/work-sites/carved-torana.webp",
+    "label": "Carved torana",
+    "size": "medium"
+  }
+]

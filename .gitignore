@@ -22,3 +22,10 @@ pk_sompura.db
 
 # Working photos for headshot processing (not shipped to the site)
 headshots/
+
+# Raw photo libraries live outside the repo; only the processed web copies
+# under frontend/public/media are committed.
+ALBUM-IMAGES/
+*.NEF
+*.CR2
+*.dng
