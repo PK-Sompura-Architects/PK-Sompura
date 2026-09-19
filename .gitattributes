@@ -1,0 +1,4 @@
+
+# Keep this file ASCII with LF endings.
+*.txt text eol=lf
+backend/requirements.txt text eol=lf working-tree-encoding=UTF-8
