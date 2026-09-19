@@ -455,7 +455,6 @@ const MagicBento = ({
   items = [], // Now accepts dynamic data
   onCardClick, // Pass click handler
   textAutoHide = true,
-  enableStars = true,
   enableSpotlight = true,
   enableBorderGlow = true,
   disableAnimations = false,

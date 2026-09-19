@@ -30,7 +30,7 @@ function Inquiry() {
         if (!formData.name.trim()) newErrors.name = "Full name is required.";
         if (!formData.phone.trim()) newErrors.phone = "Phone number is required.";
         // Basic phone check — exactly 10 digits
-        if (formData.phone.trim() && !/^\d{10}$/.test(formData.phone.replace(/[\s\-\+]/g, ""))) {
+        if (formData.phone.trim() && !/^\d{10}$/.test(formData.phone.replace(/[\s\-+]/g, ""))) {
             newErrors.phone = "Enter a valid phone number.";
         }
         return newErrors;

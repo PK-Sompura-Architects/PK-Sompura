@@ -29,3 +29,6 @@ ALBUM-IMAGES/
 *.NEF
 *.CR2
 *.dng
+
+# graphify knowledge-graph output (regenerate with /graphify)
+graphify-out/

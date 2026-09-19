@@ -8,31 +8,30 @@ import { API_URL } from "../apiBase";
 
 export default function Projects() {
     const { language } = useLanguage();
-    const [projects, setProjects] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    // One piece of state carrying the language its contents belong to, so
+    // `loading` is derived rather than set from inside the effect. Switching
+    // language now shows the loading state on the very render that changes it,
+    // instead of one render later.
+    const [result, setResult] = useState({ lang: null, projects: [], error: false });
     const [selectedProject, setSelectedProject] = useState(null);
+
+    const loading = result.lang !== language;
+    const { projects, error } = result;
 
     useEffect(() => {
         // The API resolves translations server-side, so switching language
         // refetches rather than shipping all three up front.
         const controller = new AbortController();
-        setLoading(true);
-        setError(false);
 
         fetch(`${API_URL}/api/projects/?lang=${language}`, { signal: controller.signal })
             .then(res => {
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();
             })
-            .then(data => {
-                setProjects(data.projects || []);
-                setLoading(false);
-            })
+            .then(data => setResult({ lang: language, projects: data.projects || [], error: false }))
             .catch(err => {
                 if (err.name === 'AbortError') return;
-                setError(true);
-                setLoading(false);
+                setResult({ lang: language, projects: [], error: true });
             });
 
         return () => controller.abort();
@@ -69,7 +68,6 @@ export default function Projects() {
                         items={bentoItems}
                         glowColor="144, 200, 216"
                         enableTilt={true}
-                        enableStars={true}
                         onCardClick={(item) => setSelectedProject(item.rawData)}
                     />
                 </div>

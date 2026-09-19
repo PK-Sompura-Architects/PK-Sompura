@@ -1,13 +1,7 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import LanguageContext, { LANGUAGES } from "./LanguageContext";
 
-const LanguageContext = createContext();
-
-const LANGUAGES = {
-    en: { label: "EN", name: "English" },
-    gu: { label: "ગુ", name: "ગુજરાતી" },
-    hi: { label: "हि", name: "हिन्दी" },
-};
-
+// Only the component, so editing it hot-updates rather than full-reloading.
 export function LanguageProvider({ children }) {
     const [language, setLanguage] = useState(() => {
         try {
@@ -32,13 +26,4 @@ export function LanguageProvider({ children }) {
     );
 }
 
-export function useLanguage() {
-    const context = useContext(LanguageContext);
-    if (!context) {
-        throw new Error("useLanguage must be used within a LanguageProvider");
-    }
-    return context;
-}
-
-export { LANGUAGES };
-export default LanguageContext;
+export default LanguageProvider;

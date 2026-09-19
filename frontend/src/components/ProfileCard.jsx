@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { useRef, useCallback } from 'react';
 import './ProfileCard.css';
 
 const clamp = (v, min = 0, max = 100) => Math.min(Math.max(v, min), max);

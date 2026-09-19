@@ -28,11 +28,14 @@ const STATS = [
 function useCounter(target, duration = 1500, active = false) {
     const [count, setCount] = useState("0");
 
+    // Parsed during render, not inside the effect: a target with no digits has
+    // nothing to count up to, so it is returned as-is below rather than being
+    // written to state from an effect and costing an extra render.
+    const numericPart = parseFloat(target.replace(/[^\d.]/g, ''));
+    const suffix = target.replace(/[\d.]/g, '');
+
     useEffect(() => {
-        if (!active) return;
-        const numericPart = parseFloat(target.replace(/[^\d.]/g, ''));
-        const suffix = target.replace(/[\d.]/g, '');
-        if (isNaN(numericPart)) { setCount(target); return; }
+        if (!active || isNaN(numericPart)) return;
 
         const step = numericPart / (duration / 16);
         let current = 0;
@@ -42,9 +45,9 @@ function useCounter(target, duration = 1500, active = false) {
             if (current >= numericPart) clearInterval(timer);
         }, 16);
         return () => clearInterval(timer);
-    }, [active, target, duration]);
+    }, [active, duration, numericPart, suffix]);
 
-    return count;
+    return isNaN(numericPart) ? target : count;
 }
 
 function StatCard({ stat, active }) {
