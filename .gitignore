@@ -19,3 +19,6 @@ pk_sompura.db
 # Env backups
 .env.*
 !.env.example
+
+# Working photos for headshot processing (not shipped to the site)
+headshots/
