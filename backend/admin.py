@@ -195,7 +195,7 @@ class LineageMemberAdmin(ModelView, model=LineageMember):
 class TempleProjectAdmin(ModelView, model=TempleProject):
     name = "Temple"
     name_plural = "Temples"
-    column_list = ["id", "name_en", "city", "state", "year", "is_featured", "is_milestone"]
+    column_list = ["id", "name_en", "images", "city", "state", "year", "is_featured", "is_milestone"]
     column_searchable_list = ["name_en", "name_gu", "name_hi", "city"]
     column_sortable_list = ["order_index", "year", "city"]
     form_columns = [
@@ -203,6 +203,9 @@ class TempleProjectAdmin(ModelView, model=TempleProject):
         "description_en", "description_gu", "description_hi",
         "city", "state", "location", "year",
         "is_featured", "is_milestone", "order_index",
+        # Without this the edit page showed only text fields, so a
+        # temple's own photos were unreachable from the temple itself.
+        "images",
     ]
     icon = "fa-solid fa-gopuram"
 
@@ -211,9 +214,9 @@ class TempleProjectAdmin(ModelView, model=TempleProject):
     column_formatters = {
         "name_en": lambda m, a: Markup(
             f'{m.name_en or "<em>untitled</em>"}'
-            f'{"" if m.name_gu else " <span style=\'color:#b45309\'>(no GU)</span>"}'
-            f'{"" if m.name_hi else " <span style=\'color:#b45309\'>(no HI)</span>"}'
-        )
+            f'{"" if m.name_gu else " <span style=\'color:#283848\'>(no GU)</span>"}'
+            f'{"" if m.name_hi else " <span style=\'color:#283848\'>(no HI)</span>"}'
+        ),
     }
 
 
@@ -223,6 +226,14 @@ class TempleImageAdmin(ModelView, model=TempleImage):
     column_list = ["id", "temple", "url", "is_cutout", "order_index"]
     form_columns = ["temple", "url", "is_cutout", "order_index"]
     icon = "fa-solid fa-image"
+
+    # The default ten-per-page with no ordering meant hunting one temple's
+    # photos across eight unsorted pages.
+    column_searchable_list = ["url"]
+    column_sortable_list = ["id", "temple_id", "order_index"]
+    column_default_sort = [("temple_id", False), ("order_index", False)]
+    page_size = 50
+    page_size_options = [25, 50, 100, 200]
 
     column_formatters = {
         "url": lambda m, a: Markup(
