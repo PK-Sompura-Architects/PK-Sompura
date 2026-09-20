@@ -112,3 +112,74 @@ imagery.
 - 21 projects exist in the database today, not 40+. The remaining ones need
   entering before the map has anything to show.
 - `useLazyImage` was deleted as unused; native `loading="lazy"` covers it.
+
+---
+
+## 2. Map item — decisions made (amends item 1)
+
+- **No language switcher.** Confirmed: all map UI strings stay English. Drop the
+  `LanguageContext` / `useLanguage` requirement from the brief entirely.
+- **`city` and `state` will be filled in** by hand in the admin panel.
+- **No `year` / `year_completed` on the map.** The year is genuinely forgotten
+  for many of the older projects, so a per-temple year is not worth adding.
+  Consequence: **drop the decade filter** from item 1 — it cannot work without
+  years. Filters become state and status only.
+- **Some projects have no usable images.** They exist to be counted, for
+  credibility of scale. So:
+  - A marker must render fine with no photos.
+  - The detail panel needs a no-images state — name, city, state, stone type,
+    and no "View gallery" button rather than an empty modal.
+  - The counter ("N temples across M states") includes them.
+
+## 3. Split the Projects section in two
+
+Two categories, surfaced on the Projects page and as a map marker distinction:
+
+1. **Artificial mountain temples** — a mountain built artificially with the
+   temple inside. Examples: Vaishno Devi Ahmedabad, Vaishno Devi Gulbarga
+   (Karnataka).
+2. **Regular stone temples.**
+
+Needs a `category` column on `TempleProject`, an admin panel field, and a filter
+on the Projects page. On the map this is the second axis alongside `status` —
+decide whether category is marker *shape* and status is *colour*, so neither
+relies on colour alone.
+
+## 4. Stone type column
+
+New column on `TempleProject`: the stone used to build that temple. String, or
+an enum if the set turns out to be small and fixed — check what the real values
+are before choosing. Shown in the project detail panel and the gallery modal
+subtitle, and worth a filter if the values are few.
+
+## 5. Dashboard rebuild
+
+### Layout changes
+- **Logo centred in the background**, company name in front of it.
+- **Remove the page redirector** (the `HeroNav` three-card block).
+- **Remove the lineage section** from the dashboard. It stays on `/about`.
+- **Add the India projects map** to the dashboard as well — the compact preview
+  from item 1, linking through to the full map on `/projects`.
+
+### Scroll performance — must be fixed, not patched
+The current scrolling is too laggy. Redefine the scroll approach wholesale and
+eliminate the jank. Reference feel: https://www.igloo.inc/ — the *smoothness*
+only, not the infinite scroll. Broader reference: https://www.awwwards.com/.
+
+Measured causes of the lag are recorded in the report below; the chosen approach
+gets appended to this file once picked.
+
+## 6. Netlify → Vercel
+
+Move the frontend off Netlify to Vercel, to lose the Netlify badge in the bottom
+right without buying a domain.
+
+- Port `netlify.toml` to `vercel.json`: the `/api/*` and `/admin/*` proxy
+  rewrites to the Render backend **must come before** the SPA catch-all, exactly
+  as they do now, or `/admin` will be swallowed by the React router.
+- Keep the trailing-slash behaviour intact — the backend has bare-prefix routes
+  registered specifically so a proxied request never 307s to the Render host.
+- `VITE_*` env vars must be set in the Vercel project before the first build;
+  they are inlined at build time. Nothing secret goes in them.
+- Update `ALLOWED_ORIGINS` on Render to the new Vercel origin, and check
+  `DEPLOYMENT.md` afterwards.
