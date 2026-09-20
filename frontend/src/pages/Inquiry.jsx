@@ -104,7 +104,7 @@ function Inquiry() {
         <div className="inquiry-wrapper">
             <div className="inquiry-container">
                 <div className="inquiry-header">
-                    <ScrollReveal baseOpacity={0} blurStrength={10} baseRotation={2}>
+                    <ScrollReveal>
                         <h1 className="sompura-title" style={{ fontSize: "clamp(32px, 4vw, 48px)" }}>
                             Begin a Project
                         </h1>

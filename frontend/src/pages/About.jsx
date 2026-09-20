@@ -26,12 +26,12 @@ function About() {
     return (
         <div className="about-wrapper">
             <div className="about-header">
-                <ScrollReveal baseOpacity={0} blurStrength={10} baseRotation={3}>
+                <ScrollReveal>
                     <h1 className="sompura-title" style={{ fontSize: "clamp(30px, 5vw, 60px)" }}>
                         The Lineage
                     </h1>
                 </ScrollReveal>
-                <ScrollReveal baseOpacity={0} blurStrength={5}>
+                <ScrollReveal>
                     <p className="sompura-subtitle" style={{ color: "var(--color-text-muted)" }}>
                         Generations of Sacred Mastery
                     </p>

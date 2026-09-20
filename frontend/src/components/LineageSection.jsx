@@ -39,10 +39,10 @@ export default function LineageSection() {
     return (
         <section style={{ padding: 'var(--section-padding) 0', background: 'transparent' }}>
             <div style={{ textAlign: 'center', marginBottom: 'var(--space-lg)' }}>
-                <ScrollReveal baseOpacity={0} blurStrength={10} baseRotation={3}>
+                <ScrollReveal>
                     <h2>The Lineage</h2>
                 </ScrollReveal>
-                <ScrollReveal baseOpacity={0} blurStrength={5}>
+                <ScrollReveal>
                     <p className="eyebrow" style={{ marginTop: 'var(--space-2xs)' }}>
                         Generations of Sacred Mastery
                     </p>

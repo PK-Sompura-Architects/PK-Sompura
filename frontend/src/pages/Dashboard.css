@@ -10,98 +10,52 @@
 .dashboard-hero-wrapper {
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100dvh;
     /* `clip` keeps the watermark's overhang trimmed without making this section
        a scroll container -- `hidden` would, and the watermark's view() timeline
        would then track this never-scrolling box instead of the viewport. */
     overflow: clip;
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    align-items: center;
-    gap: var(--space-xl);
+    place-items: center;
     padding: var(--space-2xl) var(--content-padding);
 }
 
-/* LEFT SIDE: Typography */
+/* The name, centred in front of the mark. */
 .dashboard-text-overlay {
     position: relative;
     z-index: 3;
-    text-align: left;
-    max-width: 800px;
+    text-align: center;
+    max-width: 900px;
 }
 
-/* Ambient aurora backdrop. Decorative, so it stays out of the grid flow —
-   as a static grid item it consumes a column and displaces the hero nav.
-   Drawn in CSS rather than WebGL: at this opacity a shader and a live GL
-   context buy nothing a gradient cannot, and cost a frame loop. */
+/* Ambient backdrop. Decorative, so it stays out of the grid flow — as a
+   static grid item it consumes a column and displaces the hero content.
+
+   This was two masked pseudo-elements painting six large radial gradients
+   between them, each on an infinite alternating animation. A masked,
+   gradient-painted, full-viewport layer that never stops moving repaints
+   every frame for as long as the page is open, even once it is scrolled
+   past, and it was the single largest cause of the scroll jank. The
+   gradients are now painted once into one layer and left alone: at this
+   opacity the drift was barely perceptible and cost the whole frame budget.
+
+   The mask is kept because a static mask on a static layer is composited
+   once. Nothing here animates, so no `will-change` either — leaving it on
+   permanently keeps a layer promoted for an animation that never runs. */
 .dashboard-bg {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    overflow: hidden;
-    mask-image: radial-gradient(ellipse 90% 80% at 55% 45%, #000 30%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 55% 45%, #000 30%, transparent 100%);
-}
-
-.dashboard-bg::before,
-.dashboard-bg::after {
-    content: '';
-    position: absolute;
-    inset: -25%;
-    background-repeat: no-repeat;
-    will-change: transform;
-}
-
-.dashboard-bg::before {
     background-image:
         radial-gradient(38% 46% at 22% 30%, rgba(144, 200, 216, 0.52), transparent 70%),
         radial-gradient(34% 40% at 74% 26%, rgba(180, 216, 228, 0.46), transparent 72%),
-        radial-gradient(42% 44% at 60% 72%, rgba(200, 160, 112, 0.26), transparent 70%);
-    animation: auroraDriftA 26s ease-in-out infinite alternate;
-}
-
-.dashboard-bg::after {
-    background-image:
+        radial-gradient(42% 44% at 60% 72%, rgba(200, 160, 112, 0.26), transparent 70%),
         radial-gradient(34% 38% at 78% 62%, rgba(74, 99, 122, 0.22), transparent 70%),
         radial-gradient(30% 34% at 30% 74%, rgba(216, 234, 242, 0.40), transparent 72%);
-    animation: auroraDriftB 34s ease-in-out infinite alternate;
-}
-
-@keyframes auroraDriftA {
-    0%   { transform: translate3d(-3%, -2%, 0) scale(1);    }
-    100% { transform: translate3d(4%, 3%, 0)  scale(1.14); }
-}
-
-@keyframes auroraDriftB {
-    0%   { transform: translate3d(3%, 2%, 0)  scale(1.1);  }
-    100% { transform: translate3d(-4%, -3%, 0) scale(1);   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .dashboard-bg::before,
-    .dashboard-bg::after {
-        animation: none;
-    }
-}
-
-/* RIGHT SIDE: page navigation */
-.dashboard-hero-wrapper .hero-nav {
-    position: relative;
-    z-index: 3;
-    justify-self: end;
-}
-
-@media (max-width: 900px) {
-    .dashboard-hero-wrapper {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-        align-content: center;
-    }
-
-    .dashboard-hero-wrapper .hero-nav {
-        justify-self: stretch;
-    }
+    background-repeat: no-repeat;
+    mask-image: radial-gradient(ellipse 90% 80% at 55% 45%, #000 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 55% 45%, #000 30%, transparent 100%);
 }
 
 .sompura-title {
@@ -125,18 +79,6 @@
     margin-top: 15px;
 }
 
-/* --- ABOUT / LINEAGE SECTION --- */
-.dashboard-about-wrapper {
-    min-height: 100vh;
-    padding: 10vh var(--content-padding) 15vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-    background: transparent;
-}
-
 /* --- ANIMATED SCROLL INDICATOR --- */
 .dashboard-scroll-indicator {
     position: absolute;
@@ -150,6 +92,16 @@
     gap: 8px;
     cursor: pointer;
     user-select: none;
+    border: 0;
+    background: none;
+    padding: var(--space-2xs);
+    color: inherit;
+}
+
+.dashboard-scroll-indicator:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
 }
 
 .scroll-text {
@@ -177,10 +129,10 @@
     height: 14px;
     border-left: 2px solid var(--color-primary);
     border-bottom: 2px solid var(--color-primary);
-    transform: rotate(-45deg);
+    top: 0;
     left: 50%;
     margin-left: -7px;
-    animation: chevronMove 2s infinite ease-in-out;
+    animation: chevronMove 2s infinite var(--ease-smooth);
     opacity: 0;
 }
 
@@ -189,17 +141,19 @@
 }
 
 @keyframes chevronMove {
-    0% { top: 0; opacity: 0; }
-    50% { opacity: 1; }
-    100% { top: 12px; opacity: 0; }
+    0%   { transform: translateY(0)    rotate(-45deg); opacity: 0; }
+    50%  {                                             opacity: 1; }
+    100% { transform: translateY(12px) rotate(-45deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scroll-chevron { animation: none; opacity: 1; transform: rotate(-45deg); }
 }
 
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
     .dashboard-hero-wrapper {
-        flex-direction: column;
-        justify-content: flex-start;
-        padding-top: 15vh;
+        padding-top: var(--space-xl);
     }
     
     .dashboard-text-overlay {
@@ -220,17 +174,17 @@
    watermark, which is why the un-animated state is the good one. */
 .dashboard-watermark {
     position: absolute;
-    right: -6%;
-    top: 12%;
-    width: min(46vw, 560px);
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: min(78vw, 620px);
     /* Reserve the box up front. Without it the element is 0px tall until the
        image decodes, and a zero-height subject makes view() inactive, so the
        parallax silently never runs. */
     aspect-ratio: 553 / 451;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.06;
-    filter: grayscale(1);
+    opacity: 0.14;
 }
 
 @supports (animation-timeline: view()) {
@@ -242,8 +196,8 @@
 }
 
 @keyframes watermarkDrift {
-    from { transform: translate3d(0, -12%, 0) rotate(-4deg) scale(1.04); }
-    to   { transform: translate3d(0, 18%, 0)  rotate(4deg)  scale(0.96); }
+    from { transform: translateY(-8%) rotate(-3deg) scale(1.03); }
+    to   { transform: translateY(12%) rotate(3deg)  scale(0.97); }
 }
 
 @media (prefers-reduced-motion: reduce) {

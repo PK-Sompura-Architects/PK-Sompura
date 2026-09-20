@@ -28,10 +28,10 @@ export default function WorkingSitesSection() {
         <section className="wss-section">
             {/* Section Header */}
             <div className="wss-header">
-                <ScrollReveal baseOpacity={0} blurStrength={10} baseRotation={2}>
+                <ScrollReveal>
                     <h2 className="wss-title">Tools, Machines &amp; Working Sites</h2>
                 </ScrollReveal>
-                <ScrollReveal baseOpacity={0} blurStrength={5}>
+                <ScrollReveal>
                     <p className="wss-subtitle">
                         Stone cut and dressed in-house on our own CNC machines, at a
                         working site adjoining the family's PVC pipe manufacturing
@@ -77,7 +77,7 @@ export default function WorkingSitesSection() {
 
             {/* Bottom CTA */}
             <div className="wss-cta">
-                <ScrollReveal baseOpacity={0} blurStrength={5}>
+                <ScrollReveal>
                     <p className="wss-cta-text">
                         Every site is a testament to our commitment — from the first stone laid to the final consecration.
                     </p>

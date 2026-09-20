@@ -1,29 +1,20 @@
-import HeroNav from "../components/HeroNav";
 import ScrollReveal from "../components/ScrollReveal";
-import LineageSection from '../components/LineageSection';
 import WorkingSitesSection from '../components/WorkingSitesSection';
 import DashboardGalleries from '../components/DashboardGalleries';
 import "./Dashboard.css";
 
 function Dashboard() {
-    const scrollToLineage = () => {
-        document.getElementById('lineage-section')?.scrollIntoView({ behavior: 'smooth' });
+    const scrollToNext = () => {
+        document.getElementById('working-sites-section')?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
         <div className="dashboard-container">
-            {/* 1. Landing Hero Section */}
+            {/* 1. Landing Hero — the mark centred behind the name.
+                The three page-redirector cards that used to sit on the right
+                were removed: the Dock already navigates the whole site, so
+                they were a second navigation competing with the first. */}
             <section className="dashboard-hero-wrapper">
-                
-                {/* Left Side Text */}
-                <div className="dashboard-text-overlay">
-                    <ScrollReveal baseOpacity={0} enableBlur={true} blurStrength={10} baseRotation={5}>
-                        <h1 className="sompura-title">P.K. SOMPURA</h1>
-                    </ScrollReveal>
-                    <ScrollReveal baseOpacity={0} enableBlur={true} blurStrength={5}>
-                        <p className="sompura-subtitle">TEMPLE ARCHITECT & CONTRACTOR</p>
-                    </ScrollReveal>
-                </div>
 
                 <div className="dashboard-bg" aria-hidden="true" />
 
@@ -37,29 +28,37 @@ function Dashboard() {
                     decoding="async"
                 />
 
-                <HeroNav />
-
-                {/* Animated Scroll Down Indicator */}
-                <div className="dashboard-scroll-indicator" onClick={scrollToLineage} role="button">
-                    <span className="scroll-text">Discover Legacy</span>
-                    <div className="scroll-chevron-wrapper">
-                        <div className="scroll-chevron"></div>
-                        <div className="scroll-chevron"></div>
-                    </div>
+                <div className="dashboard-text-overlay">
+                    <ScrollReveal>
+                        <h1 className="sompura-title">P.K. SOMPURA</h1>
+                    </ScrollReveal>
+                    <ScrollReveal delay={120}>
+                        <p className="sompura-subtitle">TEMPLE ARCHITECT &amp; CONTRACTOR</p>
+                    </ScrollReveal>
                 </div>
+
+                <button
+                    type="button"
+                    className="dashboard-scroll-indicator"
+                    onClick={scrollToNext}
+                    aria-label="Scroll to the workshop section"
+                >
+                    <span className="scroll-text">Discover Legacy</span>
+                    <span className="scroll-chevron-wrapper" aria-hidden="true">
+                        <span className="scroll-chevron"></span>
+                        <span className="scroll-chevron"></span>
+                    </span>
+                </button>
             </section>
 
-            {/* 2. Embedded Lineage Section */}
-            <div id="lineage-section" className="dashboard-about-wrapper">
-                <LineageSection />
-            </div>
-
-            {/* 3. Tools, Machines & Working Sites */}
+            {/* 2. Tools, Machines & Working Sites.
+                The lineage section used to sit above this one; it lives on
+                /about now, so the dashboard does not duplicate it. */}
             <div id="working-sites-section">
                 <WorkingSitesSection />
             </div>
 
-            {/* 4. Operations & Galleries Section */}
+            {/* 3. Operations & Galleries Section */}
             <div id="operations-section">
                 <DashboardGalleries />
             </div>
