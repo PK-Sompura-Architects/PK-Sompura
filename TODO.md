@@ -183,3 +183,77 @@ right without buying a domain.
   they are inlined at build time. Nothing secret goes in them.
 - Update `ALLOWED_ORIGINS` on Render to the new Vercel origin, and check
   `DEPLOYMENT.md` afterwards.
+
+---
+
+## 7. Design language for the rebuild (soft-skill, translated to this stack)
+
+Agency-tier direction to apply when items 1, 3 and 5 are built. The source spec
+assumes Tailwind and a different font/icon set, so it is translated here to what
+this project actually has. **Read the conflicts first — four of its rules cannot
+be followed literally.**
+
+### Conflicts with this codebase
+- **No Tailwind.** Every utility class in the spec (`rounded-[2rem]`,
+  `backdrop-blur-2xl`, `ring-1`, `col-span-8`, `py-24`) silently does nothing
+  here. Each pattern must be rewritten as real CSS against the existing custom
+  properties.
+- **Fonts.** The spec bans Inter/Roboto/Helvetica and suggests Geist, Clash
+  Display, PP Editorial New. We ship **Cinzel** (headings) and **Outfit**
+  (body), neither banned. Cinzel is a classical inscriptional serif and is
+  arguably a better fit for temple architecture than anything on its list.
+  Keep them — adding a webfont costs more than it buys, and the Indic fonts were
+  just removed for exactly that reason.
+- **Icons.** The spec bans "standard thick-stroked Lucide". We use
+  `lucide-react` throughout. Do not swap the library; instead standardise on
+  `strokeWidth={1.5}` or lighter, which `WorkingSitesSection` already does.
+- **Dark OLED / glass vibe does not apply.** This is a light, paper-toned site
+  (`--c-paper: #F7FAFC`). Of the three vibe archetypes, **Editorial Luxury** is
+  the only coherent fit: warm paper, high-contrast serif headings, optional film
+  grain. Do not introduce an OLED-black glass theme.
+
+### What to adopt
+- **Layout archetype: Editorial Split** for the dashboard hero — the wordmark
+  and title as massive type, the logo mark centred behind it (item 5 already
+  asks for exactly this). **Asymmetrical Bento** is already in use on Projects
+  via `MagicBento`; keep it.
+- **Double-bezel containers.** Outer shell with a hairline border and small
+  padding, inner core with its own background and an inset highlight, and a
+  mathematically smaller radius for concentric curves. We already have
+  `--radius-sm/md/lg/xl`; derive the inner radius with `calc()` rather than
+  hardcoding.
+- **Button-in-button trailing icon.** An arrow never sits naked beside the
+  label; it gets its own circular wrapper flush with the pill's inner padding.
+  `HeroNav` already uses `ArrowUpRight` — reuse that pattern on the map's
+  "View gallery" CTA.
+- **Eyebrow tags** before major headings — tiny uppercase pill, wide letter
+  spacing. The `.eyebrow` class already exists on the Projects header; promote
+  it to a shared component.
+- **Macro whitespace.** `--space-2xl` (6rem) as the section rhythm minimum.
+- **Custom easing only.** Never `linear` or `ease-in-out`. We already have
+  `--ease-smooth`, `--ease-dramatic` and `--ease-out-expo`; the spec's
+  `cubic-bezier(0.32, 0.72, 0, 1)` is close enough to `--ease-out-expo` that no
+  fourth curve is needed.
+- **Staggered reveals** on entry, via `IntersectionObserver` or GSAP
+  ScrollTrigger — never a `scroll` event listener.
+- **Magnetic button physics** — `active: scale(0.98)`, inner icon translating
+  diagonally on hover.
+
+### Performance rules that override the aesthetics
+The spec's own guardrails confirm the diagnosis from the scroll investigation,
+so these are not optional:
+- **Never animate `filter: blur()`**, and never blur a scrolling container. The
+  dashboard currently animates `blur(10px)` on the `<h1>` and this is a measured
+  cause of the jank. The spec allows `backdrop-blur` **only** on fixed or sticky
+  elements — so the `Dock` may keep it, `ChromaGrid` cards may not.
+- **Grain or noise overlays** must live on a single `position: fixed`,
+  `pointer-events: none` layer — never attached to scrolling content.
+- **Animate `transform` and `opacity` only.** Never `top`, `left`, `width`,
+  `height`. Use `will-change` only while something is actually animating — the
+  permanent `will-change: transform` on `.dashboard-bg` is part of the problem.
+- **No arbitrary z-indexes.** The Dock owns 99999 and `GalleryModal` owns
+  100000; anything new fits that scale deliberately.
+- **`min-height: 100dvh`**, never `100vh`, so iOS Safari does not jump.
+- Below 768px every asymmetric layout collapses to a single full-width column.
+  Rotations and negative-margin overlaps are removed, not merely scaled down —
+  they break touch targets. Must hold at 360px with no horizontal scroll.
