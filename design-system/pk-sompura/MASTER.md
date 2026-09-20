@@ -10,7 +10,12 @@ carved stone of the temples themselves. Cool, quiet and architectural rather
 than festival-bright. Type references carved temple inscription.
 
 Stack: Vite + React 19, GSAP 3.14 (Flip/ScrollTrigger/SplitText all bundled),
-Lenis, three.js 0.183 + @react-three/fiber 9 + drei 10, ogl.
+Lenis. No Tailwind — the tokens below are the styling system, and utility
+classes silently do nothing.
+
+three.js, @react-three/fiber, drei and ogl are in `package.json` but nothing in
+`src/` imports any of them, so treat them as absent; they are queued for removal
+in `TODO.md`. Do not design around a WebGL renderer this project does not use.
 
 ## Palette
 

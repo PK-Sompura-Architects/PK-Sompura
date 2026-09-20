@@ -257,3 +257,72 @@ so these are not optional:
 - Below 768px every asymmetric layout collapses to a single full-width column.
   Rotations and negative-margin overlaps are removed, not merely scaled down —
   they break touch targets. Must hold at 360px with no horizontal scroll.
+
+---
+
+## 8. Verified UX rules for the rebuild (ui-ux-pro-max searches)
+
+Queried against the skill's local database, stack detected as React 19 + Vite
+(not Next.js). Every rule below came back from a real search — none is invented.
+These are constraints on items 1, 3, 5 and 7, and where they conflict with the
+aesthetic direction in item 7, these win.
+
+### Scroll reveals — GSAP ScrollTrigger, subtle tier
+Returned snippet, to replace the hand-rolled `ScrollReveal`:
+
+```js
+gsap.from(el, {
+  opacity: 0, y: 12, duration: 0.35, ease: 'power1.out',
+  scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none reverse' }
+});
+```
+
+- Keep the Y offset at **8–16px** so it reads as a fade, not a slide. The
+  current `ScrollReveal` uses 24px plus a 5° rotation plus a 10px blur — all
+  three are more than the guidance calls for, and the blur is a measured cause
+  of the jank.
+- `toggleActions: 'play none none reverse'` stops it re-firing on every scroll
+  direction change.
+- Register ScrollTrigger once, and gate everything behind
+  `gsap.matchMedia('(prefers-reduced-motion: reduce)')`, rendering the final
+  state immediately when motion is reduced.
+- **Do not reveal below-the-fold content as invisible-by-default without a
+  no-JS fallback** — it hides content from crawlers. This applies directly to
+  the map's plain-text project list in item 1: it must be visible in the DOM
+  without JavaScript, not animated in.
+
+If a headline treatment is wanted later, SplitText ships with our GSAP version,
+but only for headlines under ~8 words, and `split.revert()` must run on unmount
+or assistive tech is left reading per-character spans.
+
+### Touch targets — the map markers are the risk
+- Web uses the WCAG target-size rule (**24 CSS px** minimum), while iOS wants
+  44pt and Android 48dp. Do not treat one number as universal.
+- **Minimum 8px between adjacent targets.** At 360px width, clustered Palitana
+  and Saurashtra markers will violate this before anything else does — which is
+  the real argument for the clustering requirement in item 1, beyond looks.
+
+### Colour and legend
+- **Never convey information by colour alone** — pair it with an icon or text.
+  Item 1's `status` markers and item 3's `category` markers both need a shape or
+  label difference, and the legend must name each one in words.
+- 4.5:1 minimum for normal text, measured. The palette table in
+  `design-system/pk-sompura/MASTER.md` already has validated ratios — use those
+  tokens rather than picking new marker colours.
+
+### Focus, for the map panel and the gallery modal
+- Every interactive control needs a **visible** focus ring, modal controls
+  included. Never `outline: none` without a replacement.
+- `outline: 2px solid currentColor; outline-offset: 2px` satisfies the 2px
+  perimeter and 3:1 state contrast the AAA focus-appearance criterion asks for.
+  Worth having, but note it is **AAA**, not required for the AA target.
+- Keep the focused element fully unobscured. The Dock is fixed at the bottom on
+  mobile — check it does not cover a focused marker or a focused control in the
+  bottom sheet.
+
+### Note on `MASTER.md`
+`design-system/pk-sompura/MASTER.md` already exists and holds validated contrast
+ratios and palette naming history. **Do not regenerate it** — the skill's
+`--persist --force` would discard those decisions. Its stack line has been
+corrected in place: it previously advertised three.js, @react-three/fiber, drei
+and ogl as part of the stack, none of which anything imports.
