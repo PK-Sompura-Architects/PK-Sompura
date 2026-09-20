@@ -326,3 +326,33 @@ ratios and palette naming history. **Do not regenerate it** — the skill's
 `--persist --force` would discard those decisions. Its stack line has been
 corrected in place: it previously advertised three.js, @react-three/fiber, drei
 and ogl as part of the stack, none of which anything imports.
+
+---
+
+## 9. Rejected: Tailwind + shadcn/ui
+
+Considered and declined, recorded so it does not get re-proposed each session.
+
+Measured state of the frontend: **zero** Tailwind, shadcn, Radix, clsx or
+class-variance-authority packages; no `tailwind.config.*`, `components.json`,
+`postcss.config.*` or `tsconfig.json`; **14 CSS files, 2120 lines** of
+token-based CSS; **19 `.jsx` files and 0 TypeScript files**.
+
+Adopting that stack would mean a Tailwind install and config, a PostCSS
+pipeline, re-expressing 2120 lines of working CSS as utilities, a TypeScript
+migration for shadcn's type-first components, and Radix as a new dependency
+tree — to arrive at the styling system we already have. `global.css` holds a
+validated palette with measured contrast ratios, a spacing scale, four radius
+steps and three easing curves. That is a design system; it is simply not a
+utility-class one.
+
+Two pieces of the idea are worth keeping without the stack:
+- **Radix-style dialog semantics.** `GalleryModal` already has `role="dialog"`,
+  `aria-modal`, Escape-to-close and a scroll lock. The map's side panel and
+  bottom sheet (item 1) should reuse that component's pattern rather than import a
+  primitives library.
+- **Focus-visible discipline** on every control, which item 8 already records.
+
+If a component library is ever genuinely wanted, the decision to make first is
+TypeScript — shadcn assumes it, and `tsconfig.json` was deliberately deleted
+when the dead Next.js scaffolding went.
