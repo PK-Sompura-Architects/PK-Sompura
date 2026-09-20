@@ -356,3 +356,160 @@ Two pieces of the idea are worth keeping without the stack:
 If a component library is ever genuinely wanted, the decision to make first is
 TypeScript — shadcn assumes it, and `tsconfig.json` was deliberately deleted
 when the dead Next.js scaffolding went.
+
+---
+
+## 10. Scroll and performance: the measured findings
+
+Consolidated from the tech-stack research so the numbers live here rather than
+in a chat transcript. **This is the evidence behind the item 5 scroll decision.**
+
+### Baseline, from a real `npm run build`
+Record these before touching anything, and compare after:
+
+| Chunk | Raw | Gzip |
+|---|---|---|
+| `index` (main) | 209.88 kB | **66.14 kB** |
+| `gsap-vendor` | 70.04 kB | 27.53 kB |
+| `Dashboard` | 12.09 kB | 4.68 kB |
+| `react-vendor` | 48.76 kB | 17.29 kB |
+
+### The four causes of the lag — all paint cost, none of them Lenis
+1. **`.dashboard-bg`** — a full-viewport layer with a `mask-image`, holding two
+   `inset: -25%` pseudo-elements that each paint **three large radial
+   gradients**, each on an infinite 26s animation. A masked, gradient-painted,
+   permanently-animating full-screen layer repaints every frame forever, even
+   scrolled past. This is the biggest one.
+2. **`ScrollReveal` animates `filter: blur(10px)` to `none`** on the dashboard
+   `<h1>`. Animated blur is a full repaint per frame with no GPU shortcut.
+3. **`will-change: transform` left on permanently** on `.dashboard-bg`, plus
+   infinite animations that never pause.
+4. **`MagicBento`** — 522 lines, a `document`-level `mousemove`, and GSAP
+   cloning particle DOM nodes per card.
+
+Four independent sources agree on causes 1 to 3: the measurement itself, the
+soft-skill performance guardrails (item 7), the ui-ux-pro-max GSAP notes
+(item 8), and its reveal-offset guidance of 8 to 16px versus our 24px plus 5
+degrees plus a 10px blur.
+
+### Dead dependencies to delete
+`three` (38 MB), `@react-three/fiber` plus `@react-three/drei` (6.4 MB) and
+`ogl` (674 KB). Confirmed by grep: **zero imports anywhere in `src/`**. Not in
+the bundle, but 45 MB slowing every install and CI run. `MASTER.md` advertised
+them as the stack until it was corrected.
+
+### What award-winning sites actually run — fingerprinted, not assumed
+Bundles downloaded and grepped for library signatures.
+
+| Site | Framework | Scroll | Animation |
+|---|---|---|---|
+| driessenarchitectuur.nl | WordPress | **Lenis** | GSAP + ScrollTrigger, Swup |
+| lpas.com | WordPress | **Lenis** | Three.js, Swup |
+| governorsmansion.org | Webflow | **Lenis** | GSAP + ScrollTrigger |
+| noho.ink | Webflow | **Lenis** | GSAP + ScrollTrigger |
+| lxlcreative.co.uk | Webflow | **Lenis** | GSAP + ScrollTrigger, Barba |
+| pensatori-irrazionali.com | Vite | **Lenis** | Three.js + OGL |
+| boc.studio | Sanity | **Lenis** | OGL, Swup |
+| storeyarchitecture.co.uk | Nuxt | — | — |
+| kononenkogroup.com | Nuxt | — | — |
+
+**Lenis on 7 of 9.** There is no better-regarded option in circulation, so
+replacing it is not the fix. `awwwards.com` itself uses plain CSS
+`scroll-behavior: smooth` and no animation library at all.
+
+- **igloo.inc**, the reference for smoothness: Three.js plus GSAP in a 1.5 MB
+  chunk, and **no smooth-scroll library**. Its feel comes from **108 `lerp`
+  calls** — values eased toward a target every frame.
+- **WebGL appears only on studio self-promotion sites.** Architecture firms
+  selling to clients run Lenis plus GSAP over real photography. That is our
+  category, and the temple photography is the product here, not a shader.
+- **Skip Swup and Barba.** They exist to fake SPA navigation on WordPress and
+  Webflow. React Router already does it; a CSS route transition is enough.
+
+### Framer Motion — measured and declined
+Two real Vite builds, identical but for the import:
+
+| Build | Raw | Gzip |
+|---|---|---|
+| React only | 218.90 kB | 68.28 kB |
+| plus `motion`, `useScroll`, `useTransform`, `useSpring`, `whileInView` | 353.86 kB | 111.97 kB |
+| **cost** | **+134.96 kB** | **+43.69 kB** |
+
+That is **+66% on our main chunk**, for a library that **does not do smooth
+scrolling**. `useScroll` only reads the native scroll position; nothing
+intercepts the wheel, so there is no `smoothWheel` equivalent. It is a
+scroll-linked animation layer — the slot GSAP ScrollTrigger already fills, at
+27.53 kB gzip and already in the build. It also cannot fix a repaint: blur
+driven through Framer Motion costs exactly what blur driven through CSS costs.
+
+If the lerp feel is wanted later, `useSpring` is the tidiest expression of it,
+but scoped to a route so it never enters the main chunk. GSAP can do the same
+damping for nothing extra.
+
+### Map libraries — the Awwwards map winners use none
+| Site | What it is |
+|---|---|
+| ayla.com.jo/ayla-map | Custom SVG plus canvas plus D3; Google Maps as a data layer only |
+| forestparkmap.org | Illustrated SVG plus D3 |
+| map.creative-russia.ru | Filters and a searchable **table**, map secondary |
+
+**Zero Leaflet, zero Mapbox.** This settles the hardest requirement in item 1:
+with our own SVG artwork the Survey of India boundary including J&K and Ladakh
+is drawn correctly once and verified visually, instead of auditing a tile
+provider's politics on every deploy. Lighter, offline, themeable with our
+tokens, and keyboard-navigable for free because markers are real DOM nodes.
+
+`map.creative-russia.ru` is worth copying in one respect: it leads with filters
+and a text list, map second. For ~40 projects where many have no photos, the
+filterable list may be the better primary surface, with the map above it as the
+credibility visual. That also satisfies item 1's text-fallback requirement with
+the same markup instead of duplicating it.
+
+### Recommendation on the table
+**Keep Lenis, add GSAP ScrollTrigger for reveals, fix the four paint bugs above,
+delete the four dead deps, and draw the India map as SVG.** Awaiting sign-off
+before any of it is built.
+
+---
+
+## 11. Outstanding operational tasks
+
+Carried over and never actioned. Not code work, but blocking or risky.
+
+### Security — highest priority
+- **Rotate `SESSION_SECRET`.** Exposed in a Render screenshot. It signs admin
+  cookies, so anyone holding it can forge an admin session without the
+  password, and `/admin` is publicly reachable. This is the most dangerous
+  outstanding item on the project.
+- **Rotate `SUPABASE_SERVICE_KEY`** and the **database password** — same
+  exposure.
+- **Change the admin password**; the current one appears in an earlier session
+  transcript.
+
+### Deployment
+- Set up the **cron-job.org keepalive**: hit
+  `https://pk-sompura-api.onrender.com/` every 10 minutes, Asia/Kolkata,
+  minutes `0,10,20,30,40,50`, hours `10-19`. Measured: GitHub Actions ran the
+  schedule **once in about 46 attempts**, and a cold start costs **19.98 s**
+  through the proxy versus 0.21 s warm.
+- Delete the **duplicate `DATABASE_URL`** row in Render.
+- Add `DATABASE_URL` as a GitHub Actions **Secret** for the Supabase keepalive,
+  and confirm `KEEPALIVE_URLS` is set under Variables, not Secrets.
+
+### Content — the map has little to show until this is done
+- Fill in **`phone`** for each lineage member; the WhatsApp buttons stay hidden
+  until then.
+- **21 projects exist, not 40+.** 16 of 21 lack a city, and none is flagged
+  featured or milestone. Coordinates, city, state, category and stone type all
+  need entering before items 1, 3 and 4 have data.
+- Replace the **four placeholder lineage photos** (currently superhero
+  wallpapers) with real headshots.
+
+### Repo hygiene
+- **`frontend/public/media/manifest.json`** — 27,750 bytes, **no references
+  anywhere in `src/`**, ships to the CDN on every deploy. Delete.
+- **`PK Sompura.pdf`** — 8,324,706 bytes tracked at the repo root. Also
+  `tools/models/face_detection_yunet.onnx` at 232,589 bytes. Move out of git or
+  confirm they are needed.
+- Buy `pksompura.com` and attach it, though item 6 (Vercel) removes the
+  immediate reason to.
