@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    Boolean, Column, DateTime, ForeignKey, Integer, String, Text, func
+    Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text, func
 )
 from sqlalchemy.orm import relationship, declarative_base
 
@@ -53,6 +53,25 @@ class TempleProject(Base):
     state = Column(String, nullable=True)
     location = Column(String, nullable=True)
     year = Column(String, nullable=True)
+
+    # Map coordinates. Nullable on purpose: a project with no coordinates is
+    # excluded from the map endpoint but still appears in the gallery list.
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+
+    # "mountain" = an artificially built mountain with the temple inside
+    # (Vaishno Devi Ahmedabad, Vaishno Devi Gulbarga). "stone" = a regular
+    # stone temple. Plain strings rather than a database enum, because adding
+    # a value to a Postgres enum needs a migration and this list will grow.
+    category = Column(String, nullable=True)
+
+    # The stone the temple was built from. Free text until the real set of
+    # values is known -- see TODO.md item 4.
+    stone_type = Column(String, nullable=True)
+
+    # "completed" | "in_progress" | "planned". Defaults to completed because
+    # every existing row is a finished temple.
+    status = Column(String, nullable=True, default="completed")
 
     is_featured = Column(Boolean, default=False)
     is_milestone = Column(Boolean, default=False)

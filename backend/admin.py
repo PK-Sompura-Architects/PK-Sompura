@@ -195,13 +195,19 @@ class LineageMemberAdmin(ModelView, model=LineageMember):
 class TempleProjectAdmin(ModelView, model=TempleProject):
     name = "Temple"
     name_plural = "Temples"
-    column_list = ["id", "name_en", "images", "city", "state", "year", "is_featured", "is_milestone"]
+    column_list = [
+        "id", "name_en", "city", "state", "category", "status",
+        "latitude", "longitude", "stone_type", "is_featured", "is_milestone",
+    ]
     column_searchable_list = ["name_en", "name_gu", "name_hi", "city"]
-    column_sortable_list = ["order_index", "year", "city"]
+    column_sortable_list = ["order_index", "year", "city", "state", "category", "status"]
     form_columns = [
         "name_en", "name_gu", "name_hi",
         "description_en", "description_gu", "description_hi",
         "city", "state", "location", "year",
+        # Map fields. Leave latitude/longitude empty and the temple is simply
+        # absent from the map while still listed in the gallery.
+        "latitude", "longitude", "category", "stone_type", "status",
         "is_featured", "is_milestone", "order_index",
         # Without this the edit page showed only text fields, so a
         # temple's own photos were unreachable from the temple itself.
@@ -209,13 +215,15 @@ class TempleProjectAdmin(ModelView, model=TempleProject):
     ]
     icon = "fa-solid fa-gopuram"
 
-    # Gujarati and Hindi are required for the site's language switcher, so the
-    # list view shows at a glance which rows are still missing a translation.
+    # The site is English-only, so a missing translation is no longer worth
+    # flagging. What blocks the India map is a missing city or missing
+    # coordinates, so the list view calls those out instead.
     column_formatters = {
         "name_en": lambda m, a: Markup(
-            f'{m.name_en or "<em>untitled</em>"}'
-            f'{"" if m.name_gu else " <span style=\'color:#283848\'>(no GU)</span>"}'
-            f'{"" if m.name_hi else " <span style=\'color:#283848\'>(no HI)</span>"}'
+            (m.name_en or "<em>untitled</em>")
+            + ("" if m.city else ' <span style="color:#C53030">(no city)</span>')
+            + ("" if (m.latitude and m.longitude)
+               else ' <span style="color:#8A6E4D">(not on map)</span>')
         ),
     }
 
