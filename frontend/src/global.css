@@ -408,3 +408,21 @@ a:hover { color: var(--color-accent-hover); }
     .projects-filters { flex-direction: column; align-items: stretch; }
     .projects-filters select { min-width: 0; width: 100%; }
 }
+
+/* --- Sections sit on an opaque ground -------------------------------------
+   The company mark is a fixed layer behind the whole page. Anything that
+   carries content paints over it: a translucent card lets the logo bleed
+   through photographs, which is exactly what it must not do. The mark shows
+   through the paper background and nowhere else. */
+.wss-section,
+.svc-section,
+.mprev,
+.imap,
+.projects-page,
+.about-page,
+#operations-section,
+#map-preview-section {
+    background: var(--color-bg);
+    position: relative;
+    z-index: 1;
+}

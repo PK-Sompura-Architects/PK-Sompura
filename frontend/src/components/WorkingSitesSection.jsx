@@ -1,4 +1,3 @@
-import { Cpu } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
 import './WorkingSitesSection.css';
 
@@ -16,11 +15,21 @@ const SITE_IMAGES = [
     { url: "/media/work-sites/carved-torana.webp", label: "Carved torana", size: "medium" },
 ];
 
-// Only what the business actually confirmed. This replaced four invented
-// figures (12+ active sites, 500T of stone a year, 40+ machines, 3 states);
-// anything added here has to come from them the same way.
-const STATS = [
-    { icon: <Cpu size={22} strokeWidth={1.5} />, value: "5", label: "CNC Machines" },
+// Five machines, shown as five pieces of their work rather than as the
+// numeral 5.
+//
+// These are the OUTPUT of the machines, not the machines. The company has no
+// photographs of the five CNC machines themselves, and sourcing stock ones
+// would repeat the mistake this section already had to undo -- it once carried
+// eight stock library images labelled with cities where there is no site.
+// Swap these for photographs of the machines as soon as they exist; the strip
+// takes five either way.
+const CNC_WORK = [
+    { url: "/media/cnc-works/01.webp", label: "Carved ceiling medallion" },
+    { url: "/media/cnc-works/03.webp", label: "Inscribed panel" },
+    { url: "/media/cnc-works/05.webp", label: "Figured bracket panel" },
+    { url: "/media/cnc-works/06.webp", label: "Coffered ceiling" },
+    { url: "/media/cnc-works/07.webp", label: "Pilaster ornament" },
 ];
 
 export default function WorkingSitesSection() {
@@ -42,17 +51,19 @@ export default function WorkingSitesSection() {
             </div>
 
             {/* Stats Bar */}
-            {STATS.length > 0 && (
-                <div className="wss-stats-bar">
-                    {STATS.map((stat) => (
-                        <div className="wss-stat-card" key={stat.label}>
-                            <span className="wss-stat-icon">{stat.icon}</span>
-                            <span className="wss-stat-value">{stat.value}</span>
-                            <span className="wss-stat-label">{stat.label}</span>
-                        </div>
-                    ))}
+            <ScrollReveal delay={80}>
+                <div className="wss-cnc">
+                    <p className="wss-cnc-label">Five CNC machines, cutting in-house</p>
+                    <ul className="wss-cnc-strip">
+                        {CNC_WORK.map((w) => (
+                            <li key={w.url}>
+                                <img src={w.url} alt={w.label} loading="lazy" decoding="async" />
+                                <span>{w.label}</span>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            )}
+            </ScrollReveal>
 
             {/* Masonry Gallery Grid */}
             <div className="wss-gallery-grid">

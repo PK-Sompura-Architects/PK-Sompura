@@ -1,4 +1,6 @@
 import { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { createPortal } from "react-dom";
 import ScrollReveal from "../components/ScrollReveal";
 import WorkingSitesSection from '../components/WorkingSitesSection';
@@ -9,6 +11,7 @@ import "./Dashboard.css";
 // chunk. It lands in a chunk shared with the full map on /projects, so a
 // visitor who sees both downloads the outline once.
 const MapPreview = lazy(() => import('../components/MapPreview'));
+const ServicesSection = lazy(() => import('../components/ServicesSection'));
 
 function Dashboard() {
     const scrollToNext = () => {
@@ -52,21 +55,51 @@ function Dashboard() {
     return (
         <div className="dashboard-container">
             {mark}
-            {/* 1. Landing Hero — the mark centred behind the name.
-                The three page-redirector cards that used to sit on the right
-                were removed: the Dock already navigates the whole site, so
-                they were a second navigation competing with the first. */}
+            {/* 1. Hero — photography-led.
+                The temple is the product, so it leads. The wordmark used to be
+                the whole hero, centred on a gradient, which said the company's
+                name and nothing about the work. */}
             <section className="dashboard-hero-wrapper">
 
                 <div className="dashboard-bg" aria-hidden="true" />
 
-                <div className="dashboard-text-overlay">
+                <div className="hero-copy">
                     <ScrollReveal>
-                        <h1 className="sompura-title">P.K. SOMPURA</h1>
+                        <span className="hero-eyebrow">
+                            Tradition <span aria-hidden="true">·</span> Architecture <span aria-hidden="true">·</span> Devotion
+                        </span>
                     </ScrollReveal>
-                    <ScrollReveal delay={120}>
-                        <p className="sompura-subtitle">TEMPLE ARCHITECT &amp; CONTRACTOR</p>
+                    <ScrollReveal delay={90}>
+                        <h1 className="sompura-title">
+                            Temples raised<br />by <span className="hero-accent">three generations</span>
+                        </h1>
                     </ScrollReveal>
+                    <ScrollReveal delay={180}>
+                        <p className="sompura-subtitle">
+                            P.K. Sompura — temple architect and contractor, Palitana.
+                            Drawn, carved and built by one family.
+                        </p>
+                    </ScrollReveal>
+                    <ScrollReveal delay={260}>
+                        <Link className="hero-cta" to="/inquiry">
+                            Request temple services
+                            <span className="hero-cta-icon" aria-hidden="true">
+                                <ArrowRight size={16} strokeWidth={1.75} />
+                            </span>
+                        </Link>
+                    </ScrollReveal>
+                </div>
+
+                {/* The finished work, bleeding off the right edge. */}
+                <div className="hero-media">
+                    <img
+                        src="/media/work-sites/carved-torana.webp"
+                        alt="A carved stone torana gateway built by P.K. Sompura"
+                        width="1200"
+                        height="900"
+                        fetchPriority="high"
+                        decoding="async"
+                    />
                 </div>
 
                 <button
@@ -82,6 +115,11 @@ function Dashboard() {
                     </span>
                 </button>
             </section>
+
+            {/* 2. What the company does. */}
+            <Suspense fallback={null}>
+                <ServicesSection />
+            </Suspense>
 
             {/* 2. Tools, Machines & Working Sites.
                 The lineage section used to sit above this one; it lives on

@@ -22,6 +22,17 @@ the reasoning survives.
 
 **What blocks the map:** entering coordinates. See `data/project-coordinates.csv`.
 
+**Photography still needed.** Highest value first:
+1. **The five CNC machines.** There is not one photograph of them. The
+   workshop section currently evidences them with five pieces of their work,
+   which is honest but indirect; `WorkingSitesSection.jsx` takes five machine
+   photographs the moment they exist.
+2. **A hero photograph.** `carved-torana.webp` is standing in and it carries a
+   printed orange date stamp ("28.05") in the bottom right. A clean wide shot
+   of a finished temple in good light replaces it in one line.
+3. **Per-service images.** The four service cards reuse work-site photographs;
+   one considered image each would lift the section considerably.
+
 ---
 
 ## 1. Interactive India project map — BUILT

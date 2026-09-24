@@ -16,17 +16,88 @@
        would then track this never-scrolling box instead of the viewport. */
     overflow: clip;
     display: grid;
-    place-items: center;
-    padding: var(--space-2xl) var(--content-padding);
+    /* Copy on the left, the work on the right, as in the reference. The
+       temple is the product; the name is not. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: var(--space-lg);
+    padding: var(--space-2xl) 0 var(--space-2xl) var(--content-padding);
 }
 
-/* The name, centred in front of the mark. */
-.dashboard-text-overlay {
+.hero-copy {
     position: relative;
     z-index: 3;
-    text-align: center;
-    max-width: 900px;
+    max-width: 34rem;
 }
+
+.hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-sm);
+}
+
+.hero-eyebrow span { margin: 0 6px; color: var(--c-slate-400); }
+
+.hero-accent { color: var(--color-accent); }
+
+/* The finished work, bleeding off the right edge of the viewport. */
+.hero-media {
+    position: relative;
+    z-index: 2;
+    height: min(74vh, 620px);
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+    overflow: hidden;
+    /* Opaque, so the fixed mark behind the page cannot show through the
+       photograph. */
+    background: var(--color-surface);
+}
+
+.hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 48px;
+    margin-top: var(--space-md);
+    padding: 0 6px 0 var(--space-md);
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: var(--c-sky-100);          /* 9.1:1 on navy-700 */
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background var(--dur-hover) var(--ease-out-expo);
+}
+
+.hero-cta:hover { background: var(--color-accent-hover); }
+
+.hero-cta:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+.hero-cta-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    transition: transform var(--dur-move) var(--ease-out-expo);
+}
+
+.hero-cta:hover .hero-cta-icon { transform: translateX(3px); }
 
 /* Ambient backdrop. Decorative, so it stays out of the grid flow — as a
    static grid item it consumes a column and displaces the hero content.
@@ -59,24 +130,25 @@
 }
 
 .sompura-title {
-    font-family: 'Cinzel Decorative', var(--font-heading);
+    font-family: var(--font-heading);
     color: var(--color-primary);
-    font-size: clamp(40px, 6vw, 90px);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 4px;
+    /* A 4x jump from body copy, which is the ratio the reference uses. The
+       old hero sat closer to 2.5x and read as flat. */
+    font-size: clamp(34px, 5.2vw, 68px);
+    font-weight: 600;
+    letter-spacing: -0.015em;
     margin: 0;
-    line-height: 1.05;
+    line-height: 1.08;
 }
 
 .sompura-subtitle {
-    font-family: var(--font-heading);
-    color: var(--color-text); /* Uses deep slate on light bg */
-    font-size: clamp(14px, 1.5vw, 22px);
-    text-transform: uppercase;
-    letter-spacing: 6px;
-    font-weight: 600;
-    margin-top: 15px;
+    font-family: var(--font-body);
+    color: var(--color-text-muted);
+    font-size: clamp(15px, 1.2vw, 18px);
+    line-height: 1.65;
+    font-weight: 300;
+    margin-top: var(--space-sm);
+    max-width: 44ch;
 }
 
 /* --- ANIMATED SCROLL INDICATOR --- */
@@ -151,22 +223,23 @@
 }
 
 /* --- MOBILE RESPONSIVENESS --- */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .dashboard-hero-wrapper {
-        padding-top: var(--space-xl);
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+        padding: var(--space-xl) var(--content-padding);
+        min-height: auto;
     }
-    
-    .dashboard-text-overlay {
-        width: 100%;
-        text-align: center;
-        margin-top: 0;
+
+    .hero-copy { max-width: none; }
+
+    .hero-media {
+        height: min(48vh, 420px);
+        border-radius: var(--radius-lg);
     }
-    
-    .sompura-title {
-        letter-spacing: 4px;
-    }
-    
-    }
+
+    .dashboard-scroll-indicator { display: none; }
+}
 
 /* --- The mark, travelling the page on scroll -----------------------------
    Fixed and centred, scaling down and drifting aside as the page advances.
@@ -180,20 +253,34 @@
    the un-animated state is the good one. */
 .dashboard-watermark {
     position: fixed;
-    left: 50%;
+    /* Cropped at the left edge rather than centred, as in the reference.
+       A mark centred behind centred text competes with it; a mark bleeding
+       off the edge reads as a watermark and stays out of the way. */
+    left: 0;
     top: 50%;
+    translate: -38% 0;
     /* Portrait now that it is the symbol alone, so the cap is on height. */
-    height: min(62vh, 560px);
+    height: min(78vh, 680px);
     /* Reserve the box up front, or the element is 0px until the image decodes
        and the layout shifts under the headline. */
     aspect-ratio: 427 / 537;
     width: auto;
+    /* Behind every section. Each section paints an opaque background over
+       it, so it only shows through the page's own paper ground. */
     z-index: 0;
     pointer-events: none;
-    opacity: 0.14;
-    /* The centring lives in the keyframes, because a `translate` here would be
-       overwritten by the animation's own transform. */
-    transform: translate(-50%, -50%);
+    opacity: 0.10;
+    transform: translateY(-50%);
+}
+
+@media (max-width: 900px) {
+    /* At phone width there is no room beside the copy, so the mark drops
+       further out of the way rather than sitting under the headline. */
+    .dashboard-watermark {
+        height: min(52vh, 420px);
+        translate: -55% 0;
+        opacity: 0.07;
+    }
 }
 
 /* The journey itself lives in Dashboard.jsx; see the comment there for why a
