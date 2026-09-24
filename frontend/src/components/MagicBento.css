@@ -29,7 +29,7 @@
   background: var(--background-dark);
   font-weight: 300;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: transform var(--dur-move) var(--ease-out-expo), border-color var(--dur-hover) var(--ease-out-expo), box-shadow var(--dur-move) var(--ease-out-expo);
 
   --glow-x: 50%;
   --glow-y: 50%;
@@ -44,7 +44,7 @@
   background-size: cover;
   background-position: center;
   z-index: 0;
-  transition: transform 0.6s ease;
+  transition: transform 900ms var(--ease-out-expo);
 }
 
 .magic-bento-card:hover .magic-bento-card__bg {
@@ -177,7 +177,7 @@
   mask-composite: exclude;
   pointer-events: none;
   opacity: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--dur-move) var(--ease-out-expo);
   z-index: 5;
 }
 

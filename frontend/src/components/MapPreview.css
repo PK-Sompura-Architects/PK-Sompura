@@ -39,7 +39,7 @@
     font-size: 13px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    transition: background 240ms var(--ease-out-expo);
+    transition: background var(--dur-hover) var(--ease-out-expo);
 }
 
 .mprev-link:hover { background: var(--color-accent-hover); }
@@ -57,7 +57,7 @@
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.14);
     font-size: 14px;
-    transition: transform 240ms var(--ease-out-expo);
+    transition: transform var(--dur-move) var(--ease-out-expo);
 }
 
 .mprev-link:hover .mprev-link-icon {

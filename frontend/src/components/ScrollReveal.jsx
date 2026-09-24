@@ -11,15 +11,15 @@ import { useEffect, useRef, useState } from "react";
  * Props:
  *   baseOpacity  {number} 0–1  Starting opacity (default 0)
  *   translateY   {number}      Starting Y offset in px (default 12)
- *   duration     {number}      Transition duration in ms (default 500)
+ *   duration     {number}      Transition duration in ms (default 900)
  *   delay        {number}      Transition delay in ms (default 0)
  *   threshold    {number}      IntersectionObserver threshold (default 0.15)
  */
 function ScrollReveal({
     children,
     baseOpacity = 0,
-    translateY = 12,
-    duration = 500,
+    translateY = 14,
+    duration = 900,
     delay = 0,
     threshold = 0.15,
 }) {

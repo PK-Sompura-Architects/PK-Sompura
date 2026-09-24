@@ -82,7 +82,7 @@ const ParticleCard = ({
       gsap.to(particle, {
         scale: 0,
         opacity: 0,
-        duration: 0.3,
+        duration: 0.45,
         ease: 'back.in(1.7)',
         onComplete: () => {
           particle.parentNode?.removeChild(particle);
@@ -107,7 +107,7 @@ const ParticleCard = ({
         cardRef.current.appendChild(clone);
         particlesRef.current.push(clone);
 
-        gsap.fromTo(clone, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
+        gsap.fromTo(clone, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(1.7)' });
 
         gsap.to(clone, {
           x: (Math.random() - 0.5) * 100,
@@ -145,7 +145,7 @@ const ParticleCard = ({
         gsap.to(element, {
           rotateX: 5,
           rotateY: 5,
-          duration: 0.3,
+          duration: 0.45,
           ease: 'power2.out',
           transformPerspective: 1000
         });
@@ -160,7 +160,7 @@ const ParticleCard = ({
         gsap.to(element, {
           rotateX: 0,
           rotateY: 0,
-          duration: 0.3,
+          duration: 0.45,
           ease: 'power2.out'
         });
       }
@@ -169,7 +169,7 @@ const ParticleCard = ({
         gsap.to(element, {
           x: 0,
           y: 0,
-          duration: 0.3,
+          duration: 0.45,
           ease: 'power2.out'
         });
       }
@@ -204,7 +204,7 @@ const ParticleCard = ({
         magnetismAnimationRef.current = gsap.to(element, {
           x: magnetX,
           y: magnetY,
-          duration: 0.3,
+          duration: 0.45,
           ease: 'power2.out'
         });
       }
@@ -248,7 +248,7 @@ const ParticleCard = ({
         {
           scale: 1,
           opacity: 0,
-          duration: 0.8,
+          duration: 1.1,
           ease: 'power2.out',
           onComplete: () => ripple.remove()
         }
@@ -349,7 +349,7 @@ const GlobalSpotlight = ({
       if (!mouseInside) {
         gsap.to(spotlightRef.current, {
           opacity: 0,
-          duration: 0.3,
+          duration: 0.45,
           ease: 'power2.out'
         });
         cards.forEach(card => {
@@ -398,7 +398,7 @@ const GlobalSpotlight = ({
 
       gsap.to(spotlightRef.current, {
         opacity: targetOpacity,
-        duration: targetOpacity > 0 ? 0.2 : 0.5,
+        duration: targetOpacity > 0 ? 0.32 : 0.7,
         ease: 'power2.out'
       });
     };
@@ -411,7 +411,7 @@ const GlobalSpotlight = ({
       if (spotlightRef.current) {
         gsap.to(spotlightRef.current, {
           opacity: 0,
-          duration: 0.3,
+          duration: 0.45,
           ease: 'power2.out'
         });
       }

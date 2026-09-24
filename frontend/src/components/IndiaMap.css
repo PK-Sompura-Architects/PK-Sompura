@@ -138,7 +138,7 @@
     height: 13px;
     border-radius: 50%;
     border: 1.5px solid var(--color-bg-elevated);
-    transition: transform 200ms var(--ease-out-expo);
+    transition: transform var(--dur-move) var(--ease-out-expo);
 }
 
 /* Category by shape, so status is never carried by colour alone. */
@@ -309,7 +309,7 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: background 200ms var(--ease-out-expo);
+    transition: background var(--dur-hover) var(--ease-out-expo);
 }
 
 .imap-panel-cta:hover { background: var(--color-accent-hover); }
@@ -442,7 +442,7 @@
     font: inherit;
     text-align: left;
     cursor: pointer;
-    transition: border-color 200ms var(--ease-out-expo);
+    transition: border-color var(--dur-hover) var(--ease-out-expo);
 }
 
 .imap-panel-list button:hover { border-color: var(--color-accent); }

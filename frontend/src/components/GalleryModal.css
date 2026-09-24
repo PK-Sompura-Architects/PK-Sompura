@@ -33,7 +33,7 @@
     color: #fff;
     border: none;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color var(--dur-hover) var(--ease-out-expo);
 }
 .close-btn:hover { color: rgb(144, 200, 216); }
 .modal-header { padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -51,7 +51,7 @@
     height: 200px;
     object-fit: cover;
     border-radius: 8px;
-    transition: transform 0.3s;
+    transition: transform var(--dur-move) var(--ease-out-expo);
 }
 .modal-image-grid img:hover { transform: scale(1.02); }
 .empty-state { color: #888; text-align: center; grid-column: 1 / -1; }

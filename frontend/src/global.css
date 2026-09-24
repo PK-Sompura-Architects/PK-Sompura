@@ -119,6 +119,13 @@
     --lift-hover:       -6px;
 
     /* ---- MOTION ---- */
+    /* Motion durations. One scale for the whole site, so nothing is fast in
+       one component and slow in the next. Hover feedback stays short enough to
+       feel attached to the pointer; entrances are deliberately unhurried. */
+    --dur-hover:  260ms;   /* colour and border feedback */
+    --dur-move:   420ms;   /* transforms on hover, small state changes */
+    --dur-enter:  900ms;   /* reveals and entrances */
+
     --ease-smooth:   cubic-bezier(0.25, 0.1, 0.25, 1);
     --ease-dramatic: cubic-bezier(0.76, 0, 0.24, 1);
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
