@@ -336,3 +336,71 @@ a:hover { color: var(--color-accent-hover); }
     .app-container { opacity: 1; transform: none; }
     .app-container.is-ready { transition: none; }
 }
+
+/* Project filter bar. Shared by /projects (the grid) and /about (the map),
+   so it lives here rather than in one route's stylesheet -- in Projects.css
+   it was simply absent on the other route. */
+.projects-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: center;
+    align-items: flex-end;
+    margin: 0 auto var(--space-md);
+    padding: 0 var(--content-padding);
+}
+
+.projects-filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.projects-filters select {
+    /* Over the target-size minimum on a phone. */
+    min-height: 44px;
+    min-width: 170px;
+    padding: 0 var(--space-xs);
+    font: inherit;
+    font-size: 14px;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-text);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.projects-filters-clear {
+    min-height: 44px;
+    padding: 0 var(--space-sm);
+    font: inherit;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.projects-filters-clear:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-hover);
+}
+
+.projects-filters select:focus-visible,
+.projects-filters-clear:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+@media (max-width: 420px) {
+    .projects-filters { flex-direction: column; align-items: stretch; }
+    .projects-filters select { min-width: 0; width: 100%; }
+}

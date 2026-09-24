@@ -236,7 +236,8 @@ export default function IndiaMap({ onOpenGallery, filters, matchingTotal }) {
                 {typeof matchingTotal === 'number' && matchingTotal > placedCount && (
                     <p className="imap-note">
                         {matchingTotal - placedCount} more {matchingTotal - placedCount === 1 ? 'project has' : 'projects have'} no
-                        coordinates recorded yet, so {matchingTotal - placedCount === 1 ? 'it appears' : 'they appear'} in the grid below rather than on the map.
+                        coordinates recorded yet, so {matchingTotal - placedCount === 1 ? 'it is' : 'they are'} counted
+                        but not placed. The full list is on the projects page.
                     </p>
                 )}
             </header>

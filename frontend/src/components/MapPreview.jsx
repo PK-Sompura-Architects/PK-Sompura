@@ -7,10 +7,12 @@ import { API_URL } from '../apiBase';
 /**
  * Compact, non-interactive version of the India map for the dashboard.
  *
+ * Links through to /about, which is where the full map lives.
+ *
  * Deliberately not the real map: no filters, no panel, no clustering, no
- * per-marker interaction. It is a credibility glance that links through to
- * /projects, and a second copy of the interactive behaviour here would be two
- * implementations of the same thing to keep in step.
+ * per-marker interaction. It is a credibility glance, and a second copy of the
+ * interactive behaviour here would be two implementations of the same thing to
+ * keep in step.
  *
  * It shares `indiaOutline` with IndiaMap, so the boundary data is bundled once
  * and served from a chunk both routes reuse.
@@ -53,7 +55,7 @@ export default function MapPreview() {
                 <p>
                     Three generations of work, from Palitana across the country.
                 </p>
-                <Link className="mprev-link" to="/projects">
+                <Link className="mprev-link" to="/about">
                     Explore the map
                     <span className="mprev-link-icon" aria-hidden="true">→</span>
                 </Link>
@@ -63,7 +65,7 @@ export default function MapPreview() {
                 <svg
                     viewBox={`0 0 ${VIEWBOX.width} ${VIEWBOX.height}`}
                     role="img"
-                    aria-label={`Outline map of India with ${dots.length} temple locations marked. The full, interactive map is on the projects page.`}
+                    aria-label={`Outline map of India with ${dots.length} temple locations marked. The full, interactive map is on the Across India page.`}
                 >
                     {OUTLINE.map((d, i) => (
                         <path key={i} className="mprev-land" d={d} />

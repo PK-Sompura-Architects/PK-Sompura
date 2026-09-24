@@ -1,30 +1,32 @@
-.about-wrapper {
-    min-height: 100vh;
-    padding: 15vh var(--content-padding) 15vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    z-index: 1;
+/* Across India — the project map's page. Formerly "The Lineage"; the family
+   photograph grid and ProfileCard were removed at the family's request. */
+
+.about-page {
+    padding: var(--space-2xl) 0 var(--space-xl);
 }
 
 .about-header {
     text-align: center;
-    margin-bottom: 80px;
+    padding: 0 var(--content-padding);
+    margin-bottom: var(--space-lg);
 }
 
-.about-lineage-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-    width: 100%;
-    max-width: 1200px;
+.about-header h1 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: clamp(30px, 4.5vw, 58px);
+    line-height: 1.1;
+    margin: var(--space-2xs) 0 var(--space-xs);
 }
-/* Shown when no lineage members exist yet, so the page never reads as broken. */
-.about-lineage-empty {
+
+.about-intro {
+    color: var(--color-text-muted);
+    max-width: 52ch;
+    margin: 0 auto;
+}
+
+.about-state {
     text-align: center;
     color: var(--color-text-muted);
-    max-width: 44ch;
-    margin: var(--space-xl) auto;
+    padding: var(--space-lg) var(--content-padding);
 }

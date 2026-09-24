@@ -1,13 +1,12 @@
-import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import MagicBento from '../components/MagicBento';
 import GalleryModal from '../components/GalleryModal';
 import { STATUS, CATEGORY, ALL } from '../components/projectVocab';
 import './Projects.css';
 import { API_URL } from "../apiBase";
 
-// Split out so the boundary path data and the map component stay off the main
-// chunk and out of every other route's download.
-const IndiaMap = lazy(() => import('../components/IndiaMap'));
+// The map lives on /about ("Across India") rather than here, so it has one
+// home instead of two copies to keep in step.
 
 export default function Projects() {
     // One object, so `loading` is derived rather than set from inside the
@@ -119,16 +118,6 @@ export default function Projects() {
                 </div>
             )}
 
-            <Suspense fallback={null}>
-                <IndiaMap
-                    filters={filters}
-                    matchingTotal={visible.length}
-                    onOpenGallery={(id) => {
-                        const match = all.find((p) => p.id === id);
-                        if (match) setSelectedProject(match);
-                    }}
-                />
-            </Suspense>
 
             {loading ? (
                 <p className="projects-state">Loading archives…</p>

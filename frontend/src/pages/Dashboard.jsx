@@ -61,7 +61,7 @@ function Dashboard() {
                     onClick={scrollToNext}
                     aria-label="Scroll to the workshop section"
                 >
-                    <span className="scroll-text">Discover Legacy</span>
+                    <span className="scroll-text">See the work</span>
                     <span className="scroll-chevron-wrapper" aria-hidden="true">
                         <span className="scroll-chevron"></span>
                         <span className="scroll-chevron"></span>

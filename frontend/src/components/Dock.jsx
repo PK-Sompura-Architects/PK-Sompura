@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Grid, Mail, Users } from 'lucide-react';
+import { Grid, Mail, MapPin } from 'lucide-react';
 import './Dock.css';
 
 const BASE_SIZE = 50;
@@ -23,7 +23,7 @@ export default function Dock() {
   const items = [
     { icon: <img src="/LOGO_2.png" alt="" />, label: 'Dashboard', path: '/' },
     { icon: <Grid size={22} strokeWidth={1.5} />, label: 'Projects', path: '/projects' },
-    { icon: <Users size={22} strokeWidth={1.5} />, label: 'The Lineage', path: '/about' },
+    { icon: <MapPin size={22} strokeWidth={1.5} />, label: 'Across India', path: '/about' },
     { icon: <Mail size={22} strokeWidth={1.5} />, label: 'Inquiry', path: '/inquiry' },
   ];
 
