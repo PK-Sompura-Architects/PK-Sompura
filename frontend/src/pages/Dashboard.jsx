@@ -1,7 +1,13 @@
+import { lazy, Suspense } from "react";
 import ScrollReveal from "../components/ScrollReveal";
 import WorkingSitesSection from '../components/WorkingSitesSection';
 import DashboardGalleries from '../components/DashboardGalleries';
 import "./Dashboard.css";
+
+// Split out so the 27 kB boundary path data is not part of the dashboard's own
+// chunk. It lands in a chunk shared with the full map on /projects, so a
+// visitor who sees both downloads the outline once.
+const MapPreview = lazy(() => import('../components/MapPreview'));
 
 function Dashboard() {
     const scrollToNext = () => {
@@ -58,7 +64,15 @@ function Dashboard() {
                 <WorkingSitesSection />
             </div>
 
-            {/* 3. Operations & Galleries Section */}
+            {/* 3. Where the work is — a glance, linking to the full map.
+                Renders nothing until coordinates exist. */}
+            <div id="map-preview-section">
+                <Suspense fallback={null}>
+                    <MapPreview />
+                </Suspense>
+            </div>
+
+            {/* 4. Operations & Galleries Section */}
             <div id="operations-section">
                 <DashboardGalleries />
             </div>

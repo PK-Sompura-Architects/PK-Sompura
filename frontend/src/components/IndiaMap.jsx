@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { VIEWBOX, OUTLINE, project } from './indiaOutline';
+import { STATUS, CATEGORY, ALL } from './projectVocab';
 import './IndiaMap.css';
 import { API_URL } from '../apiBase';
 
@@ -13,21 +14,6 @@ import { API_URL } from '../apiBase';
  * deploy. It is also lighter, works offline, themes with our own tokens, and
  * gives keyboard access for free because each marker is a real DOM node.
  */
-
-// Status sets the colour, category sets the shape. Never colour alone: the
-// legend names both, and the fallback list below repeats it in words.
-const STATUS = {
-    completed:   { label: 'Completed',   className: 'is-completed' },
-    in_progress: { label: 'In progress', className: 'is-progress' },
-    planned:     { label: 'Planned',     className: 'is-planned' },
-};
-
-const CATEGORY = {
-    mountain: { label: 'Artificial mountain temple' },
-    stone:    { label: 'Stone temple' },
-};
-
-const ALL = '__all__';
 
 // How far apart two markers must be on screen before they stay separate: the
 // 30px marker plus the 8px minimum gap WCAG asks for between adjacent targets.
@@ -106,10 +92,9 @@ function Marker({ group, selectedId, onSelect }) {
     );
 }
 
-export default function IndiaMap({ onOpenGallery }) {
+export default function IndiaMap({ onOpenGallery, filters, matchingTotal }) {
     const [state, setState] = useState({ rows: null, error: false });
     const [selected, setSelected] = useState(null);
-    const [filters, setFilters] = useState({ state: ALL, status: ALL, category: ALL });
     const panelRef = useRef(null);
     const plotRef = useRef(null);
     // The rendered width drives the cluster threshold, so it has to be
@@ -144,39 +129,9 @@ export default function IndiaMap({ onOpenGallery }) {
         return () => controller.abort();
     }, []);
 
-    // Escape closes the panel. Registered only while something is open, so it
-    // never competes with the gallery modal's own handler.
-    useEffect(() => {
-        if (!selected) return;
-        const onKeyDown = (e) => { if (e.key === 'Escape') setSelected(null); };
-        document.addEventListener('keydown', onKeyDown);
-        return () => document.removeEventListener('keydown', onKeyDown);
-    }, [selected]);
-
-    // Below 860px the panel is a bottom sheet over the page, so the page
-    // behind it must not scroll. Two things are needed and neither is
-    // sufficient alone: the lock goes on <html> (never <body>, whose
-    // `overflow-x: clip` computes to `hidden` once the other axis is set, which
-    // once made the whole site unscrollable), and `data-lenis-prevent` on the
-    // sheet, because Lenis scrolls programmatically and `overflow: hidden`
-    // does not stop it.
-    useEffect(() => {
-        if (!selected) return;
-        if (!window.matchMedia('(max-width: 860px)').matches) return;
-        const root = document.documentElement;
-        const previous = root.style.overflow;
-        root.style.overflow = 'hidden';
-        return () => { root.style.overflow = previous; };
-    }, [selected]);
-
     // `?? []` would build a new array every render, so every useMemo below it
     // would recompute on every render and defeat the point of memoising.
     const rows = useMemo(() => state.rows ?? [], [state.rows]);
-
-    const states = useMemo(
-        () => [...new Set(rows.map((r) => r.state).filter(Boolean))].sort(),
-        [rows]
-    );
 
     const visible = useMemo(() => rows.filter((r) => (
         (filters.state === ALL || r.state === filters.state) &&
@@ -203,12 +158,49 @@ export default function IndiaMap({ onOpenGallery }) {
 
     const placedCount = groups.reduce((n, g) => n + g.items.length, 0);
 
+    // A filter change can remove whatever is open. Derive the live selection
+    // instead of clearing it from an effect: setting state synchronously in an
+    // effect cascades an extra render, and this needs no state at all.
+    const visibleIds = useMemo(() => new Set(visible.map((r) => r.id)), [visible]);
+    const active = !selected ? null
+        : active.items
+            ? (active.items.some((i) => visibleIds.has(i.id)) ? selected : null)
+            : (visibleIds.has(selected.id) ? selected : null);
+
     // Derived, never hardcoded.
-    const stateCount = new Set(visible.map((r) => r.state).filter(Boolean)).size;
+    const stateCount = useMemo(
+        () => new Set(visible.map((r) => r.state).filter(Boolean)).size,
+        [visible]
+    );
 
     // Grouped by state for the fallback list. This is real content, not a
     // progressive enhancement: it is what a screen reader, a crawler and a
     // visitor without JavaScript get, so it is never hidden behind animation.
+    // Escape closes the panel. Registered only while something is open, so it
+    // never competes with the gallery modal's own handler.
+    useEffect(() => {
+        if (!active) return;
+        const onKeyDown = (e) => { if (e.key === 'Escape') setSelected(null); };
+        document.addEventListener('keydown', onKeyDown);
+        return () => document.removeEventListener('keydown', onKeyDown);
+    }, [active]);
+
+    // Below 860px the panel is a bottom sheet over the page, so the page
+    // behind it must not scroll. Two things are needed and neither is
+    // sufficient alone: the lock goes on <html> (never <body>, whose
+    // `overflow-x: clip` computes to `hidden` once the other axis is set, which
+    // once made the whole site unscrollable), and `data-lenis-prevent` on the
+    // sheet, because Lenis scrolls programmatically and `overflow: hidden`
+    // does not stop it.
+    useEffect(() => {
+        if (!active) return;
+        if (!window.matchMedia('(max-width: 860px)').matches) return;
+        const root = document.documentElement;
+        const previous = root.style.overflow;
+        root.style.overflow = 'hidden';
+        return () => { root.style.overflow = previous; };
+    }, [active]);
+
     const byState = useMemo(() => {
         const groups = new Map();
         for (const r of visible) {
@@ -229,8 +221,6 @@ export default function IndiaMap({ onOpenGallery }) {
         return null; // Nothing placed yet; an empty map of India says nothing.
     }
 
-    const set = (key) => (e) => setFilters((f) => ({ ...f, [key]: e.target.value }));
-
     return (
         <section className="imap" aria-labelledby="imap-heading">
             <header className="imap-header">
@@ -239,37 +229,19 @@ export default function IndiaMap({ onOpenGallery }) {
                     {visible.length} {visible.length === 1 ? 'temple' : 'temples'}
                     {stateCount > 0 && <> across {stateCount} {stateCount === 1 ? 'state' : 'states'}</>}
                 </h2>
+                {/* Counted against the page's full filtered list, not this
+                    endpoint's rows: the map endpoint only returns projects that
+                    already have coordinates, so comparing within it can never
+                    find a missing one. */}
+                {typeof matchingTotal === 'number' && matchingTotal > placedCount && (
+                    <p className="imap-note">
+                        {matchingTotal - placedCount} more {matchingTotal - placedCount === 1 ? 'project has' : 'projects have'} no
+                        coordinates recorded yet, so {matchingTotal - placedCount === 1 ? 'it appears' : 'they appear'} in the grid below rather than on the map.
+                    </p>
+                )}
             </header>
 
-            <div className="imap-filters">
-                <label>
-                    <span>State</span>
-                    <select value={filters.state} onChange={set('state')}>
-                        <option value={ALL}>All states</option>
-                        {states.map((s) => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                </label>
-                <label>
-                    <span>Type</span>
-                    <select value={filters.category} onChange={set('category')}>
-                        <option value={ALL}>All types</option>
-                        {Object.entries(CATEGORY).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label}</option>
-                        ))}
-                    </select>
-                </label>
-                <label>
-                    <span>Status</span>
-                    <select value={filters.status} onChange={set('status')}>
-                        <option value={ALL}>All statuses</option>
-                        {Object.entries(STATUS).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label}</option>
-                        ))}
-                    </select>
-                </label>
-            </div>
-
-            <div className={`imap-body${selected ? ' has-panel' : ''}`}>
+            <div className={`imap-body${active ? ' has-panel' : ''}`}>
                 <div className="imap-canvas">
                     <div className="imap-plot" ref={plotRef}>
                         <svg
@@ -285,7 +257,7 @@ export default function IndiaMap({ onOpenGallery }) {
                             <Marker
                                 key={g.items.map((i) => i.id).join('-')}
                                 group={g}
-                                selectedId={selected?.id}
+                                selectedId={active?.id}
                                 onSelect={(picked) => setSelected(
                                     picked.items.length === 1 ? picked.items[0] : picked
                                 )}
@@ -316,7 +288,7 @@ export default function IndiaMap({ onOpenGallery }) {
                     the background is ignored by Lenis and then blocked by the
                     overflow lock. It is the same arrangement GalleryModal uses,
                     and it doubles as tap-outside-to-close. */}
-                {selected && (
+                {active && (
                     <div
                         className="imap-backdrop"
                         onClick={() => setSelected(null)}
@@ -325,14 +297,14 @@ export default function IndiaMap({ onOpenGallery }) {
                     />
                 )}
 
-                {selected && (selected.items ? (
+                {active && (active.items ? (
                     /* A cluster: list what is here and let the visitor pick
                        one, rather than guessing which of them they meant. */
                     <aside
                         className="imap-panel"
                         role="dialog"
                         aria-modal="false"
-                        aria-label={`${selected.items.length} projects at this location`}
+                        aria-label={`${active.items.length} projects at this location`}
                         data-lenis-prevent
                     >
                         <button
@@ -342,11 +314,11 @@ export default function IndiaMap({ onOpenGallery }) {
                         >
                             ×
                         </button>
-                        <h3>{selected.items.length} projects here</h3>
+                        <h3>{active.items.length} projects here</h3>
                         <p className="imap-panel-where">
                             {(() => {
-                                const cities = new Set(selected.items.map((i) => i.city).filter(Boolean));
-                                const states = new Set(selected.items.map((i) => i.state).filter(Boolean));
+                                const cities = new Set(active.items.map((i) => i.city).filter(Boolean));
+                                const states = new Set(active.items.map((i) => i.state).filter(Boolean));
                                 if (cities.size === 1) {
                                     return [...cities][0] + (states.size === 1 ? `, ${[...states][0]}` : '');
                                 }
@@ -354,7 +326,7 @@ export default function IndiaMap({ onOpenGallery }) {
                             })()}
                         </p>
                         <ul className="imap-panel-list">
-                            {selected.items.map((item) => (
+                            {active.items.map((item) => (
                                 <li key={item.id}>
                                     <button onClick={() => setSelected(item)}>
                                         <strong>{item.name}</strong>
@@ -373,7 +345,7 @@ export default function IndiaMap({ onOpenGallery }) {
                         ref={panelRef}
                         role="dialog"
                         aria-modal="false"
-                        aria-label={selected.name}
+                        aria-label={active.name}
                         data-lenis-prevent
                     >
                         <button
@@ -383,22 +355,22 @@ export default function IndiaMap({ onOpenGallery }) {
                         >
                             ×
                         </button>
-                        <h3>{selected.name}</h3>
+                        <h3>{active.name}</h3>
                         <p className="imap-panel-where">
-                            {[selected.city, selected.state].filter(Boolean).join(', ') || 'Location not recorded'}
+                            {[active.city, active.state].filter(Boolean).join(', ') || 'Location not recorded'}
                         </p>
                         <dl className="imap-panel-meta">
                             <dt>Type</dt>
-                            <dd>{CATEGORY[selected.category]?.label || 'Not recorded'}</dd>
+                            <dd>{CATEGORY[active.category]?.label || 'Not recorded'}</dd>
                             <dt>Status</dt>
-                            <dd>{(STATUS[selected.status] || STATUS.completed).label}</dd>
-                            {selected.stone_type && <><dt>Stone</dt><dd>{selected.stone_type}</dd></>}
+                            <dd>{(STATUS[active.status] || STATUS.completed).label}</dd>
+                            {active.stone_type && <><dt>Stone</dt><dd>{active.stone_type}</dd></>}
                         </dl>
-                        {selected.cover_image && (
+                        {active.cover_image && (
                             <img
                                 className="imap-panel-image"
-                                src={selected.cover_image}
-                                alt={`${selected.name} temple`}
+                                src={active.cover_image}
+                                alt={`${active.name} temple`}
                                 loading="lazy"
                                 decoding="async"
                             />
@@ -406,10 +378,10 @@ export default function IndiaMap({ onOpenGallery }) {
                         {/* Several projects have no usable photographs and exist
                             to be counted. Offering a gallery that opens empty is
                             worse than not offering one. */}
-                        {selected.cover_image ? (
+                        {active.cover_image ? (
                             <button
                                 className="imap-panel-cta"
-                                onClick={() => onOpenGallery?.(selected.id)}
+                                onClick={() => onOpenGallery?.(active.id)}
                             >
                                 View gallery
                             </button>

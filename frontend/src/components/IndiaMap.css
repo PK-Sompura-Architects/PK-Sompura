@@ -461,3 +461,12 @@
     font-size: 12px;
     color: var(--color-text-muted);
 }
+
+/* Some projects have no coordinates on purpose -- they exist to be counted.
+   Saying so is better than a count that silently disagrees with the markers. */
+.imap-note {
+    margin: var(--space-2xs) auto 0;
+    max-width: 52ch;
+    font-size: 13px;
+    color: var(--color-text-subtle);
+}

@@ -1,0 +1,107 @@
+/* Dashboard map preview. Colours are the validated tokens from global.css. */
+
+.mprev {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 0.8fr);
+    gap: var(--space-xl);
+    align-items: center;
+    padding: var(--space-2xl) var(--content-padding);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mprev-copy h2 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: clamp(24px, 3.4vw, 44px);
+    line-height: 1.1;
+    margin: var(--space-2xs) 0 var(--space-xs);
+}
+
+.mprev-copy p {
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-md);
+    max-width: 38ch;
+}
+
+/* Pill link with the arrow in its own circle, flush with the inner padding. */
+.mprev-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
+    padding: 0 6px 0 var(--space-sm);
+    border-radius: 999px;
+    background: var(--color-primary);
+    /* sky-100 on navy-700: 9.1:1. */
+    color: var(--c-sky-100);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background 240ms var(--ease-out-expo);
+}
+
+.mprev-link:hover { background: var(--color-accent-hover); }
+
+.mprev-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+.mprev-link-icon {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 14px;
+    transition: transform 240ms var(--ease-out-expo);
+}
+
+.mprev-link:hover .mprev-link-icon {
+    transform: translateX(3px);
+}
+
+/* Capped by height, for the same reason as the full map: India's viewBox is
+   taller than it is wide, so a width-driven size runs off the screen. */
+.mprev-map {
+    width: min(100%, calc(52vh * 0.894));
+    margin: 0 auto;
+}
+
+.mprev-map svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.mprev-land {
+    fill: var(--color-surface);
+    stroke: var(--c-slate-400);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+.mprev-dot {
+    fill: var(--c-navy-700);
+    stroke: var(--color-bg-elevated);
+    stroke-width: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mprev-link,
+    .mprev-link-icon { transition: none; }
+}
+
+@media (max-width: 860px) {
+    .mprev {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+        text-align: center;
+    }
+
+    .mprev-copy p { margin-inline: auto; }
+    .mprev-map { width: min(100%, calc(44vh * 0.894)); }
+}

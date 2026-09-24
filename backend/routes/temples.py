@@ -18,6 +18,11 @@ def _serialise(project: TempleProject, lang: str) -> dict:
         "year": project.year,
         "is_featured": bool(project.is_featured),
         "is_milestone": bool(project.is_milestone),
+        # The Projects page filters the grid and the map from one control, so
+        # the list payload needs the same fields the map endpoint returns.
+        "category": project.category,
+        "status": project.status or "completed",
+        "stone_type": project.stone_type,
         "cover_image": project.cover_image,
         "cutout_image": project.cutout_image,
         "images": [img.url for img in project.images],
