@@ -32,3 +32,16 @@ ALBUM-IMAGES/
 
 # graphify knowledge-graph output (regenerate with /graphify)
 graphify-out/
+
+# Photos dropped into the repo root from a phone. They are working material,
+# often family photographs, and must never be committed. Kept as a pattern
+# rather than a one-off filename because the next one will have a new date.
+WhatsApp Image *
+WhatsApp Video *
+IMG_*.jpg
+IMG_*.jpeg
+IMG_*.png
+/*.jpg
+/*.jpeg
+/*.png
+/*.webp
