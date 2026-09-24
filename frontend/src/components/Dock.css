@@ -44,14 +44,14 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: background-color var(--dur-base) var(--ease-smooth),
+  transition: background-color var(--dur-move) var(--ease-smooth),
               width 220ms var(--ease-out-expo),
               height 220ms var(--ease-out-expo);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .dock-item {
-    transition: background-color var(--dur-base) var(--ease-smooth);
+    transition: background-color var(--dur-move) var(--ease-smooth);
   }
 }
 
@@ -117,8 +117,8 @@
 
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dur-fast) var(--ease-smooth),
-              transform var(--dur-fast) var(--ease-out-expo);
+  transition: opacity var(--dur-hover) var(--ease-smooth),
+              transform var(--dur-hover) var(--ease-out-expo);
 }
 
 .dock-item:hover .dock-label,

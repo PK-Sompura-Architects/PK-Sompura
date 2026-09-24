@@ -61,7 +61,7 @@
     gap: 8px;
     font-size: var(--text-sm);
     color: rgba(255, 255, 255, 0.82);
-    transition: color var(--dur-base) var(--ease-smooth);
+    transition: color var(--dur-move) var(--ease-smooth);
 }
 
 .site-footer__links a:hover,
