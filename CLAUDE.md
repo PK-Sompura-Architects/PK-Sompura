@@ -86,9 +86,6 @@ On dark navy `#1E2D40`: white **13.96:1**, sky-200 **9.23:1**, sky-100
 **9.1:1**, sand-300 **8.70:1**. navy-700 disappears there — that is what
 `--color-primary-on-dark` exists to prevent.
 
-`ProfileCard`'s dark card base `rgba(30,45,64,0.95)`: white **13.96:1**,
-sky-300 **7.60:1**, 70% white **7.64:1**.
-
 **Never estimate a ratio.** Compute it. A previous "looks fine" shipped navy
 text on a navy gradient at **1.16:1**, and an error red at 4.13:1 that failed AA
 on the inquiry form's required-field markers.
