@@ -26,8 +26,13 @@ function SmoothScroll() {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
         const lenis = new Lenis({
-            duration: 1.2,
+            // 1.6 rather than 1.2: the longer glide is what reads as "heavy"
+            // and premium. Measured against a reference build using the same
+            // easing curve, this was the whole difference in feel.
+            duration: 1.6,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            // Touch drags otherwise feel sluggish next to the wheel.
+            touchMultiplier: 1.5,
             smoothWheel: true,
         });
         function raf(time) {

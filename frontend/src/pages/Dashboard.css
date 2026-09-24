@@ -168,38 +168,54 @@
     
     }
 
-/* --- Logo watermark, parallaxed on scroll ---------------------------------
-   Uses the native scroll-driven animation timeline: no JS, no scroll
-   listener, no dependency. Browsers without it simply get the static
-   watermark, which is why the un-animated state is the good one. */
+/* --- The mark, travelling the page on scroll -----------------------------
+   Fixed and centred, scaling down and drifting aside as the page advances.
+
+   A CSS scroll timeline, not a scroll listener and not a spring on a scroll
+   value: no JavaScript, no bytes, and it runs on the compositor. Lenis scrolls
+   the real document, so this inherits its smoothing rather than fighting it
+   with a second easing curve.
+
+   Browsers without scroll timelines get the static centred mark, which is why
+   the un-animated state is the good one. */
 .dashboard-watermark {
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
-    translate: -50% -50%;
     width: min(78vw, 620px);
     /* Reserve the box up front. Without it the element is 0px tall until the
-       image decodes, and a zero-height subject makes view() inactive, so the
-       parallax silently never runs. */
+       image decodes, and a zero-height subject makes a view() timeline
+       inactive, so the animation silently never runs. */
     aspect-ratio: 553 / 451;
     z-index: 0;
     pointer-events: none;
     opacity: 0.14;
+    /* The centring lives in the keyframes, because a `translate` here would be
+       overwritten by the animation's own transform. */
+    transform: translate(-50%, -50%);
 }
 
-@supports (animation-timeline: view()) {
+@supports (animation-timeline: scroll()) {
     .dashboard-watermark {
-        animation: watermarkDrift linear both;
-        animation-timeline: view();
-        animation-range: entry 0% exit 100%;
+        animation: markJourney linear both;
+        animation-timeline: scroll(root block);
     }
 }
 
-@keyframes watermarkDrift {
-    from { transform: translateY(-8%) rotate(-3deg) scale(1.03); }
-    to   { transform: translateY(12%) rotate(3deg)  scale(0.97); }
+/* Only transform and opacity, so the whole journey is composited. Scale and
+   drift are deliberately gentle: the mark is a backdrop, and a logo flying
+   across the page would compete with the temple photography it sits behind. */
+@keyframes markJourney {
+    0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg);   opacity: 0.14; }
+    22%  { transform: translate(-50%, -50%) scale(1)    rotate(4deg);   opacity: 0.14; }
+    52%  { transform: translate(-16%, -62%) scale(0.52) rotate(12deg);  opacity: 0.09; }
+    80%  { transform: translate(-88%, -38%) scale(0.46) rotate(-8deg);  opacity: 0.10; }
+    100% { transform: translate(-30%, -46%) scale(0.34) rotate(0deg);   opacity: 0.05; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .dashboard-watermark { animation: none; }
+    .dashboard-watermark {
+        animation: none;
+        transform: translate(-50%, -50%);
+    }
 }

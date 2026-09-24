@@ -16,6 +16,28 @@ function Dashboard() {
 
     return (
         <div className="dashboard-container">
+            {/* The mark, fixed and centred, travelling the length of the page
+                as you scroll: large and central behind the name, then smaller
+                and off to the side as the sections go by.
+
+                A direct child of the container, not of the hero, because the
+                hero has `overflow: clip` and that clips a fixed descendant.
+
+                Driven by a CSS scroll timeline rather than a JS scroll
+                listener or a spring on a scroll value. It costs no JavaScript
+                and no bytes, and because Lenis scrolls the real document the
+                animation inherits its smoothing for free -- there is no second
+                easing layer to tune against the first. */}
+            <img
+                className="dashboard-watermark"
+                src="/logo-mark.webp"
+                alt=""
+                aria-hidden="true"
+                width="553"
+                height="451"
+                decoding="async"
+            />
+
             {/* 1. Landing Hero — the mark centred behind the name.
                 The three page-redirector cards that used to sit on the right
                 were removed: the Dock already navigates the whole site, so
@@ -23,16 +45,6 @@ function Dashboard() {
             <section className="dashboard-hero-wrapper">
 
                 <div className="dashboard-bg" aria-hidden="true" />
-
-                <img
-                    className="dashboard-watermark"
-                    src="/logo-mark.webp"
-                    alt=""
-                    aria-hidden="true"
-                    width="553"
-                    height="451"
-                    decoding="async"
-                />
 
                 <div className="dashboard-text-overlay">
                     <ScrollReveal>
