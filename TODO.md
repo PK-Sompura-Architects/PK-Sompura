@@ -1,10 +1,34 @@
-# TODO — planned work, not started
+# TODO — planned work
 
-Nothing here is built yet. Items get added over time and executed in phases.
+Items get added over time and executed in phases. Headings are marked DONE,
+PARTLY DONE or blank as work lands; the detail under a finished item is kept so
+the reasoning survives.
+
+## Status at a glance
+
+| # | Item | State |
+|---|---|---|
+| 1 | Interactive India project map | Schema, admin and API done. SVG map component not started. |
+| 2 | Map decisions (no language, no year, photoless projects) | Applied |
+| 3 | Split projects into mountain / stone | `category` column and admin field done. Frontend filter not started. |
+| 4 | Stone type column | `stone_type` column and admin field done. Frontend not started. |
+| 5 | Dashboard rebuild | **DONE** — mark centred, redirector and lineage removed, scroll jank fixed |
+| 6 | Netlify to Vercel | `vercel.json` and `VERCEL.md` written. Awaiting the Vercel project. |
+| 7 | Design language | Reference only, applies to future work |
+| 8 | Verified UX rules | Reference only, applies to future work |
+| 9 | Tailwind + shadcn | Rejected, no action |
+| 10 | Scroll and performance findings | **DONE** — all four paint bugs fixed, dead deps removed |
+| 11 | Operational tasks | Outstanding, mostly needs your accounts |
+
+**What blocks the map:** entering coordinates. See `data/project-coordinates.csv`.
 
 ---
 
-## 1. Interactive India project map
+## 1. Interactive India project map — PARTLY DONE
+
+> Schema, admin fields and `GET /api/projects/map` are built and tested.
+> The SVG map component and the Projects-page section are not started.
+> The endpoint returns an empty list until coordinates exist, which is correct.
 
 Map of India on the Projects page showing every temple project (~40+), so a
 visitor grasps three generations of geographic scale in a few seconds and can
@@ -131,7 +155,10 @@ imagery.
     and no "View gallery" button rather than an empty modal.
   - The counter ("N temples across M states") includes them.
 
-## 3. Split the Projects section in two
+## 3. Split the Projects section in two — PARTLY DONE
+
+> The `category` column and its admin field exist. The Projects-page filter
+> and the marker shape distinction are not built.
 
 Two categories, surfaced on the Projects page and as a map marker distinction:
 
@@ -145,14 +172,21 @@ on the Projects page. On the map this is the second axis alongside `status` —
 decide whether category is marker *shape* and status is *colour*, so neither
 relies on colour alone.
 
-## 4. Stone type column
+## 4. Stone type column — PARTLY DONE
+
+> The `stone_type` column and its admin field exist. Nothing displays it yet.
 
 New column on `TempleProject`: the stone used to build that temple. String, or
 an enum if the set turns out to be small and fixed — check what the real values
 are before choosing. Shown in the project detail panel and the gallery modal
 subtitle, and worth a filter if the values are few.
 
-## 5. Dashboard rebuild
+## 5. Dashboard rebuild — DONE (except the map preview)
+
+> Commit `9204dc3`. The mark is centred behind the name, the redirector and
+> the lineage section are gone, and the scroll jank is fixed: median frame
+> 8.3ms, worst 16.7ms, zero frames over 25ms while scrolling at 360px.
+> The dashboard map preview waits on the map component itself.
 
 ### Layout changes
 - **Logo centred in the background**, company name in front of it.
@@ -169,7 +203,11 @@ only, not the infinite scroll. Broader reference: https://www.awwwards.com/.
 Measured causes of the lag are recorded in the report below; the chosen approach
 gets appended to this file once picked.
 
-## 6. Netlify → Vercel
+## 6. Netlify → Vercel — CONFIG WRITTEN
+
+> `frontend/vercel.json` is a direct port of `netlify.toml`, rewrite order
+> included. `VERCEL.md` has the step-by-step. The rest needs your Vercel
+> account.
 
 Move the frontend off Netlify to Vercel, to lose the Netlify badge in the bottom
 right without buying a domain.
@@ -359,7 +397,7 @@ when the dead Next.js scaffolding went.
 
 ---
 
-## 10. Scroll and performance: the measured findings
+## 10. Scroll and performance: the measured findings — DONE
 
 Consolidated from the tech-stack research so the numbers live here rather than
 in a chat transcript. **This is the evidence behind the item 5 scroll decision.**
@@ -498,16 +536,20 @@ Carried over and never actioned. Not code work, but blocking or risky.
 
 ### Content — the map has little to show until this is done
 - Fill in **`phone`** for each lineage member; the WhatsApp buttons stay hidden
-  until then.
-- **21 projects exist, not 40+.** 16 of 21 lack a city, and none is flagged
-  featured or milestone. Coordinates, city, state, category and stone type all
-  need entering before items 1, 3 and 4 have data.
+  until then. Note the lineage cards that carry those buttons (`ChromaGrid`)
+  are currently unused — `/about` renders `ProfileCard`, which has neither the
+  buttons nor the contrast fix. Switching `/about` over is a small change worth
+  doing before entering the numbers.
+- **21 projects exist, not 40+.** 16 of 21 lack a city, none has a state, and
+  none is flagged featured or milestone. **This is the single thing blocking
+  the map.** `data/project-coordinates.csv` is generated from the live table
+  with the ids and names already correct — fill in what you know and run
+  `tools/import_project_data.py`. See `data/README.md`.
 - Replace the **four placeholder lineage photos** (currently superhero
   wallpapers) with real headshots.
 
 ### Repo hygiene
-- **`frontend/public/media/manifest.json`** — 27,750 bytes, **no references
-  anywhere in `src/`**, ships to the CDN on every deploy. Delete.
+- ~~`frontend/public/media/manifest.json`~~ — deleted in `9204dc3`.
 - **`PK Sompura.pdf`** — 8,324,706 bytes tracked at the repo root. Also
   `tools/models/face_detection_yunet.onnx` at 232,589 bytes. Move out of git or
   confirm they are needed.
