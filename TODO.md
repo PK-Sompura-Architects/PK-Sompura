@@ -8,10 +8,10 @@ the reasoning survives.
 
 | # | Item | State |
 |---|---|---|
-| 1 | Interactive India project map | Schema, admin and API done. SVG map component not started. |
+| 1 | Interactive India project map | **Built.** Awaiting coordinates to show anything. |
 | 2 | Map decisions (no language, no year, photoless projects) | Applied |
-| 3 | Split projects into mountain / stone | `category` column and admin field done. Frontend filter not started. |
-| 4 | Stone type column | `stone_type` column and admin field done. Frontend not started. |
+| 3 | Split projects into mountain / stone | Column, admin field and map filter done. Projects-grid filter not started. |
+| 4 | Stone type column | Column, admin field, and shown in the map panel. |
 | 5 | Dashboard rebuild | **DONE** — mark centred, redirector and lineage removed, scroll jank fixed |
 | 6 | Netlify to Vercel | `vercel.json` and `VERCEL.md` written. Awaiting the Vercel project. |
 | 7 | Design language | Reference only, applies to future work |
@@ -24,11 +24,23 @@ the reasoning survives.
 
 ---
 
-## 1. Interactive India project map — PARTLY DONE
+## 1. Interactive India project map — BUILT
 
-> Schema, admin fields and `GET /api/projects/map` are built and tested.
-> The SVG map component and the Projects-page section are not started.
-> The endpoint returns an empty list until coordinates exist, which is correct.
+> Schema, admin fields, `GET /api/projects/map`, and the map itself are done.
+> `IndiaMap.jsx` is lazy loaded on `/projects`; the main chunk is unchanged at
+> 66.13 kB gzip and the map is its own 14.18 kB chunk.
+>
+> **It renders nothing until coordinates are entered**, by design — an empty
+> map of India says less than no map. Fill in
+> `data/project-coordinates.csv` and run `tools/import_project_data.py`.
+>
+> Still outstanding from this item: the compact dashboard preview, and wiring
+> the category filter into the Projects grid as well as the map.
+>
+> Known ceiling, deliberate: there is no pan or zoom, so temples closer than
+> roughly 38px on screen are clustered rather than separated. Separating them
+> would mean displacing a marker by over 100km. The text list is the reliable
+> path into a dense cluster, which is one reason it exists.
 
 Map of India on the Projects page showing every temple project (~40+), so a
 visitor grasps three generations of geographic scale in a few seconds and can

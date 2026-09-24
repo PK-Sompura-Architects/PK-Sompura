@@ -7,7 +7,10 @@
     align-items: center;
     /* Above the dock, which claims 99999. The dock floated over the
        open lightbox and its buttons stayed tappable through it. */
-    z-index: 100000;
+    /* Above the map's bottom sheet (100000), which is itself above the
+       Dock (99999). The gallery is opened FROM the sheet, so it has to
+       cover it. */
+    z-index: 100001;
     padding: 2rem;
 }
 .modal-container {

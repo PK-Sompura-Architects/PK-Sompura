@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import MagicBento from '../components/MagicBento';
 import GalleryModal from '../components/GalleryModal';
 import './Projects.css';
 import { API_URL } from "../apiBase";
+
+// Split out so the boundary path data and the map component stay off the main
+// chunk and out of every other route's download.
+const IndiaMap = lazy(() => import('../components/IndiaMap'));
 
 
 export default function Projects() {
@@ -49,6 +53,15 @@ export default function Projects() {
                 <h1>Sacred Monuments</h1>
                 <div className="accent-line" style={{ margin: 'var(--space-sm) auto' }} />
             </header>
+
+            <Suspense fallback={null}>
+                <IndiaMap
+                    onOpenGallery={(id) => {
+                        const match = (projects ?? []).find((p) => p.id === id);
+                        if (match) setSelectedProject(match);
+                    }}
+                />
+            </Suspense>
 
             {loading ? (
                 <p className="projects-state">Loading archives…</p>

@@ -1,0 +1,463 @@
+/* Static SVG project map. Colours come from the validated palette in
+   global.css -- every text and marker colour below is one of the measured
+   AA-safe tokens, never a fresh hex. */
+
+.imap {
+    padding: var(--space-2xl) var(--content-padding);
+}
+
+.imap-header {
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+
+.imap-header h2 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: clamp(22px, 3vw, 38px);
+    margin: var(--space-2xs) 0 0;
+}
+
+.imap-state {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--space-lg) 0;
+}
+
+/* --- Filters ------------------------------------------------------------- */
+
+.imap-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: center;
+    margin-bottom: var(--space-md);
+}
+
+.imap-filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.imap-filters select {
+    /* 44px tall: comfortably over the target-size minimum on a phone. */
+    min-height: 44px;
+    min-width: 170px;
+    padding: 0 var(--space-xs);
+    font: inherit;
+    font-size: 14px;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-text);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.imap-filters select:focus-visible,
+.imap-panel-close:focus-visible,
+.imap-panel-cta:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* --- Map + panel --------------------------------------------------------- */
+
+.imap-body {
+    display: grid;
+    /* One column until a project is selected. Reserving the panel's 320px
+       up front pushes the map off-centre for the whole time nothing is
+       open, which is most of the time. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-lg);
+    align-items: start;
+}
+
+.imap-body.has-panel {
+    grid-template-columns: minmax(0, 1fr) 320px;
+}
+
+.imap-canvas svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.imap-land {
+    fill: var(--color-surface);
+    stroke: var(--c-slate-400);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+/* --- Markers ------------------------------------------------------------- */
+
+/* The plot is the positioning context the percentage marker coordinates
+   resolve against, so it sizes the map and the SVG fills it.
+
+   The width is capped so the map is bounded by HEIGHT: India is taller than
+   it is wide (viewBox 1000 x 1119), and `max-height` on the SVG does nothing
+   because the width already fixes the size and the height follows from the
+   aspect ratio -- on a wide container that made the map ~900px tall and left
+   the visitor scrolling through empty ocean. 0.894 is the aspect ratio, so
+   this caps the rendered height at 68vh.
+
+   The cap must live here and not on the SVG: `width: fit-content` on this
+   element with `width: 100%` on the SVG inside it is circular, and the map
+   collapsed to 300px regardless of the space available. */
+.imap-plot {
+    position: relative;
+    width: min(100%, calc(68vh * 0.894));
+    margin: 0 auto;
+}
+
+/* Real pixels, not SVG units. Sized in SVG units these shrank with the map to
+   13px, under the 24px target-size minimum. */
+.imap-marker {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    margin: -13px 0 0 -13px;
+    padding: 0;
+    border: 0;
+    background: none;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.imap-marker-dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-bg-elevated);
+    transition: transform 200ms var(--ease-out-expo);
+}
+
+/* Category by shape, so status is never carried by colour alone. */
+.imap-marker.is-mountain .imap-marker-dot {
+    border-radius: 0;
+    border: 0;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    width: 15px;
+    height: 13px;
+}
+
+.imap-marker.is-completed .imap-marker-dot { background: var(--c-navy-700); }
+.imap-marker.is-progress  .imap-marker-dot { background: var(--c-sand-700); }
+.imap-marker.is-planned   .imap-marker-dot { background: var(--c-slate-500); }
+
+.imap-marker:hover .imap-marker-dot,
+.imap-marker.is-selected .imap-marker-dot {
+    transform: scale(1.45);
+}
+
+.imap-marker:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .imap-marker-dot { transition: none; }
+}
+
+/* --- Legend -------------------------------------------------------------- */
+
+.imap-legend {
+    list-style: none;
+    margin: var(--space-sm) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-sm);
+    justify-content: center;
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+
+.imap-legend li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.imap-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex: none;
+}
+
+.imap-swatch.is-completed { background: var(--c-navy-700); }
+.imap-swatch.is-progress  { background: var(--c-sand-700); }
+.imap-swatch.is-planned   { background: var(--c-slate-500); }
+
+/* Shape keys, so status is never communicated by colour alone. */
+.imap-swatch.is-shape-circle {
+    background: none;
+    border: 2px solid var(--color-text-muted);
+}
+
+.imap-swatch.is-shape-triangle {
+    background: none;
+    border-radius: 0;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid var(--color-text-muted);
+}
+
+/* --- Detail panel -------------------------------------------------------- */
+
+.imap-panel {
+    position: relative;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    max-height: 72vh;
+    overflow-y: auto;
+}
+
+.imap-panel h3 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    margin: 0 var(--space-lg) var(--space-2xs) 0;
+    font-size: 20px;
+}
+
+.imap-panel-where {
+    margin: 0 0 var(--space-sm);
+    color: var(--color-text-muted);
+    font-size: 14px;
+}
+
+.imap-panel-meta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px var(--space-xs);
+    margin: 0 0 var(--space-sm);
+    font-size: 13px;
+}
+
+.imap-panel-meta dt {
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    align-self: center;
+}
+
+.imap-panel-meta dd {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.imap-panel-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-sm);
+    background: var(--color-surface);
+}
+
+.imap-panel-note {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+
+.imap-panel-close {
+    position: absolute;
+    top: var(--space-2xs);
+    right: var(--space-2xs);
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    line-height: 1;
+    border: 0;
+    background: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+}
+
+.imap-panel-close:hover { color: var(--color-primary); }
+
+.imap-panel-cta {
+    width: 100%;
+    min-height: 44px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--color-primary);
+    /* sky-200 on navy-700: 8.4:1. */
+    color: var(--c-sky-100);
+    font: inherit;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 200ms var(--ease-out-expo);
+}
+
+.imap-panel-cta:hover { background: var(--color-accent-hover); }
+
+/* --- Fallback list ------------------------------------------------------- */
+
+/* Real content, not decoration: it is what a screen reader, a crawler and a
+   no-JS visitor get, so it is never faded in or collapsed by default. */
+.imap-fallback {
+    margin-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-md);
+}
+
+.imap-fallback h3 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 18px;
+    margin: 0 0 var(--space-sm);
+}
+
+.imap-fallback h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-subtle);
+    margin: var(--space-sm) 0 4px;
+}
+
+.imap-fallback ul {
+    margin: 0;
+    padding-left: var(--space-sm);
+    columns: 2;
+    column-gap: var(--space-lg);
+}
+
+.imap-fallback li {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-bottom: 2px;
+    break-inside: avoid;
+}
+
+/* --- Mobile: the panel becomes a bottom sheet ---------------------------- */
+
+/* Only a backdrop below 860px, where the panel is an overlay. On desktop the
+   panel sits beside the map and the page is meant to stay scrollable. */
+.imap-backdrop { display: none; }
+
+@media (max-width: 860px) {
+    .imap-body,
+    .imap-body.has-panel { grid-template-columns: 1fr; }
+
+    .imap-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 99998;
+        background: rgba(22, 32, 46, 0.35);
+    }
+    .imap-fallback ul { columns: 1; }
+
+    .imap-panel {
+        /* The Dock owns 99999. At an equal z-index the winner is decided by
+           DOM order, which is not something to leave to chance, so the sheet
+           goes above it. GalleryModal was moved to 100001 to stay above this. */
+        position: fixed;
+        z-index: 100000;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-height: 80dvh;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        border-bottom: 0;
+        box-shadow: 0 -8px 32px rgba(22, 32, 46, 0.18);
+        padding-bottom: var(--space-lg);
+    }
+}
+
+@media (max-width: 420px) {
+    .imap { padding-left: var(--space-sm); padding-right: var(--space-sm); }
+    .imap-filters { flex-direction: column; }
+    .imap-filters select { min-width: 0; width: 100%; }
+}
+
+/* Cluster marker: a count, not a dot, so several projects in one place read as
+   several rather than as one. */
+.imap-marker.is-cluster {
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    background: var(--c-navy-700);
+    border: 2px solid var(--color-bg-elevated);
+    color: var(--c-sky-100);
+}
+
+.imap-marker-count {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.imap-marker.is-cluster:hover,
+.imap-marker.is-cluster.is-selected {
+    background: var(--color-accent-hover);
+}
+
+/* Cluster panel: pick one of the projects at this location. */
+.imap-panel-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+}
+
+.imap-panel-list button {
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 200ms var(--ease-out-expo);
+}
+
+.imap-panel-list button:hover { border-color: var(--color-accent); }
+
+.imap-panel-list button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.imap-panel-list strong {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.imap-panel-list span {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
