@@ -191,3 +191,39 @@
   0% { background-position: 0 var(--background-y), 0 0, center; }
   100% { background-position: 0 var(--background-y), 90% 90%, center; }
 }
+
+/* WhatsApp link, shown only when this member has a number recorded.
+   sky-300 on the card's rgba(30,45,64,0.95) base measures 7.60:1. */
+.pc-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(144, 200, 216, 0.45);
+  background: rgba(144, 200, 216, 0.12);
+  color: var(--c-sky-300);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 240ms var(--ease-out-expo);
+}
+
+.pc-whatsapp:hover {
+  background: rgba(144, 200, 216, 0.22);
+}
+
+.pc-whatsapp:focus-visible {
+  outline: 2px solid var(--c-sky-300);
+  outline-offset: 2px;
+}
+
+.pc-whatsapp-num {
+  letter-spacing: normal;
+  text-transform: none;
+  color: #FFFFFF;
+  font-size: 13px;
+}

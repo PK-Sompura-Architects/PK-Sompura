@@ -10,6 +10,7 @@ const ProfileCardComponent = ({
   name,
   title,
   description,
+  phone,
   className = ''
 }) => {
   const wrapRef = useRef(null);
@@ -67,6 +68,23 @@ const ProfileCardComponent = ({
                 <h3>{name}</h3>
                 <p>{title}</p>
                 <div className="pc-desc">{description}</div>
+                {/* Blank until someone fills `phone` in the admin panel. The
+                    card hides the button rather than showing a number that is
+                    not this person's -- an earlier version handed out numbers
+                    by array index, so the wrong person was called. */}
+                {phone && (
+                  <a
+                    className="pc-whatsapp"
+                    href={`https://wa.me/${String(phone).replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onPointerMove={(e) => e.stopPropagation()}
+                    aria-label={`Message ${name} on WhatsApp`}
+                  >
+                    WhatsApp
+                    <span className="pc-whatsapp-num">{phone}</span>
+                  </a>
+                )}
               </div>
             </div>
           </div>

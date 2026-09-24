@@ -8,11 +8,11 @@ the reasoning survives.
 
 | # | Item | State |
 |---|---|---|
-| 1 | Interactive India project map | **Built.** Awaiting coordinates to show anything. |
+| 1 | Interactive India project map | **Built**, including the dashboard preview. Awaiting coordinates. |
 | 2 | Map decisions (no language, no year, photoless projects) | Applied |
-| 3 | Split projects into mountain / stone | Column, admin field and map filter done. Projects-grid filter not started. |
+| 3 | Split projects into mountain / stone | **DONE** — column, admin field, and one filter bar driving both the grid and the map. |
 | 4 | Stone type column | Column, admin field, and shown in the map panel. |
-| 5 | Dashboard rebuild | **DONE** — mark centred, redirector and lineage removed, scroll jank fixed |
+| 5 | Dashboard rebuild | **DONE** — mark centred, redirector and lineage removed, scroll jank fixed, map preview added |
 | 6 | Netlify to Vercel | `vercel.json` and `VERCEL.md` written. Awaiting the Vercel project. |
 | 7 | Design language | Reference only, applies to future work |
 | 8 | Verified UX rules | Reference only, applies to future work |
@@ -34,8 +34,8 @@ the reasoning survives.
 > map of India says less than no map. Fill in
 > `data/project-coordinates.csv` and run `tools/import_project_data.py`.
 >
-> Still outstanding from this item: the compact dashboard preview, and wiring
-> the category filter into the Projects grid as well as the map.
+> The dashboard preview (`MapPreview`) and the shared filter bar are done too.
+> Nothing is outstanding on this item except the data.
 >
 > Known ceiling, deliberate: there is no pan or zoom, so temples closer than
 > roughly 38px on screen are clustered rather than separated. Separating them
@@ -547,11 +547,9 @@ Carried over and never actioned. Not code work, but blocking or risky.
   and confirm `KEEPALIVE_URLS` is set under Variables, not Secrets.
 
 ### Content — the map has little to show until this is done
-- Fill in **`phone`** for each lineage member; the WhatsApp buttons stay hidden
-  until then. Note the lineage cards that carry those buttons (`ChromaGrid`)
-  are currently unused — `/about` renders `ProfileCard`, which has neither the
-  buttons nor the contrast fix. Switching `/about` over is a small change worth
-  doing before entering the numbers.
+- Fill in **`phone`** for each lineage member; the WhatsApp button stays hidden
+  on a card with no number. The button now lives on `ProfileCard`, which is
+  what `/about` renders, so nothing else is needed first.
 - **21 projects exist, not 40+.** 16 of 21 lack a city, none has a state, and
   none is flagged featured or milestone. **This is the single thing blocking
   the map.** `data/project-coordinates.csv` is generated from the live table

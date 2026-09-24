@@ -53,6 +53,7 @@ function About() {
                             title={member.role} /* Mapped to role from DB */
                             description={member.description}
                             avatarUrl={member.image_url} /* Pulled straight from DB */
+                            phone={member.phone}
                         />
                     ))}
                 </div>
