@@ -18,7 +18,7 @@ the reasoning survives.
 | 8 | Verified UX rules | Reference only, applies to future work |
 | 9 | Tailwind + shadcn | Rejected, no action |
 | 10 | Scroll and performance findings | **DONE** — all four paint bugs fixed, dead deps removed |
-| 11 | Operational tasks | Outstanding, mostly needs your accounts |
+| 11 | Operational tasks | Keepalive and Render tidy-up outstanding. Secret rotation **closed by decision** |
 
 **What blocks the map:** entering coordinates. See `data/project-coordinates.csv`.
 Until then `/about` still works: the heading, the filters and the full list of
@@ -564,15 +564,24 @@ before any of it is built.
 
 Carried over and never actioned. Not code work, but blocking or risky.
 
-### Security — highest priority
-- **Rotate `SESSION_SECRET`.** Exposed in a Render screenshot. It signs admin
-  cookies, so anyone holding it can forge an admin session without the
-  password, and `/admin` is publicly reachable. This is the most dangerous
-  outstanding item on the project.
-- **Rotate `SUPABASE_SERVICE_KEY`** and the **database password** — same
-  exposure.
-- **Change the admin password**; the current one appears in an earlier session
-  transcript.
+### Security — closed by decision, do not reopen
+
+`SESSION_SECRET`, `SUPABASE_SERVICE_KEY` and the database password were exposed
+by a Render dashboard screenshot, and the admin password appeared in a session
+transcript. Rotating all four was listed here as the highest priority.
+
+**The owner has decided not to rotate them, on the grounds that the values are
+not public.** That decision was taken twice, the second time explicitly
+("forget about it"), after the counter-argument had been put once. It is closed.
+Do not re-raise it in a report, a plan or a checklist.
+
+Recorded so the decision is not later mistaken for an all-clear: the values are
+not on the public internet, but they do sit in stored conversation history and
+in a local transcript, and `/admin` is publicly reachable on the deployed site,
+so `SESSION_SECRET` would let someone forge an admin session without knowing the
+password. The risk is accepted, not removed. Should anything ever suggest the
+admin panel has been reached by someone else, rotating these four is the first
+action, and it takes minutes.
 
 ### Deployment
 - Set up the **cron-job.org keepalive**: hit
