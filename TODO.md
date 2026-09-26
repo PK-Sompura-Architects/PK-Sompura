@@ -584,14 +584,53 @@ admin panel has been reached by someone else, rotating these four is the first
 action, and it takes minutes.
 
 ### Deployment
-- Set up the **cron-job.org keepalive**: hit
-  `https://pk-sompura-api.onrender.com/` every 10 minutes, Asia/Kolkata,
-  minutes `0,10,20,30,40,50`, hours `10-19`. Measured: GitHub Actions ran the
-  schedule **once in about 46 attempts**, and a cold start costs **19.98 s**
-  through the proxy versus 0.21 s warm.
-- Delete the **duplicate `DATABASE_URL`** row in Render.
-- Add `DATABASE_URL` as a GitHub Actions **Secret** for the Supabase keepalive,
-  and confirm `KEEPALIVE_URLS` is set under Variables, not Secrets.
+- **Set up the cron-job.org keepalive.** Code side is done: `GET /health/db`
+  now exists and runs a `SELECT 1`, so one job resets both the Render sleep
+  timer and the Supabase inactivity timer. Create one job:
+
+  | Field | Value |
+  |---|---|
+  | URL | `https://pk-sompura-api.onrender.com/health/db` |
+  | Timezone | Asia/Kolkata |
+  | Minutes | `0,10,20,30,40,50` |
+  | Hours | `10-19` |
+  | Days | every day |
+  | Treat as failure | any status other than 2xx |
+
+  Use `/health/db`, **not** `/`. `/` returns a hardcoded string and never opens
+  a connection, so pinging it keeps the API warm while Supabase counts down to
+  a pause that takes the site down until restored by hand. Setting the failure
+  rule turns the keepalive into outage alerting at no extra cost, because the
+  endpoint answers 503 when the database is unreachable.
+
+  Measured: GitHub Actions ran its schedule **once in about 46 attempts**, and
+  a cold start costs **19.98 s** through the proxy versus 0.21 s warm. Keep
+  every pinger on the same 10:00-19:00 window — the 750 instance hours are
+  pooled across the Render workspace, so two windows spend them twice.
+
+- **Delete the duplicate `DATABASE_URL` row in Render.** Not cosmetic. Which
+  row wins is not something to leave to chance: `render.yaml` declares the key
+  `sync: false`, so the value is dashboard-managed, and `database.py` refuses
+  to fall back to SQLite when `RENDER` or `PORT` is set — so a redeploy that
+  picks a stale or non-pooler row does not serve an empty site, it fails to
+  boot. The surviving row must be the **Supabase session-pooler** URI, starting
+  `postgresql://` with any special characters in the password percent-encoded;
+  the direct-connection URI drops idle connections, which is what
+  `pool_pre_ping` and `pool_recycle=280` are there to survive.
+
+  Verify afterwards, which takes one request — 200 means the surviving row is
+  good:
+
+  ```
+  curl -s -w " %{http_code}
+" https://pk-sompura-api.onrender.com/health/db
+  ```
+
+- Add `DATABASE_URL` as a GitHub Actions **Secret** for the Supabase keepalive
+  backup, and confirm `KEEPALIVE_URLS` is set under Variables, not Secrets.
+  Without the secret `keepalive.yml` exits with an error rather than passing
+  silently, so check it is actually set — a backup that has never run is not a
+  backup.
 
 ### Content — the map has little to show until this is done
 - ~~Fill in `phone` for each lineage member~~ — **dropped.** `ProfileCard` and

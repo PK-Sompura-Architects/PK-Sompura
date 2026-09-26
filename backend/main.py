@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqladmin import Admin
@@ -107,3 +107,40 @@ admin.add_view(ContactSubmissionAdmin)
 
 @app.get("/")
 def read_root(): return {"message": "PK Sompura Backend API is running"}
+
+
+@app.get("/health/db")
+def health_db(response: Response):
+    """
+    One ping that keeps both free tiers alive.
+
+    Render stops a free web service after 15 minutes without traffic, and
+    Supabase pauses a free project after roughly 7 days without database
+    activity. These are two different timers and "/" only resets the first: it
+    returns a hardcoded string and never opens a connection.
+
+    So an external monitor hitting "/" every 10 minutes keeps the API warm
+    while Supabase quietly counts down to a pause that takes the whole site
+    off the air until someone restores it by hand. Reaching the REST endpoint
+    is not enough either -- it takes a real query.
+
+    This runs one, so a single scheduled request resets both timers. That is
+    the whole reason it exists; it is not a general health check.
+
+    503 rather than a 200 with an error body, so an uptime monitor treats a
+    dead database as a failure and actually sends the alert.
+
+    Deliberately NOT render.yaml's healthCheckPath, which stays "/". If Render
+    health-checked this, a momentary pooler blip would restart the service --
+    turning a self-healing hiccup into a cold start for the next visitor.
+    """
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+    except Exception as exc:  # noqa: BLE001 - the reason is for our logs only
+        print(f"WARNING: /health/db could not reach the database: {exc}")
+        response.status_code = 503
+        # No exception detail in the body: it can carry the connection string.
+        return {"ok": False, "database": "unreachable"}
+
+    return {"ok": True, "database": "reachable"}

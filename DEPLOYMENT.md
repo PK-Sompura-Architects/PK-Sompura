@@ -157,11 +157,20 @@ Use an external monitor instead. Settings that match the intended window:
 
 | Field | Value |
 |---|---|
-| URL | `https://pk-sompura-api.onrender.com/` |
+| URL | `https://pk-sompura-api.onrender.com/health/db` |
 | Timezone | Asia/Kolkata (so the hours below are IST, no UTC arithmetic) |
 | Minutes | `0,10,20,30,40,50` |
 | Hours | `10-19` |
 | Days | every day |
+| Treat as failure | any status other than 2xx |
+
+**The URL is `/health/db`, not `/`.** These are two different timers and `/`
+only resets one: it returns a hardcoded string and never opens a database
+connection, so a monitor hitting it keeps the API warm while Supabase quietly
+counts down to a pause that takes the whole site off the air. `/health/db` runs
+a `SELECT 1`, so one scheduled request resets both. It answers **503** when the
+database is unreachable, which is why the failure rule above is worth setting —
+that turns the keepalive into outage alerting for free.
 
 One job per Render service. A ping that times out still counts as traffic and
 still wakes the service, so an occasional red mark in the monitor's history is
@@ -178,11 +187,24 @@ is worth weighing against a prospective client's first click hanging.
 
 ### Supabase
 
-`.github/workflows/keepalive.yml` runs a real `SELECT` against Postgres every
-three days. Supabase pauses a project after about seven days of inactivity, and
-a REST ping does not reliably count. Needs the `DATABASE_URL` repository
-**secret**. Three days is far enough inside seven that GitHub's unreliable
-scheduling still leaves room to miss a run or two.
+Covered by the same `/health/db` ping above, which is the point of that
+endpoint. Supabase pauses a project after about seven days of inactivity and a
+REST ping does not reliably count, but a real query does — and at six requests
+an hour for nine hours a day the timer never gets near seven days.
+
+`.github/workflows/keepalive.yml` runs the same `SELECT` every three days and is
+**kept deliberately**, as a second, independent mechanism. That is not
+redundancy for its own sake: a paused Supabase project takes the site down until
+someone restores it by hand, it is the worst failure mode the project has, and
+the primary defence is now a single external monitor nobody watches. Two
+unrelated mechanisms for the one failure that cannot self-heal is a reasonable
+trade.
+
+It needs the `DATABASE_URL` repository **secret** (Settings > Secrets and
+variables > Actions > Secrets). Without it the workflow exits with an error
+rather than silently passing — but check that it is set, because an unreliable
+backup that has never once run is not a backup. Note GitHub's scheduling is
+best effort, so treat this as the backup and `/health/db` as the real one.
 
 ---
 
