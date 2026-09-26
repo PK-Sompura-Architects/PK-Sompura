@@ -50,6 +50,19 @@ export default function About() {
         (filters.category === ALL || p.category === filters.category)
     )), [all, filters]);
 
+    // Grouped from the page's own list, which is every project. The map only
+    // ever receives the ones that already have coordinates, so this list is the
+    // only place an unplaced project is visible at all.
+    const byState = useMemo(() => {
+        const groups = new Map();
+        for (const p of visible) {
+            const key = p.state || p.city || 'Location not recorded';
+            if (!groups.has(key)) groups.set(key, []);
+            groups.get(key).push(p);
+        }
+        return [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+    }, [visible]);
+
     const set = (key) => (e) => setFilters((f) => ({ ...f, [key]: e.target.value }));
     const isFiltered = visible.length !== all.length;
 
@@ -127,6 +140,34 @@ export default function About() {
                     />
                 </Suspense>
             )}
+
+            <section className="about-list" aria-labelledby="about-list-heading">
+                <h2 id="about-list-heading">All projects</h2>
+                {result.projects === null ? (
+                    <p className="about-state">Loading the projects…</p>
+                ) : byState.length === 0 ? (
+                    <p className="about-state">No projects match these filters.</p>
+                ) : byState.map(([groupName, items]) => (
+                    <div key={groupName}>
+                        <h3>{groupName}</h3>
+                        <ul>
+                            {items.map((p) => (
+                                <li key={p.id}>
+                                    {p.images?.length ? (
+                                        <button type="button" onClick={() => setSelectedProject(p)}>
+                                            {p.name}
+                                        </button>
+                                    ) : <span className="about-list-name">{p.name}</span>}
+                                    {p.city && p.city !== groupName && <>, {p.city}</>}
+                                    {' — '}
+                                    {(STATUS[p.status] || STATUS.completed).label}
+                                    {CATEGORY[p.category] && <>, {CATEGORY[p.category].label.toLowerCase()}</>}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </section>
 
             <GalleryModal
                 isOpen={!!selectedProject}

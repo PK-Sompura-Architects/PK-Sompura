@@ -163,8 +163,8 @@ export default function IndiaMap({ onOpenGallery, filters, matchingTotal }) {
     // effect cascades an extra render, and this needs no state at all.
     const visibleIds = useMemo(() => new Set(visible.map((r) => r.id)), [visible]);
     const active = !selected ? null
-        : active.items
-            ? (active.items.some((i) => visibleIds.has(i.id)) ? selected : null)
+        : selected.items
+            ? (selected.items.some((i) => visibleIds.has(i.id)) ? selected : null)
             : (visibleIds.has(selected.id) ? selected : null);
 
     // Derived, never hardcoded.
@@ -201,16 +201,6 @@ export default function IndiaMap({ onOpenGallery, filters, matchingTotal }) {
         return () => { root.style.overflow = previous; };
     }, [active]);
 
-    const byState = useMemo(() => {
-        const groups = new Map();
-        for (const r of visible) {
-            const key = r.state || 'State not recorded';
-            if (!groups.has(key)) groups.set(key, []);
-            groups.get(key).push(r);
-        }
-        return [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-    }, [visible]);
-
     if (state.rows === null) {
         return <p className="imap-state">Loading the map…</p>;
     }
@@ -218,7 +208,12 @@ export default function IndiaMap({ onOpenGallery, filters, matchingTotal }) {
         return <p className="imap-state">Could not load the project map. Please try again shortly.</p>;
     }
     if (rows.length === 0) {
-        return null; // Nothing placed yet; an empty map of India says nothing.
+        // Nothing placed yet, so an outline of India with no markers on it
+        // would say less than nothing. Safe to render nothing here only
+        // because the page owns the text list of every project -- this
+        // component sees only the ones that already have coordinates, so a
+        // list built from its rows could never have covered the gap.
+        return null;
     }
 
     return (
@@ -237,7 +232,7 @@ export default function IndiaMap({ onOpenGallery, filters, matchingTotal }) {
                     <p className="imap-note">
                         {matchingTotal - placedCount} more {matchingTotal - placedCount === 1 ? 'project has' : 'projects have'} no
                         coordinates recorded yet, so {matchingTotal - placedCount === 1 ? 'it is' : 'they are'} counted
-                        but not placed. The full list is on the projects page.
+                        but not placed. Every project is listed below.
                     </p>
                 )}
             </header>
@@ -390,28 +385,6 @@ export default function IndiaMap({ onOpenGallery, filters, matchingTotal }) {
                             <p className="imap-panel-note">No photographs on record for this project yet.</p>
                         )}
                     </aside>
-                ))}
-            </div>
-
-            <div className="imap-fallback">
-                <h3>All locations</h3>
-                {byState.length === 0 ? (
-                    <p className="imap-state">No projects match these filters.</p>
-                ) : byState.map(([stateName, items]) => (
-                    <div key={stateName}>
-                        <h4>{stateName}</h4>
-                        <ul>
-                            {items.map((r) => (
-                                <li key={r.id}>
-                                    {r.name}
-                                    {r.city && <>, {r.city}</>}
-                                    {' — '}
-                                    {(STATUS[r.status] || STATUS.completed).label}
-                                    {CATEGORY[r.category] && <>, {CATEGORY[r.category].label.toLowerCase()}</>}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
                 ))}
             </div>
         </section>

@@ -30,3 +30,81 @@
     color: var(--color-text-muted);
     padding: var(--space-lg) var(--content-padding);
 }
+
+/* --- All projects ------------------------------------------------------------
+   Moved here from IndiaMap.css. It used to live inside the map component, fed
+   by the map endpoint -- which returns only projects that already have
+   coordinates, so the list could never show an unplaced one, and vanished
+   entirely when the map had nothing to draw. The page owns every project, so
+   the list belongs here: it renders whether or not the map does. */
+
+.about-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-md) var(--content-padding) 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.about-list h2 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 18px;
+    margin: 0 0 var(--space-sm);
+}
+
+.about-list h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-subtle);
+    margin: var(--space-sm) 0 4px;
+}
+
+.about-list ul {
+    margin: 0;
+    padding-left: var(--space-sm);
+    columns: 2;
+    column-gap: var(--space-lg);
+}
+
+.about-list li {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    /* 24px minimum target, per CLAUDE.md §6, without opening the columns up. */
+    min-height: 24px;
+    margin-bottom: 2px;
+    break-inside: avoid;
+}
+
+/* A project with photographs opens the gallery; one without is plain text, so
+   the control is never offered for a modal that would open empty. */
+.about-list button {
+    font: inherit;
+    color: var(--color-accent);
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: color var(--dur-hover) var(--ease-out-expo);
+}
+
+.about-list button:hover { color: var(--color-primary); }
+
+.about-list button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.about-list-name { color: var(--color-text-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+    .about-list button { transition: none; }
+}
+
+@media (max-width: 860px) {
+    .about-list ul { columns: 1; }
+}

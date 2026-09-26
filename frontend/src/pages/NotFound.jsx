@@ -25,7 +25,7 @@ export default function NotFound() {
             <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "center", marginTop: "8px" }}>
                 <Link to="/">Home</Link>
                 <Link to="/projects">Projects</Link>
-                <Link to="/about">The Lineage</Link>
+                <Link to="/about">Across India</Link>
                 <Link to="/inquiry">Inquiry</Link>
             </div>
         </div>
