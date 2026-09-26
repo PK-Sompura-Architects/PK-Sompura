@@ -8,6 +8,8 @@ import { API_URL } from "../apiBase";
 // Shares the boundary data with the dashboard preview, so it is fetched once.
 const IndiaMap = lazy(() => import("../components/IndiaMap"));
 
+const UNPLACED = 'Location not recorded';
+
 /**
  * Across India — the project map's own page.
  *
@@ -56,11 +58,16 @@ export default function About() {
     const byState = useMemo(() => {
         const groups = new Map();
         for (const p of visible) {
-            const key = p.state || p.city || 'Location not recorded';
+            const key = p.state || p.city || UNPLACED;
             if (!groups.has(key)) groups.set(key, []);
             groups.get(key).push(p);
         }
-        return [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+        // Real places alphabetically, the placeholder always last -- sorted
+        // purely by name it lands between "Limbdi" and "Palitana" and reads as
+        // if it were another town.
+        return [...groups.entries()].sort((a, b) => (
+            (a[0] === UNPLACED) - (b[0] === UNPLACED) || a[0].localeCompare(b[0])
+        ));
     }, [visible]);
 
     const set = (key) => (e) => setFilters((f) => ({ ...f, [key]: e.target.value }));
