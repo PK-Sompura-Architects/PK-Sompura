@@ -17,15 +17,30 @@ working, so there is something to fall back to.
 3. Framework preset should detect as **Vite**. Build command and output
    directory come from `vercel.json`, so leave them alone.
 
-## 2. Environment variables
+## 2. Environment variables — there is only one, and it stays empty
 
-Before the first build, add every `VITE_*` variable the site uses. They are
-inlined into the published bundle at build time, so a missing one does not
-error — it silently becomes `undefined` in the shipped JavaScript.
+**Add nothing.** Measured, not assumed: `VITE_API_BASE_URL` is the only
+`import.meta.env.VITE_*` reference in the whole front end (`src/apiBase.js`),
+and it must be **empty or unset** on Vercel. `vercel.json` proxies `/api` and
+`/admin` to Render, so a relative base keeps every call same-origin and skips
+the CORS preflight. Setting it to the Render URL defeats the proxy and makes the
+browser call Render cross-origin instead.
 
-Copy the names and values from Netlify's **Site settings → Environment
-variables**. Nothing secret belongs here: anything named `VITE_*` is readable by
-anyone who opens the site.
+Do **not** copy `VITE_SUPABASE_URL` or `VITE_SUPABASE_ANON_KEY` across if you
+see them on Netlify. Nothing reads them: `@supabase/supabase-js` is not a
+front-end dependency and "supabase" does not appear in `src/` at all. The
+browser talks to FastAPI; FastAPI owns the database connection.
+
+Anything named `VITE_*` is inlined into the bundle at build time and is readable
+by anyone who opens the site, so nothing secret may ever carry that prefix.
+
+### Node version
+
+`netlify.toml` pinned `NODE_VERSION = "20"`. `vercel.json` has no equivalent
+field, so `engines.node` in `frontend/package.json` carries the pin instead —
+`>=20.19`, which is Vite 7's actual floor. Without it the platform default
+silently decides, which is how a build passes on one host and fails on the
+other.
 
 ## 3. Deploy and check the proxy
 
@@ -43,17 +58,43 @@ After the first deploy, check all three:
 If `/api/projects/` returns the React app, the catch-all is winning and the
 rewrite order in `vercel.json` has been changed.
 
+**Expect `/admin` to end up on the Render URL, and do not treat that as a
+broken deploy.** SQLAdmin builds absolute URLs from the request it sees, and a
+rewrite reaches Render with Render's own Host header. Measured locally: the login
+page emits `href="http://127.0.0.1:8000/admin/statics/css/main.css"` — a fully
+qualified URL, not a relative path — and the `/admin/` redirect carries the same
+host. Through the proxy those become `pk-sompura-api.onrender.com`, so the panel
+and its assets load from Render rather than the proxy origin. This is exactly the
+trap in CLAUDE.md §5, it already behaves this way on Netlify, and the move
+changes nothing about it. The panel works; it just lives at the Render domain.
+
+`vite.config.js` also proxies `/statics`, which neither host config forwards.
+That is fine and not a gap: SQLAdmin serves its assets under `/admin/statics/`,
+which the `/admin/:path*` rewrite already covers.
+
 ## 4. Point the backend at the new origin
 
 In Render → the API service → Environment, set:
 
 ```
-ALLOWED_ORIGINS=https://<project>.vercel.app
+ALLOWED_ORIGINS=https://<project>.vercel.app,http://localhost:5173,http://127.0.0.1:5173
 ```
 
-Keep `http://localhost:5173` in the list, comma-separated, for local work. The
-backend sends credentials, and browsers reject `*` together with credentials,
-so this must name the real origin.
+**This is a safety net, not a blocker.** Because `vercel.json` rewrites `/api`
+server-side, the browser only ever sees the Vercel origin — the call to Render
+happens Vercel-to-Render, so no CORS preflight occurs and the site works even if
+this is never set. It matters the moment anything reaches the API directly:
+hitting the Render URL to test, or a future deploy without a proxy in front.
+
+Two things that are easy to get wrong, both read off `backend/main.py:71`:
+
+- The value **replaces** the default rather than adding to it. The default is
+  `http://localhost:5173,http://127.0.0.1:5173`, so naming only the Vercel
+  origin silently ends local development against the deployed backend. Include
+  both localhost forms, as above.
+- It is comma-separated and each entry is stripped, so spaces after commas are
+  fine. It must name real origins: the backend sets `allow_credentials=True`,
+  and browsers reject `*` together with credentials.
 
 Redeploy the backend afterwards. The same redeploy applies the additive column
 migration in `ensure_schema()`, which the India map needs.
