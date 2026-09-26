@@ -226,6 +226,14 @@ layers are portalled to `document.body`.
 **z-index ladder.** Dock `99999` → map bottom sheet `100000` → GalleryModal
 `100001`. Nothing else gets a five-digit z-index.
 
+**Host rewrites and trailing slashes.** In `vercel.json`, `:path*` does **not**
+match the empty segment a trailing slash produces: `/api/:path*` missed
+`/api/projects/` entirely and it fell through to the SPA catch-all, so the
+deployed site served HTML where the front end expected JSON. Three of the four
+paths the front end calls end in a slash. Use `(.*)` with `$1`, and when
+verifying a proxy, request the path **with its real trailing slash** — testing
+`/api/projects` passes while `/api/projects/` fails.
+
 **FastAPI trailing slashes.** Every collection route registers both `@router.get("")`
 and `@router.get("/")`. A missing slash yields a 307 whose `Location` carries the
 *upstream Render host*, so through the proxy the browser follows it cross-origin.

@@ -55,8 +55,31 @@ After the first deploy, check all three:
 - `https://<project>.vercel.app/api/projects/` — JSON, not HTML.
 - `https://<project>.vercel.app/admin` — the FastAPI login page, not the SPA.
 
-If `/api/projects/` returns the React app, the catch-all is winning and the
-rewrite order in `vercel.json` has been changed.
+If `/api/projects/` returns the React app, the catch-all is winning. **Check the
+trailing slash before you check the order** — that is what went wrong the first
+time, and the order was fine.
+
+`:path*` does not bind the empty final segment a trailing slash produces, so
+`/api/projects/` missed `/api/:path*` altogether and fell through to the SPA
+catch-all. `netlify.toml` used `/api/*`, a splat, which does match a trailing
+slash; porting it to a named parameter silently lost that. Measured on the live
+deployment: `/api/projects` returned JSON while `/api/projects/` returned
+`<title>P. K. Sompura …</title>`, and `/admin/` served the SPA while
+`/admin/login` reached the real panel.
+
+It broke three of the four paths the front end actually calls — `/api/projects/`,
+`/api/galleries/` and `/api/contact/` all end in a slash; only
+`/api/projects/map` does not. Fixed by using `(.*)` with `$1`, the same regex
+form the catch-all already uses, which matches with or without the slash.
+
+**Test every path with its real trailing slash**, not a tidied-up version:
+
+```
+curl -s -o /dev/null -w "%{http_code} %{content_type}
+"   https://<project>.vercel.app/api/projects/
+```
+
+`application/json` is a pass. `text/html` means the SPA answered.
 
 **Expect `/admin` to end up on the Render URL, and do not treat that as a
 broken deploy.** SQLAdmin builds absolute URLs from the request it sees, and a
