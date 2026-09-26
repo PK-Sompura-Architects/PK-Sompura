@@ -21,6 +21,10 @@ the reasoning survives.
 | 11 | Operational tasks | Outstanding, mostly needs your accounts |
 
 **What blocks the map:** entering coordinates. See `data/project-coordinates.csv`.
+Until then `/about` still works: the heading, the filters and the full list of
+every project are the page's own, not the map's, so the page is useful with zero
+coordinates. Fixed in `fbc53be` — before it, `/about` was a heading and two
+filters over nothing.
 
 **Photography still needed.** Highest value first:
 1. **The five CNC machines.** There is not one photograph of them. The
@@ -38,8 +42,10 @@ the reasoning survives.
 ## 1. Interactive India project map — BUILT
 
 > Schema, admin fields, `GET /api/projects/map`, and the map itself are done.
-> `IndiaMap.jsx` is lazy loaded on `/projects`; the main chunk is unchanged at
-> 66.13 kB gzip and the map is its own 14.18 kB chunk.
+> `IndiaMap.jsx` is lazy loaded on `/about`; the main chunk is unchanged at
+> 66.10 kB gzip and the map is its own 7.01 kB chunk (2.70 kB gzip), with the
+> boundary data a further 26.36 kB (10.65 kB gzip) shared with the dashboard
+> preview.
 >
 > **It renders nothing until coordinates are entered**, by design — an empty
 > map of India says less than no map. Fill in
@@ -558,21 +564,29 @@ Carried over and never actioned. Not code work, but blocking or risky.
   and confirm `KEEPALIVE_URLS` is set under Variables, not Secrets.
 
 ### Content — the map has little to show until this is done
-- Fill in **`phone`** for each lineage member; the WhatsApp button stays hidden
-  on a card with no number. The button now lives on `ProfileCard`, which is
-  what `/about` renders, so nothing else is needed first.
+- ~~Fill in `phone` for each lineage member~~ — **dropped.** `ProfileCard` and
+  the lineage cards were deleted in `c2d805b` when the family asked for their
+  photographs off the site, so there is no WhatsApp button left to fill. The
+  `lineage` table, its API and its admin screen still exist and still work;
+  nothing renders them, which is the point.
 - **21 projects exist, not 40+.** 16 of 21 lack a city, none has a state, and
   none is flagged featured or milestone. **This is the single thing blocking
   the map.** `data/project-coordinates.csv` is generated from the live table
   with the ids and names already correct — fill in what you know and run
   `tools/import_project_data.py`. See `data/README.md`.
-- Replace the **four placeholder lineage photos** (currently superhero
-  wallpapers) with real headshots.
+- ~~Replace the four placeholder lineage photos~~ — **dropped** with the
+  lineage page, same reason. No page shows a headshot.
 
 ### Repo hygiene
 - ~~`frontend/public/media/manifest.json`~~ — deleted in `9204dc3`.
-- **`PK Sompura.pdf`** — 8,324,706 bytes tracked at the repo root. Also
-  `tools/models/face_detection_yunet.onnx` at 232,589 bytes. Move out of git or
-  confirm they are needed.
+- **`PK Sompura.pdf`** — 8,324,706 bytes at the repo root, and by a wide margin
+  the largest tracked file (the next is a 364 kB photograph). Nothing in the code
+  references it. **But `git rm --cached` buys nothing here:** it was committed in
+  `bddfa86`, so the blob is already permanent in history and a fresh clone
+  downloads it either way. Genuinely removing it needs `git filter-repo` or BFG
+  plus a force-push, which rewrites history everyone else has — a deliberate
+  decision, not housekeeping. Left tracked pending that call.
+- ~~`tools/models/face_detection_yunet.onnx`~~ — **keep.** 232,589 bytes, and
+  `tools/faces.py:8` loads it by that exact path. Not dead weight.
 - Buy `pksompura.com` and attach it, though item 6 (Vercel) removes the
   immediate reason to.

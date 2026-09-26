@@ -257,8 +257,14 @@ neighbours. Interactive markers are HTML positioned in percentages over the SVG.
   dismissed by Escape.
 - **No horizontal scroll at 360px.** Non-negotiable, and verified by measuring
   `document.documentElement.scrollWidth`.
-- **Content behind an animation must have a no-JS fallback.** The map's
-  project list is real indexed content and is never faded in.
+- **Content behind an animation must have a no-JS fallback.** The project list
+  on `/about` is real indexed content and is never faded in.
+- **The list belongs to the page, not the map.** It lives in `About.jsx`, fed by
+  `/api/projects/`, so it shows every project including the unplaced ones and
+  survives the map rendering nothing. It was once inside `IndiaMap`, fed by
+  `/api/projects/map` — which returns only rows that already have coordinates —
+  so it could never list an unplaced project and disappeared along with the map.
+  That left `/about` as a heading and two filters over nothing.
 
 ---
 
@@ -268,7 +274,7 @@ neighbours. Interactive markers are HTML positioned in percentages over the SVG.
 | --- | --- |
 | `Dock` | Site navigation, fixed, z-index 99999 |
 | `ScrollReveal` | The only reveal. Fade + 14px lift |
-| `IndiaMap` | The project map: SVG outline, clustered markers, panel, fallback list |
+| `IndiaMap` | The project map only: SVG outline, clustered markers, panel. Renders nothing when no project has coordinates |
 | `MapPreview` | Dashboard glance, non-interactive, links to `/about` |
 | `MagicBento` | Projects grid |
 | `GalleryModal` | The only lightbox. Never build a second |
@@ -297,7 +303,14 @@ every deploy.
 
 **Known ceiling:** no pan or zoom, so temples closer than roughly 38px on screen
 are clustered rather than separated. Separating them would mean displacing a
-marker by over 100km. The text list is the reliable path into a dense cluster.
+marker by over 100km. The text list on the page is the reliable path into a
+dense cluster.
+
+**It draws nothing until coordinates exist**, and that is correct — an outline of
+India with no markers says less than no map. What must never happen again is the
+*page* going empty with it: `/about` keeps its own heading, filters and full
+project list regardless. Test the map by stubbing `/api/projects/map` in the
+browser, not by writing coordinates to the live table.
 
 ---
 
