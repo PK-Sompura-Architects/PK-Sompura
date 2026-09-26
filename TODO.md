@@ -622,9 +622,13 @@ action, and it takes minutes.
   good:
 
   ```
-  curl -s -w " %{http_code}
+  curl.exe -s -w " %{http_code}
 " https://pk-sompura-api.onrender.com/health/db
   ```
+
+  On Windows it must be `curl.exe`. PowerShell aliases `curl` to
+  `Invoke-WebRequest`, which binds `-s` to `-SessionVariable` and fails with
+  "Missing an argument" before the request is ever made.
 
 - Add `DATABASE_URL` as a GitHub Actions **Secret** for the Supabase keepalive
   backup, and confirm `KEEPALIVE_URLS` is set under Variables, not Secrets.

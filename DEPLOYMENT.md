@@ -234,9 +234,17 @@ dashboard, which triggers its own redeploy.
 `/api/projects` passing tells you nothing about `/api/projects/`:
 
 ```
-curl -s -o /dev/null -w "%{http_code} %{content_type}
+curl.exe -s -o /dev/null -w "%{http_code} %{content_type}
 "   https://<project>.vercel.app/api/projects/
 ```
+
+> **On Windows, use `curl.exe`, not `curl`.** In PowerShell `curl` is an alias
+> for `Invoke-WebRequest`, which rejects curl's flags — `-s` binds to
+> `-SessionVariable` and the command dies with "Missing an argument". Windows
+> ships genuine curl at `C:\Windows\system32\curl.exe`, and naming the
+> executable bypasses the alias. `Invoke-WebRequest` also throws on any non-2xx
+> status, so it cannot check for the expected 503 without try/catch.
+
 
 `application/json` is a pass; `text/html` means the SPA answered and the proxy
 missed.
