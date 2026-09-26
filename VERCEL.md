@@ -122,12 +122,17 @@ Two things that are easy to get wrong, both read off `backend/main.py:71`:
 Redeploy the backend afterwards. The same redeploy applies the additive column
 migration in `ensure_schema()`, which the India map needs.
 
-## 5. After it is confirmed working
+## 5. After it is confirmed working — DONE
 
-- Turn off the Netlify site, or delete it, so there are not two live copies
-  serving different builds.
-- Delete `frontend/netlify.toml`.
-- Update `DEPLOYMENT.md`, which still describes Netlify.
+- ~~Turn off or delete the Netlify site~~ — deleted.
+- ~~Delete `frontend/netlify.toml`~~ — deleted. There is no fallback host any
+  more, so the file described a deployment that no longer exists.
+- ~~Update `DEPLOYMENT.md`~~ — rewritten for Vercel: Root Directory instead of
+  Base directory, the "add no environment variables" rule with the reason, the
+  `engines.node` pin, the `ALLOWED_ORIGINS` value including both localhost
+  forms, and a verification curl that uses a real trailing slash.
+- The comment in `src/apiBase.js` pointed at `netlify.toml`; it now points at
+  `frontend/vercel.json`.
 
 ## Note on the badge
 

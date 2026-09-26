@@ -13,7 +13,7 @@ the reasoning survives.
 | 3 | Split projects into mountain / stone | **DONE** — column, admin field, and one filter bar driving both the grid and the map. |
 | 4 | Stone type column | Column, admin field, and shown in the map panel. |
 | 5 | Dashboard rebuild | **DONE** — mark centred, redirector and lineage removed, scroll jank fixed, map preview added |
-| 6 | Netlify to Vercel | `vercel.json` and `VERCEL.md` written. Awaiting the Vercel project. |
+| 6 | Netlify to Vercel | **DONE** — live at `pk-sompura.vercel.app`, origins set on Render, Netlify project deleted. |
 | 7 | Design language | Reference only, applies to future work |
 | 8 | Verified UX rules | Reference only, applies to future work |
 | 9 | Tailwind + shadcn | Rejected, no action |
@@ -232,11 +232,32 @@ only, not the infinite scroll. Broader reference: https://www.awwwards.com/.
 Measured causes of the lag are recorded in the report below; the chosen approach
 gets appended to this file once picked.
 
-## 6. Netlify → Vercel — CONFIG WRITTEN
+## 6. Netlify → Vercel — DONE
 
-> `frontend/vercel.json` is a direct port of `netlify.toml`, rewrite order
-> included. `VERCEL.md` has the step-by-step. The rest needs your Vercel
-> account.
+> Live at **https://pk-sompura.vercel.app**, no platform badge, which was the
+> whole point. `ALLOWED_ORIGINS` set on Render, `netlify.toml` deleted, the
+> Netlify project deleted, and `DEPLOYMENT.md` rewritten for Vercel.
+>
+> Verified on the deployment: all three API paths return
+> `application/json`, `/api/contact/` correctly 405s a GET, `/admin/login`
+> reaches the real SQLAdmin panel, every security header is live, hashed assets
+> are `immutable`, and at 360px there is no horizontal scroll and no broken
+> image. The schema migration in `ensure_schema()` has run — `category`,
+> `status` and `stone_type` exist on the live rows with `status` backfilled to
+> `completed` across all 21.
+>
+> **One bug shipped and was caught in verification.** The note below said to
+> "keep the trailing-slash behaviour intact", and the port broke precisely
+> that: `:path*` does not bind the empty segment a trailing slash produces, so
+> `/api/projects/` missed the rewrite and fell through to the SPA catch-all.
+> Three of the four paths the front end calls end in a slash, so the live site
+> could not load projects or galleries or submit an inquiry. Fixed in `1412894`
+> by using `(.*)` with `$1`. The lesson is in CLAUDE.md §5: verify a proxy with
+> the trailing slash the code actually sends, because `/api/projects` passed
+> while `/api/projects/` failed.
+>
+> Not verified: an actual inquiry submission, because a real POST writes a
+> contact record and may fire a Telegram notification. Worth one manual test.
 
 Move the frontend off Netlify to Vercel, to lose the Netlify badge in the bottom
 right without buying a domain.

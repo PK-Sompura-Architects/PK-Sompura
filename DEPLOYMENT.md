@@ -6,13 +6,19 @@ to `main`.
 
 | Piece | Host | Free tier | Auto-deploy |
 |---|---|---|---|
-| Front end | **Netlify** | 100 GB bandwidth/mo, always on | on push to `main` |
+| Front end | **Vercel** | 100 GB bandwidth/mo, always on, no platform badge | on push to `main` |
 | Back end | **Render** | 750 instance-hours/mo *pooled per workspace*, sleeps after 15 min idle | on push to `main` |
 | Database + images | **Supabase** | 500 MB DB, 1 GB storage, pauses after ~7 days idle | n/a |
 
-`netlify.toml` proxies `/api/*` and `/admin/*` to Render, so the browser only
-ever talks to one origin. That avoids CORS entirely and keeps the admin
+`frontend/vercel.json` proxies `/api` and `/admin` to Render, so the browser
+only ever talks to one origin. That avoids CORS entirely and keeps the admin
 session cookie same-origin.
+
+**The rewrite patterns must be `(.*)` with `$1`, not `:path*`.** A named
+parameter does not bind the empty segment a trailing slash produces, so
+`/api/projects/` misses the rule and falls through to the SPA catch-all —
+which shipped once and broke three of the four paths the front end calls. See
+`VERCEL.md`.
 
 ---
 
@@ -56,7 +62,7 @@ the repository. Set them under **Environment**, without quotes:
 | `ADMIN_PASSWORD_HASH` | from step 0, the part after `ADMIN_PASSWORD_HASH=` |
 | `SESSION_SECRET` | `python -c "import secrets; print(secrets.token_urlsafe(32))"` |
 | `SESSION_HTTPS_ONLY` | `true` (already set in `render.yaml`) |
-| `ALLOWED_ORIGINS` | the Netlify origin, once it exists. Never `*` |
+| `ALLOWED_ORIGINS` | your origins, comma-separated. Never `*`. See §2 |
 
 `SESSION_SECRET` is not optional. Unset, the app falls back to a random value
 per process, so every restart invalidates every admin session.
@@ -75,37 +81,68 @@ error.
 
 ---
 
-## 2. Front end -- Netlify
+## 2. Front end -- Vercel
 
-**Add new site > Import an existing project** > GitHub > this repository.
+**Add New > Project** > GitHub > this repository.
 
 | Setting | Value |
 |---|---|
-| Base directory | `frontend` |
-| Build command | `npm run build` |
-| Publish directory | `frontend/dist` |
+| Root Directory | `frontend` |
+| Framework preset | Vite (auto-detected) |
+| Build command / output | leave alone — `vercel.json` supplies them |
 
-The base directory matters: without it Netlify runs the build at the
-repository root, where there is no `package.json`.
+**Root Directory is the setting that breaks everything if it is wrong.**
+Without it Vercel builds at the repository root, where there is no
+`package.json`.
 
-Leave `VITE_API_BASE_URL` **unset**. `VITE_*` values are inlined at build time
-and the code falls back to a relative base in production, which is what the
-proxy in `netlify.toml` expects. Setting it to the Render URL would work but
-reintroduces cross-origin requests and breaks the admin cookie.
+### Environment variables: add none
 
-If the Render service is not named `pk-sompura-api`, update the three redirect
-targets in `frontend/netlify.toml` to match.
+`VITE_API_BASE_URL` is the only `import.meta.env.VITE_*` reference in the whole
+front end (`src/apiBase.js`), and it must stay **empty or unset**. The code
+falls back to a relative base in production, which is what the proxy expects.
+Setting it to the Render URL reintroduces cross-origin requests and breaks the
+admin cookie.
 
-Then go back to Render and set `ALLOWED_ORIGINS` to the Netlify origin.
+Do not add `VITE_SUPABASE_*` variables. Nothing reads them:
+`@supabase/supabase-js` is not a front-end dependency and "supabase" does not
+appear in `src/`. The browser talks to FastAPI; FastAPI owns the database.
+
+Anything named `VITE_*` is inlined into the bundle at build time and readable by
+anyone who opens the site, so nothing secret may carry that prefix.
+
+### Node version
+
+`engines.node` in `frontend/package.json` pins `>=20.19`, Vite 7's actual floor.
+`vercel.json` has no field for this, so without the pin the platform default
+silently decides.
+
+If the Render service is not named `pk-sompura-api`, update the three rewrite
+destinations in `frontend/vercel.json` to match.
+
+### Then set the origins on Render
+
+```
+ALLOWED_ORIGINS=https://<project>.vercel.app,http://localhost:5173,http://127.0.0.1:5173
+```
+
+The value **replaces** the default rather than adding to it
+(`backend/main.py:71`), so naming only the deployed origin silently ends local
+development against the deployed backend. Include both localhost forms.
+
+This is a safety net, not a blocker: because the rewrite is server-side, the
+browser never makes a cross-origin call and the site works without it. It
+matters when something reaches the API directly.
 
 ---
 
 ## 3. Keeping the free tiers alive
 
 Render stops a free web service after **15 minutes** without traffic, and the
-next visitor waits while it restarts. That restart is not merely slow: Netlify
-gives up on a proxied request at around 30 seconds, so a cold start slower than
-that returns an error to the visitor rather than late data.
+next visitor waits while it restarts. That restart is not merely slow: the host
+gives up on a proxied request well before a slow cold start finishes, so the
+visitor gets an error rather than late data. Measured through the proxy, a cold
+start cost **19.98 s** against 0.21 s warm — close enough to any gateway limit
+that the pinger below is the fix, not a longer timeout.
 
 ### The pinger is cron-job.org, not GitHub Actions
 
@@ -151,18 +188,33 @@ scheduling still leaves room to miss a run or two.
 
 ## 4. Custom domain
 
-Buy the domain only -- the hosting upsells are for a service Netlify already
+Buy the domain only -- the hosting upsells are for a service Vercel already
 provides free.
 
-Add it in **Netlify > Domain management**, point the registrar's nameservers
-or records at Netlify as instructed there, and let Netlify issue the
-certificate. The domain points at Netlify alone; the API and admin panel
-continue to arrive through the proxy on the same hostname.
+Add it in **Vercel > the project > Settings > Domains**, point the registrar's
+nameservers or records at Vercel as instructed there, and let Vercel issue the
+certificate. The domain points at Vercel alone; the API and admin panel continue
+to arrive through the proxy on the same hostname.
+
+A `*.vercel.app` URL carries no platform badge, which was the reason for moving
+off Netlify. A domain is only needed once the goal becomes looking independent
+rather than unbranded.
 
 ---
 
 ## Deploying afterwards
 
-Push to `main`. Netlify and Render both rebuild on their own. Environment
+Push to `main`. Vercel and Render both rebuild on their own. Environment
 variables are not in the repository, so changing one means editing it in the
 dashboard, which triggers its own redeploy.
+
+**Verify a front-end deploy with the trailing slashes the code actually uses.**
+`/api/projects` passing tells you nothing about `/api/projects/`:
+
+```
+curl -s -o /dev/null -w "%{http_code} %{content_type}
+"   https://<project>.vercel.app/api/projects/
+```
+
+`application/json` is a pass; `text/html` means the SPA answered and the proxy
+missed.
