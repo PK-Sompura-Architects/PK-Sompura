@@ -1,0 +1,53 @@
+# --- Images: blocked everywhere by default ---
+# The private photo archive (D:\projects\ALBUM-IMAGES) must never be committed.
+# Only optimised, selected images are allowed, and only in the folders re-included below.
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.png
+*.PNG
+*.webp
+*.avif
+*.heic
+*.HEIC
+*.tif
+*.tiff
+*.nef
+*.NEF
+*.dng
+*.raw
+*.psd
+*.pdf
+*.zip
+ALBUM-IMAGES/
+NIKON CAMERA/
+OUR WORK PHOTO/
+work_website_images/
+
+# Allowed: logo files and optimised, selected site images
+!brand/**
+!media/**
+
+# --- Tooling ---
+node_modules/
+dist/
+build/
+.next/
+.vercel/
+.astro/
+.cache/
+coverage/
+*.log
+
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
