@@ -32,7 +32,9 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
         ScrollTrigger.create({ trigger: el, start: 'top top', end: 'bottom top', onUpdate: (st) => (state.progress = st.progress) });
       } else if (name === 'fero') {
         // The stage is pinned by CSS (sticky inside [data-fly]); ScrollTrigger scrubs the progress across the container.
-        gsap.to(state, { progress: 1, ease: 'none', scrollTrigger: { trigger: el.closest('[data-fly]'), start: 'top top', end: 'bottom bottom', scrub: 1 } });
+        // Scrub 0.6 (P3). The HTML text follows the same smoothed progress, so words and camera move together.
+        gsap.to(state, { progress: 1, ease: 'none', scrollTrigger: { trigger: el.closest('[data-fly]'), start: 'top top', end: 'bottom bottom', scrub: 0.6 },
+          onUpdate: () => el.dispatchEvent(new CustomEvent('fly:progress', { detail: state.progress })) });
       } else {
         // Toolpath: pinned 150vh, cutter scrubbed 0 → 1.
         ScrollTrigger.create({

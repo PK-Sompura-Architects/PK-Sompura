@@ -1,229 +1,265 @@
-// Fero Works fly-through (plan.md §3 item 6, §5). Scroll progress 0 → 1 drives five shots:
-// above the clouds at dusk → descent through the clouds → low over the ridges (banking) → round the last ridge to
-// reveal the artificial mountain and its cave → hold on the temple inside. Everything is generated at load:
-// terrain from a procedural height field, cloud texture from canvas noise, temple from primitives. No downloads.
+// Fero Works fly-through, built to design/Posters.dc.html P3. One camera: position and lookAt each follow a
+// CatmullRomCurve3 through the five P3 nodes, sampled by the same eased progress (the per-move ranges and eases,
+// pitch, yaw, roll and fov are P3's). 1 unit = 1 m.
+// The mountain, cave, arch and temple come from public/models/fero.glb (Draco + KTX2, tools/fero/build-model.mjs).
+// Sky, clouds, ridges, fog, wisps and light are procedural: shader noise and a heightfield, no meshes to download.
 import {
-  AdditiveBlending, AmbientLight, BackSide, BufferAttribute, BufferGeometry, CanvasTexture, CatmullRomCurve3, Color,
-  CylinderGeometry, DirectionalLight, DoubleSide, FogExp2, Group, HemisphereLight, LatheGeometry, Mesh,
-  MeshLambertMaterial, MeshStandardMaterial, PerspectiveCamera, PlaneGeometry, PointLight, Scene, ShaderMaterial,
-  SphereGeometry, Sprite, SpriteMaterial, SRGBColorSpace, Vector2, Vector3, WebGLRenderer, BoxGeometry, ConeGeometry,
-  CircleGeometry, TorusGeometry,
+  AdditiveBlending, AmbientLight, BackSide, BufferAttribute, CatmullRomCurve3, Color, DirectionalLight, FogExp2,
+  Group, HemisphereLight, LineBasicMaterial, LineSegments, BufferGeometry, Mesh, MeshLambertMaterial, MathUtils,
+  PerspectiveCamera, PlaneGeometry, PointLight, Scene, ShaderMaterial, SphereGeometry, SRGBColorSpace, Vector3,
+  WebGLRenderer,
 } from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import type { SceneHandle, SceneState } from './boot';
 
-const NIGHT = new Color(0x0e0e1f), NAVY = new Color(0x262654), SLATE = new Color(0x798a96), SLATE_DEEP = new Color(0x52606b);
-const SAND = 0xf4efe6, SAFFRON = 0xcd8841;
+// Palette tokens only.
+const NIGHT = 0x0e0e1f, NAVY = 0x262654, SLATE = 0x798a96, SLATE_DEEP = 0x52606b, SAFFRON = 0xcd8841, SAND = 0xf4efe6;
+const MOUTH_Z = -875, TEMPLE_Z = -915, MOUNT = new Vector3(0, 0, -985);
 
-// ── Noise (value noise + fBm), deterministic.
+// ── Camera rig (P3 "Camera nodes").
+const v = (x: number, y: number, z: number) => new Vector3(x, y, z);
+const POS = new CatmullRomCurve3([v(0, 520, 900), v(0, 360, 520), v(-60, 70, 0), v(70, 55, -520), v(0, 22, -840)]);
+const AIM = new CatmullRomCurve3([v(0, 440, -1200), v(0, 120, -600), v(40, 50, -500), v(0, 40, -900), v(0, 18, -960)]);
+const EDGE = [0, 0.22, 0.45, 0.72, 0.88];                                   // S1…S5; 0.88 → 1 is the hold
+const EASE = [
+  (t: number) => t * t,                                                     // S1→S2 power1.in
+  (t: number) => 1 - (1 - t) ** 3,                                          // S2→S3 power2.out
+  (t: number) => -(Math.cos(Math.PI * t) - 1) / 2,                          // S3→S4 sine.inOut
+  (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2),    // S4→S5 power2.inOut
+];
+const DEG = Math.PI / 180;
+const smooth = (a: number, b: number, x: number) => { const t = MathUtils.clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+function rig(p: number) {
+  if (p >= EDGE[4]) return { i: 3, u: 1, e: 1 };
+  let i = 0; while (i < 3 && p >= EDGE[i + 1]) i++;
+  const u = (p - EDGE[i]) / (EDGE[i + 1] - EDGE[i]);
+  return { i, u, e: EASE[i](u) };
+}
+const pitchOf = (from: Vector3, to: Vector3) => Math.atan2(to.y - from.y, Math.hypot(to.x - from.x, to.z - from.z));
+// P3 pitch: 0° at S1, −20° at S2, −3° at S3; S4 and S5 are framed by their lookAt nodes.
+const KEY_PITCH = [0, -20 * DEG, -3 * DEG, pitchOf(POS.points[3], AIM.points[3]), pitchOf(POS.points[4], AIM.points[4])];
+
+// ── Heightfield: four ridge layers across the valley (slate far → night near), two spurs (the last ridge on the
+// left, and the foreground ridge at the reveal), a notch along the flight path and a plain around the mountain.
 function hash(x: number, y: number) { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); }
 function vnoise(x: number, y: number) {
-  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
-  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), w = yf * yf * (3 - 2 * yf);
   const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
-  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  return a + (b - a) * u + (c - a) * w + (a - b - c + d) * u * w;
 }
-function fbm(x: number, y: number, oct = 5) { let s = 0, a = 0.5, f = 1; for (let i = 0; i < oct; i++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; }
-const ridged = (x: number, y: number) => { let s = 0, a = 0.55, f = 1; for (let i = 0; i < 4; i++) { s += a * (1 - Math.abs(vnoise(x * f, y * f) * 2 - 1)) ** 2; f *= 2.1; a *= 0.5; } return s; };
-const smooth = (a: number, b: number, x: number) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-
-// ── Camera path and a separate look-at path (world units ≈ metres; the mountain stands at z = −160).
-const PATH = new CatmullRomCurve3([
-  [0, 78, 250], [4, 60, 215], [10, 40, 180], [20, 22, 145], [32, 13, 105], [42, 10, 60], [44, 10, 15],
-  [36, 10, -25], [28, 11, -62], [14, 10, -78], [5, 9, -86], [0, 8.5, -90],
-].map(([x, y, z]) => new Vector3(x, y, z)), false, 'centripetal');
-const LOOK = new CatmullRomCurve3([
-  [0, 55, 0], [0, 42, 60], [10, 20, 100], [25, 12, 70], [38, 10, 30], [44, 9, -10], [35, 9, -50],
-  [18, 12, -115], [6, 12, -150], [1, 8, -135], [0, 5.5, -124], [0, 5.5, -124],
-].map(([x, y, z]) => new Vector3(x, y, z)), false, 'centripetal');
-const MOUNT = new Vector3(0, 0, -160), RIDGE = new Vector2(10, -32);
-
-// Progress → curve parameter: eased at both ends, and 0.86 → 1 is the hold on the temple.
-const toT = (p: number) => { const q = Math.min(1, p / 0.86); return q * q * (3 - 2 * q); };
-
-function heightAt(x: number, z: number, pathXZ: Vector2[]) {
-  let h = 26 * ridged(x * 0.011, z * 0.011) + 8 * fbm(x * 0.03 + 7, z * 0.03);
-  let d = 1e9; // distance to the flight path (the valley)
-  for (const p of pathXZ) d = Math.min(d, (x - p.x) ** 2 + (z - p.y) ** 2);
-  h *= 0.15 + 0.85 * smooth(10, 42, Math.sqrt(d));
-  const r = Math.hypot(x - RIDGE.x, z - RIDGE.y); // the last ridge, which hides the mountain until the camera rounds it
-  h += 38 * Math.exp(-(r * r) / (2 * 15 * 15)) * smooth(8, 16, Math.sqrt(d));
-  const m = Math.hypot(x - MOUNT.x, z - MOUNT.z); // a plain for the mountain to stand on
-  h *= 0.25 + 0.75 * smooth(48, 80, m);
-  return h - 2;
+const fbm = (x: number, y: number, o = 4) => { let s = 0, a = 0.5, f = 1; for (let i = 0; i < o; i++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; };
+const ridged = (x: number, y: number) => { let s = 0, a = 0.6, f = 1; for (let i = 0; i < 4; i++) { s += a * (1 - Math.abs(vnoise(x * f, y * f) * 2 - 1)) ** 2; f *= 2.2; a *= 0.5; } return s; };
+const LAYERS = [[-130, 58], [-280, 72], [-450, 90], [-660, 110]];              // z, crest height (60–110 m)
+const SPURS = [[-100, -470, 60, 96], [-20, -625, 48, 78]];                    // x, z, radius, height
+const PATH_XZ = POS.getSpacedPoints(160).map((p) => [p.x, p.z]);
+function height(x: number, z: number) {
+  let h = 0;
+  for (const [zc, a] of LAYERS) {
+    const d = Math.abs(z - (zc + 60 * (fbm(x * 0.003 + zc, 3) - 0.5)));
+    const prof = Math.max(0, 1 - d / (80 + 40 * fbm(x * 0.01, zc))) ** 1.3;
+    h = Math.max(h, prof * a * (0.5 + 0.55 * ridged(x * 0.005 + zc * 0.1, zc * 0.013)));
+  }
+  for (const [sx, sz, r, a] of SPURS) h = Math.max(h, a * Math.exp(-((x - sx) ** 2 + (z - sz) ** 2) / (2 * r * r)) * (0.8 + 0.4 * ridged(x * 0.02, z * 0.02)));
+  h += 5 * fbm(x * 0.04, z * 0.04);
+  let d2 = 1e12; for (const [px, pz] of PATH_XZ) d2 = Math.min(d2, (x - px) ** 2 + (z - pz) ** 2);
+  h *= 0.3 + 0.7 * smooth(25, 140, Math.sqrt(d2));                           // stay ~25 m under the camera
+  h *= smooth(150, 250, Math.hypot(x - MOUNT.x, z - MOUNT.z));              // the plain the mountain stands on
+  return h - 1;
 }
-
-function terrain(mobile: boolean) {
-  const seg = mobile ? 150 : 210;
-  const g = new PlaneGeometry(620, 620, seg, seg); g.rotateX(-Math.PI / 2); g.translate(0, 0, 20);
-  const pathXZ = PATH.getSpacedPoints(90).map((p) => new Vector2(p.x, p.z));
-  const pos = g.attributes.position as BufferAttribute;
-  const col = new Float32Array(pos.count * 3), c = new Color();
+function ridges(mobile: boolean) {
+  const g = new PlaneGeometry(2800, 2400, mobile ? 230 : 340, mobile ? 200 : 290);
+  g.rotateX(-Math.PI / 2); g.translate(0, 0, -520);
+  const pos = g.attributes.position as BufferAttribute, col = new Float32Array(pos.count * 3);
+  const lo = new Color(NIGHT), mid = new Color(NAVY), hi = new Color(SLATE_DEEP), c = new Color();
   for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i), z = pos.getZ(i), y = heightAt(x, z, pathXZ);
+    const y = height(pos.getX(i), pos.getZ(i));
     pos.setY(i, y);
-    c.copy(NAVY).lerp(SLATE_DEEP, smooth(-2, 22, y)).lerp(SLATE, smooth(16, 40, y) * 0.8); // navy valleys → slate crests
-    c.toArray(col, i * 3);
+    c.copy(lo).lerp(mid, smooth(0, 35, y)).lerp(hi, smooth(45, 100, y) * 0.8).toArray(col, i * 3);
   }
   g.setAttribute('color', new BufferAttribute(col, 3)); g.computeVertexNormals();
   return new Mesh(g, new MeshLambertMaterial({ vertexColors: true, flatShading: true }));
 }
 
-// The artificial mountain: a displaced dome with an arched cave mouth and a tunnel, facing the camera (+z).
-function mountain() {
-  const g = new SphereGeometry(46, 180, 64, 0, Math.PI * 2, 0, Math.PI / 2);
-  const pos = g.attributes.position as BufferAttribute, v = new Vector3();
-  for (let i = 0; i < pos.count; i++) {
-    v.fromBufferAttribute(pos, i);
-    const n = v.clone().normalize();
-    const k = 1 + 0.18 * (fbm(v.x * 0.05 + 3, v.z * 0.05 + v.y * 0.04) - 0.5) + 0.1 * (ridged(v.x * 0.03, v.y * 0.05) - 0.3);
-    v.copy(n.multiplyScalar(46 * k)); v.y *= 1.12;
-    pos.setXYZ(i, v.x, v.y, v.z);
-  }
-  // Cut the cave mouth: drop faces inside a semicircular arch of radius 9 on the front.
-  const idx = g.index!.array, keep: number[] = [];
-  // Any face touching the arch opening goes; the stone arch (outer radius 10.5) covers the ragged edge.
-  const inMouth = (a: number) => pos.getZ(a) > 20 && Math.hypot(pos.getX(a), pos.getY(a)) < 9.3;
-  for (let i = 0; i < idx.length; i += 3) if (!(inMouth(idx[i]) || inMouth(idx[i + 1]) || inMouth(idx[i + 2]))) keep.push(idx[i], idx[i + 1], idx[i + 2]);
-  g.setIndex(keep); g.computeVertexNormals();
-  const rock = new MeshLambertMaterial({ color: 0x4a5070, flatShading: true });
-  const grp = new Group();
-  grp.add(new Mesh(g, rock));
-  // Tunnel: a half cylinder (the arch) with a back wall and floor, lit only by the temple's lamp.
-  const inner = new MeshLambertMaterial({ color: 0x2c2c4e, side: BackSide, flatShading: true });
-  const tunnel = new Mesh(new CylinderGeometry(9, 9, 22, 28, 1, true, -Math.PI / 2, Math.PI), inner);
-  tunnel.rotation.x = Math.PI / 2; tunnel.position.set(0, 0, 34); grp.add(tunnel);
-  const back = new Mesh(new CircleGeometry(9, 28, 0, Math.PI), new MeshLambertMaterial({ color: 0x24243f })); back.position.set(0, 0, 23.2); grp.add(back);
-  const floor = new Mesh(new PlaneGeometry(18, 22), new MeshLambertMaterial({ color: 0x33334f })); floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0.05, 34); grp.add(floor);
-  // A dressed-stone arch frames the cave mouth, so it reads as a made entrance, not a hole.
-  const arch = new Mesh(new TorusGeometry(9.6, 0.9, 10, 36, Math.PI), new MeshStandardMaterial({ color: 0xb9b0a3, roughness: 0.95 }));
-  arch.position.set(0, 0, 44.6); grp.add(arch);
-  grp.position.copy(MOUNT);
-  return grp;
-}
-
-// Nagara shikhara: curvilinear spire in bands (bhumi), on a stepped jagati, with urushringas, amalaka and kalash.
-function spire(r0: number, h: number, seg: number) {
-  const p: Vector2[] = [];
-  const bands = 7;
-  for (let i = 0; i <= bands * 4; i++) {
-    const y = (i / (bands * 4)) * h;
-    const base = r0 * (1 - (y / h) ** 1.55) ** 0.75;
-    const lip = i % 4 === 0 ? 0.06 * r0 : 0;             // a small ledge at every band
-    p.push(new Vector2(Math.max(0.05 * r0, base + lip), y));
-  }
-  return new LatheGeometry(p, seg);
-}
-function temple() {
-  const t = new Group();
-  const stone = new MeshStandardMaterial({ color: SAND, roughness: 0.78 });
-  const add = (geo: BufferGeometry, x: number, y: number, z: number, mat = stone) => { const m = new Mesh(geo, mat); m.position.set(x, y, z); t.add(m); return m; };
-  [[8, 6], [7, 5.2], [6.2, 4.6]].forEach(([w, d], i) => add(new BoxGeometry(w, 0.5, d), 0, 0.25 + i * 0.5, 0)); // jagati, 3 steps
-  add(new BoxGeometry(3.4, 2.6, 3.4), 0, 2.8, -0.4);                         // garbhagriha walls
-  add(new BoxGeometry(3.0, 2.0, 2.0), 0, 2.5, 1.8);                          // mandapa
-  add(new ConeGeometry(2.1, 1.2, 4), 0, 4.1, 1.8).rotation.y = Math.PI / 4; // mandapa roof
-  add(new BoxGeometry(0.8, 1.3, 0.05), 0, 2.15, 2.83, new MeshStandardMaterial({ color: SAFFRON, emissive: SAFFRON, emissiveIntensity: 1.2 })); // lit doorway
-  add(spire(1.9, 4.4, 24), 0, 4.1, -0.4);                                    // main shikhara
-  for (const [x, z, s] of [[-1.45, -0.4, 0.46], [1.45, -0.4, 0.46], [0, 1.0, 0.5], [0, -1.8, 0.46]]) add(spire(1.9 * s, 4.4 * s, 18), x, 4.1, z); // urushringas
-  const amalaka = new LatheGeometry([0, 0.18, 0.34, 0.42, 0.34, 0.18, 0].map((r, i) => new Vector2(0.001 + r * 1.7, i * 0.07)), 24);
-  add(amalaka, 0, 8.45, -0.4);
-  const kalash = new LatheGeometry([[0.02, 0], [0.18, 0.05], [0.26, 0.2], [0.2, 0.38], [0.08, 0.46], [0.12, 0.52], [0.02, 0.8]].map(([r, y]) => new Vector2(r, y)), 18);
-  add(kalash, 0, 8.87, -0.4, new MeshStandardMaterial({ color: SAFFRON, roughness: 0.45, metalness: 0.2 }));
-  add(new BoxGeometry(0.04, 1.2, 0.04), 0.3, 9.3, -0.4, new MeshStandardMaterial({ color: 0xe7dfd2 }));
-  const flag = add(new ConeGeometry(0.28, 0.6, 3), 0.62, 9.7, -0.4, new MeshStandardMaterial({ color: SAFFRON, emissive: SAFFRON, emissiveIntensity: 0.4, side: DoubleSide }));
-  flag.rotation.z = -Math.PI / 2;
-  t.scale.setScalar(0.95);
-  return t;
-}
-
-// Additive plane: conic rays (Light Rays) or a soft glow.
-function glow(size: number, rays: boolean) {
-  const m = new ShaderMaterial({
-    transparent: true, depthWrite: false, blending: AdditiveBlending, uniforms: { uA: { value: 0 }, uC: { value: new Color(SAFFRON) } },
-    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-    fragmentShader: `varying vec2 vUv; uniform float uA; uniform vec3 uC; void main(){ vec2 d = vUv - vec2(0.5, 0.35); float r = length(d) * 2.0;
-      ${rays ? 'float a = atan(d.y, d.x); float f = step(0.7, fract(a / 0.12)) * (1.0 - smoothstep(0.0, 1.0, r)) * 0.3;' : 'float f = 0.6 * (1.0 - smoothstep(0.0, 0.8, r));'}
-      gl_FragColor = vec4(uC * f * uA, 1.0); }`,
-  });
-  return new Mesh(new PlaneGeometry(size, size), m);
-}
-
+// ── Sky: night → navy, a saffron horizon band toward the mountain (−z), and one small far peak on the horizon.
+const NOISE = `float h2(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vn(vec2 p){ vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(h2(i), h2(i + vec2(1, 0)), u.x), mix(h2(i + vec2(0, 1)), h2(i + vec2(1, 1)), u.x), u.y); }
+float fbm(vec2 p){ float s = 0.0, a = 0.5; for (int i = 0; i < 5; i++) { s += a * vn(p); p *= 2.03; a *= 0.5; } return s; }`;
 function sky() {
   const m = new ShaderMaterial({
     side: BackSide, depthWrite: false, fog: false,
-    uniforms: { uTop: { value: NIGHT }, uMid: { value: new Color(0x1b1b3c) }, uGlow: { value: new Color(SAFFRON) } },
+    uniforms: { uBand: { value: 1 }, uPeak: { value: 1 }, uTop: { value: new Color(NIGHT) }, uMid: { value: new Color(NAVY) }, uGlow: { value: new Color(SAFFRON) } },
     vertexShader: 'varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-    fragmentShader: `varying vec3 vDir; uniform vec3 uTop, uMid, uGlow; void main(){
-      float h = clamp(vDir.y, -0.2, 1.0);
-      vec3 c = mix(uMid, uTop, smoothstep(0.02, 0.5, h));
-      float toward = pow(max(0.0, -vDir.z), 3.0);                     // the horizon glow sits beyond the mountain (−z)
-      c += uGlow * 0.55 * toward * exp(-abs(h) * 9.0);
-      gl_FragColor = vec4(c, 1.0); }`,
+    fragmentShader: `varying vec3 vDir; uniform float uBand, uPeak; uniform vec3 uTop, uMid, uGlow;
+      void main(){
+        float el = vDir.y, az = atan(vDir.x, -vDir.z);
+        vec3 c = mix(uMid, uTop, smoothstep(-0.02, 0.45, el));
+        float toward = pow(max(0.0, -vDir.z), 2.0);
+        c = mix(c, uGlow, uBand * toward * exp(-abs(el - 0.004) * 38.0) * 0.85);
+        float peak = step(el, 0.045 * (1.0 - abs(az) / 0.08)) * step(-0.03, el);
+        c = mix(c, uMid * 0.8, peak * uPeak);
+        gl_FragColor = vec4(c, 1.0);
+        #include <colorspace_fragment>
+      }`,
   });
-  return new Mesh(new SphereGeometry(900, 32, 16), m);
+  return new Mesh(new SphereGeometry(9000, 48, 24), m);
 }
 
-function clouds(group: Group) {
-  const cv = document.createElement('canvas'); cv.width = cv.height = 128;
-  const ctx = cv.getContext('2d')!, img = ctx.createImageData(128, 128);
-  for (let y = 0; y < 128; y++) for (let x = 0; x < 128; x++) {
-    const r = Math.hypot(x - 64, y - 64) / 64;
-    const a = Math.max(0, fbm(x / 28, y / 28, 4) * 1.6 - 0.35) * Math.max(0, 1 - r * r);
-    const o = (y * 128 + x) * 4; img.data[o] = 205; img.data[o + 1] = 215; img.data[o + 2] = 228; img.data[o + 3] = Math.min(255, a * 255);
-  }
-  ctx.putImageData(img, 0, 0);
-  const tex = new CanvasTexture(cv); tex.colorSpace = SRGBColorSpace;
-  for (let i = 0; i < 18; i++) {
-    const s = new Sprite(new SpriteMaterial({ map: tex, transparent: true, depthWrite: false, opacity: 0.55, color: i % 3 ? 0x8f9cb8 : 0xb9a58f }));
-    s.position.set((hash(i, 1) - 0.5) * 240, 33 + hash(i, 2) * 9, 110 + hash(i, 3) * 150);
-    const k = 70 + hash(i, 4) * 60; s.scale.set(k, k * 0.55, 1);
-    group.add(s);
-  }
+// ── Cloud deck (top 420 m): stacked horizontal layers of fbm coverage with saffron rims toward the horizon glow.
+// Each fades out near the camera (no popping as it passes through) and by the fog.
+function cloudLayer(y: number, seed: number) {
+  const m = new ShaderMaterial({
+    transparent: true, depthWrite: false, fog: false,
+    uniforms: { uSeed: { value: seed }, uA: { value: 1 }, uDensity: { value: 0.001 }, uFog: { value: new Color() },
+      uBody: { value: new Color(SLATE) }, uRim: { value: new Color(SAFFRON) }, uDark: { value: new Color(NAVY) } },
+    vertexShader: 'varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
+    fragmentShader: `${NOISE}
+      varying vec3 vW; uniform float uSeed, uA, uDensity; uniform vec3 uFog, uBody, uRim, uDark;
+      void main(){
+        vec2 p = vW.xz / 1100.0 + uSeed;
+        float n = fbm(p) * 0.75 + fbm(p * 4.0 + 7.0) * 0.25;
+        float cover = smoothstep(0.42, 0.62, n);
+        if (cover < 0.01) discard;
+        float edge = 1.0 - smoothstep(0.62, 0.8, n);                    // thin parts of the cloud catch the light
+        float toward = smoothstep(200.0, -3000.0, vW.z);                 // brighter toward the dusk (−z)
+        vec3 c = mix(uDark, uBody, smoothstep(0.45, 0.85, n) * 1.3) + uRim * edge * toward * 0.9;
+        float d = distance(cameraPosition, vW);
+        float f = 1.0 - exp(-pow(d * uDensity, 2.0));
+        c = mix(c, uFog, f);
+        gl_FragColor = vec4(c, cover * uA * smoothstep(15.0, 90.0, d) * 0.92);
+        #include <colorspace_fragment>
+      }`,
+  });
+  const mesh = new Mesh(new PlaneGeometry(14000, 14000), m);
+  mesh.rotation.x = -Math.PI / 2; mesh.position.set(0, y, -1500);
+  return mesh;
 }
 
-export default function mount(host: HTMLElement, state: SceneState): SceneHandle {
-  const mobile = matchMedia('(max-width: 1023px)').matches;
-  const renderer = new WebGLRenderer({ antialias: !mobile, powerPreference: 'high-performance' });
+// ── Vertical wisps streaming up past the lens while inside the deck (they stop at 0.32).
+function wisps() {
+  const N = 70, pos = new Float32Array(N * 6), base: number[] = [];
+  for (let i = 0; i < N; i++) {
+    const x = (hash(i, 1) - 0.5) * 60, z = -12 - hash(i, 2) * 50, len = 4 + hash(i, 3) * 10;
+    base.push(hash(i, 4) * 80);
+    pos.set([x, 0, z, x, len, z], i * 6);
+  }
+  const g = new BufferGeometry(); g.setAttribute('position', new BufferAttribute(pos, 3));
+  const lines = new LineSegments(g, new LineBasicMaterial({ color: SAND, transparent: true, opacity: 0, depthWrite: false, fog: false }));
+  return { lines, base, pos: pos.slice() };
+}
+
+// Additive plane: conic rays (Light Rays) or a soft halo, saffron.
+function glow(w: number, h: number, rays: boolean) {
+  const m = new ShaderMaterial({
+    transparent: true, depthWrite: false, blending: AdditiveBlending, fog: false, uniforms: { uA: { value: 0 }, uC: { value: new Color(SAFFRON) } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+    fragmentShader: `varying vec2 vUv; uniform float uA; uniform vec3 uC; void main(){
+      vec2 d = vUv - vec2(0.5, 0.18); float r = length(d * vec2(1.0, 0.7));
+      ${rays ? 'float a = atan(d.x, d.y); float f = (0.35 + 0.65 * smoothstep(0.5, 0.9, sin(a * 26.0) * 0.5 + 0.5)) * (1.0 - smoothstep(0.05, 0.75, r)) * 0.35 * step(0.0, d.y);' : 'float f = 0.7 * (1.0 - smoothstep(0.0, 0.5, r));'}
+      gl_FragColor = vec4(uC * f * uA, 1.0); }`,
+  });
+  return new Mesh(new PlaneGeometry(w, h), m);
+}
+
+export default async function mount(host: HTMLElement, state: SceneState): Promise<SceneHandle> {
+  const mobileGPU = matchMedia('(max-width: 1023px)').matches;
+  const renderer = new WebGLRenderer({ antialias: !mobileGPU, powerPreference: 'high-performance' });
   renderer.outputColorSpace = SRGBColorSpace;
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
 
+  // Both loaders use their bundled decoders (Vite emits and fingerprints the wasm); they load with this chunk only.
+  const draco = new DRACOLoader();
+  const ktx2 = new KTX2Loader().detectSupport(renderer);
+  const gltf = await new GLTFLoader().setDRACOLoader(draco).setKTX2Loader(ktx2).loadAsync('/models/fero.glb');
+  draco.dispose(); ktx2.dispose();
+
   const scene = new Scene();
-  const fog = new FogExp2(0x16163a, 0.006); scene.fog = fog; scene.background = NIGHT;
-  const camera = new PerspectiveCamera(mobile ? 62 : 48, 16 / 9, 0.5, 2000);
+  const fog = new FogExp2(0x2a2e52, 0.0005); scene.fog = fog; scene.background = new Color(NIGHT);
+  const camera = new PerspectiveCamera(38, 16 / 9, 1, 12000);
+  scene.add(camera);
 
-  scene.add(sky(), terrain(mobile), mountain());
-  const cloudLayer = new Group(); clouds(cloudLayer); scene.add(cloudLayer);
-  const t = temple(); t.position.set(0, 0, -160 + 36); scene.add(t);
-  const rays = glow(20, true); rays.position.set(0, 3, -160 + 25); scene.add(rays);
-  const halo = glow(12, false); halo.position.set(0, 3.5, -160 + 28); scene.add(halo);
+  const skyMesh = sky(); scene.add(skyMesh);
+  scene.add(ridges(mobileGPU));
+  scene.add(gltf.scene);
+  const deck = new Group();
+  [420, 392, 356, 310, 262, 222].forEach((y, i) => deck.add(cloudLayer(y, i * 3.7)));
+  scene.add(deck);
+  const w = wisps(); camera.add(w.lines);
 
-  scene.add(new AmbientLight(0x262654, 1.3));
-  scene.add(new HemisphereLight(0x5a6a90, 0x0e0e1f, 0.8));
-  const dusk = new DirectionalLight(SAFFRON, 1.5); dusk.position.set(-30, 25, -400); scene.add(dusk);     // saffron rim from the horizon
-  const moon = new DirectionalLight(0xafd9eb, 1.1); moon.position.set(-80, 120, 120); scene.add(moon);
-  const lamp = new PointLight(SAFFRON, 0, 0, 1.2); lamp.position.set(0, 6.5, -160 + 43.5); scene.add(lamp); // warm light just inside the arch
-  const rim = new PointLight(SAFFRON, 0, 22, 1.3); rim.position.set(0, 7, -160 + 25); scene.add(rim);     // saffron rim behind the temple
+  // Cave light: a warm key from the cave floor, a saffron rim on both edges, spill at the mouth, rays and a halo.
+  const key = new PointLight(SAFFRON, 0, 34, 2); key.position.set(0, 2, TEMPLE_Z + 16); scene.add(key);
+  const rimL = new PointLight(SAFFRON, 0, 45, 2); rimL.position.set(-9, 12, TEMPLE_Z - 9); scene.add(rimL);
+  const rimR = rimL.clone(); rimR.position.x = 9; scene.add(rimR);
+  const spill = new PointLight(SAFFRON, 0, 140, 2); spill.position.set(0, 6, MOUTH_Z + 26); scene.add(spill);
+  const rays = glow(40, 46, true); rays.position.set(0, 1, TEMPLE_Z - 18); scene.add(rays);
+  const halo = glow(30, 34, false); halo.position.set(0, 4, TEMPLE_Z - 16); scene.add(halo);
+  const mouthGlow = glow(60, 40, false); mouthGlow.position.set(0, 4, MOUTH_Z + 6); scene.add(mouthGlow);
+  // S2: warm saffron diffused below the camera inside the deck.
+  const deckGlow = glow(1400, 1400, false); deckGlow.rotation.x = -Math.PI / 2; deckGlow.position.set(0, 150, 250); scene.add(deckGlow);
 
-  const eye = new Vector3(), at = new Vector3(), ahead = new Vector3();
-  let smoothP = state.progress, roll = 0;
+  scene.add(new AmbientLight(NAVY, 1.4));
+  scene.add(new HemisphereLight(SLATE, NIGHT, 0.9));
+  const dusk = new DirectionalLight(SAFFRON, 1.1); dusk.position.set(-200, 120, -3000); scene.add(dusk);
+  const sky2 = new DirectionalLight(0xafd9eb, 0.55); sky2.position.set(300, 600, 800); scene.add(sky2);
+
+  const skyU = (skyMesh.material as ShaderMaterial).uniforms;
+  const fogCol = new Color(), cDeck = new Color(0x4a4a66), cLow = new Color(0x262a4c), cCave = new Color(0x1b1b3c);
+  const eye = new Vector3(), aim = new Vector3();
+  let aspect = 16 / 9;
+
   return {
     canvas: renderer.domElement,
-    resize(w, h) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); },
+    resize(width, height) { renderer.setSize(width, height, false); aspect = width / height; camera.aspect = aspect; camera.updateProjectionMatrix(); },
     render() {
-      smoothP += (state.progress - smoothP) * (state.still ? 1 : 0.12);
-      const u = toT(smoothP);
-      PATH.getPointAt(u, eye); LOOK.getPointAt(u, at);
-      camera.position.copy(eye); camera.lookAt(at);
-      // Bank into the turn: roll follows the change in heading, damped.
-      PATH.getPointAt(Math.min(1, u + 0.02), ahead);
-      const turn = Math.atan2(ahead.x - eye.x, eye.z - ahead.z) - Math.atan2(at.x - eye.x, eye.z - at.z);
-      roll += (Math.max(-0.2, Math.min(0.2, turn * 0.8)) * (1 - smooth(0.8, 1, u)) - roll) * (state.still ? 1 : 0.08);
-      camera.rotateZ(roll);
-      // Fog thickens inside the cloud layer (y 33–42), then clears below it.
-      fog.density = 0.004 + 0.03 * smooth(46, 38, eye.y) * smooth(24, 32, eye.y) + 0.0015 * smooth(30, 12, eye.y);
-      const reveal = smooth(0.62, 0.84, smoothP);
-      lamp.intensity = 150 * reveal; rim.intensity = 70 * reveal;
-      (rays.material as ShaderMaterial).uniforms.uA.value = reveal;
-      (halo.material as ShaderMaterial).uniforms.uA.value = 0.8 * reveal;
+      const p = MathUtils.clamp(state.progress, 0, 1);
+      const { i, u, e } = rig(p);
+      const t = (i + e) / 4;
+      POS.getPoint(t, eye); AIM.getPoint(t, aim);
+      camera.position.copy(eye); camera.up.set(0, 1, 0); camera.lookAt(aim);
+      // P3 pitch (keyframed, same ease), yaw bump past the last ridge, roll peak at 0.58.
+      const pitch = MathUtils.lerp(KEY_PITCH[i], KEY_PITCH[i + 1], e) - pitchOf(eye, aim);
+      const yaw = i === 2 ? 14 * DEG * Math.sin(Math.PI * u) : 0;
+      const roll = 4 * DEG * (p < 0.58 ? smooth(0.45, 0.58, p) : 1 - smooth(0.58, 0.68, p));
+      camera.rotateY(yaw); camera.rotateX(pitch); camera.rotateZ(roll);
+      // fov 38° → 30° over the push into the cave; phones (portrait) see the vertical fov × 1.23.
+      const fov = i === 3 ? MathUtils.lerp(38, 30, e) : 38;
+      camera.fov = fov * (aspect < 1 ? 1.23 : 1); camera.updateProjectionMatrix();
+
+      // Fog: thin above the deck, 0.012 inside it; out of the cloud base at 0.30 it thins to 0.004 by S3, then clears
+      // for the reveal.
+      const inDeck = smooth(432, 396, eye.y);
+      fog.density = p < 0.3 ? 0.0005 + 0.0115 * inDeck
+        : p < 0.45 ? MathUtils.lerp(0.012, 0.004, smooth(0.3, 0.45, p))
+        : MathUtils.lerp(0.004, 0.0014, smooth(0.45, 0.72, p));
+      fogCol.copy(cDeck).lerp(cLow, smooth(0.28, 0.45, p)).lerp(cCave, smooth(0.6, 0.8, p));
+      fog.color.copy(fogCol);
+      skyU.uBand.value = 1 - 0.7 * smooth(0.1, 0.3, p);                    // the horizon band spreads into the fog
+      skyU.uPeak.value = 1 - smooth(0.05, 0.16, p);
+      const deckA = 1 - smooth(0.3, 0.4, p);
+      deck.visible = deckA > 0;
+      for (const l of deck.children) { const uu = ((l as Mesh).material as ShaderMaterial).uniforms; uu.uA.value = deckA; uu.uDensity.value = fog.density; uu.uFog.value.copy(fogCol); }
+      // Wisps: stream up past the lens inside the deck, stop at 0.32.
+      const wa = smooth(0.12, 0.18, p) * (1 - smooth(0.28, 0.32, p));
+      (w.lines.material as LineBasicMaterial).opacity = 0.22 * wa;
+      w.lines.visible = wa > 0;
+      if (wa > 0) {
+        const a = w.lines.geometry.attributes.position as BufferAttribute;
+        for (let k = 0; k < w.base.length; k++) {
+          const y = ((w.base[k] + p * 900) % 80) - 40;
+          a.setY(k * 2, y); a.setY(k * 2 + 1, y + (w.pos[k * 6 + 4]));
+        }
+        a.needsUpdate = true;
+      }
+      // Cave light 0 → 1 over 0.60–0.72; rays reach full at 0.84.
+      const light = smooth(0.6, 0.72, p), ray = smooth(0.6, 0.84, p);
+      key.intensity = 520 * light; rimL.intensity = rimR.intensity = 260 * light; spill.intensity = 2600 * light;
+      (rays.material as ShaderMaterial).uniforms.uA.value = 0.8 * ray;
+      (halo.material as ShaderMaterial).uniforms.uA.value = 0.6 * light;
+      (mouthGlow.material as ShaderMaterial).uniforms.uA.value = 0.22 * light * (1 - smooth(0.76, 0.84, p));
+      (deckGlow.material as ShaderMaterial).uniforms.uA.value = 0.55 * smooth(0.08, 0.2, p) * (1 - smooth(0.27, 0.34, p));
+      deckGlow.visible = p < 0.34;
       renderer.render(scene, camera);
     },
     dispose() {

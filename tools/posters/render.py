@@ -25,9 +25,10 @@ POSTERS = {
     "toolpath": ("mode=toolpath", 2400, 1200, [2400, 1600, 960]),
     "toolpath-m": ("mode=toolpath", 960, 1120, [960, 480]),
 }
-# The Fero fly-through frames exist only as renders of the real scene (--real).
-FERO = {f"fero-{n}{m}": (None, *((2400, 1350, [2400, 1600, 960]) if not m else (960, 1920, [960, 480])))
-        for n in range(1, 5) for m in ("", "-m")}
+# The Fero fly-through shots (Posters P3) exist only as renders of the real scene (--real). Named fw-s1…s5 (2400×1350)
+# and fw-sN-m (1080×1920), AVIF, plus half-size AVIFs and a 1200 WebP fallback.
+FERO = {f"fw-s{n}{m}": (None, *((2400, 1350, [2400, 1200]) if not m else (1080, 1920, [1080, 540])))
+        for n in range(1, 6) for m in ("", "-m")}
 
 
 def shoot(query: str, w: int, h: int) -> Image.Image:
@@ -49,7 +50,10 @@ for name, (query, w, h, widths) in (POSTERS | FERO if REAL else POSTERS).items()
     assert img.size == (w, h), f"{name}: got {img.size}"
     for tw in widths:
         im = img if tw == w else img.resize((tw, round(h * tw / w)), Image.LANCZOS)
+        fw = name.startswith("fw-")
         for ext, kw in (("avif", {"quality": 55, "speed": 4}), ("webp", {"quality": 80, "method": 6})):
-            path = OUT / f"{name}-{tw}.{ext}"
+            if fw and ext == "webp" and tw != 1200:
+                continue
+            path = OUT / (f"{name}.{ext}" if fw and tw == w else f"{name}-{tw}.{ext}")
             im.save(path, **kw)
             print(f"{path.name:28s} {im.width}x{im.height}  {path.stat().st_size // 1024} KB")

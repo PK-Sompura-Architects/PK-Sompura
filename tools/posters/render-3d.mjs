@@ -17,9 +17,9 @@ const JOBS = {
   'hero-m': ['hero:0', 480, 600],
   toolpath: ['toolpath:0.56', 1200, 600],
   'toolpath-m': ['toolpath:0.56', 480, 560],
-  // Fero Works fly-through: the 4-frame still sequence (above the clouds → ridges → reveal → temple).
-  ...Object.fromEntries([[1, 0.03], [2, 0.45], [3, 0.74], [4, 1]].flatMap(([n, p]) => [
-    [`fero-${n}`, [`fero:${p}`, 1200, 675]], [`fero-${n}-m`, [`fero:${p}`, 480, 960]]])),
+  // Fero Works fly-through (Posters P3): shots S1–S5 at their progress points, 2400×1350 and 1080×1920.
+  ...Object.fromEntries([[1, 0], [2, 0.22], [3, 0.45], [4, 0.72], [5, 1]].flatMap(([n, p]) => [
+    [`fw-s${n}`, [`fero:${p}`, 1200, 675]], [`fw-s${n}-m`, [`fero:${p}`, 540, 960]]])),
 };
 
 const server = spawn(`npx astro preview --port ${PORT}`, { shell: true, stdio: 'ignore' });
@@ -29,7 +29,8 @@ for (let i = 0; i < 60; i++) { // wait for the preview server (up to 30 s)
 }
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--ignore-gpu-blocklist', '--enable-unsafe-swiftshader'] });
 try {
-  for (const [name, [still, w, h]] of Object.entries(JOBS)) {
+  // ONLY=<regex> renders a subset, e.g. ONLY=^fw- while iterating on one scene.
+  for (const [name, [still, w, h]] of Object.entries(JOBS).filter(([n]) => !process.env.ONLY || new RegExp(process.env.ONLY).test(n))) {
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 2 });
     await page.goto(`http://localhost:${PORT}/?still=${still}`, { waitUntil: 'networkidle0' });

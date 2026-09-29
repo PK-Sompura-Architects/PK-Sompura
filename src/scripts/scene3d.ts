@@ -1,10 +1,10 @@
 // The 3D gate (Handoff §8): the scenes load only with WebGL2, no prefers-reduced-motion, no Save-Data and
 // deviceMemory ≥ 4 (browsers that don't report it are allowed). Otherwise the <img> poster stays, and nothing
-// else downloads. `?still=hero|toolpath|mountain-k3[:progress]` renders one frame for re-exporting the posters.
+// else downloads. `?still=hero|toolpath|fero[:progress]` renders one frame for re-exporting the posters.
 const els = [...document.querySelectorAll<HTMLElement>('[data-scene]')];
 const q = new URLSearchParams(location.search).get('still');
 
-function gate() {
+export function gate() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
   if (nav.connection?.saveData) return false;
