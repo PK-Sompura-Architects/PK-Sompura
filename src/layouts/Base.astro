@@ -9,6 +9,10 @@ import SiteNav from '../components/SiteNav.astro';
 import Footer from '../components/Footer.astro';
 import Loader from '../components/Loader.astro';
 import type { NavKey } from '../data/site';
+// Preloaded so they don't wait for the CSS: the heading face (every h1, often the LCP) and the body face (its late
+// swap shifted the layout under the h1, CLS 0.034 on /contact).
+import caslon from '@fontsource/libre-caslon-display/files/libre-caslon-display-latin-400-normal.woff2?url';
+import hanken from '@fontsource/hanken-grotesk/files/hanken-grotesk-latin-400-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -32,6 +36,10 @@ const {
     <meta name="description" content={description} />
     <meta name="theme-color" content={theme === 'night' ? '#0E0E1F' : '#F4EFE6'} />
     <link rel="icon" type="image/webp" href="/logo.webp" />
+    <link rel="preload" as="font" type="font/woff2" href={caslon} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={hanken} crossorigin />
+    {/* Light pages' h1 is .text-cut: its letters are this texture, so the h1 (LCP) can't paint before it arrives. */}
+    {theme === 'light' && <link rel="preload" as="image" href="/tex/cut.webp" fetchpriority="high" />}
     <script is:inline>
       document.documentElement.classList.add('js');
       // Loader: every full load and reload; not when arriving by an internal link, nor in ?still= poster renders.

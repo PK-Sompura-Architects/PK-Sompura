@@ -226,6 +226,8 @@ Read with care: once the loader is in, its full-colour logo (`/logo-fill.webp`, 
 
 **Final check (Phase 6)**, devtools / simulated, median of 3: `/` 1.61 / 3.91 s, `/projects` 2.26 / 4.29 s, `/contact` 2.25 / 3.61 s; CLS 0 / 0.01 / 0.05; accessibility 1.00 on all three. Under devtools throttling all three meet LCP < 2.5 s and CLS < 0.1; under simulation none do (they didn't before the loader either). Simulated TBT on `/contact` is 1.7 s: the Light Rays shader compiles as its island hydrates. Full-site sweep (36 pages × 360 and 1440 px × motion on/off): no horizontal scroll, no console errors, no failed requests, no axe WCAG 2.x A/AA violations, no interactive target under 44 px.
 
+**Speed pass (after Phase 6)**, devtools / simulated: `/` 1.81 / 2.56 s, `/projects` 2.26 / 3.31 s, `/contact` 2.24 / 3.17 s; CLS 0 / 0.01 / 0.05; accessibility 1.00. What changed: the cut texture 204 → 37 KB (a seamless 512 × 256 tile) and the night grain 117 → 29 KB (a 256 tile); motion, 3D and the ambient WebGL backgrounds start only after the page has loaded and is idle (`src/scripts/after-load.ts`); the heading and body fonts and, on light pages, the cut texture are preloaded. Simulated LCP fell 0.4–1.35 s and `/contact` TBT 1.7 s → 40 ms; under devtools `/projects` and `/contact` are unchanged (their LCP is the loader's logo) and `/` is 0.2 s slower (the preloads share the connection with the hero poster), still under target. Simulated LCP is still over 2.5 s on `/projects` and `/contact`.
+
 ---
 
 ## 10. Photographs
