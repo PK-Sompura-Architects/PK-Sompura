@@ -8,8 +8,10 @@ import { contact, nav, type NavKey } from '../data/site';
 interface Props { current?: NavKey }
 const { current } = Astro.props;
 ---
-<dialog id="site-menu" aria-label="Menu" class="theme-night m-0 h-dvh max-h-none w-full max-w-none bg-night bg-night-grain p-0 text-sand backdrop:bg-transparent lg:hidden">
-  <div class="flex min-h-full flex-col">
+<dialog id="site-menu" aria-label="Menu" class="theme-night m-0 h-dvh max-h-none w-full max-w-none overflow-hidden bg-transparent p-0 text-sand backdrop:bg-transparent lg:hidden">
+  <div data-menu-layer class="absolute inset-0 bg-stone" aria-hidden="true"></div>
+  <div data-menu-layer class="absolute inset-0 bg-navy" aria-hidden="true"></div>
+  <div data-menu-layer class="relative flex h-full flex-col overflow-y-auto bg-night bg-night-grain">
     <div class="flex h-16 items-center justify-between pl-5 pr-3 md:pl-10 md:pr-8">
       <a href="/" class="flex items-center gap-2.5 no-underline">
         <LogoMark theme="night" size="nav-sm" />
@@ -25,11 +27,12 @@ const { current } = Astro.props;
         {nav.map((item, i) => (
           <li class="flex min-h-16 items-baseline gap-3.5 border-b border-slate">
             <span class="w-[22px] font-mono text-[12px] text-sky" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <a
+            <span class="block overflow-hidden"><a
+              data-menu-item
               href={item.href}
               aria-current={item.key === current ? 'page' : undefined}
-              class:list={['font-display text-[40px] leading-[1.35] no-underline', item.key === current ? 'text-saffron' : 'text-sand']}
-            >{item.label}</a>
+              class:list={['block font-display text-[40px] leading-[1.35] no-underline', item.key === current ? 'text-saffron' : 'text-sand']}
+            >{item.label}</a></span>
           </li>
         ))}
       </ol>
@@ -53,7 +56,8 @@ const { current } = Astro.props;
     // Fallback for browsers without invoker commands.
     if (!('commandForElement' in HTMLButtonElement.prototype)) {
       document.querySelectorAll<HTMLButtonElement>('[commandfor="site-menu"]').forEach((b) =>
-        b.addEventListener('click', () => (b.getAttribute('command') === 'close' ? menu.close() : menu.showModal())),
+        // Skipped once the motion layer has taken over the button (it removes commandfor).
+        b.addEventListener('click', () => b.hasAttribute('commandfor') && (b.getAttribute('command') === 'close' ? menu.close() : menu.showModal())),
       );
     }
     // The menu exists only below lg; close it if the viewport grows past that.

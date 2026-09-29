@@ -53,22 +53,22 @@ const crumb = p.place ? placeFull(p) : 'Place to confirm';
 
       <div class="wrap grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-x-6 lg:gap-y-6">
         <div class="col-span-2 lg:col-span-7">
-          <PhotoFrame shape="arch" frame="aspect-[8/11] lg:aspect-[4/5]" label={lead.label} src={lead.src} alt={`${p.name}, ${lead.caption ?? 'lead image'}`} caption={cap(1, lead.caption)} />
+          <PhotoFrame reveal glare shape="arch" frame="aspect-[8/11] lg:aspect-[4/5]" label={lead.label} src={lead.src} alt={`${p.name}, ${lead.caption ?? 'lead image'}`} caption={cap(1, lead.caption)} />
         </div>
         {(second || p.note) && (
           <div class="col-span-2 mt-2 flex flex-col gap-5 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:justify-end lg:gap-12 lg:pb-10">
             {p.note && <p class="font-display text-[22px] leading-[1.3] lg:text-[28px] lg:leading-[1.25]">{p.note}</p>}
-            {second && <PhotoFrame frame="aspect-[4/3] lg:aspect-[40/41]" label={second.label} src={second.src} alt={`${p.name}, photo 2`} caption={cap(2, second.caption)} />}
+            {second && <PhotoFrame reveal glare frame="aspect-[4/3] lg:aspect-[40/41]" label={second.label} src={second.src} alt={`${p.name}, photo 2`} caption={cap(2, second.caption)} />}
           </div>
         )}
         {three.map((ph, i) => (
           <div class="col-span-1 lg:col-span-4 lg:mt-18">
-            <PhotoFrame frame="aspect-[3/4] lg:aspect-square" label={ph.label} src={ph.src} alt={`${p.name}, photo ${i + 3}`} caption={cap(i + 3, ph.caption)} />
+            <PhotoFrame reveal glare frame="aspect-[3/4] lg:aspect-square" label={ph.label} src={ph.src} alt={`${p.name}, photo ${i + 3}`} caption={cap(i + 3, ph.caption)} />
           </div>
         ))}
         {wide && (
           <div class="col-span-1 lg:col-span-8 lg:col-start-3 lg:mt-18">
-            <PhotoFrame frame="aspect-[3/4] lg:aspect-[3/2]" label={wide.label} src={wide.src} alt={`${p.name}, photo 6`} caption={cap(6, wide.caption)} />
+            <PhotoFrame reveal glare frame="aspect-[3/4] lg:aspect-[3/2]" label={wide.label} src={wide.src} alt={`${p.name}, photo 6`} caption={cap(6, wide.caption)} />
           </div>
         )}
       </div>

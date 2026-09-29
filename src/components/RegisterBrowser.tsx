@@ -160,15 +160,21 @@ export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
                   <span className="text-right text-[20px]" aria-hidden="true">→</span>
                   <span className="sr-only">{e.type}. Scope: {e.scope.join(', ')}.{e.lead ? '' : ' No photographs yet.'}</span>
                 </span>
-                <span className="band absolute inset-0 hidden items-center gap-7 whitespace-nowrap bg-navy pl-20 group-hover:flex group-focus-visible:flex" aria-hidden="true">
-                  <span className="font-display text-title text-sand">{e.name}</span>
-                  <Diamond />
-                  <span className="font-mono text-[14px] text-sky">{e.placeFull}</span>
-                  {e.lead && <span className="ph-night h-[72px] w-14 flex-none rounded-t-full border border-sky" />}
-                  <span className="font-mono text-[14px] text-sky">{e.type}</span>
-                  <Diamond />
-                  <span className="font-mono text-[14px] uppercase tracking-[.06em] text-sand">{e.scope.join(' · ')}</span>
-                  <Diamond />
+                <span className="band absolute inset-0 hidden items-center overflow-hidden whitespace-nowrap bg-navy group-hover:flex group-focus-visible:flex" aria-hidden="true">
+                  <span className="band-track flex items-center gap-7 pl-20">
+                    {[0, 1].map((k) => (
+                      <span key={k} className="flex flex-none items-center gap-7 pr-7">
+                        <span className="font-display text-title text-sand">{e.name}</span>
+                        <Diamond />
+                        <span className="font-mono text-[14px] text-sky">{e.placeFull}</span>
+                        {e.lead && <span className="ph-night h-[72px] w-14 flex-none rounded-t-full border border-sky" />}
+                        <span className="font-mono text-[14px] text-sky">{e.type}</span>
+                        <Diamond />
+                        <span className="font-mono text-[14px] uppercase tracking-[.06em] text-sand">{e.scope.join(' · ')}</span>
+                        <Diamond />
+                      </span>
+                    ))}
+                  </span>
                 </span>
               </a>
             </li>
@@ -180,7 +186,7 @@ export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
       <ol className="lg:hidden">
         {rows.map((e) => (
           <li key={e.id} className="border-b border-slate">
-            <details className="group">
+            <details className="rg-row group">
               <summary className="flex min-h-[76px] cursor-pointer list-none items-center gap-3 py-3.5 [&::-webkit-details-marker]:hidden">
                 <span className="w-6 flex-none font-mono text-[12px] text-slate-deep">{pad(e.no)}</span>
                 <span className="flex min-w-0 flex-1 flex-col gap-1">

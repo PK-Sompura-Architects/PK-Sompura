@@ -57,10 +57,13 @@
     -webkit-mask-image: radial-gradient(ellipse 70% 80% at var(--ray-x, 50%) 0, #000, transparent 75%);
     mask-image: radial-gradient(ellipse 70% 80% at var(--ray-x, 50%) 0, #000, transparent 75%);
   }
+  /* Faded in at the top, out at the bottom and right, so neither the CSS frame nor the canvas shows an edge. */
   .bg-waves {
     background: repeating-radial-gradient(ellipse 160% 120% at 30% -60%, rgb(175 217 235 / 0) 0 30px, theme('colors.sky') 30px 31.5px);
-    -webkit-mask-image: linear-gradient(#000 40%, transparent);
-    mask-image: linear-gradient(#000 40%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 55%, transparent), linear-gradient(transparent, #000 15%, #000 40%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(90deg, #000 55%, transparent), linear-gradient(transparent, #000 15%, #000 40%, transparent);
+    mask-composite: intersect;
   }
 }
 
@@ -79,4 +82,47 @@
   }
   /* Headings on night. */
   .text-cut-night { text-shadow: 0 -1px 0 theme('colors.night'), 0 1px 0 rgb(121 138 150 / .45); }
+
+  /* Masked Heading: a navy layer over the cut texture, wiped upward by --wipe (0% = solid navy, 100% = texture).
+     At rest (no JS, reduced motion) --wipe is 100%, i.e. the plain cut heading. Both states pass AA. */
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .text-cut.wipe {
+      background-image: linear-gradient(to top, rgb(38 38 84 / 0) var(--wipe, 100%), theme('colors.navy') var(--wipe, 100%)), url('/tex/cut.webp');
+      background-size: 100% 100%, auto;
+    }
+  }
 }
+
+@layer components {
+  /* Glare Hover (desktop, fine pointer only): a sand sheen at 25% crossing at −45°, 650 ms ease. */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .glare::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(-45deg, rgb(244 239 230 / 0) 35%, rgb(244 239 230 / .25) 50%, rgb(244 239 230 / 0) 65%);
+      background-size: 250% 250%; background-position: 100% 100%; transition: background-position 650ms ease;
+    }
+    .group:hover .glare::after, .glare:hover::after { background-position: 0 0; }
+  }
+
+  /* Ambient WebGL layers replace their CSS still frame once live. */
+  [data-ambient][data-live] { background: none; }
+
+  /* Register mobile rows open with a height transition where the browser supports it (native, no JS). */
+  @media (prefers-reduced-motion: no-preference) {
+    :root { interpolate-size: allow-keywords; }
+    .rg-row::details-content {
+      height: 0; overflow: clip;
+      transition: height .45s cubic-bezier(.25, .46, .45, .94), content-visibility .45s allow-discrete;
+    }
+    .rg-row[open]::details-content { height: auto; }
+  }
+}
+
+/* Flowing Menu with the motion layer running: the band is positioned by GSAP (see motion-main.ts);
+   keyboard focus still shows it in place. Without JS or with reduced motion, plain CSS hover shows it. */
+.fm-js .register-row .band { display: flex; transform: translateY(101%); }
+.fm-js .register-row:focus-visible .band { transform: none !important; }
+
+/* Islands that only exist for motion: with reduced motion the box is not displayed, so client:visible never
+   fires and their JavaScript is never downloaded. */
+@media (prefers-reduced-motion: reduce) { .motion-only { display: none; } }

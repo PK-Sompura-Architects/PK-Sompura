@@ -11,13 +11,15 @@ interface Props {
   caption?: string;
   captionClass?: string;
   compact?: boolean; // tiny thumbnails: the placeholder says only PHOTO
+  reveal?: boolean; // mask grows from the bottom on enter (motion layer)
+  glare?: boolean; // Glare Hover sheen, desktop only
   class?: string;
 }
-const { label, src, alt = '', shape = 'rect', tone = 'light', frame, caption, captionClass, compact = false, class: cls } = Astro.props;
+const { label, src, alt = '', shape = 'rect', tone = 'light', frame, caption, captionClass, compact = false, reveal = false, glare = false, class: cls } = Astro.props;
 const night = tone === 'night';
 ---
 <figure class:list={['m-0 flex flex-col gap-3 lg:gap-3.5', cls]}>
-  <div class:list={['relative overflow-hidden', frame, shape === 'arch' && 'rounded-t-full', night && 'border border-slate',
+  <div data-reveal-photo={reveal ? '' : undefined} class:list={['relative overflow-hidden', frame, glare && 'glare', shape === 'arch' && 'rounded-t-full', night && 'border border-slate',
     !src && (night ? 'ph-night' : 'ph-light')]}>
     {src
       ? <img src={src} alt={alt} loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" />

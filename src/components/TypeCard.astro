@@ -19,7 +19,7 @@ const p = project.data;
 ) : (
   <div class="flex flex-col gap-6 bg-stone bg-stone-tex px-5 py-7 shadow-tablet lg:grid lg:grid-cols-12 lg:gap-x-6 lg:gap-y-14 lg:px-18 lg:pb-14 lg:pt-20">
     <div class="flex justify-between font-mono text-[12px] font-medium uppercase tracking-[.08em] lg:col-span-12 lg:text-[13px]"><span>Register entry</span><span>No. {pad(p.no)}</span></div>
-    <h1 class="text-cut font-display text-[72px] leading-[.9] tracking-[-.015em] lg:col-span-12 lg:text-[clamp(120px,13.9vw,200px)]">{p.name}</h1>
+    <h1 data-masked="load" class="text-cut font-display text-[72px] leading-[.9] tracking-[-.015em] lg:col-span-12 lg:text-[clamp(120px,13.9vw,200px)]">{p.name}</h1>
     <dl class="grid grid-cols-[64px_1fr] gap-x-3 gap-y-2.5 border-t border-slate-deep pt-4 text-[15px] lg:col-span-12 lg:grid-cols-3 lg:gap-x-6 lg:pt-6">
       <div class="contents lg:flex lg:flex-col lg:gap-2"><dt class="font-mono text-[12px] uppercase tracking-[.08em]">Place</dt><dd class="lg:font-display lg:text-[32px]">{placeFull(p)}</dd></div>
       <div class="contents lg:flex lg:flex-col lg:gap-2"><dt class="font-mono text-[12px] uppercase tracking-[.08em]">Type</dt><dd class="lg:font-display lg:text-[32px]">{p.type}</dd></div>
