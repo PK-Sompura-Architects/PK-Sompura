@@ -5,9 +5,8 @@
 //   Low-end (gate fails): pinned 400vh; the five posters crossfade over 0.06 of progress at each boundary. No 3D.
 //   Reduced motion, and no JS: no pin; the five posters stack as 100svh frames, each with its own text state.
 // Text states: full (eyebrow + h2 + line), docked (small title, top-left), docked + line. Scrubbed FLIP between
-// them at P3's progress points. StackPlate 01 rises over 0.94–1.00, then the pin releases into the Scroll Stack.
-interface Props { plate: { n: string; title: string } }
-const { plate } = Astro.props;
+// them at P3's progress points. The pin then releases straight into the Scroll Stack (the rising copy of plate 01
+// was dropped: it showed plate 01 twice).
 const shots = [
   { n: 1, alt: 'Above a cloud deck at dusk, a saffron band on the horizon and one small far peak' },
   { n: 2, alt: 'Descending through the clouds, saffron light diffused below' },
@@ -50,14 +49,6 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
       <p class="fly-line max-w-[26rem] text-body text-sand">{line}</p>
     </div>
 
-    <!-- StackPlate 01 rising (0.94–1.00), with the Gradual Blur band above it. The real plates follow the pin. -->
-    <div class="fly-plate pointer-events-none absolute inset-x-0 bottom-0" aria-hidden="true">
-      <div class="fly-blur h-16"></div>
-      <div class="wrap"><div class="flex items-baseline justify-between border-t border-slate bg-navy px-5 py-4 shadow-plate lg:px-10 lg:py-6">
-        <span class="font-mono text-[12px] font-medium tracking-[.08em] text-sky lg:text-[13px]">BUILD SEQUENCE · {plate.n} / 05</span>
-        <span class="font-display text-[26px] leading-none text-sand lg:text-[32px]">{plate.title}</span>
-      </div></div>
-    </div>
   </div>
 </div>
 
@@ -93,7 +84,6 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
       text.style.setProperty('--lo', String(clamp(1 - smooth(0.06, 0.12, p) + smooth(0.66, 0.72, p))));
       // Night scrim over the top 38%: in S2 (over fog) and from the reveal on (over the cave glow), so text stays on night.
       stage.style.setProperty('--scrim', String(Math.max(smooth(0.1, 0.18, p) * (1 - smooth(0.4, 0.5, p)), smooth(0.62, 0.72, p))));
-      stage.style.setProperty('--plate', String(1 - smooth(0.94, 1, p)));
       // Posters (low-end, and until the canvas is live): each fades in over the one before at its boundary.
       frames.forEach((f, i) => { f.style.opacity = i === 0 ? '1' : String(smooth(EDGES[i - 1] - 0.03, EDGES[i - 1] + 0.03, p)); });
       stage.dataset.shot = String([0, 0.11, 0.335, 0.585, 0.8].filter((e) => p >= e).length);
@@ -114,9 +104,8 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
   .fly-frame { position: relative; height: 100svh; overflow: hidden; }
   .fly-text { z-index: 2; }
   .fly-line { margin-top: 0.75rem; }
-  .fly-scrim, .fly-plate { display: none; }
+  .fly-scrim { display: none; }
   .fly-copy { z-index: 2; }
-  .fly-blur { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); mask-image: linear-gradient(transparent, #000); -webkit-mask-image: linear-gradient(transparent, #000); }
 
   /* Pinned (JS, motion allowed): 500vh desktop / 400vh mobile and low-end, plus the 100vh stage itself. */
   @media (prefers-reduced-motion: no-preference) {
@@ -132,6 +121,5 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
     :global(.js) .fly-h2 { transform: scale(var(--s, 1)); }
     :global(.js) .fly-line { position: absolute; margin: 0; top: calc(var(--h2y, 0px) + var(--h2h, 0px) * var(--s, 1) + 16px); opacity: var(--lo, 1); }
     :global(.js) .fly-scrim { display: block; z-index: 1; opacity: var(--scrim, 0); }
-    :global(.js) .fly-plate { display: block; z-index: 3; transform: translateY(calc(var(--plate, 1) * 100%)); }
   }
 </style>

@@ -20,7 +20,7 @@
  },
  {
   "id": "asha-life-mission",
-  "no": 2,
+  "no": 20,
   "name": "Asha Life Mission",
   "place": "",
   "state": "",
@@ -34,7 +34,7 @@
  },
  {
   "id": "bhamriya",
-  "no": 3,
+  "no": 4,
   "name": "Bhamriya",
   "place": "Bhamriya",
   "state": "Gujarat",
@@ -52,7 +52,7 @@
  },
  {
   "id": "bhavnagar",
-  "no": 4,
+  "no": 5,
   "name": "Bhavnagar",
   "place": "Bhavnagar",
   "state": "Gujarat",
@@ -71,7 +71,7 @@
  },
  {
   "id": "dadabhagavan",
-  "no": 5,
+  "no": 11,
   "name": "Dadabhagavan",
   "place": "Kelanpur",
   "state": "Gujarat",
@@ -85,7 +85,7 @@
  },
  {
   "id": "devilaya",
-  "no": 6,
+  "no": 21,
   "name": "Devilaya",
   "place": "",
   "state": "",
@@ -98,7 +98,7 @@
  },
  {
   "id": "digambar-jain-derasar",
-  "no": 7,
+  "no": 3,
   "name": "Digambar Jain Derasar",
   "place": "Baroda",
   "state": "Gujarat",
@@ -117,7 +117,7 @@
  },
  {
   "id": "dhola",
-  "no": 8,
+  "no": 6,
   "name": "Dhola",
   "place": "Dhola",
   "state": "Gujarat",
@@ -130,7 +130,7 @@
  },
  {
   "id": "gelmata",
-  "no": 9,
+  "no": 24,
   "name": "Gelmata",
   "place": "Rajkot",
   "state": "Gujarat",
@@ -149,7 +149,7 @@
  },
  {
   "id": "godiji-derasar",
-  "no": 10,
+  "no": 30,
   "name": "Godiji Derasar",
   "place": "Tharad",
   "state": "Gujarat",
@@ -163,7 +163,7 @@
  },
  {
   "id": "vaishno-devi-gulbarga",
-  "no": 11,
+  "no": 7,
   "name": "Vaishno Devi",
   "place": "Gulbarga",
   "state": "Karnataka",
@@ -182,7 +182,7 @@
  },
  {
   "id": "hastgiri",
-  "no": 12,
+  "no": 8,
   "name": "Hastgiri",
   "place": "Hastgiri",
   "state": "Gujarat",
@@ -201,7 +201,7 @@
  },
  {
   "id": "jaliya",
-  "no": 13,
+  "no": 9,
   "name": "Jaliya",
   "place": "Jaliya",
   "state": "Gujarat",
@@ -214,7 +214,7 @@
  },
  {
   "id": "jambudip",
-  "no": 14,
+  "no": 22,
   "name": "Jambudip",
   "place": "",
   "state": "",
@@ -232,7 +232,7 @@
  },
  {
   "id": "kachhi-bhavan-junagadh",
-  "no": 15,
+  "no": 10,
   "name": "Kachhi Bhavan",
   "place": "Junagadh",
   "state": "Gujarat",
@@ -250,7 +250,7 @@
  },
  {
   "id": "kachhi-bhavan-palitana",
-  "no": 16,
+  "no": 17,
   "name": "Kachhi Bhavan",
   "place": "Palitana",
   "state": "Gujarat",
@@ -269,7 +269,7 @@
  },
  {
   "id": "khajuri",
-  "no": 17,
+  "no": 12,
   "name": "Khajuri",
   "place": "Khajuri",
   "state": "Gujarat",
@@ -282,7 +282,7 @@
  },
  {
   "id": "kotadi",
-  "no": 18,
+  "no": 13,
   "name": "Kotadi",
   "place": "Kotadi",
   "state": "Gujarat",
@@ -295,7 +295,7 @@
  },
  {
   "id": "liliya",
-  "no": 19,
+  "no": 14,
   "name": "Liliya",
   "place": "Liliya",
   "state": "Gujarat",
@@ -314,7 +314,7 @@
  },
  {
   "id": "malav",
-  "no": 20,
+  "no": 16,
   "name": "Malav",
   "place": "Malav",
   "state": "Gujarat",
@@ -327,7 +327,7 @@
  },
  {
   "id": "mota-derasar",
-  "no": 21,
+  "no": 31,
   "name": "Mota Derasar",
   "place": "Tharad",
   "state": "Gujarat",
@@ -345,7 +345,7 @@
  },
  {
   "id": "osval",
-  "no": 22,
+  "no": 18,
   "name": "Osval",
   "place": "Palitana",
   "state": "Gujarat",
@@ -363,7 +363,7 @@
  },
  {
   "id": "parvala",
-  "no": 23,
+  "no": 19,
   "name": "Parvala",
   "place": "Parvala",
   "state": "Gujarat",
@@ -376,7 +376,7 @@
  },
  {
   "id": "rampara",
-  "no": 24,
+  "no": 25,
   "name": "Rampara",
   "place": "Rampara",
   "state": "Gujarat",
@@ -394,7 +394,7 @@
  },
  {
   "id": "rrd",
-  "no": 25,
+  "no": 15,
   "name": "RRD",
   "place": "Limbdi",
   "state": "Gujarat",
@@ -463,7 +463,7 @@
  },
  {
   "id": "taleti",
-  "no": 29,
+  "no": 23,
   "name": "Taleti",
   "place": "",
   "state": "",
@@ -476,7 +476,7 @@
  },
  {
   "id": "tana",
-  "no": 30,
+  "no": 29,
   "name": "Tana",
   "place": "Tana",
   "state": "Gujarat",
@@ -489,7 +489,7 @@
  },
  {
   "id": "varkhadi",
-  "no": 31,
+  "no": 32,
   "name": "Varkhadi",
   "place": "Tharad",
   "state": "Gujarat",
@@ -508,7 +508,7 @@
  },
  {
   "id": "vaishno-devi-ahmedabad",
-  "no": 32,
+  "no": 2,
   "name": "Vaishno Devi",
   "place": "Ahmedabad",
   "state": "Gujarat",

@@ -66,7 +66,8 @@ export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
   const rows = useMemo(
     () => entries
       .filter((e) => (place === 'All' || e.placeFull === place) && (!scopes.length || e.scope.some((s) => scopes.includes(s))))
-      .sort(sort === 'type' ? byType : byPlace),
+      .sort(sort === 'type' ? byType : byPlace)
+      .map((e, i) => ({ ...e, no: i + 1 })), // serial numbers, 01 down the list as shown: no ranking
     [entries, place, scopes, sort],
   );
 

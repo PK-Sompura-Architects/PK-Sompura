@@ -95,7 +95,7 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
 
     if (still) { visible = true; mountNow(); continue; }
     // Load within one viewport; render only while actually on screen.
-    const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); mountNow(); } }, { rootMargin: '100% 0px' });
+    const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); mountNow(); } }, { rootMargin: '300% 0px' });
     near.observe(el);
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; kick(); }).observe(el);
   }

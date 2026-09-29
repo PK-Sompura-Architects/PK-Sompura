@@ -167,7 +167,7 @@ export default async function mount(host: HTMLElement, state: SceneState): Promi
   const mobileGPU = matchMedia('(max-width: 1023px)').matches;
   const renderer = new WebGLRenderer({ antialias: !mobileGPU, powerPreference: 'high-performance' });
   renderer.outputColorSpace = SRGBColorSpace;
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25)); // full-screen scene: pixels are the cost on laptop GPUs
 
   // Both loaders use their bundled decoders (Vite emits and fingerprints the wasm); they load with this chunk only.
   const draco = new DRACOLoader();

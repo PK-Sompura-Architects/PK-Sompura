@@ -184,7 +184,7 @@ export default function LineWaves({
     if (!containerRef.current) return;
     const container = containerRef.current;
     // Site change: cap device pixel ratio at 2.
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: false, dpr: Math.min(window.devicePixelRatio || 1, 2) });
+    const renderer = new Renderer({ alpha: true, premultipliedAlpha: false, dpr: 1 /* soft background: 1x is enough */ });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
 

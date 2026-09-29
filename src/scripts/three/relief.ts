@@ -106,7 +106,7 @@ export default function mount(host: HTMLElement, state: SceneState, mode: 'hero'
   const renderer = new WebGLRenderer({ antialias: false, powerPreference: 'low-power' });
   renderer.outputColorSpace = SRGBColorSpace;
   const mobile = matchMedia('(max-width: 1023px)').matches;
-  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25)); // the relief is soft; 24 shadow taps per pixel
   const stone = new TextureLoader().load('/tex/stone.webp');
   const order = new TextureLoader().load('/tex/cut-order.webp');
   stone.wrapS = stone.wrapT = RepeatWrapping;
@@ -115,7 +115,7 @@ export default function mount(host: HTMLElement, state: SceneState, mode: 'hero'
     fragmentShader: frag,
     uniforms: {
       uRes: { value: new Vector2(1, 1) }, uAz: { value: 30 }, uDepth: { value: -1 }, uOrder: { value: order },
-      uStone: { value: stone }, uSteps: { value: mobile ? 12 : 24 },
+      uStone: { value: stone }, uSteps: { value: mobile ? 10 : 16 },
     },
   });
   const scene = new Scene();

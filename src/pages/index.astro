@@ -123,9 +123,11 @@ const cncPhotos = [
 
   <!-- §6 Fero Works: the mountain (night) -->
   <section id="fero-works" aria-labelledby="fero-title" class="theme-night relative scroll-mt-16 overflow-clip bg-night text-sand lg:scroll-mt-0">
-    <div data-ambient class="bg-topo pointer-events-none absolute inset-0" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:visible kind="topo" /></div></div>
     <div class="bg-night-grain pointer-events-none absolute inset-0" aria-hidden="true"></div>
-    <FeroFlight plate={plates[0]} />
+    <FeroFlight />
+    <!-- Topography behind the build sequence only: behind the fly-through it would render full-screen under the canvas. -->
+    <div class="relative">
+      <div data-ambient class="bg-topo pointer-events-none absolute inset-0" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:visible kind="topo" /></div></div>
     <div class="wrap relative flex flex-col gap-4 pb-24 pt-18 lg:gap-6 lg:pb-44 lg:pt-36">
       <div class="mb-4 flex flex-col gap-4 lg:mb-12 lg:w-7/12">
         <p class="eyebrow text-sky">The build sequence<span class="max-lg:hidden"> · Vaishno Devi</span>, Gulbarga</p>
@@ -148,6 +150,7 @@ const cncPhotos = [
           </li>
         ))}
       </ol>
+    </div>
     </div>
   </section>
 

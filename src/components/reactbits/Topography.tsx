@@ -226,7 +226,7 @@ const Topography: React.FC<TopographyProps> = ({
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: 1 /* soft background: 1x is enough */
     });
 
     const gl = renderer.gl;
