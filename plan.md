@@ -224,6 +224,8 @@ Read with care: once the loader is in, its full-colour logo (`/logo-fill.webp`, 
 
 **After the photos (Phase 4)**, devtools / simulated: `/` 1.59 / 3.99 s, `/projects` 2.24 / 4.36 s, `/contact` 2.24 / 3.53 s; CLS 0 / 0.01 / 0.05. The home page's simulated LCP rose by the extra image bytes the simulation replays; under real throttling it is unchanged.
 
+**Final check (Phase 6)**, devtools / simulated, median of 3: `/` 1.61 / 3.91 s, `/projects` 2.26 / 4.29 s, `/contact` 2.25 / 3.61 s; CLS 0 / 0.01 / 0.05; accessibility 1.00 on all three. Under devtools throttling all three meet LCP < 2.5 s and CLS < 0.1; under simulation none do (they didn't before the loader either). Simulated TBT on `/contact` is 1.7 s: the Light Rays shader compiles as its island hydrates. Full-site sweep (36 pages × 360 and 1440 px × motion on/off): no horizontal scroll, no console errors, no failed requests, no axe WCAG 2.x A/AA violations, no interactive target under 44 px.
+
 ---
 
 ## 10. Photographs

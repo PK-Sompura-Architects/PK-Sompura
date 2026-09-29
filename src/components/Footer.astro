@@ -23,7 +23,7 @@ const links = nav.filter((n) => n.key !== 'contact');
         <ul class="grid grid-cols-2 gap-x-4 text-[15px] font-medium lg:flex lg:gap-7">
           {links.map((item) => (
             <li>
-              <a href={item.href} class="block whitespace-nowrap py-3 text-sand no-underline underline-offset-[5px] transition-colors duration-150 hover:text-saffron hover:underline lg:py-0">{item.label}</a>
+              <a href={item.href} class="flex min-h-11 items-center whitespace-nowrap text-sand no-underline underline-offset-[5px] transition-colors duration-150 hover:text-saffron hover:underline">{item.label}</a>
             </li>
           ))}
         </ul>

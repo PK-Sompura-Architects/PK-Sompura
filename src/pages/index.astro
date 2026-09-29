@@ -39,7 +39,7 @@ const cncPhotos = [
       <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-7">
         <a href="/projects" class="btn-primary">See the Temple Register</a>
         <a href="/contact" class="btn-secondary md:hidden">Contact the workshop</a>
-        <a href="/contact" class="text-link max-md:hidden">Contact the workshop →</a>
+        <a href="/contact" class="text-link inline-flex min-h-11 items-center max-md:hidden">Contact the workshop →</a>
       </div>
     </div>
     <PosterFrame
@@ -110,7 +110,7 @@ const cncPhotos = [
     </div>
     <CncCut />
     <div class="relative mt-8 lg:wrap lg:mt-24">
-      <ul class="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 [scrollbar-width:none] md:px-10 lg:grid lg:grid-cols-12 lg:gap-6 lg:overflow-visible lg:px-0" aria-label="In the workshop">
+      <ul tabindex="0" class="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 [scrollbar-width:none] md:px-10 lg:grid lg:grid-cols-12 lg:gap-6 lg:overflow-visible lg:px-0" aria-label="In the workshop">
         {cncPhotos.map((p) => (
           <li class="w-[260px] flex-none snap-start lg:col-span-4 lg:w-auto">
             <PhotoFrame frame="aspect-[13/17] lg:aspect-[3/4]" src={p.src} sizes="(min-width: 1024px) 30vw, 70vw" label={p.label} caption={p.caption} captionClass="max-lg:hidden" />

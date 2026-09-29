@@ -46,7 +46,7 @@ for (const el of $$('[data-masked]')) {
 
 // ── Scroll Reveal (§2): words go deep slate → navy, scrubbed from the paragraph top at 80% to its bottom at 35%.
 for (const el of $$('[data-scroll-reveal]')) {
-  const split = SplitText.create(el, { type: 'words' });
+  const split = SplitText.create(el, { type: 'words', aria: 'none' });
   gsap.fromTo(split.words, { color: '#52606B' }, {
     color: '#262654', ease: 'none', stagger: 0.05,
     scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 35%', scrub: true },

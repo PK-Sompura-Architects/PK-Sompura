@@ -32,7 +32,7 @@ const crumb = p.place ? placeFull(p) : 'Place to confirm';
 <Base title={`${p.name}${p.place && p.place !== p.name ? `, ${p.place}` : ''} · Temple Register · P.K. Sompura`} current="register"
   description={`${p.name}, ${placeFull(p)}. ${p.type} in the Temple Register of P.K. Sompura, temple architects and contractors.`}>
   <nav aria-label="Breadcrumb" class="wrap pt-6 font-mono text-[12px] text-slate-deep lg:pt-16 lg:text-[13px]">
-    <a href="/projects" class="text-navy underline underline-offset-4 hover:text-saffron-text">Temple Register</a>
+    <a href="/projects" class="inline-flex min-h-11 items-center text-navy underline underline-offset-4 hover:text-saffron-text">Temple Register</a>
     <span class="mx-2.5" aria-hidden="true">/</span><span>{p.place || crumb}<span class="max-lg:hidden">{p.place && `, ${p.state}`}</span></span>
   </nav>
 
@@ -41,7 +41,7 @@ const crumb = p.place ? placeFull(p) : 'Place to confirm';
       <header class="wrap grid-page gap-y-4 pb-8 pt-7 lg:items-end lg:pb-24 lg:pt-12">
         <div class="col-span-4 flex flex-col gap-4 md:col-span-8 lg:gap-6">
           <p class="eyebrow text-slate-deep">Register entry · No. {pad(p.no)}</p>
-          <h1 class="text-cut font-display text-[52px] leading-[.94] lg:text-display">{p.name}</h1>
+          <h1 class="text-cut font-display text-[clamp(40px,13vw,52px)] leading-[.94] lg:text-display">{p.name}</h1>
         </div>
         <dl class="col-span-4 mt-2 grid grid-cols-[64px_1fr] gap-x-3 gap-y-2.5 text-[15px] md:col-span-6 lg:col-span-4 lg:mt-0 lg:flex lg:flex-col lg:gap-0 lg:text-[17px]">
           <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-t lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Place</dt><dd>{placeFull(p)}</dd></div>
@@ -81,7 +81,7 @@ const crumb = p.place ? placeFull(p) : 'Place to confirm';
         <section class="wrap mt-14 lg:mt-24" aria-labelledby="related-title">
           <div class="mb-3 flex items-baseline justify-between gap-6 lg:mb-0 lg:border-b lg:border-navy lg:pb-3.5">
             <h2 id="related-title" class="font-display text-[30px] leading-[1.1] lg:text-[44px]">More {p.type.toLowerCase()}s<span class="max-lg:hidden"> in the register</span></h2>
-            <a href="/projects?sort=type" class="text-link whitespace-nowrap text-[15px] max-lg:hidden">See all by type →</a>
+            <a href="/projects?sort=type" class="text-link inline-flex min-h-11 items-center whitespace-nowrap text-[15px] max-lg:hidden">See all by type →</a>
           </div>
           <ul>
             {related.map((r) => (

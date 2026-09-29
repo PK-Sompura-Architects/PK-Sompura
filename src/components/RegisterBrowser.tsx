@@ -82,7 +82,7 @@ export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
     return (
       <button key={s} type="button" aria-pressed={on} onClick={() => toggle(s)}
         className={`flex items-center gap-2 whitespace-nowrap border border-navy px-3.5 font-mono text-[12px] font-medium uppercase tracking-[.06em] transition-colors duration-150
-          ${mobile ? 'h-11' : 'h-10'} ${on ? 'bg-navy text-sand' : 'text-navy hover:bg-stone'}`}>
+          h-11 ${on ? 'bg-navy text-sand' : 'text-navy hover:bg-stone'}`}>
         {s}{on && <span aria-hidden="true">×</span>}
       </button>
     );
@@ -111,7 +111,7 @@ export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
           <span id="f-sort" className="eyebrow !text-[12px]">Sort</span>
           {(['place', 'type'] as const).map((k) => (
             <button key={k} type="button" aria-pressed={sort === k} onClick={() => setSort(k)}
-              className={`h-10 border-b-2 px-3 font-mono text-[12px] font-medium uppercase tracking-[.06em] ${sort === k ? 'border-navy' : 'border-transparent'}`}>
+              className={`h-11 border-b-2 px-3 font-mono text-[12px] font-medium uppercase tracking-[.06em] ${sort === k ? 'border-navy' : 'border-transparent'}`}>
               By {k}
             </button>
           ))}
