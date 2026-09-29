@@ -81,6 +81,33 @@ if (cards.length) ScrollTrigger.batch(cards, {
   onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', stagger: 0.08 }),
 });
 
+// ── §5 CNC: the panel drawn in machine order (CncCut.astro, tools/cnc/build.py). Stages 1–4 draw the lines, the
+// tool tip rides the active path; stage 5 (depth window) cuts the relief in behind them in the same order, retracing
+// the paths. The 3D scene (if live) gets the same progress.
+const cnc = document.querySelector<HTMLElement>('[data-cnc]');
+if (cnc) {
+  const scene = cnc.querySelector<HTMLElement>('[data-scene="toolpath"]');
+  const svg = cnc.querySelector<SVGSVGElement>('.cnc-lines')!;
+  const tip = svg.querySelector<SVGGElement>('.cnc-tip')!;
+  const paths = $$<SVGPathElement>('path', svg).map((p) => ({ el: p, t0: +p.dataset.t0!, t1: +p.dataset.t1!, len: p.getTotalLength() }));
+  const LINES = paths.at(-1)!.t1, clamp = (x: number) => Math.min(1, Math.max(0, x));
+  const apply = (p: number) => {
+    const depth = clamp((p - LINES) / (1 - LINES));
+    for (const q of paths) q.el.style.strokeDashoffset = String(1 - clamp((p - q.t0) / (q.t1 - q.t0)));
+    const t = p < LINES ? p : depth * LINES;                       // where the tool is along the sequence
+    const act = paths.find((q) => t >= q.t0 && t < q.t1);
+    if (act && p > 0.002 && p < 0.998) {
+      const pt = act.el.getPointAtLength(act.len * clamp((t - act.t0) / (act.t1 - act.t0)));
+      tip.setAttribute('transform', `translate(${pt.x} ${pt.y})`); tip.style.opacity = '1';
+    } else tip.style.opacity = '0';
+    cnc.style.setProperty('--lines', String(1 - 0.75 * depth));
+    cnc.style.setProperty('--blank', String(1 - depth));
+    scene?.dispatchEvent(new CustomEvent('cnc:progress', { detail: p }));
+  };
+  ScrollTrigger.create({ trigger: cnc, start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: (st) => apply(st.progress) });
+  apply(0);
+}
+
 // ── §6 ground: sand → night crossfade over 40vh, scrubbed, before the Fero chapter.
 const fero = document.getElementById('fero-works');
 if (fero) {

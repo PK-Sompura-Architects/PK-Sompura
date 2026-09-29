@@ -36,11 +36,8 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
         gsap.to(state, { progress: 1, ease: 'none', scrollTrigger: { trigger: el.closest('[data-fly]'), start: 'top top', end: 'bottom bottom', scrub: 0.6 },
           onUpdate: () => el.dispatchEvent(new CustomEvent('fly:progress', { detail: state.progress })) });
       } else {
-        // Toolpath: pinned 150vh, cutter scrubbed 0 → 1.
-        ScrollTrigger.create({
-          trigger: el, pin: true, start: 'center center', end: '+=150%', scrub: true,
-          onUpdate: (st) => (state.progress = st.progress),
-        });
+        // Toolpath: pinned by CSS (CncCut.astro); the motion layer scrubs the machine order and hands the progress on.
+        el.addEventListener('cnc:progress', (e) => (state.progress = (e as CustomEvent<number>).detail));
       }
     }
 

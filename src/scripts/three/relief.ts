@@ -1,15 +1,20 @@
-// Scene 1: the carved panel under raking light (Board 05 P1), and the same panel being cut by a toolpath (P2).
+// Scene 1: the carved panel under raking light (Board 05 P1), and the same panel cut in machine order (CNC chapter):
+// the relief depth appears only where the tool has been (cut-order map), after the SVG lines have drawn.
 // The relief is a height field evaluated per pixel: no mesh or texture download beyond the shared stone tile.
 // [A2] Stand-in panel following the poster geometry (frame, dentils, grooves, rosette, bosses, diamonds).
 // When the real CNC panel arrives, replace h() with a lookup into its height map.
 import { Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial, SRGBColorSpace, TextureLoader, RepeatWrapping, Vector2, WebGLRenderer } from 'three';
 import type { SceneHandle, SceneState } from './boot';
+import { depth } from '../../data/cnc-paths.json';
+
+const DEPTH_FROM = depth[0]; // CNC stage 5 starts here (tools/cnc/build.py)
 
 const frag = /* glsl */ `
 precision highp float;
 uniform vec2 uRes;       // canvas size in px
 uniform float uAz;       // light azimuth in degrees (30 → 70)
-uniform float uCut;      // toolpath position 0..1 (screen x); < 0 = no toolpath
+uniform float uDepth;    // CNC stage 5: depth cut progress 0..1; < 0 = the finished panel (hero)
+uniform sampler2D uOrder; // cut order: when the tool reaches each point (tools/cnc/build.py)
 uniform sampler2D uStone;
 uniform float uSteps;    // shadow march steps
 varying vec2 vUv;
@@ -50,6 +55,14 @@ float h(vec2 q) {
   return H;
 }
 
+// The slab before cutting, and the relief shown only where the tool has already been (cut order < progress).
+float slab(vec2 q) { return box(q, vec2(3.3), vec2(67.1, 84.7), 0.5); }
+float hc(vec2 q) {
+  if (uDepth < 0.0) return h(q);
+  float o = texture2D(uOrder, vec2(q.x / 70.4, 1.0 - q.y / 88.0)).r;
+  return mix(slab(q), h(q), smoothstep(o, o + 0.03, uDepth * 1.03));
+}
+
 void main() {
   vec2 px = vUv * uRes;
   float unit = uRes.y / 100.0;                   // 1 panel unit = 1% of the frame height (cqh)
@@ -57,16 +70,12 @@ void main() {
   q = vec2(q.x + 35.2, 44.0 - q.y);              // panel coords, y down
   vec3 stone = STONE * (0.94 + 0.12 * texture2D(uStone, px / 512.0).r);
 
-  // Toolpath: right of the cutter the slab is uncarved, with raster passes.
-  float cutX = uCut * uRes.x;
-  bool uncut = uCut >= 0.0 && px.x > cutX;
-
-  float H = uncut ? 0.0 : h(q);
+  float H = hc(q);
   vec3 col = stone;
-  if (!uncut) {
+  {
     float e = 0.15;
-    float hx = (h(q + vec2(e, 0.0)) - h(q - vec2(e, 0.0))) / (2.0 * e);
-    float hy = (h(q + vec2(0.0, e)) - h(q - vec2(0.0, e))) / (2.0 * e);
+    float hx = (hc(q + vec2(e, 0.0)) - hc(q - vec2(e, 0.0))) / (2.0 * e);
+    float hy = (hc(q + vec2(0.0, e)) - hc(q - vec2(0.0, e))) / (2.0 * e);
     vec3 N = normalize(vec3(-hx * DEPTH, hy * DEPTH, 1.0));      // hy flips: panel y is down
     float az = radians(uAz);
     vec3 L = normalize(vec3(-cos(az) * cos(EL), sin(az) * cos(EL), sin(EL)));
@@ -76,7 +85,7 @@ void main() {
     for (float k = 1.0; k <= 24.0; k++) {
       if (k > uSteps) break;
       float t = k * 0.35;
-      float rise = h(q + dir * t) * DEPTH - h0 - t * tan(EL);
+      float rise = hc(q + dir * t) * DEPTH - h0 - t * tan(EL);
       sh = max(sh, smoothstep(0.0, 0.15, rise));
     }
     float lit = clamp(0.5 + 2.0 * (dot(N, L) - sin(EL)), 0.0, 1.0) * mix(1.0, 0.2, sh);
@@ -85,21 +94,11 @@ void main() {
     // Height tint: raised faces a shade lighter, recesses a shade darker, so forms read as solids, not outlines.
     col = mix(col, SAND, clamp(H * 0.14, 0.0, 0.3));
     col = mix(col, shadowCol, clamp(-H * 0.28, 0.0, 0.35));
-  } else {
-    float line = step(6.0, mod(px.y, 7.0));
-    col = mix(stone, SLATE_DEEP, 0.16 * line);
   }
   // Grade: warm light from upper left, cool shade to lower right (118°).
   vec2 g = vUv; float gt = clamp(dot(vec2(g.x, 1.0 - g.y), normalize(vec2(0.88, 0.47))) / 1.1, 0.0, 1.0);
   col = mix(col, SAND, 0.38 * (1.0 - smoothstep(0.0, 0.34, gt)));
   col = mix(col, vec3(0.055, 0.055, 0.122), 0.42 * smoothstep(0.55, 1.0, gt));
-  if (uCut >= 0.0) {
-    float dx = abs(px.x - cutX);
-    col = mix(col, SAFFRON, clamp(1.0 - dx / 1.5, 0.0, 1.0));                 // cutter line, 2 px
-    col = mix(col, SAFFRON, 0.55 * exp(-dx * dx / 200.0) * step(1.5, dx));    // glow 14 px
-    float ring = abs(length(px - vec2(cutX, 0.62 * uRes.y)) - 1.5 * unit);   // cutter head at 38% from top
-    col = mix(col, SAFFRON, clamp(1.2 - ring, 0.0, 1.0));
-  }
   gl_FragColor = vec4(col, 1.0);
 }`;
 
@@ -109,12 +108,13 @@ export default function mount(host: HTMLElement, state: SceneState, mode: 'hero'
   const mobile = matchMedia('(max-width: 1023px)').matches;
   renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 2));
   const stone = new TextureLoader().load('/tex/stone.webp');
+  const order = new TextureLoader().load('/tex/cut-order.webp');
   stone.wrapS = stone.wrapT = RepeatWrapping;
   const mat = new ShaderMaterial({
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy * 2.0, 0.0, 1.0); }',
     fragmentShader: frag,
     uniforms: {
-      uRes: { value: new Vector2(1, 1) }, uAz: { value: 30 }, uCut: { value: mode === 'toolpath' ? 0.56 : -1 },
+      uRes: { value: new Vector2(1, 1) }, uAz: { value: 30 }, uDepth: { value: -1 }, uOrder: { value: order },
       uStone: { value: stone }, uSteps: { value: mobile ? 12 : 24 },
     },
   });
@@ -137,10 +137,10 @@ export default function mount(host: HTMLElement, state: SceneState, mode: 'hero'
         az += (target - az) * (state.still ? 1 : 0.08);
         mat.uniforms.uAz.value = az;
       } else {
-        mat.uniforms.uCut.value = state.progress; // cutter 0 → 1, scrubbed
+        mat.uniforms.uDepth.value = Math.min(1, Math.max(0, (state.progress - DEPTH_FROM) / (1 - DEPTH_FROM))); // stage 5
       }
       renderer.render(scene, camera);
     },
-    dispose() { renderer.dispose(); mat.dispose(); stone.dispose(); },
+    dispose() { renderer.dispose(); mat.dispose(); stone.dispose(); order.dispose(); },
   };
 }

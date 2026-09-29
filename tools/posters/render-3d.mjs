@@ -15,8 +15,8 @@ fs.mkdirSync(OUT, { recursive: true });
 const JOBS = {
   hero: ['hero:0', 1200, 675],
   'hero-m': ['hero:0', 480, 600],
-  toolpath: ['toolpath:0.56', 1200, 600],
-  'toolpath-m': ['toolpath:0.56', 480, 560],
+  toolpath: ['toolpath:1', 1200, 600],
+  'toolpath-m': ['toolpath:1', 480, 560],
   // Fero Works fly-through (Posters P3): shots S1–S5 at their progress points, 2400×1350 and 1080×1920.
   ...Object.fromEntries([[1, 0], [2, 0.22], [3, 0.45], [4, 0.72], [5, 1]].flatMap(([n, p]) => [
     [`fw-s${n}`, [`fero:${p}`, 1200, 675]], [`fw-s${n}-m`, [`fero:${p}`, 540, 960]]])),
@@ -45,6 +45,8 @@ try {
     await new Promise((r) => setTimeout(r, 600));
     // Posters are the scene alone: hide the HTML layered in the stage (chapter text, scrims, the old poster).
     await page.$eval(sel, (el) => el.querySelectorAll(':scope > :not(canvas)').forEach((n) => (n.style.visibility = 'hidden')));
+    // The site header is sticky above everything (a sticky stage is its own stacking context): keep it out of the frame.
+    await page.evaluate(() => document.querySelectorAll('body > header, #pk-ld').forEach((n) => (n.style.visibility = 'hidden')));
     await (await page.$(sel)).screenshot({ path: new URL(`${name}.png`, OUT).pathname.slice(1) });
     console.log('rendered', name, `${w * 2}×${h * 2}`);
     await page.close();
