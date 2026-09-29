@@ -21,18 +21,24 @@ const rows = [
       </div>
       <p class="col-span-4 mb-3 text-body text-sky md:col-span-6 lg:col-span-4 lg:mb-0 lg:self-end">Call, write or send a message to talk about a temple.</p>
 
-      <dl class="col-span-4 flex flex-col border-slate md:col-span-8 lg:col-span-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:border-t">
-        {rows.map((r, i) => (
-          <div class:list={['flex flex-col gap-1.5 border-t border-slate py-[18px] lg:gap-3.5 lg:border-t-0 lg:py-8',
-            i > 0 ? 'lg:border-l lg:px-6' : 'lg:pr-6']}>
+      <!-- Label + value rows. The rule is each row's own bottom border (never drawn over the text); labels line up
+           through subgrid; the value cell may shrink (min-w-0) and the email wraps anywhere instead of overflowing.
+           At ≤ 480 px each row stacks. -->
+      <dl class="col-span-4 grid grid-cols-[auto_minmax(0,1fr)] border-t border-slate md:col-span-8 lg:col-span-9">
+        {rows.map((r) => (
+          <div class="col-span-2 grid grid-cols-subgrid items-baseline gap-x-6 border-b border-slate py-5 max-[480px]:flex max-[480px]:flex-col max-[480px]:gap-1.5 lg:gap-x-10 lg:py-8">
             <dt class="eyebrow text-sky">{r.dt}</dt>
-            <dd><a href={r.href} class="inline-flex min-h-11 items-center break-all font-display text-[28px] leading-[1.05] text-sand transition-colors hover:text-saffron lg:break-normal lg:text-[clamp(32px,3vw,44px)]">{r.value}</a></dd>
-            {r.note && <dd class="font-mono text-[13px] text-sky max-lg:hidden">{r.note}</dd>}
+            <dd class="min-w-0">
+              <a href={r.href}
+                class="inline-block max-w-full py-2 font-display text-[28px] leading-[1.05] text-sand transition-colors [overflow-wrap:anywhere] hover:text-saffron focus-visible:outline-sand lg:text-[clamp(32px,3vw,44px)]"
+              >{r.value}</a>
+              {r.note && <span class="block font-mono text-[13px] text-sky max-lg:hidden">{r.note}</span>}
+            </dd>
           </div>
         ))}
-        <div class="flex flex-col gap-1.5 border-y border-slate py-[18px] lg:hidden">
-          <dt class="eyebrow text-sky">The workshop</dt>
-          <dd class="text-[16px] leading-[1.55]">[A3] Street address, to be supplied<br />Palitana, Gujarat</dd>
+        <div class="col-span-2 grid grid-cols-subgrid items-baseline gap-x-6 border-b border-slate py-5 max-[480px]:flex max-[480px]:flex-col max-[480px]:gap-1.5 lg:hidden">
+          <dt class="eyebrow text-sky">Workshop</dt>
+          <dd class="min-w-0 text-[16px] leading-[1.55]">[A3] Street address, to be supplied<br />Palitana, Gujarat</dd>
         </div>
       </dl>
     </div>

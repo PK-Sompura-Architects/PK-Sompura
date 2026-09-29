@@ -182,6 +182,22 @@ All three are self-hosted, subset, `font-display: swap`.
 - **No horizontal scroll at 360 px.** **WCAG AA** throughout.
 - **Measured with:** WebPageTest on a mid-range Android profile over 4G, and Chrome remote debugging on a real Android phone over USB for frame timing. Numbers get recorded here.
 
+### Measurements
+
+Lighthouse 13.5, mobile preset (Moto G Power emulation, simulated slow 4G, 4× CPU slowdown), production build via `astro preview`, median of 3 runs.
+
+**Baseline before the logo loader** (build after phase 5, commit `2058e69`):
+
+| Page | LCP | CLS | FCP | TBT | Performance | Accessibility |
+|---|---|---|---|---|---|---|
+| `/` | 3.33 s (3.03–3.79) | 0 | 1.67 s | 594 ms | 0.77 | 0.96 |
+| `/projects` | 3.25 s (3.25–3.40) | 0.01 | 1.67 s | 0 ms | 0.92 | 1.00 |
+| `/contact` | 2.88 s (2.86–2.88) | 0.034 | 1.89 s | 160 ms | 0.92 | 1.00 |
+
+LCP is over the 2.5 s target on all three pages before the loader is added. Not tuned yet: waiting for the owner's decision.
+
+**After the logo loader:** to be measured.
+
 ---
 
 ## 10. Photographs
