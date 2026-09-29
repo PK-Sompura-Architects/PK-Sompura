@@ -1,0 +1,125 @@
+---
+import Base from '../../layouts/Base.astro';
+import PhotoFrame from '../../components/PhotoFrame.astro';
+import ScopeTag from '../../components/ScopeTag.astro';
+import TypeCard from '../../components/TypeCard.astro';
+import { pad, placeFull, sortedProjects, type Project } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const all = await sortedProjects();
+  // Prev / next follow the register's default order (place A–Z), not dates.
+  return all.map((project, i) => ({
+    params: { slug: project.id },
+    props: {
+      project,
+      prev: all[i - 1],
+      next: all[i + 1],
+      related: all.filter((o) => o.data.type === project.data.type && o.id !== project.id).slice(0, 3),
+    },
+  }));
+}
+
+interface Props { project: Project; prev?: Project; next?: Project; related: Project[] }
+const { project, prev, next, related } = Astro.props;
+const p = project.data;
+const [lead, second, ...rest] = p.photos;
+const three = rest.slice(0, 3);
+const wide = rest[3];
+const total = p.photos.length;
+const cap = (i: number, c?: string) => (total > 1 ? `${i} / ${total}${c ? ` · ${c}` : ''}` : c);
+const crumb = p.place ? placeFull(p) : 'Place to confirm';
+---
+<Base title={`${p.name}${p.place && p.place !== p.name ? `, ${p.place}` : ''} · Temple Register · P.K. Sompura`} current="register"
+  description={`${p.name}, ${placeFull(p)}. ${p.type} in the Temple Register of P.K. Sompura, temple architects and contractors.`}>
+  <nav aria-label="Breadcrumb" class="wrap pt-6 font-mono text-[12px] text-slate-deep lg:pt-16 lg:text-[13px]">
+    <a href="/projects" class="text-navy underline underline-offset-4 hover:text-saffron-text">Temple Register</a>
+    <span class="mx-2.5" aria-hidden="true">/</span><span>{p.place || crumb}<span class="max-lg:hidden">{p.place && `, ${p.state}`}</span></span>
+  </nav>
+
+  {total > 0 ? (
+    <>
+      <header class="wrap grid-page gap-y-4 pb-8 pt-7 lg:items-end lg:pb-24 lg:pt-12">
+        <div class="col-span-4 flex flex-col gap-4 md:col-span-8 lg:gap-6">
+          <p class="eyebrow text-slate-deep">Register entry · No. {pad(p.no)}</p>
+          <h1 class="text-cut font-display text-[52px] leading-[.94] lg:text-display">{p.name}</h1>
+        </div>
+        <dl class="col-span-4 mt-2 grid grid-cols-[64px_1fr] gap-x-3 gap-y-2.5 text-[15px] md:col-span-6 lg:col-span-4 lg:mt-0 lg:flex lg:flex-col lg:gap-0 lg:text-[17px]">
+          <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-t lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Place</dt><dd>{placeFull(p)}</dd></div>
+          <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-t lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Type</dt><dd>{p.type}</dd></div>
+          <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-y lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Scope</dt>
+            <dd><span class="lg:hidden">{p.scope.join(' · ')}</span><span class="flex flex-wrap gap-1.5 max-lg:hidden">{p.scope.map((s) => <ScopeTag label={s} size="sm" />)}</span></dd></div>
+        </dl>
+      </header>
+
+      <div class="wrap grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-x-6 lg:gap-y-6">
+        <div class="col-span-2 lg:col-span-7">
+          <PhotoFrame shape="arch" frame="aspect-[8/11] lg:aspect-[4/5]" label={lead.label} src={lead.src} alt={`${p.name}, ${lead.caption ?? 'lead image'}`} caption={cap(1, lead.caption)} />
+        </div>
+        {(second || p.note) && (
+          <div class="col-span-2 mt-2 flex flex-col gap-5 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:justify-end lg:gap-12 lg:pb-10">
+            {p.note && <p class="font-display text-[22px] leading-[1.3] lg:text-[28px] lg:leading-[1.25]">{p.note}</p>}
+            {second && <PhotoFrame frame="aspect-[4/3] lg:aspect-[40/41]" label={second.label} src={second.src} alt={`${p.name}, photo 2`} caption={cap(2, second.caption)} />}
+          </div>
+        )}
+        {three.map((ph, i) => (
+          <div class="col-span-1 lg:col-span-4 lg:mt-18">
+            <PhotoFrame frame="aspect-[3/4] lg:aspect-square" label={ph.label} src={ph.src} alt={`${p.name}, photo ${i + 3}`} caption={cap(i + 3, ph.caption)} />
+          </div>
+        ))}
+        {wide && (
+          <div class="col-span-1 lg:col-span-8 lg:col-start-3 lg:mt-18">
+            <PhotoFrame frame="aspect-[3/4] lg:aspect-[3/2]" label={wide.label} src={wide.src} alt={`${p.name}, photo 6`} caption={cap(6, wide.caption)} />
+          </div>
+        )}
+      </div>
+    </>
+  ) : (
+    <>
+      <div class="wrap pt-6 lg:pt-12"><TypeCard project={project} size="page" /></div>
+      <p class="wrap py-3 font-mono text-[12px] leading-normal text-slate-deep lg:py-4 lg:text-[13px]">Photographs of this project are not in the archive yet.</p>
+      {related.length > 0 && (
+        <section class="wrap mt-14 lg:mt-24" aria-labelledby="related-title">
+          <div class="mb-3 flex items-baseline justify-between gap-6 lg:mb-0 lg:border-b lg:border-navy lg:pb-3.5">
+            <h2 id="related-title" class="font-display text-[30px] leading-[1.1] lg:text-[44px]">More {p.type.toLowerCase()}s<span class="max-lg:hidden"> in the register</span></h2>
+            <a href="/projects?sort=type" class="text-link whitespace-nowrap text-[15px] max-lg:hidden">See all by type →</a>
+          </div>
+          <ul>
+            {related.map((r) => (
+              <li>
+                <a href={`/projects/${r.id}`} class="flex min-h-[68px] items-center justify-between gap-3 border-t border-slate hover:text-saffron-text lg:grid lg:h-22 lg:grid-cols-[minmax(0,1fr)_260px_32px] lg:gap-6 lg:border-b lg:border-t-0">
+                  <span class="flex flex-col gap-1 lg:contents">
+                    <span class="font-display text-[22px] lg:text-[32px]">{r.data.name}</span>
+                    <span class="font-mono text-[12px] text-slate-deep lg:text-[14px] lg:text-navy">{placeFull(r.data)}</span>
+                  </span>
+                  <span class="text-right lg:text-[20px]" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </>
+  )}
+
+  <nav aria-label="More projects" class="wrap mt-16 flex flex-col gap-4 border-t border-navy pb-24 pt-6 lg:mt-36 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-6 lg:pb-40 lg:pt-8">
+    <div>
+      {prev && (
+        <a href={`/projects/${prev.id}`} class="group flex min-h-14 flex-col gap-1 lg:gap-2">
+          <span class="font-mono text-[12px] text-slate-deep lg:uppercase lg:tracking-[.08em]">← Previous<span class="max-lg:hidden"> · by place</span></span>
+          <span class="font-display text-[24px] group-hover:text-saffron-text lg:text-[36px]">{prev.data.name}</span>
+          <span class="font-mono text-[13px] text-slate-deep max-lg:hidden">{placeFull(prev.data)}</span>
+        </a>
+      )}
+    </div>
+    <a href="/projects" class="btn-secondary order-last h-[52px] lg:order-none lg:h-12 lg:px-5 lg:text-[15px]">Back to the register</a>
+    <div>
+      {next && (
+        <a href={`/projects/${next.id}`} class="group flex min-h-14 flex-col items-end gap-1 text-right lg:gap-2">
+          <span class="font-mono text-[12px] text-slate-deep lg:uppercase lg:tracking-[.08em]">Next<span class="max-lg:hidden"> · by place</span> →</span>
+          <span class="font-display text-[24px] group-hover:text-saffron-text lg:text-[36px]">{next.data.name}</span>
+          <span class="font-mono text-[13px] text-slate-deep max-lg:hidden">{placeFull(next.data)}</span>
+        </a>
+      )}
+    </div>
+  </nav>
+</Base>

@@ -1,0 +1,8 @@
+---
+// Static label (not a control). Night: sky; the Fero tag on night is saffron (6.53:1).
+interface Props { label: string; size?: 'md' | 'sm'; theme?: 'light' | 'night' }
+const { label, size = 'md', theme = 'light' } = Astro.props;
+const tone = theme === 'light' ? 'border-navy text-navy' : label.startsWith('Fero') ? 'border-saffron text-saffron' : 'border-sky text-sky';
+---
+<span class:list={['inline-block whitespace-nowrap border font-mono font-medium uppercase tracking-[.08em]', tone,
+  size === 'md' ? 'px-2.5 py-1.5 text-[12px] leading-none' : 'px-2 py-1 text-[11px] leading-none']}>{label}</span>

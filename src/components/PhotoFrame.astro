@@ -1,0 +1,30 @@
+---
+// PhotoFrame: arch (temple-arch mask) or rect, light or night. Until a photo exists it renders the
+// labelled dev placeholder named after the plan.md §10 image. `frame` sets the size/aspect classes.
+interface Props {
+  label: string;
+  src?: string;
+  alt?: string;
+  shape?: 'arch' | 'rect';
+  tone?: 'light' | 'night';
+  frame: string;
+  caption?: string;
+  captionClass?: string;
+  compact?: boolean; // tiny thumbnails: the placeholder says only PHOTO
+  class?: string;
+}
+const { label, src, alt = '', shape = 'rect', tone = 'light', frame, caption, captionClass, compact = false, class: cls } = Astro.props;
+const night = tone === 'night';
+---
+<figure class:list={['m-0 flex flex-col gap-3 lg:gap-3.5', cls]}>
+  <div class:list={['relative overflow-hidden', frame, shape === 'arch' && 'rounded-t-full', night && 'border border-slate',
+    !src && (night ? 'ph-night' : 'ph-light')]}>
+    {src
+      ? <img src={src} alt={alt} loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
+      : compact
+        ? <span class="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-sand px-1 py-0.5 font-mono text-[9px]" title={label}>PHOTO</span>
+        : <span class:list={['absolute bottom-3 left-3 right-3 w-fit max-w-[calc(100%-24px)] px-2 py-1.5 font-mono text-[12px] leading-snug lg:bottom-4 lg:left-4',
+          night ? 'bg-night text-sky border border-sky' : 'bg-sand text-navy border border-navy']}>PHOTO · {label}</span>}
+  </div>
+  {caption && <figcaption class:list={['font-mono text-[12px] leading-normal lg:text-[13px]', night ? 'text-sky' : 'text-slate-deep', captionClass]}>{caption}</figcaption>}
+</figure>

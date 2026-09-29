@@ -30,6 +30,7 @@ work_website_images/
 !media/**
 !public/logo.webp
 !public/tex/**
+!public/posters/**
 !design_handoff_pk_sompura/**
 
 # --- Tooling ---

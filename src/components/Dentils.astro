@@ -1,0 +1,8 @@
+---
+// A dentil course: small relief blocks lit from the upper left (shadow-relief).
+interface Props { count: number; size: number; class?: string }
+const { count, size, class: cls } = Astro.props;
+---
+<div class:list={['flex justify-between', cls]} aria-hidden="true">
+  {Array.from({ length: count }, () => <span class="bg-stone shadow-relief" style={`width:${size}px;height:${size}px`}></span>)}
+</div>

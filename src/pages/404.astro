@@ -1,7 +1,27 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhaseShell from '../components/PhaseShell.astro';
 ---
 <Base title="Page not found · P.K. Sompura">
-  <PhaseShell page="404" />
+  <div class="wrap grid-page gap-y-5 pb-24 pt-6 lg:items-center lg:pb-44 lg:pt-24">
+    <!-- The toolpath stopped part-way: "404" is cut only up to the cutter line. Decorative; the h1 carries the message. -->
+    <div class="relative col-span-4 flex h-[260px] items-center justify-center overflow-hidden bg-stone bg-stone-tex shadow-tablet md:col-span-8 lg:col-span-6 lg:h-[560px]" aria-hidden="true">
+      <div class="uncut absolute inset-y-0 left-[62%] right-0"></div>
+      <div class="absolute inset-y-0 left-[62%] w-0.5 bg-saffron shadow-glow"></div>
+      <div class="cut-404 text-cut relative font-display text-[132px] leading-none lg:text-[260px]">404</div>
+    </div>
+    <div class="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-5 lg:col-start-8 lg:gap-6">
+      <p class="eyebrow text-slate-deep">Page not found · 404</p>
+      <h1 class="font-display text-[40px] leading-[1.02] lg:text-h3">This page has not been carved.</h1>
+      <p class="text-body">The address may be mistyped, or the page has moved.</p>
+      <div class="flex flex-col gap-4 md:flex-row md:flex-wrap">
+        <a href="/" class="btn-primary">Go to the homepage</a>
+        <a href="/projects" class="btn-secondary">Open the Temple Register</a>
+      </div>
+    </div>
+  </div>
 </Base>
+
+<style>
+  .uncut { background: repeating-linear-gradient(0deg, rgb(82 96 107 / 0) 0 6px, rgb(82 96 107 / .16) 6px 7px), theme('colors.stone') url('/tex/stone.webp'); }
+  .cut-404 { -webkit-mask-image: linear-gradient(90deg, #000 62%, transparent 62%); mask-image: linear-gradient(90deg, #000 62%, transparent 62%); }
+</style>

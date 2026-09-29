@@ -1,7 +1,56 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhaseShell from '../components/PhaseShell.astro';
+import PhotoFrame from '../components/PhotoFrame.astro';
+import { contact } from '../data/site';
+
+const rows = [
+  { dt: 'Phone', value: contact.phone, href: contact.phoneHref, note: 'Tap to call' },
+  { dt: 'Email', value: contact.email, href: `mailto:${contact.email}` },
+  { dt: 'Instagram', value: contact.instagram, href: contact.instagramHref },
+];
 ---
-<Base title="Contact · P.K. Sompura" theme="night" current="contact">
-  <PhaseShell page="Contact" theme="night" />
+<Base title="Contact · P.K. Sompura" theme="night" current="contact"
+  description="Call, write or message P.K. Sompura, temple architects and contractors in Palitana, Gujarat.">
+  <div class="relative">
+    <div class="bg-rays pointer-events-none absolute inset-x-0 -top-22 h-[900px] [--ray-x:60%] lg:[--ray-x:62%]" aria-hidden="true"></div>
+    <div class="wrap relative grid-page gap-y-5 pt-16 lg:gap-y-[120px] lg:pt-36">
+      <div class="col-span-4 flex flex-col gap-5 md:col-span-8 lg:gap-7">
+        <p class="eyebrow text-sky">Contact</p>
+        <h1 class="text-cut-night font-display text-[50px] leading-[.96] lg:text-display">Visit the workshop in Palitana.</h1>
+      </div>
+      <p class="col-span-4 mb-3 text-body text-sky md:col-span-6 lg:col-span-4 lg:mb-0 lg:self-end">Call, write or send a message to talk about a temple.</p>
+
+      <dl class="col-span-4 flex flex-col border-slate md:col-span-8 lg:col-span-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:border-t">
+        {rows.map((r, i) => (
+          <div class:list={['flex flex-col gap-1.5 border-t border-slate py-[18px] lg:gap-3.5 lg:border-t-0 lg:py-8',
+            i > 0 ? 'lg:border-l lg:px-6' : 'lg:pr-6']}>
+            <dt class="eyebrow text-sky">{r.dt}</dt>
+            <dd><a href={r.href} class="inline-flex min-h-11 items-center break-all font-display text-[28px] leading-[1.05] text-sand transition-colors hover:text-saffron lg:break-normal lg:text-[clamp(32px,3vw,44px)]">{r.value}</a></dd>
+            {r.note && <dd class="font-mono text-[13px] text-sky max-lg:hidden">{r.note}</dd>}
+          </div>
+        ))}
+        <div class="flex flex-col gap-1.5 border-y border-slate py-[18px] lg:hidden">
+          <dt class="eyebrow text-sky">The workshop</dt>
+          <dd class="text-[16px] leading-[1.55]">[A3] Street address, to be supplied<br />Palitana, Gujarat</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="wrap relative mt-6 lg:mt-0">
+      <div class="grid-page gap-y-6 lg:border-t lg:border-slate lg:pt-14">
+        <div class="col-span-4 flex flex-col gap-3.5 max-lg:hidden">
+          <p class="eyebrow text-sky">The workshop</p>
+          <p class="font-display text-[40px] leading-[1.1]">Palitana, Gujarat</p>
+          <p class="text-[18px] leading-[1.6]">[A3] Street address, to be supplied</p>
+          <p class="font-mono text-[13px] text-sky">[A3] "Open in Maps" link, once the address is confirmed</p>
+        </div>
+        <div class="col-span-4 md:col-span-8 lg:col-span-7 lg:col-start-6">
+          <PhotoFrame shape="arch" tone="night" frame="h-[300px] lg:h-[420px]"
+            label="Workshop at Palitana, machine hall (wide shot of all five, if taken; otherwise DSCN2410–2413, no faces)"
+            caption="The workshop" captionClass="max-lg:hidden" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="h-18 lg:h-36" aria-hidden="true"></div>
 </Base>

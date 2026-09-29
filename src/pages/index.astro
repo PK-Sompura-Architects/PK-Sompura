@@ -1,7 +1,229 @@
 ---
 import Base from '../layouts/Base.astro';
-import PhaseShell from '../components/PhaseShell.astro';
+import PosterFrame from '../components/PosterFrame.astro';
+import PhotoFrame from '../components/PhotoFrame.astro';
+import ScopeTag from '../components/ScopeTag.astro';
+import { getCollection } from 'astro:content';
+import { contact } from '../data/site';
+import { placeFull } from '../lib/projects';
+
+// §7 order as on Board 01.
+const featuredOrder = ['vaishno-devi-gulbarga', 'godiji-derasar', 'digambar-jain-derasar', 'gelmata', 'hastgiri', 'kachhi-bhavan-palitana'];
+const featured = (await getCollection('projects', (p) => p.data.featured))
+  .sort((a, b) => featuredOrder.indexOf(a.id) - featuredOrder.indexOf(b.id));
+
+const plates = [
+  { n: '01', title: 'Sketch', caption: 'Pencil elevations of the mountain.', photo: 'Pencil mountain elevations · FERO folder' },
+  { n: '02', title: 'Model', caption: 'A painted model of the mountain and its shrines.', photo: 'Painted mountain model · NIKON DSCN2429–2438' },
+  { n: '03', title: 'Foundation', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga build sequence · foundation' },
+  { n: '04', title: 'Rock shell', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga build sequence · rock shell' },
+  { n: '05', title: 'The finished temple', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga mountain temple, evening' },
+];
+const cncPhotos = [
+  { label: 'CNC machine, workshop · DSCN2396, turned upright, date stamp removed', caption: 'In the workshop' },
+  { label: 'CNC machine · DSCN2402–2403, upright', caption: 'In the workshop' },
+  { label: 'CNC-cut panel, detail', caption: 'A CNC-cut panel' },
+];
 ---
 <Base title="P.K. Sompura · Temple Architect & Contractor, Palitana">
-  <PhaseShell page="Home" />
+
+  <!-- §1 Hero: the carved panel -->
+  <section aria-labelledby="hero-title" class="lg:wrap lg:grid lg:grid-cols-12 lg:gap-x-6">
+    <div class="flex flex-col gap-6 px-5 pb-10 pt-8 md:px-10 lg:col-span-6 lg:justify-center lg:gap-9 lg:px-0 lg:py-10">
+      <p class="eyebrow text-slate-deep">Temple Architect &amp; Contractor<br class="lg:hidden" /><span class="max-lg:hidden"> · </span>Palitana, Gujarat</p>
+      <h1 id="hero-title" class="text-cut font-display text-display">Where<br />Devotion<br />Meets Stone.</h1>
+      <p class="max-w-[470px] text-lead">A family practice of temple architects and contractors, three generations in Palitana, Gujarat.</p>
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-7">
+        <a href="/projects" class="btn-primary">See the Temple Register</a>
+        <a href="/contact" class="btn-secondary md:hidden">Contact the workshop</a>
+        <a href="/contact" class="text-link max-md:hidden">Contact the workshop →</a>
+      </div>
+    </div>
+    <PosterFrame
+      name="hero"
+      priority
+      alt="A carved stone panel under low raking light"
+      sizes="(min-width: 1440px) 720px, 50vw"
+      class="aspect-[4/5] w-full lg:col-span-6 lg:w-auto lg:aspect-auto lg:h-[min(812px,calc(100svh-88px))] lg:min-h-[600px] lg:-mr-12 xl:mr-[calc(-80px-max(0px,(100vw-1440px)/2))]"
+    />
+  </section>
+
+  <!-- §2 The family -->
+  <section aria-label="The family" class="wrap section-y grid-page gap-y-5">
+    <p class="eyebrow col-span-4 text-slate-deep md:col-span-8 lg:col-span-3 lg:pt-3.5">The family</p>
+    <p class="col-span-4 font-display text-statement md:col-span-8 lg:col-span-9">
+      Three generations of one family have designed and built temples from Palitana, Gujarat, drawing each one, carving its stone by hand and by machine, and raising it on site.
+    </p>
+  </section>
+
+  <!-- §3 Numbers -->
+  <section aria-label="In numbers" class="bg-stone bg-stone-tex">
+    <dl class="wrap grid py-14 lg:grid-cols-3 lg:py-32">
+      {[['3', 'Generations'], ['51+', 'Projects completed'], ['5', 'CNC machines, owned']].map(([v, label], i) => (
+        <div class:list={['flex flex-row-reverse items-end justify-between gap-4 py-6 lg:flex-col-reverse lg:items-start lg:justify-end lg:gap-5 lg:py-0',
+          i > 0 && 'border-t border-slate-deep lg:border-l lg:border-t-0', i === 0 ? 'lg:pr-10' : i === 1 ? 'lg:px-10' : 'lg:pl-10']}>
+          <dt class="eyebrow max-w-[9rem] pb-1.5 text-right text-navy lg:max-w-none lg:pb-0 lg:text-left">{label}</dt>
+          <dd class="text-cut font-display text-stat">{v}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- §4 Stone Works -->
+  <section id="stone-works" aria-labelledby="stone-title" class="wrap section-y scroll-mt-16 lg:scroll-mt-0">
+    <div class="grid-page gap-y-6">
+      <div class="col-span-4 flex flex-col gap-6 md:col-span-8 lg:col-span-7">
+        <p class="eyebrow text-slate-deep">Line of work 01 / 03</p>
+        <h2 id="stone-title" class="text-cut font-display text-display-xl">Stone<br class="lg:hidden" /> Works</h2>
+      </div>
+      <div class="col-span-4 flex flex-col gap-6 md:col-span-6 lg:col-span-4 lg:col-start-9 lg:self-end lg:pb-3">
+        <p class="max-w-[60ch] text-body">Hand carving in sandstone and marble, set out to the geometry of the Shilpa Shastra.</p>
+        <div class="flex flex-wrap gap-2"><ScopeTag label="Hand carving" /><ScopeTag label="Sandstone" /><ScopeTag label="Marble" /></div>
+      </div>
+    </div>
+    <div class="grid-page mt-10 gap-y-6 lg:mt-24">
+      <div class="col-span-4 md:col-span-6 lg:col-span-6">
+        <PhotoFrame shape="arch" frame="aspect-[3/4] lg:aspect-[4/5]" label="Hand-carved sandstone panel, close-up, raking daylight · Stone Works archive [A10]" caption="Sandstone panel, hand carved" />
+      </div>
+      <div class="col-span-4 flex flex-col gap-6 md:col-span-6 lg:col-span-5 lg:col-start-8 lg:gap-16 lg:pt-40">
+        <div class="max-lg:hidden"><PhotoFrame frame="aspect-[13/10]" label="Marble carving, detail · Stone Works archive [A10]" caption="Marble, hand carved" /></div>
+        <PhotoFrame frame="aspect-[4/3] lg:aspect-[3/2]" label="Finished stone temple · NIKON DSCN2489–2500" caption="A finished stone temple" />
+      </div>
+    </div>
+  </section>
+
+  <!-- §5 CNC Works -->
+  <section id="cnc-works" aria-labelledby="cnc-title" class="relative section-y scroll-mt-16 overflow-hidden lg:scroll-mt-0">
+    <div class="bg-waves pointer-events-none absolute left-0 top-0 h-[300px] w-full lg:h-[560px] lg:w-[900px]" aria-hidden="true"></div>
+    <div class="wrap relative grid-page gap-y-6">
+      <div class="col-span-4 flex flex-col gap-6 md:col-span-8 lg:col-span-7">
+        <p class="eyebrow text-navy">Line of work 02 / 03</p>
+        <h2 id="cnc-title" class="text-cut font-display text-display-xl">CNC<br class="lg:hidden" /> Works</h2>
+      </div>
+      <div class="col-span-4 flex flex-col gap-6 md:col-span-6 lg:col-span-4 lg:col-start-9 lg:self-end lg:pb-3">
+        <p class="max-w-[60ch] text-body">Five CNC machines, owned by the firm, cut stone panels in the workshop at Palitana.</p>
+        <div class="flex flex-wrap gap-2 max-lg:hidden"><ScopeTag label="CNC" /></div>
+      </div>
+    </div>
+    <figure class="relative mt-10 lg:wrap lg:mt-24">
+      <PosterFrame name="toolpath" alt="A CNC toolpath cutting across the same carved panel" sizes="(min-width: 1440px) 1280px, 90vw" class="aspect-[6/7] w-full md:aspect-[2/1]" />
+      <figcaption class="mt-3.5 font-mono text-[13px] text-slate-deep max-lg:hidden">The hero panel, cut by the toolpath</figcaption>
+    </figure>
+    <div class="relative mt-8 lg:wrap lg:mt-24">
+      <ul class="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 [scrollbar-width:none] md:px-10 lg:grid lg:grid-cols-12 lg:gap-6 lg:overflow-visible lg:px-0" aria-label="In the workshop">
+        {cncPhotos.map((p) => (
+          <li class="w-[260px] flex-none snap-start lg:col-span-4 lg:w-auto">
+            <PhotoFrame frame="aspect-[13/17] lg:aspect-[3/4]" label={p.label} caption={p.caption} captionClass="max-lg:hidden" />
+          </li>
+        ))}
+      </ul>
+      <p class="px-5 pt-3 font-mono text-[12px] text-slate-deep md:px-10 lg:hidden">In the workshop · swipe for more</p>
+    </div>
+  </section>
+
+  <!-- §6 Fero Works: the mountain (night) -->
+  <section id="fero-works" aria-labelledby="fero-title" class="theme-night relative scroll-mt-16 overflow-hidden bg-night text-sand lg:scroll-mt-0">
+    <div class="bg-topo pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="bg-night-grain pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="wrap relative grid-page gap-y-5 pb-14 pt-24 md:pt-32 lg:gap-y-6 lg:pb-[120px] lg:pt-44">
+      <div class="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-7 lg:gap-6">
+        <p class="eyebrow text-sky">Line of work 03 / 03</p>
+        <h2 id="fero-title" class="text-cut-night font-display text-display-xl">Fero<br class="lg:hidden" /> Works</h2>
+        <p class="font-display text-[26px] leading-[1.15] text-sky lg:text-[40px] lg:leading-[1.1]">Artificial mountain temples</p>
+      </div>
+      <div class="col-span-4 flex flex-col gap-6 md:col-span-6 lg:col-span-4 lg:col-start-9 lg:self-end lg:pb-1.5">
+        <p class="max-w-[60ch] text-body">An artificial mountain, built around the temple it holds. Among them: Vaishno Devi, Ahmedabad and Vaishno Devi, Gulbarga, Karnataka.</p>
+        <div class="flex flex-wrap gap-2 max-lg:hidden"><ScopeTag label="Fero / mountain" theme="night" /><ScopeTag label="Construction" theme="night" /></div>
+      </div>
+    </div>
+    <PosterFrame name="mountain-k3" alt="An artificial mountain opened to show a white-stone temple lit from inside" sizes="100vw" class="relative aspect-[9/14] w-full md:aspect-video" />
+    <div class="wrap relative flex flex-col gap-4 pb-24 pt-18 lg:gap-6 lg:pb-44 lg:pt-36">
+      <div class="mb-4 flex flex-col gap-4 lg:mb-12 lg:w-7/12">
+        <p class="eyebrow text-sky">The build sequence<span class="max-lg:hidden"> · Vaishno Devi</span>, Gulbarga</p>
+        <h3 class="font-display text-h3">From sketch to shikhara</h3>
+      </div>
+      <ol class="flex flex-col gap-4 lg:gap-6">
+        {plates.map((p) => (
+          <li class="flex flex-col gap-3.5 border-t border-slate bg-navy p-5 shadow-plate lg:grid lg:h-[440px] lg:grid-cols-12 lg:gap-x-6 lg:p-10">
+            <div class="flex items-baseline justify-between gap-3 lg:col-span-5 lg:flex-col-reverse lg:items-start lg:justify-between">
+              <div class="flex flex-col gap-3.5">
+                <h4 class="font-display text-h4">{p.title}</h4>
+                <p class="text-[17px] leading-[1.55] text-sky max-lg:hidden">{p.caption}</p>
+              </div>
+              <span class="flex-none font-mono text-[12px] font-medium tracking-[.08em] text-sky lg:text-[13px]">{p.n} / 05</span>
+            </div>
+            <div class="lg:col-span-7 lg:h-full">
+              <PhotoFrame tone="night" class="lg:h-full" frame="h-[200px] lg:h-full" label={p.photo} />
+            </div>
+            <p class="text-[15px] leading-normal text-sky lg:hidden">{p.caption}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- §7 Selected projects -->
+  <section aria-labelledby="selected-title" class="wrap section-y flex flex-col gap-5 lg:gap-22">
+    <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+      <div class="flex min-w-0 flex-col gap-5">
+        <p class="eyebrow text-slate-deep">From the Temple Register</p>
+        <h2 id="selected-title" class="text-cut font-display text-h2">Selected projects</h2>
+      </div>
+      <div class="flex flex-none flex-col items-end gap-5 pb-2.5 max-lg:hidden">
+        <p class="text-[18px] text-slate-deep">Over 51 projects completed.</p>
+        <a href="/projects" class="btn-secondary">Open the full register →</a>
+      </div>
+    </div>
+    <ul class="flex flex-col lg:grid lg:grid-cols-3 lg:gap-x-6 lg:gap-y-20">
+      {featured.map((f) => {
+        const p = f.data;
+        return (
+          <li class="border-t border-slate lg:border-0">
+            <a href={`/projects/${f.id}`} class="group flex items-center gap-4 py-4 lg:flex-col lg:items-stretch lg:gap-5 lg:py-0">
+              <div class="w-24 flex-none lg:w-auto">
+                <span class="lg:hidden"><PhotoFrame shape="arch" compact frame="h-[124px]" label={p.photos[0]?.label ?? p.name} /></span>
+                <span class="max-lg:hidden"><PhotoFrame shape="arch" frame="aspect-[4/5]" label={p.photos[0]?.label ?? p.name} /></span>
+              </div>
+              <div class="flex min-w-0 flex-1 flex-col gap-1.5 lg:gap-2.5">
+                <p class="font-display text-[24px] leading-[1.08] group-hover:text-saffron-text lg:text-[36px] lg:leading-[1.05]">{p.name}</p>
+                <p class="font-mono text-[12px] leading-[1.45] text-slate-deep lg:text-[13px]">{placeFull(p)}<br class="lg:hidden" /><span class="max-lg:hidden"> · </span>{p.type}</p>
+                <div class="mt-1 flex flex-wrap gap-1.5 max-lg:hidden">{p.scope.map((s) => <ScopeTag label={s} size="sm" />)}</div>
+              </div>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+    <p class="mt-2 text-[16px] text-slate-deep lg:hidden">Over 51 projects completed.</p>
+    <a href="/projects" class="btn-secondary lg:hidden">Open the full register →</a>
+  </section>
+
+  <!-- §8 Contact (night); the footer follows on the same ground -->
+  <section aria-labelledby="contact-title" class="theme-night relative overflow-hidden bg-night text-sand">
+    <div class="bg-rays pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="bg-night-grain pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="wrap relative grid-page gap-y-5 pb-22 pt-24 md:pt-32 lg:pb-36 lg:pt-44">
+      <div class="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-6 lg:gap-7">
+        <p class="eyebrow text-sky">Contact</p>
+        <h2 id="contact-title" class="text-cut-night font-display text-h2">Visit the workshop in Palitana.</h2>
+        <p class="mb-4 max-w-[440px] text-body text-sky lg:mb-0">Call, write or send a message to talk about a temple.</p>
+      </div>
+      <dl class="col-span-4 flex flex-col md:col-span-8 lg:col-span-6 lg:self-end">
+        {[
+          ['Phone', contact.phone, contact.phoneHref],
+          ['Email', contact.email, `mailto:${contact.email}`],
+          ['Instagram', contact.instagram, contact.instagramHref],
+        ].map(([dt, value, href]) => (
+          <div class="flex flex-col gap-1.5 border-t border-slate py-[18px] lg:grid lg:grid-cols-[140px_1fr] lg:items-baseline lg:gap-6 lg:py-6">
+            <dt class="eyebrow text-sky">{dt}</dt>
+            <dd><a href={href} class="inline-flex min-h-11 items-center break-all font-display text-contact text-sand transition-colors hover:text-saffron lg:break-normal">{value}</a></dd>
+          </div>
+        ))}
+        <div class="flex flex-col gap-1.5 border-y border-slate py-[18px] lg:grid lg:grid-cols-[140px_1fr] lg:items-baseline lg:gap-6 lg:py-6">
+          <dt class="eyebrow text-sky">Workshop</dt>
+          <dd class="text-body">[A3] Workshop street address, to be supplied<br />Palitana, Gujarat</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
 </Base>

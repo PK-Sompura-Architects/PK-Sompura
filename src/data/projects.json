@@ -1,0 +1,533 @@
+[
+ {
+  "id": "adpur-dheti-pag",
+  "no": 1,
+  "name": "Adpur Dheti Pag",
+  "place": "Adpur",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Hand carving",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Adpur Dheti Pag, Adpur · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "asha-life-mission",
+  "no": 2,
+  "name": "Asha Life Mission",
+  "place": "",
+  "state": "",
+  "type": "Bhavan",
+  "scope": [
+   "Design",
+   "Construction"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "bhamriya",
+  "no": 3,
+  "name": "Bhamriya",
+  "place": "Bhamriya",
+  "state": "Gujarat",
+  "type": "Hindu temple",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Bhamriya, Bhamriya · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "bhavnagar",
+  "no": 4,
+  "name": "Bhavnagar",
+  "place": "Bhavnagar",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Design",
+   "Hand carving"
+  ],
+  "photos": [
+   {
+    "label": "Bhavnagar, Bhavnagar · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "dadabhagavan",
+  "no": 5,
+  "name": "Dadabhagavan",
+  "place": "Kelanpur",
+  "state": "Gujarat",
+  "type": "Hindu temple",
+  "scope": [
+   "CNC",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Dadabhagavan, Kelanpur · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "devilaya",
+  "no": 6,
+  "name": "Devilaya",
+  "place": "",
+  "state": "",
+  "type": "Hindu temple",
+  "scope": [
+   "Hand carving"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "digambar-jain-derasar",
+  "no": 7,
+  "name": "Digambar Jain Derasar",
+  "place": "Baroda",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Design",
+   "Hand carving"
+  ],
+  "photos": [
+   {
+    "label": "Digambar Jain Derasar, Baroda · lead image"
+   }
+  ],
+  "featured": true
+ },
+ {
+  "id": "dhola",
+  "no": 8,
+  "name": "Dhola",
+  "place": "Dhola",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "gelmata",
+  "no": 9,
+  "name": "Gelmata",
+  "place": "Rajkot",
+  "state": "Gujarat",
+  "type": "Hindu temple",
+  "scope": [
+   "CNC",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Gelmata, Rajkot · lead image"
+   }
+  ],
+  "featured": true
+ },
+ {
+  "id": "godiji-derasar",
+  "no": 10,
+  "name": "Godiji Derasar",
+  "place": "Tharad",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Hand carving",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Godiji Derasar, Tharad · lead image, full elevation",
+    "caption": "Front elevation"
+   },
+   {
+    "label": "Carved detail"
+   },
+   {
+    "label": "Photo 3"
+   },
+   {
+    "label": "Photo 4"
+   },
+   {
+    "label": "Photo 5"
+   },
+   {
+    "label": "Wide, landscape crop"
+   }
+  ],
+  "featured": true
+ },
+ {
+  "id": "vaishno-devi-gulbarga",
+  "no": 11,
+  "name": "Vaishno Devi",
+  "place": "Gulbarga",
+  "state": "Karnataka",
+  "type": "Mountain temple",
+  "scope": [
+   "Fero / mountain",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Vaishno Devi, Gulbarga · lead image"
+   }
+  ],
+  "featured": true
+ },
+ {
+  "id": "hastgiri",
+  "no": 12,
+  "name": "Hastgiri",
+  "place": "Hastgiri",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Design",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Hastgiri, Hastgiri · lead image"
+   }
+  ],
+  "featured": true
+ },
+ {
+  "id": "jaliya",
+  "no": 13,
+  "name": "Jaliya",
+  "place": "Jaliya",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Hand carving"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "jambudip",
+  "no": 14,
+  "name": "Jambudip",
+  "place": "",
+  "state": "",
+  "type": "Jain derasar",
+  "scope": [
+   "Design"
+  ],
+  "photos": [
+   {
+    "label": "Jambudip · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "kachhi-bhavan-junagadh",
+  "no": 15,
+  "name": "Kachhi Bhavan",
+  "place": "Junagadh",
+  "state": "Gujarat",
+  "type": "Bhavan",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Kachhi Bhavan, Junagadh · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "kachhi-bhavan-palitana",
+  "no": 16,
+  "name": "Kachhi Bhavan",
+  "place": "Palitana",
+  "state": "Gujarat",
+  "type": "Bhavan",
+  "scope": [
+   "Design",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Kachhi Bhavan, Palitana · lead image"
+   }
+  ],
+  "featured": true
+ },
+ {
+  "id": "khajuri",
+  "no": 17,
+  "name": "Khajuri",
+  "place": "Khajuri",
+  "state": "Gujarat",
+  "type": "Hindu temple",
+  "scope": [
+   "Hand carving"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "kotadi",
+  "no": 18,
+  "name": "Kotadi",
+  "place": "Kotadi",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "liliya",
+  "no": 19,
+  "name": "Liliya",
+  "place": "Liliya",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Hand carving",
+   "CNC"
+  ],
+  "photos": [
+   {
+    "label": "Liliya, Liliya · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "malav",
+  "no": 20,
+  "name": "Malav",
+  "place": "Malav",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "mota-derasar",
+  "no": 21,
+  "name": "Mota Derasar",
+  "place": "Tharad",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Hand carving"
+  ],
+  "photos": [
+   {
+    "label": "Mota Derasar, Tharad · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "osval",
+  "no": 22,
+  "name": "Osval",
+  "place": "Palitana",
+  "state": "Gujarat",
+  "type": "Bhavan",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Osval, Palitana · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "parvala",
+  "no": 23,
+  "name": "Parvala",
+  "place": "Parvala",
+  "state": "Gujarat",
+  "type": "Hindu temple",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "rampara",
+  "no": 24,
+  "name": "Rampara",
+  "place": "Rampara",
+  "state": "Gujarat",
+  "type": "Hindu temple",
+  "scope": [
+   "Hand carving"
+  ],
+  "photos": [
+   {
+    "label": "Rampara, Rampara · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "rrd",
+  "no": 25,
+  "name": "RRD",
+  "place": "Limbdi",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Design",
+   "CNC"
+  ],
+  "photos": [
+   {
+    "label": "RRD, Limbdi · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "shobhavad",
+  "no": 26,
+  "name": "Shobhavad",
+  "place": "Shobhavad",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "songadh",
+  "no": 27,
+  "name": "Songadh",
+  "place": "Songadh",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Hand carving",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Songadh, Songadh · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "surat",
+  "no": 28,
+  "name": "Surat",
+  "place": "Surat",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "CNC"
+  ],
+  "photos": [
+   {
+    "label": "Surat, Surat · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "taleti",
+  "no": 29,
+  "name": "Taleti",
+  "place": "",
+  "state": "",
+  "type": "Jain derasar",
+  "scope": [
+   "Hand carving"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "tana",
+  "no": 30,
+  "name": "Tana",
+  "place": "Tana",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Construction"
+  ],
+  "photos": [],
+  "featured": false
+ },
+ {
+  "id": "varkhadi",
+  "no": 31,
+  "name": "Varkhadi",
+  "place": "Tharad",
+  "state": "Gujarat",
+  "type": "Jain derasar",
+  "scope": [
+   "Design",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Varkhadi, Tharad · lead image"
+   }
+  ],
+  "featured": false
+ },
+ {
+  "id": "vaishno-devi-ahmedabad",
+  "no": 32,
+  "name": "Vaishno Devi",
+  "place": "Ahmedabad",
+  "state": "Gujarat",
+  "type": "Mountain temple",
+  "scope": [
+   "Fero / mountain",
+   "Construction"
+  ],
+  "photos": [
+   {
+    "label": "Vaishno Devi, Ahmedabad · lead image"
+   }
+  ],
+  "featured": false
+ }
+]
