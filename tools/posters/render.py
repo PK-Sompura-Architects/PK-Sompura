@@ -24,9 +24,10 @@ POSTERS = {
     "hero-m": ("mode=hero", 960, 1200, [960, 480]),
     "toolpath": ("mode=toolpath", 2400, 1200, [2400, 1600, 960]),
     "toolpath-m": ("mode=toolpath", 960, 1120, [960, 480]),
-    "mountain-k3": ("mode=mountain&stage=3", 2400, 1350, [2400, 1600, 960]),
-    "mountain-k3-m": ("mode=mountain&stage=3", 960, 1494, [960, 480]),
 }
+# The Fero fly-through frames exist only as renders of the real scene (--real).
+FERO = {f"fero-{n}{m}": (None, *((2400, 1350, [2400, 1600, 960]) if not m else (960, 1920, [960, 480])))
+        for n in range(1, 5) for m in ("", "-m")}
 
 
 def shoot(query: str, w: int, h: int) -> Image.Image:
@@ -43,7 +44,7 @@ def shoot(query: str, w: int, h: int) -> Image.Image:
 
 REAL = "--real" in sys.argv
 OUT.mkdir(parents=True, exist_ok=True)
-for name, (query, w, h, widths) in POSTERS.items():
+for name, (query, w, h, widths) in (POSTERS | FERO if REAL else POSTERS).items():
     img = Image.open(ROOT / f"tools/posters/out/{name}.png").convert("RGB") if REAL else shoot(query, w, h)
     assert img.size == (w, h), f"{name}: got {img.size}"
     for tw in widths:

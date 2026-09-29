@@ -1,0 +1,76 @@
+---
+// Fero Works fly-through (plan.md §3 item 6, §5). A pinned stage (CSS sticky inside a tall container) shows
+// either the three.js flight (fero.ts, mounted by the 3D gate) or a 4-frame still sequence rendered from the same
+// scene, crossfading on scroll: above the clouds → ridges → reveal → temple. The chapter text is HTML over the
+// stage and never waits for the canvas. Without JS: one screen, the temple frame, all text visible.
+import ScopeTag from './ScopeTag.astro';
+
+const frames = [
+  { n: 1, alt: 'Above the clouds at dusk, a saffron glow on the horizon' },
+  { n: 2, alt: 'Low over a range of rocky ridges at dusk' },
+  { n: 3, alt: 'An artificial mountain with a cave mouth, lit from inside' },
+  { n: 4, alt: 'Inside the cave, a white-stone shikhara temple lit in saffron' },
+];
+const src = (n: number, m: boolean, ext: string) =>
+  (m ? [480, 960] : [960, 1600, 2400]).map((w) => `/posters/fero-${n}${m ? '-m' : ''}-${w}.${ext} ${w}w`).join(', ');
+---
+<div data-fly class="fly relative">
+  <div data-scene="fero" data-shot="4" class="fly-stage sticky top-0 h-[100svh] overflow-hidden">
+    {frames.map((f) => (
+      <picture class="fly-frame absolute inset-0" data-frame={f.n}>
+        <source media="(orientation: landscape)" type="image/avif" srcset={src(f.n, false, 'avif')} sizes="100vw" width="2400" height="1350" />
+        <source media="(orientation: landscape)" type="image/webp" srcset={src(f.n, false, 'webp')} sizes="100vw" width="2400" height="1350" />
+        <source type="image/avif" srcset={src(f.n, true, 'avif')} sizes="100vw" width="960" height="1920" />
+        <img src={`/posters/fero-${f.n}-m-960.webp`} srcset={src(f.n, true, 'webp')} sizes="100vw" alt={f.alt}
+          width="960" height="1920" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+      </picture>
+    ))}
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-night/85 to-transparent" aria-hidden="true"></div>
+
+    <!-- Shot 1: the chapter title, over the sky. -->
+    <div class="fly-title wrap absolute inset-x-0 top-0 flex flex-col gap-5 pt-24 lg:gap-6 lg:pt-36">
+      <p class="eyebrow text-sky">Line of work 03 / 03</p>
+      <h2 id="fero-title" class="text-cut-night font-display text-display-xl">Fero<br class="lg:hidden" /> Works</h2>
+      <p class="font-display text-[26px] leading-[1.15] text-sky lg:text-[40px] lg:leading-[1.1]">Artificial mountain temples</p>
+    </div>
+
+    <!-- Shots 4–5: the one-line description, over the reveal and the temple. -->
+    <div class="fly-desc wrap absolute inset-x-0 bottom-0 pb-10 lg:pb-16">
+      <div class="flex max-w-[34rem] flex-col gap-5">
+        <p class="text-body text-sand">An artificial mountain, built around the temple it holds. Among them: Vaishno Devi, Ahmedabad and Vaishno Devi, Gulbarga, Karnataka.</p>
+        <div class="flex flex-wrap gap-2"><ScopeTag label="Fero / mountain" theme="night" /><ScopeTag label="Construction" theme="night" /></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Shot index for the still sequence and the text overlays (no library; runs whether or not 3D loads).
+  const fly = document.querySelector<HTMLElement>('[data-fly]');
+  const stage = fly?.querySelector<HTMLElement>('[data-scene="fero"]');
+  if (fly && stage) {
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const r = fly.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+      stage.dataset.shot = String(p < 0.25 ? 1 : p < 0.55 ? 2 : p < 0.8 ? 3 : 4);
+      stage.toggleAttribute('data-title-on', p < 0.2);
+      stage.toggleAttribute('data-desc-on', p > 0.66);
+    };
+    addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  }
+</script>
+
+<style>
+  /* With JS the chapter becomes a tall scroll track; without it, a single screen. */
+  :global(.js) .fly { height: 520svh; }
+  .fly-frame { opacity: 0; transition: opacity 500ms ease; }
+  [data-shot='1'] [data-frame='1'], [data-shot='2'] [data-frame='2'], [data-shot='3'] [data-frame='3'], [data-shot='4'] [data-frame='4'] { opacity: 1; }
+  :global([data-3d-live]) .fly-frame { opacity: 0; }
+  .fly-title, .fly-desc { transition: opacity 400ms ease; z-index: 1; }
+  :global(.js) .fly-title, :global(.js) .fly-desc { opacity: 0; }
+  :global(.js) [data-title-on] .fly-title, :global(.js) [data-desc-on] .fly-desc { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .fly-frame, .fly-title, .fly-desc { transition: none; } }
+</style>

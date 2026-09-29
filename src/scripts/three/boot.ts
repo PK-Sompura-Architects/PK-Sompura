@@ -8,12 +8,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 export interface SceneState { progress: number; pointer: number; still: boolean }
 export interface SceneHandle { canvas: HTMLCanvasElement; resize(w: number, h: number): void; render(): void; dispose(): void }
-type Name = 'hero' | 'toolpath' | 'mountain-k3';
+type Name = 'hero' | 'toolpath' | 'fero';
 
 const loaders: Record<Name, (el: HTMLElement, s: SceneState) => Promise<SceneHandle>> = {
   hero: (el, s) => import('./relief').then((m) => m.default(el, s, 'hero')),
   toolpath: (el, s) => import('./relief').then((m) => m.default(el, s, 'toolpath')),
-  'mountain-k3': (el, s) => import('./mountain').then((m) => m.default(el, s)),
+  fero: (el, s) => import('./fero').then((m) => m.default(el, s)),
 };
 
 export function boot(els: HTMLElement[], still?: { name: Name; progress: number }) {
@@ -30,10 +30,13 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
     if (!still) {
       if (name === 'hero') {
         ScrollTrigger.create({ trigger: el, start: 'top top', end: 'bottom top', onUpdate: (st) => (state.progress = st.progress) });
+      } else if (name === 'fero') {
+        // The stage is pinned by CSS (sticky inside [data-fly]); ScrollTrigger scrubs the progress across the container.
+        gsap.to(state, { progress: 1, ease: 'none', scrollTrigger: { trigger: el.closest('[data-fly]'), start: 'top top', end: 'bottom bottom', scrub: 1 } });
       } else {
-        // Toolpath: pinned 150vh, cutter scrubbed 0 → 1. Mountain: pinned 250vh, K1 → K4.
+        // Toolpath: pinned 150vh, cutter scrubbed 0 → 1.
         ScrollTrigger.create({
-          trigger: el, pin: true, start: 'center center', end: name === 'toolpath' ? '+=150%' : '+=250%', scrub: true,
+          trigger: el, pin: true, start: 'center center', end: '+=150%', scrub: true,
           onUpdate: (st) => (state.progress = st.progress),
         });
       }
@@ -41,12 +44,31 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
 
     let handle: SceneHandle | null = null;
     let visible = false, raf = 0;
-    const loop = () => {
+    // Frame-rate guard: time the first ~90 visible frames; if the scene can't hold 30 fps, hand back to the poster.
+    const times: number[] = [];
+    let last = 0;
+    const loop = (now: number) => {
       raf = 0;
-      if (!handle || !visible || document.hidden) return;
+      if (!handle || !visible || document.hidden) { last = 0; return; }
       state.pointer = pointer.x;
       handle.render();
+      if (last && times.length < 100) {
+        times.push(now - last);
+        if (times.length === 100) {
+          const avg = times.slice(10).reduce((a, b) => a + b, 0) / 90;
+          el.dataset.fps = String(Math.round(1000 / avg));
+          if (avg > 1000 / 30) { fallBack(); return; }
+        }
+      }
+      last = now;
       raf = requestAnimationFrame(loop);
+    };
+    const fallBack = () => {
+      el.removeAttribute('data-3d-live');
+      el.setAttribute('data-3d-fallback', '');
+      handle?.canvas.remove();
+      handle?.dispose();
+      handle = null;
     };
     const kick = () => { if (!raf && visible && handle && !still) raf = requestAnimationFrame(loop); };
     document.addEventListener('visibilitychange', kick);

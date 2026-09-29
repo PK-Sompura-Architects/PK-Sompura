@@ -49,7 +49,14 @@ A single long homepage carries the story; projects get their own pages.
 3. **Numbers.** 3 generations · 51+ projects · 5 CNC machines (Count Up, with final values in the HTML).
 4. **Stone Works.** Hand carving in sandstone and marble to Shilpa Shastra geometry. Close-up photographs of their panels; headings filled with sandstone texture (Masked Heading).
 5. **CNC Works.** The toolpath carving the hero panel live, with Line Waves behind. The workshop photographs (machines cleaned of date stamps).
-6. **Fero Works: the mountain.** The page turns to night. The 3D mountain opens as you scroll to show the white-stone temple inside, lit in saffron (Light Rays), with Topography contour lines behind. Then the real build sequence as stacked plates (Scroll Stack): sketch → model → foundation → rock shell → finished Gulbarga temple.
+6. **Fero Works: the fly-through.** The page turns to night and the chapter becomes a scroll-scrubbed flight, in five shots:
+   1. Above a cloud layer at dusk: night palette, a saffron glow on the horizon. Chapter title "Fero Works · Artificial mountain temples" overlaid as HTML.
+   2. Descent through the clouds: the fog thickens, then clears.
+   3. Low over a range of rocky ridges, the camera banking gently along the valley.
+   4. Round the last ridge to reveal an artificial mountain with a cave mouth; inside, the white-stone shikhara temple lit warm saffron, Light Rays behind it. The one-line description is overlaid as HTML.
+   5. Hold on the temple, then hand off to the build sequence as stacked plates (Scroll Stack): sketch → model → foundation → rock shell → finished Gulbarga temple.
+
+   The chapter text is HTML over the stage and never waits for the canvas.
 7. **Selected projects.** Five or six register entries with the best photographs, and a link to the full register.
 8. **Contact.** Phone, email, Instagram and workshop address as plain text, with Light Rays behind.
 
@@ -75,7 +82,15 @@ Two scenes, both plain three.js, each loaded as its own chunk only when its sect
 | Scene | Where | How it's built | Size target |
 |---|---|---|---|
 | **Carved relief + toolpath** | Hero and CNC chapter | A flat plane displaced by a depth map made from one real CNC panel photo. Raking light moves with scroll. The toolpath is a mask sweeping across the same mesh. | ≈150 KB assets, one mesh, one KTX2 texture |
-| **Mountain that opens** | Fero Works chapter | Modelled by us (there is no client 3D file) from the pencil elevations in the `FERO` folder and the Gulbarga photographs: two rock halves that part, and a white-stone shikhara inside. | ≤ 400 KB total, Draco + KTX2 |
+| **Fly-through to the mountain temple** | Fero Works chapter | A pinned stage (CSS sticky inside a tall container) with GSAP ScrollTrigger scrub driving the progress. The camera follows a `CatmullRomCurve3` path with a separate look-at curve, eased at both ends. Terrain: a displaced plane from a procedural noise height field, vertex colours in navy/slate, `FogExp2` for depth. Clouds: a few layered billboard planes with a soft noise texture. The artificial mountain has a cave mouth; inside, a low-poly, smooth-shaded Nagara shikhara in sand-white stone: stepped jagati, tiered spire with amalaka and kalash, urushringa spires, saffron rim light, Light Rays behind. Everything is generated in code at load. | ≤ 400 KB total; actual recorded below |
+
+**Fly-through specifics:** device pixel ratio capped at 1.5; rendering stops when the section is off-screen; the first seconds of rendering are timed, and if the scene can't hold 30 fps it hands back to the poster. The poster is a **4-frame still sequence** (above the clouds → ridges → reveal → temple), rendered from the real scene, that crossfades on scroll. It is used for reduced motion, Save-Data, no WebGL2 and low-end devices.
+
+**Fly-through, measured size** (first pass):
+- Scene code: 3.7 KB gzipped (`fero.ts`), plus three.js, shared with the carved panel: 132 KB gzipped.
+- Scene assets: 0 KB. Terrain, clouds and temple are generated at load, so there are no meshes or textures to download and no Draco, Meshopt or KTX2 files are needed. Total for the scene: about 136 KB, inside the 400 KB budget.
+- Poster frames (AVIF, all four): 49 KB at 2400 px wide, 31 KB at 1600, 29 KB mobile at 960, 13 KB mobile at 480.
+- Frame rate: the 30 fps guard is in place. It has not yet been measured on a real mid-range Android phone; the headless numbers are software rendering and don't count.
 
 **Non-negotiable guardrails (from the brief):**
 - 3D and heavy animation never ship in the initial bundle.

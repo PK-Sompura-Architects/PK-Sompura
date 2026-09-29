@@ -17,8 +17,9 @@ const JOBS = {
   'hero-m': ['hero:0', 480, 600],
   toolpath: ['toolpath:0.56', 1200, 600],
   'toolpath-m': ['toolpath:0.56', 480, 560],
-  'mountain-k3': ['mountain-k3:0.7', 1200, 675],
-  'mountain-k3-m': ['mountain-k3:0.7', 480, 747],
+  // Fero Works fly-through: the 4-frame still sequence (above the clouds → ridges → reveal → temple).
+  ...Object.fromEntries([[1, 0.03], [2, 0.45], [3, 0.74], [4, 1]].flatMap(([n, p]) => [
+    [`fero-${n}`, [`fero:${p}`, 1200, 675]], [`fero-${n}-m`, [`fero:${p}`, 480, 960]]])),
 };
 
 const server = spawn(`npx astro preview --port ${PORT}`, { shell: true, stdio: 'ignore' });
@@ -37,12 +38,12 @@ try {
     // Pull the frame out of the layout at the export size; the scene re-renders on resize.
     await page.$eval(sel, (el, [w, h]) => Object.assign(el.style, {
       position: 'fixed', left: '0', top: '0', width: `${w}px`, height: `${h}px`, margin: '0', zIndex: '9999', aspectRatio: 'auto',
-      // The mountain canvas is transparent: give the export the section's own ground (contours, grain, night).
-      ...(el.dataset.scene === 'mountain-k3' ? { background: 'repeating-radial-gradient(ellipse 120% 90% at 50% 92%, rgb(121 138 150 / 0) 0 24px, rgb(121 138 150 / .22) 24px 25px), url(/tex/grain-night.webp), #0E0E1F' } : {}),
     }), [w, h]);
     await new Promise((r) => setTimeout(r, 1200));
     await page.evaluate(() => window.dispatchEvent(new Event('resize')));
     await new Promise((r) => setTimeout(r, 600));
+    // Posters are the scene alone: hide the HTML layered in the stage (chapter text, scrims, the old poster).
+    await page.$eval(sel, (el) => el.querySelectorAll(':scope > :not(canvas)').forEach((n) => (n.style.visibility = 'hidden')));
     await (await page.$(sel)).screenshot({ path: new URL(`${name}.png`, OUT).pathname.slice(1) });
     console.log('rendered', name, `${w * 2}×${h * 2}`);
     await page.close();

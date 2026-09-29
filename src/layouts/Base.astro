@@ -31,6 +31,7 @@ const {
     <meta name="description" content={description} />
     <meta name="theme-color" content={theme === 'night' ? '#0E0E1F' : '#F4EFE6'} />
     <link rel="icon" type="image/webp" href="/logo.webp" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
   </head>
   <body class:list={['flex min-h-dvh flex-col', theme === 'night' ? 'theme-night bg-night bg-night-grain text-sand' : 'bg-sand bg-sand-tex text-navy']}>
     <a href="#main" class="sr-only z-50 bg-navy px-6 py-4 text-sand focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
