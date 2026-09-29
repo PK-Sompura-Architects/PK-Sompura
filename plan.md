@@ -222,6 +222,8 @@ LCP is over the 2.5 s target on all three pages before the loader is added. Not 
 
 Read with care: once the loader is in, its full-colour logo (`/logo-fill.webp`, 20 KB, shown at 100%) is the largest paint on `/projects` and `/contact`, so their LCP now measures the loader, not the page. The `/projects` h1 still waits for `cut.webp` (204 KB) underneath; that is a real problem the loader hides, not fixes. The loader adds ~7 KB gzipped of inline SVG to every page. Under devtools throttling all three pages are under 2.5 s; under simulation none are, before or after.
 
+**After the photos (Phase 4)**, devtools / simulated: `/` 1.59 / 3.99 s, `/projects` 2.24 / 4.36 s, `/contact` 2.24 / 3.53 s; CLS 0 / 0.01 / 0.05. The home page's simulated LCP rose by the extra image bytes the simulation replays; under real throttling it is unchanged.
+
 ---
 
 ## 10. Photographs
@@ -229,6 +231,7 @@ Read with care: once the loader is in, its full-colour logo (`/logo-fill.webp`, 
 - Source: `D:\projects\ALBUM-IMAGES\` (read-only, never committed). Use `OUR WORK PHOTO\`, not the duplicate `work_website_images\`.
 - 1,352 unique images. Known problems: orange date stamps (all 82 NIKON frames, 101 in total), the "REDMI NOTE 11 | KASHYAP" mark bottom-left (118 images), and 183 images under 1 MP.
 - Each chosen image is cropped or retouched to remove stamps and marks, checked for faces, and exported to `media/` as AVIF + WebP at 480, 960, 1600 and 2400 px widths.
+- **Placed (Phase 4):** 30 images, chosen per placeholder from `OUR WORK PHOTO\` first (root project folders only where `OUR WORK PHOTO` had none: Gelmata, Adpur), listed with their source, crop and rotation in `tools/photos/picks.json` and exported by `tools/photos/export.py` to `public/media/` (AVIF + WebP, 480/960/1600/2400, never above the source width; 23 MB for every size of both formats, one file per slot downloaded). Supabase storage holds no project images (`temples` is empty), so nothing is served from it. No faces: every pick was checked by eye (the face detector flags carved deities too); people at the edges were cropped out, and three candidates were swapped for people-free frames. Stamps and marks removed by cropping (all NIKON date stamps, one REDMI mark, one PK mark, one burned-in phone date); the two sideways CNC machine photos turned upright. **Without photos** (typographic card): Godiji Derasar (folder empty), Dadabhagavan (no folder), Vaishno Devi, Ahmedabad (only 300 × 200 thumbnails). **Under 1 MP:** the pencil elevation (1260 × 582) is used only in the build-sequence plate, exported at 480 and 960.
 - Key images: the Gulbarga mountain temple in evening light, the Gulbarga build sequence, the pencil mountain elevations, the painted mountain model (NIKON DSCN2429–2438), finished stone temples (NIKON DSCN2489–2500), CNC-cut panels, and the machine photos (DSCN2396–2398, 2402–2403, 2410–2413, turned upright).
 
 ---

@@ -15,16 +15,16 @@ const featured = (await getCollection('projects', (p) => p.data.featured))
   .sort((a, b) => featuredOrder.indexOf(a.id) - featuredOrder.indexOf(b.id));
 
 const plates = [
-  { n: '01', title: 'Sketch', caption: 'Pencil elevations of the mountain.', photo: 'Pencil mountain elevations · FERO folder' },
-  { n: '02', title: 'Model', caption: 'A painted model of the mountain and its shrines.', photo: 'Painted mountain model · NIKON DSCN2429–2438' },
-  { n: '03', title: 'Foundation', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga build sequence · foundation' },
-  { n: '04', title: 'Rock shell', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga build sequence · rock shell' },
-  { n: '05', title: 'The finished temple', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga mountain temple, evening' },
+  { n: '01', title: 'Sketch', caption: 'Pencil elevations of the mountain.', photo: 'Pencil mountain elevations · FERO folder', src: 'fero-sketch' },
+  { n: '02', title: 'Model', caption: 'A painted model of the mountain and its shrines.', photo: 'Painted mountain model · NIKON DSCN2429–2438', src: 'fero-model' },
+  { n: '03', title: 'Foundation', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga build sequence · foundation', src: 'fero-foundation' },
+  { n: '04', title: 'Rock shell', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga build sequence · rock shell', src: 'fero-shell' },
+  { n: '05', title: 'The finished temple', caption: 'Vaishno Devi, Gulbarga, Karnataka.', photo: 'Gulbarga mountain temple, evening', src: 'fero-finished' },
 ];
 const cncPhotos = [
-  { label: 'CNC machine, workshop · DSCN2396, turned upright, date stamp removed', caption: 'In the workshop' },
-  { label: 'CNC machine · DSCN2402–2403, upright', caption: 'In the workshop' },
-  { label: 'CNC-cut panel, detail', caption: 'A CNC-cut panel' },
+  { label: 'CNC machine, workshop · DSCN2396, turned upright, date stamp removed', caption: 'In the workshop', src: 'cnc-machine-1' },
+  { label: 'CNC machine · DSCN2402–2403, upright', caption: 'In the workshop', src: 'cnc-machine-2' },
+  { label: 'CNC-cut panel, detail', caption: 'A CNC-cut panel', src: 'cnc-panel' },
 ];
 ---
 <Base title="P.K. Sompura · Temple Architect & Contractor, Palitana">
@@ -85,11 +85,11 @@ const cncPhotos = [
     </div>
     <div class="grid-page mt-10 gap-y-6 lg:mt-24">
       <div class="col-span-4 md:col-span-6 lg:col-span-6">
-        <PhotoFrame reveal glare shape="arch" frame="aspect-[3/4] lg:aspect-[4/5]" label="Hand-carved sandstone panel, close-up, raking daylight · Stone Works archive [A10]" caption="Sandstone panel, hand carved" />
+        <PhotoFrame reveal glare shape="arch" frame="aspect-[3/4] lg:aspect-[4/5]" src="stone-sandstone" label="Hand-carved sandstone panel, close-up, raking daylight · Stone Works archive [A10]" caption="Sandstone panel, hand carved" />
       </div>
       <div class="col-span-4 flex flex-col gap-6 md:col-span-6 lg:col-span-5 lg:col-start-8 lg:gap-16 lg:pt-40">
-        <div class="max-lg:hidden"><PhotoFrame reveal glare frame="aspect-[13/10]" label="Marble carving, detail · Stone Works archive [A10]" caption="Marble, hand carved" /></div>
-        <PhotoFrame reveal glare frame="aspect-[4/3] lg:aspect-[3/2]" label="Finished stone temple · NIKON DSCN2489–2500" caption="A finished stone temple" />
+        <div class="max-lg:hidden"><PhotoFrame reveal glare frame="aspect-[13/10]" src="stone-marble" sizes="(min-width: 1024px) 40vw, 100vw" label="Marble carving, detail · Stone Works archive [A10]" caption="Marble, hand carved" /></div>
+        <PhotoFrame reveal glare frame="aspect-[4/3] lg:aspect-[3/2]" src="stone-temple" label="Finished stone temple · NIKON DSCN2489–2500" caption="A finished stone temple" />
       </div>
     </div>
   </section>
@@ -115,7 +115,7 @@ const cncPhotos = [
       <ul class="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 [scrollbar-width:none] md:px-10 lg:grid lg:grid-cols-12 lg:gap-6 lg:overflow-visible lg:px-0" aria-label="In the workshop">
         {cncPhotos.map((p) => (
           <li class="w-[260px] flex-none snap-start lg:col-span-4 lg:w-auto">
-            <PhotoFrame frame="aspect-[13/17] lg:aspect-[3/4]" label={p.label} caption={p.caption} captionClass="max-lg:hidden" />
+            <PhotoFrame frame="aspect-[13/17] lg:aspect-[3/4]" src={p.src} sizes="(min-width: 1024px) 30vw, 70vw" label={p.label} caption={p.caption} captionClass="max-lg:hidden" />
           </li>
         ))}
       </ul>
@@ -144,7 +144,7 @@ const cncPhotos = [
               <span class="flex-none font-mono text-[12px] font-medium tracking-[.08em] text-sky lg:text-[13px]">{p.n} / 05</span>
             </div>
             <div class="lg:col-span-7 lg:h-full">
-              <PhotoFrame tone="night" class="lg:h-full" frame="h-[200px] lg:h-full" label={p.photo} />
+              <PhotoFrame tone="night" class="lg:h-full" frame="h-[200px] lg:h-full" src={p.src} sizes="(min-width: 1024px) 50vw, 100vw" label={p.photo} />
             </div>
             <p class="text-[15px] leading-normal text-sky lg:hidden">{p.caption}</p>
           </li>
@@ -172,8 +172,8 @@ const cncPhotos = [
           <li data-rise class="border-t border-slate lg:border-0">
             <a href={`/projects/${f.id}`} class="group flex items-center gap-4 py-4 lg:flex-col lg:items-stretch lg:gap-5 lg:py-0">
               <div class="w-24 flex-none lg:w-auto">
-                <span class="lg:hidden"><PhotoFrame shape="arch" compact frame="h-[124px]" label={p.photos[0]?.label ?? p.name} /></span>
-                <span class="max-lg:hidden"><PhotoFrame glare shape="arch" frame="aspect-[4/5]" label={p.photos[0]?.label ?? p.name} /></span>
+                <span class="lg:hidden"><PhotoFrame shape="arch" compact frame="h-[124px]" src={p.photos[0]?.src} sizes="96px" label={p.photos[0]?.label ?? p.name} /></span>
+                <span class="max-lg:hidden"><PhotoFrame glare shape="arch" frame="aspect-[4/5]" src={p.photos[0]?.src} sizes="30vw" label={p.photos[0]?.label ?? p.name} /></span>
               </div>
               <div class="flex min-w-0 flex-1 flex-col gap-1.5 lg:gap-2.5">
                 <p class="font-display text-[24px] leading-[1.08] group-hover:text-saffron-text lg:text-[36px] lg:leading-[1.05]">{p.name}</p>

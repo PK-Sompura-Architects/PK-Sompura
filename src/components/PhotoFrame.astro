@@ -1,9 +1,12 @@
 ---
 // PhotoFrame: arch (temple-arch mask) or rect, light or night. Until a photo exists it renders the
 // labelled dev placeholder named after the plan.md §10 image. `frame` sets the size/aspect classes.
+// `src` is a photo id from src/data/media.json (tools/photos/export.py): a <picture> with AVIF/WebP srcsets.
+import { mediaSet } from '../lib/media';
 interface Props {
   label: string;
-  src?: string;
+  src?: string; // media id
+  sizes?: string;
   alt?: string;
   shape?: 'arch' | 'rect';
   tone?: 'light' | 'night';
@@ -15,14 +18,16 @@ interface Props {
   glare?: boolean; // Glare Hover sheen, desktop only
   class?: string;
 }
-const { label, src, alt = '', shape = 'rect', tone = 'light', frame, caption, captionClass, compact = false, reveal = false, glare = false, class: cls } = Astro.props;
+const { label, src, sizes = '(min-width: 1024px) 50vw, 100vw', alt, shape = 'rect', tone = 'light', frame, caption, captionClass, compact = false, reveal = false, glare = false, class: cls } = Astro.props;
 const night = tone === 'night';
+const m = mediaSet(src);
 ---
 <figure class:list={['m-0 flex flex-col gap-3 lg:gap-3.5', cls]}>
   <div data-reveal-photo={reveal ? '' : undefined} class:list={['relative overflow-hidden', frame, glare && 'glare', shape === 'arch' && 'rounded-t-full', night && 'border border-slate',
-    !src && (night ? 'ph-night' : 'ph-light')]}>
-    {src
-      ? <img src={src} alt={alt} loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
+    !m && (night ? 'ph-night' : 'ph-light')]}>
+    {m
+      ? <picture><source type="image/avif" srcset={m.avif} sizes={sizes} /><img src={m.src} srcset={m.webp} sizes={sizes} alt={alt ?? m.alt} width={m.w} height={m.h}
+          loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" /></picture>
       : compact
         ? <span class="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-sand px-1 py-0.5 font-mono text-[9px]" title={label}>PHOTO</span>
         : <span class:list={['absolute bottom-3 left-3 right-3 w-fit max-w-[calc(100%-24px)] px-2 py-1.5 font-mono text-[12px] leading-snug lg:bottom-4 lg:left-4',

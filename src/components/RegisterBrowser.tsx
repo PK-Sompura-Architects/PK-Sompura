@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { mediaSet } from '../lib/media';
 
 // The Temple Register: filter bar + list (Board 02). Server-rendered in full, so with JS off every entry shows;
 // the filter controls become visible once hydrated. State mirrors the URL: ?place=&scope=&sort=
@@ -16,7 +17,7 @@ export interface Entry {
   placeKey: string; // URL value, e.g. "tharad"
   type: string;
   scope: Scope[];
-  lead?: string; // label of the first photo, if the project has any
+  lead?: string; // media id of the first photo, if the project has any (src/data/media.json)
 }
 
 const scopeKey = (s: Scope) => (s === 'Fero / mountain' ? 'fero' : s.toLowerCase().replace(/\s+/g, '-'));
@@ -167,7 +168,7 @@ export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
                         <span className="font-display text-title text-sand">{e.name}</span>
                         <Diamond />
                         <span className="font-mono text-[14px] text-sky">{e.placeFull}</span>
-                        {e.lead && <span className="ph-night h-[72px] w-14 flex-none rounded-t-full border border-sky" />}
+                        {e.lead && <img src={`/media/${e.lead}-480.webp`} alt="" loading="lazy" decoding="async" className="h-[72px] w-14 flex-none rounded-t-full border border-sky object-cover" />}
                         <span className="font-mono text-[14px] text-sky">{e.type}</span>
                         <Diamond />
                         <span className="font-mono text-[14px] uppercase tracking-[.06em] text-sand">{e.scope.join(' · ')}</span>
@@ -200,9 +201,7 @@ export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
               <div className="flex flex-col gap-4 pb-6">
                 {e.lead ? (
                   <>
-                    <div className="ph-light relative h-[340px] overflow-hidden rounded-t-full">
-                      <span className="absolute bottom-3 left-3 right-3 w-fit border border-navy bg-sand px-2 py-1.5 font-mono text-[12px] leading-snug">PHOTO · {e.name}{e.placeKey !== 'to-confirm' ? `, ${e.placeFull.split(',')[0]}` : ''}</span>
-                    </div>
+                    <LeadPhoto id={e.lead} />
                     <dl className="grid grid-cols-[72px_1fr] gap-x-3 gap-y-2 font-mono text-[12px] leading-normal">
                       <dt className="uppercase tracking-[.08em] text-slate-deep">Type</dt><dd>{e.type}</dd>
                       <dt className="uppercase tracking-[.08em] text-slate-deep">Scope</dt><dd>{e.scope.join(' · ')}</dd>
@@ -250,6 +249,18 @@ function Dentils({ count, size }: { count: number; size: number }) {
     <div className="flex justify-between" aria-hidden="true">
       {Array.from({ length: count }, (_, i) => <span key={i} className="bg-stone shadow-relief" style={{ width: size, height: size }} />)}
     </div>
+  );
+}
+
+// The project's lead photo in the expanded mobile row (arch mask, 340 px tall).
+function LeadPhoto({ id }: { id: string }) {
+  const m = mediaSet(id)!;
+  return (
+    <picture>
+      <source type="image/avif" srcSet={m.avif} sizes="100vw" />
+      <img src={m.src} srcSet={m.webp} sizes="100vw" alt={m.alt} width={m.w} height={m.h} loading="lazy" decoding="async"
+        className="h-[340px] w-full rounded-t-full object-cover" />
+    </picture>
   );
 }
 

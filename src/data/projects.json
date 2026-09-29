@@ -12,7 +12,8 @@
   ],
   "photos": [
    {
-    "label": "Adpur Dheti Pag, Adpur · lead image"
+    "label": "Adpur Dheti Pag, Adpur · lead image",
+    "src": "adpur-dheti-pag"
    }
   ],
   "featured": false
@@ -43,7 +44,8 @@
   ],
   "photos": [
    {
-    "label": "Bhamriya, Bhamriya · lead image"
+    "label": "Bhamriya, Bhamriya · lead image",
+    "src": "bhamriya"
    }
   ],
   "featured": false
@@ -61,7 +63,8 @@
   ],
   "photos": [
    {
-    "label": "Bhavnagar, Bhavnagar · lead image"
+    "label": "Bhavnagar, Bhavnagar · lead image",
+    "src": "bhavnagar"
    }
   ],
   "featured": false
@@ -77,11 +80,7 @@
    "CNC",
    "Construction"
   ],
-  "photos": [
-   {
-    "label": "Dadabhagavan, Kelanpur · lead image"
-   }
-  ],
+  "photos": [],
   "featured": false
  },
  {
@@ -110,7 +109,8 @@
   ],
   "photos": [
    {
-    "label": "Digambar Jain Derasar, Baroda · lead image"
+    "label": "Digambar Jain Derasar, Baroda · lead image",
+    "src": "digambar-jain-derasar"
    }
   ],
   "featured": true
@@ -141,7 +141,8 @@
   ],
   "photos": [
    {
-    "label": "Gelmata, Rajkot · lead image"
+    "label": "Gelmata, Rajkot · lead image",
+    "src": "gelmata"
    }
   ],
   "featured": true
@@ -157,28 +158,8 @@
    "Hand carving",
    "Construction"
   ],
-  "photos": [
-   {
-    "label": "Godiji Derasar, Tharad · lead image, full elevation",
-    "caption": "Front elevation"
-   },
-   {
-    "label": "Carved detail"
-   },
-   {
-    "label": "Photo 3"
-   },
-   {
-    "label": "Photo 4"
-   },
-   {
-    "label": "Photo 5"
-   },
-   {
-    "label": "Wide, landscape crop"
-   }
-  ],
-  "featured": true
+  "photos": [],
+  "featured": false
  },
  {
   "id": "vaishno-devi-gulbarga",
@@ -193,7 +174,8 @@
   ],
   "photos": [
    {
-    "label": "Vaishno Devi, Gulbarga · lead image"
+    "label": "Vaishno Devi, Gulbarga · lead image",
+    "src": "vaishno-devi-gulbarga"
    }
   ],
   "featured": true
@@ -211,7 +193,8 @@
   ],
   "photos": [
    {
-    "label": "Hastgiri, Hastgiri · lead image"
+    "label": "Hastgiri, Hastgiri · lead image",
+    "src": "hastgiri"
    }
   ],
   "featured": true
@@ -241,7 +224,8 @@
   ],
   "photos": [
    {
-    "label": "Jambudip · lead image"
+    "label": "Jambudip · lead image",
+    "src": "jambudip"
    }
   ],
   "featured": false
@@ -258,7 +242,8 @@
   ],
   "photos": [
    {
-    "label": "Kachhi Bhavan, Junagadh · lead image"
+    "label": "Kachhi Bhavan, Junagadh · lead image",
+    "src": "kachhi-bhavan-junagadh"
    }
   ],
   "featured": false
@@ -276,7 +261,8 @@
   ],
   "photos": [
    {
-    "label": "Kachhi Bhavan, Palitana · lead image"
+    "label": "Kachhi Bhavan, Palitana · lead image",
+    "src": "kachhi-bhavan-palitana"
    }
   ],
   "featured": true
@@ -320,7 +306,8 @@
   ],
   "photos": [
    {
-    "label": "Liliya, Liliya · lead image"
+    "label": "Liliya, Liliya · lead image",
+    "src": "liliya"
    }
   ],
   "featured": false
@@ -350,7 +337,8 @@
   ],
   "photos": [
    {
-    "label": "Mota Derasar, Tharad · lead image"
+    "label": "Mota Derasar, Tharad · lead image",
+    "src": "mota-derasar"
    }
   ],
   "featured": false
@@ -367,7 +355,8 @@
   ],
   "photos": [
    {
-    "label": "Osval, Palitana · lead image"
+    "label": "Osval, Palitana · lead image",
+    "src": "osval"
    }
   ],
   "featured": false
@@ -397,10 +386,11 @@
   ],
   "photos": [
    {
-    "label": "Rampara, Rampara · lead image"
+    "label": "Rampara, Rampara · lead image",
+    "src": "rampara"
    }
   ],
-  "featured": false
+  "featured": true
  },
  {
   "id": "rrd",
@@ -415,7 +405,8 @@
   ],
   "photos": [
    {
-    "label": "RRD, Limbdi · lead image"
+    "label": "RRD, Limbdi · lead image",
+    "src": "rrd"
    }
   ],
   "featured": false
@@ -446,7 +437,8 @@
   ],
   "photos": [
    {
-    "label": "Songadh, Songadh · lead image"
+    "label": "Songadh, Songadh · lead image",
+    "src": "songadh"
    }
   ],
   "featured": false
@@ -463,7 +455,8 @@
   ],
   "photos": [
    {
-    "label": "Surat, Surat · lead image"
+    "label": "Surat, Surat · lead image",
+    "src": "surat"
    }
   ],
   "featured": false
@@ -507,7 +500,8 @@
   ],
   "photos": [
    {
-    "label": "Varkhadi, Tharad · lead image"
+    "label": "Varkhadi, Tharad · lead image",
+    "src": "varkhadi"
    }
   ],
   "featured": false
@@ -523,11 +517,7 @@
    "Fero / mountain",
    "Construction"
   ],
-  "photos": [
-   {
-    "label": "Vaishno Devi, Ahmedabad · lead image"
-   }
-  ],
+  "photos": [],
   "featured": false
  }
 ]

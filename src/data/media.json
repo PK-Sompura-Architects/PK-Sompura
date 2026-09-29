@@ -1,0 +1,310 @@
+{
+ "adpur-dheti-pag": {
+  "w": 2016,
+  "h": 1406,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Adpur Dheti Pag: a white marble derasar with a tall carved shikhara, seen from above"
+ },
+ "bhamriya": {
+  "w": 960,
+  "h": 1203,
+  "widths": [
+   480,
+   960
+  ],
+  "alt": "Bhamriya: the white stone shikhara rising in scaffolding"
+ },
+ "bhavnagar": {
+  "w": 1600,
+  "h": 1080,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Bhavnagar: the rock shell of an artificial mountain under construction"
+ },
+ "digambar-jain-derasar": {
+  "w": 3456,
+  "h": 4608,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "Digambar Jain Derasar, Baroda: a carved sandstone facade and stair"
+ },
+ "gelmata": {
+  "w": 1600,
+  "h": 1200,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Gelmata, Rajkot: a white temple and its shikhara across a paved court"
+ },
+ "hastgiri": {
+  "w": 2016,
+  "h": 1512,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Hastgiri: three pink sandstone shikharas above a hillside"
+ },
+ "jambudip": {
+  "w": 2016,
+  "h": 1512,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Jambudip: a domed sandstone temple under a blue sky"
+ },
+ "kachhi-bhavan-junagadh": {
+  "w": 2202,
+  "h": 1920,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Kachhi Bhavan, Junagadh: a white marble temple with twin shikharas"
+ },
+ "kachhi-bhavan-palitana": {
+  "w": 1452,
+  "h": 1512,
+  "widths": [
+   480,
+   960
+  ],
+  "alt": "Kachhi Bhavan, Palitana: a carved sandstone temple and its shikhara"
+ },
+ "liliya": {
+  "w": 1920,
+  "h": 2560,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Liliya: a stone shikhara nearing completion"
+ },
+ "mota-derasar": {
+  "w": 1496,
+  "h": 2256,
+  "widths": [
+   480,
+   960
+  ],
+  "alt": "Mota Derasar, Tharad: a white stone wall of carved bands and niches"
+ },
+ "osval": {
+  "w": 2016,
+  "h": 1512,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Osval, Palitana: a carved temple with a pink dome and white mandapa"
+ },
+ "rampara": {
+  "w": 3548,
+  "h": 3024,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "Rampara: twin sandstone shikharas above a carved mandapa"
+ },
+ "rrd": {
+  "w": 3008,
+  "h": 2000,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "RRD, Limbdi: a long sandstone temple with its shikharas in scaffolding"
+ },
+ "songadh": {
+  "w": 2560,
+  "h": 1920,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "Songadh: a white gateway with red arches"
+ },
+ "surat": {
+  "w": 3600,
+  "h": 2160,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "Surat: a painted model of an artificial mountain with caves and a waterfall"
+ },
+ "varkhadi": {
+  "w": 2256,
+  "h": 1496,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Varkhadi, Tharad: the rock shell of an artificial mountain around white shrines"
+ },
+ "vaishno-devi-gulbarga": {
+  "w": 2746,
+  "h": 3120,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "Vaishno Devi, Gulbarga: the red rock mountain and its white shrines in evening light"
+ },
+ "stone-sandstone": {
+  "w": 2016,
+  "h": 1512,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "A hand-carved sandstone ceiling rosette"
+ },
+ "stone-marble": {
+  "w": 2016,
+  "h": 1512,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "A carved ceiling panel, detail"
+ },
+ "stone-temple": {
+  "w": 4608,
+  "h": 3041,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "A finished stone temple with its shikhara and mandapa"
+ },
+ "cnc-machine-1": {
+  "w": 3041,
+  "h": 4608,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "A CNC stone-cutting machine in the workshop"
+ },
+ "cnc-machine-2": {
+  "w": 3041,
+  "h": 4608,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "A CNC machine head over a stone block"
+ },
+ "cnc-panel": {
+  "w": 4285,
+  "h": 3456,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "A CNC-cut sandstone panel with a circular pattern"
+ },
+ "fero-sketch": {
+  "w": 1184,
+  "h": 582,
+  "widths": [
+   480,
+   960
+  ],
+  "alt": "A pencil elevation of an artificial mountain"
+ },
+ "fero-model": {
+  "w": 4608,
+  "h": 3041,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "A painted model of the mountain and its shrines"
+ },
+ "fero-foundation": {
+  "w": 1600,
+  "h": 1200,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alt": "Gulbarga: steel reinforcement laid for the foundation"
+ },
+ "fero-shell": {
+  "w": 1280,
+  "h": 960,
+  "widths": [
+   480,
+   960
+  ],
+  "alt": "Gulbarga: the stone walls of the rock shell rising"
+ },
+ "fero-finished": {
+  "w": 2746,
+  "h": 2309,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "Gulbarga: the finished mountain temple in evening light"
+ },
+ "workshop": {
+  "w": 4608,
+  "h": 3041,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alt": "The machine hall of the workshop in Palitana"
+ }
+}

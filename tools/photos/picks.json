@@ -1,0 +1,305 @@
+{
+ "_note": "Phase 4 photo picks. src is relative to D:\\projects\\ALBUM-IMAGES (read-only, never committed). crop = [left, top, right, bottom] as fractions of the upright image; rotate = degrees counter-clockwise, applied after the crop. Crops remove the orange date stamps (NIKON), the REDMI watermark, a small PK mark, and people at the edges.",
+ "adpur-dheti-pag": {
+  "src": "OUR WORK PHOTO/upload/adpur gheti pag-1.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ],
+  "alt": "Adpur Dheti Pag: a white marble derasar with a tall carved shikhara, seen from above"
+ },
+ "bhamriya": {
+  "src": "OUR WORK PHOTO/BHAMRIYA/IMG-20230421-WA0017.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   0.94
+  ],
+  "alt": "Bhamriya: the white stone shikhara rising in scaffolding"
+ },
+ "bhavnagar": {
+  "src": "OUR WORK PHOTO/BHAVNAGAR/IMG-20240730-WA0013.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   0.9
+  ],
+  "alt": "Bhavnagar: the rock shell of an artificial mountain under construction"
+ },
+ "digambar-jain-derasar": {
+  "src": "OUR WORK PHOTO/upload/DJD-baroda-2.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Digambar Jain Derasar, Baroda: a carved sandstone facade and stair"
+ },
+ "gelmata": {
+  "src": "Gelmata Rajkot/WhatsApp Image 2026-04-16 at 6.33.51 PM.jpeg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Gelmata, Rajkot: a white temple and its shikhara across a paved court"
+ },
+ "hastgiri": {
+  "src": "OUR WORK PHOTO/upload/GN1.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Hastgiri: three pink sandstone shikharas above a hillside"
+ },
+ "jambudip": {
+  "src": "OUR WORK PHOTO/upload/jambudeep-2.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Jambudip: a domed sandstone temple under a blue sky"
+ },
+ "kachhi-bhavan-junagadh": {
+  "src": "OUR WORK PHOTO/upload/KBJ-1.jpg",
+  "crop": [
+   0,
+   0,
+   0.86,
+   1
+  ],
+  "alt": "Kachhi Bhavan, Junagadh: a white marble temple with twin shikharas"
+ },
+ "kachhi-bhavan-palitana": {
+  "src": "OUR WORK PHOTO/upload/DSCF5664.JPG",
+  "crop": [
+   0,
+   0,
+   0.72,
+   1
+  ],
+  "alt": "Kachhi Bhavan, Palitana: a carved sandstone temple and its shikhara"
+ },
+ "liliya": {
+  "src": "OUR WORK PHOTO/LILIYA/20140925_142309.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Liliya: a stone shikhara nearing completion"
+ },
+ "mota-derasar": {
+  "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/DSC_0171.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Mota Derasar, Tharad: a white stone wall of carved bands and niches"
+ },
+ "osval": {
+  "src": "OUR WORK PHOTO/OSVAL PALITANA/DSCF5634.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Osval, Palitana: a carved temple with a pink dome and white mandapa"
+ },
+ "rampara": {
+  "src": "OUR WORK PHOTO/RAMAPARA/20200316_122339.jpg",
+  "crop": [
+   0,
+   0,
+   0.88,
+   1
+  ],
+  "alt": "Rampara: twin sandstone shikharas above a carved mandapa"
+ },
+ "rrd": {
+  "src": "OUR WORK PHOTO/1 (20).JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "RRD, Limbdi: a long sandstone temple with its shikharas in scaffolding"
+ },
+ "songadh": {
+  "src": "OUR WORK PHOTO/SONGHATH/20140909_183322.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Songadh: a white gateway with red arches"
+ },
+ "surat": {
+  "src": "OUR WORK PHOTO/SURAT/IMG_20150910_113205 - Copy.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Surat: a painted model of an artificial mountain with caves and a waterfall"
+ },
+ "varkhadi": {
+  "src": "OUR WORK PHOTO/VARKHADI THARAD/DSC_0108.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Varkhadi, Tharad: the rock shell of an artificial mountain around white shrines"
+ },
+ "vaishno-devi-gulbarga": {
+  "src": "OUR WORK PHOTO/GULBARGA/IMG_20180620_173731.jpg",
+  "crop": [
+   0,
+   0,
+   0.66,
+   1
+  ],
+  "alt": "Vaishno Devi, Gulbarga: the red rock mountain and its white shrines in evening light"
+ },
+ "stone-sandstone": {
+  "src": "OUR WORK PHOTO/HASTGIRI/DSCF5590.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "A hand-carved sandstone ceiling rosette"
+ },
+ "stone-marble": {
+  "src": "OUR WORK PHOTO/upload/DSCF5671.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "A carved ceiling panel, detail"
+ },
+ "stone-temple": {
+  "src": "NIKON CAMERA/DSCN2490.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   0.88
+  ],
+  "alt": "A finished stone temple with its shikhara and mandapa"
+ },
+ "cnc-machine-1": {
+  "src": "NIKON CAMERA/DSCN2396.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   0.88
+  ],
+  "rotate": 90,
+  "alt": "A CNC stone-cutting machine in the workshop"
+ },
+ "cnc-machine-2": {
+  "src": "NIKON CAMERA/DSCN2402.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   0.88
+  ],
+  "rotate": 90,
+  "alt": "A CNC machine head over a stone block"
+ },
+ "cnc-panel": {
+  "src": "OUR WORK PHOTO/cnc work/DSCN4140.JPG",
+  "crop": [
+   0,
+   0,
+   0.93,
+   1
+  ],
+  "alt": "A CNC-cut sandstone panel with a circular pattern"
+ },
+ "fero-sketch": {
+  "src": "OUR WORK PHOTO/FERO/IMG-20210915-WA0019.jpg",
+  "crop": [
+   0,
+   0,
+   0.94,
+   1
+  ],
+  "alt": "A pencil elevation of an artificial mountain"
+ },
+ "fero-model": {
+  "src": "NIKON CAMERA/DSCN2430.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   0.88
+  ],
+  "alt": "A painted model of the mountain and its shrines"
+ },
+ "fero-foundation": {
+  "src": "OUR WORK PHOTO/GULBARGA/IMG-20160303-WA0003.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Gulbarga: steel reinforcement laid for the foundation"
+ },
+ "fero-shell": {
+  "src": "OUR WORK PHOTO/GULBARGA/IMG-20160503-WA0002.jpg",
+  "crop": [
+   0,
+   0,
+   1,
+   1
+  ],
+  "alt": "Gulbarga: the stone walls of the rock shell rising"
+ },
+ "fero-finished": {
+  "src": "OUR WORK PHOTO/GULBARGA/IMG_20180620_173734.jpg",
+  "crop": [
+   0,
+   0,
+   0.66,
+   0.74
+  ],
+  "alt": "Gulbarga: the finished mountain temple in evening light"
+ },
+ "workshop": {
+  "src": "NIKON CAMERA/DSCN2412.JPG",
+  "crop": [
+   0,
+   0,
+   1,
+   0.88
+  ],
+  "alt": "The machine hall of the workshop in Palitana"
+ }
+}

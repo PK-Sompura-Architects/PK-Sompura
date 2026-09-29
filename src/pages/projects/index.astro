@@ -12,7 +12,7 @@ const entries: Entry[] = (await sortedProjects()).map(({ id, data: p }) => ({
   placeKey: p.place ? slug(p.place) : 'to-confirm',
   type: p.type,
   scope: p.scope,
-  lead: p.photos[0]?.label,
+  lead: p.photos[0]?.src,
 }));
 ---
 <Base title="Temple Register · P.K. Sompura" current="register"
