@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+  <style>body{margin:0;background:#CBC3B5;-webkit-font-smoothing:antialiased}a{color:#262654}a:hover{color:#985A1F}</style>
+</helmet>
+<div style="padding:80px;display:flex;flex-direction:column;gap:72px;font-family:'Hanken Grotesk',sans-serif;color:#262654">
+  <header style="display:flex;flex-direction:column;gap:12px;max-width:1200px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">P.K. Sompura · Board 03 · /projects/[slug]</div>
+    <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:72px;line-height:1">One project, with and without photographs</h1>
+    <p style="margin:0;font-size:18px;line-height:1.6;max-width:940px">One template. The page is built from the entry's fields; any field that is missing is simply left out, and there is no empty box. <strong>[A4]</strong> Sample entries. <strong>[A14]</strong> "Note" is the optional free-text field; the plan gives no copy, so it is shown as a labelled slot. Footer = Home §8.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap"><a href="Overview.dc.html">← Overview</a><a href="Register.dc.html">Register</a><a href="Handoff.dc.html">Handoff</a></div>
+  </header>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div data-screen-label="Project with photos, desktop" style="width:1440px;flex:none;background:#F4EFE6 url(assets/tex/sand.png)">
+      <nav style="height:88px;padding:0 80px;display:flex;align-items:center;justify-content:space-between">
+        <a href="Home.dc.html" style="display:flex;align-items:center;gap:14px;text-decoration:none;color:#262654"><img src="assets/logo.png" alt="P.K. Sompura logo" style="height:48px;width:auto;display:block"><span style="font-family:'Libre Caslon Display',serif;font-size:26px;line-height:1;white-space:nowrap">P.K. Sompura</span></a>
+        <div style="display:flex;gap:36px;font-size:15px;font-weight:500;white-space:nowrap"><a href="#" style="text-decoration:none">Stone Works</a><a href="#" style="text-decoration:none">CNC Works</a><a href="#" style="text-decoration:none">Fero Works</a><a href="Register.dc.html" style="text-decoration:underline;text-underline-offset:6px">Temple Register</a><a href="#" style="text-decoration:none">Contact</a></div>
+      </nav>
+      <div style="padding:64px 80px 0;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B;display:flex;gap:10px"><a href="Register.dc.html" style="color:#262654">Temple Register</a><span>/</span><span>Tharad, Gujarat</span></div>
+      <div style="padding:48px 80px 96px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:end">
+        <div style="grid-column:1/9;display:flex;flex-direction:column;gap:24px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#52606B">Register entry · No. 10</div>
+          <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:124px;line-height:.94;letter-spacing:-.01em;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.85))">Godiji Derasar</h1>
+        </div>
+        <dl style="grid-column:9/13;margin:0;display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:88px 1fr;gap:16px;padding:14px 0;border-top:1px solid #798A96"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Place</dt><dd style="margin:0;font-size:17px">Tharad, Gujarat</dd></div>
+          <div style="display:grid;grid-template-columns:88px 1fr;gap:16px;padding:14px 0;border-top:1px solid #798A96"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Type</dt><dd style="margin:0;font-size:17px">Jain derasar</dd></div>
+          <div style="display:grid;grid-template-columns:88px 1fr;gap:16px;padding:14px 0;border-top:1px solid #798A96;border-bottom:1px solid #798A96"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Scope</dt><dd style="margin:0;display:flex;flex-wrap:wrap;gap:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;border:1px solid #262654;padding:4px 8px;white-space:nowrap">Hand carving</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;border:1px solid #262654;padding:4px 8px;white-space:nowrap">Construction</span></dd></div>
+        </dl>
+      </div>
+      <div style="padding:0 80px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px">
+        <figure style="grid-column:1/8;margin:0;display:flex;flex-direction:column;gap:14px">
+          <div style="height:920px;border-radius:9999px 9999px 0 0;overflow:hidden;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:20px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.4;background:#F4EFE6;border:1px solid #262654;padding:6px 10px">PHOTO 1 · Godiji Derasar, Tharad · lead image, full elevation</span></div>
+          <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">1 / 6 · Front elevation</figcaption>
+        </figure>
+        <div style="grid-column:9/13;display:flex;flex-direction:column;gap:48px;justify-content:flex-end;padding-bottom:40px">
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px;border:1px dashed #52606B">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Note · optional field [A14]</div>
+            <p style="margin:0;font-family:'Libre Caslon Display',serif;font-size:28px;line-height:1.25">One or two sentences from the entry's note field, set in Caslon. Hidden when empty.</p>
+          </div>
+          <figure style="margin:0;display:flex;flex-direction:column;gap:14px">
+            <div style="height:420px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:16px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.4;background:#F4EFE6;border:1px solid #262654;padding:6px 10px">PHOTO 2 · carved detail</span></div>
+            <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">2 / 6</figcaption>
+          </figure>
+        </div>
+        <figure style="grid-column:1/5;margin:72px 0 0;display:flex;flex-direction:column;gap:14px"><div style="height:400px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:16px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;border:1px solid #262654;padding:6px 10px">PHOTO 3</span></div><figcaption style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">3 / 6</figcaption></figure>
+        <figure style="grid-column:5/9;margin:72px 0 0;display:flex;flex-direction:column;gap:14px"><div style="height:400px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:16px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;border:1px solid #262654;padding:6px 10px">PHOTO 4</span></div><figcaption style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">4 / 6</figcaption></figure>
+        <figure style="grid-column:9/13;margin:72px 0 0;display:flex;flex-direction:column;gap:14px"><div style="height:400px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:16px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;border:1px solid #262654;padding:6px 10px">PHOTO 5</span></div><figcaption style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">5 / 6</figcaption></figure>
+        <figure style="grid-column:3/11;margin:72px 0 0;display:flex;flex-direction:column;gap:14px"><div style="height:560px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:16px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;border:1px solid #262654;padding:6px 10px">PHOTO 6 · wide, landscape crop</span></div><figcaption style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">6 / 6</figcaption></figure>
+      </div>
+      <div style="margin:144px 80px 0;padding:32px 0 160px;border-top:1px solid #262654;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:start">
+        <a href="#" style="display:flex;flex-direction:column;gap:8px;text-decoration:none"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">← Previous · by place</span><span style="font-family:'Libre Caslon Display',serif;font-size:36px">Mota Derasar</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">Tharad, Gujarat</span></a>
+        <a href="Register.dc.html" style="height:48px;padding:0 20px;border:1px solid #262654;display:flex;align-items:center;text-decoration:none;font-size:15px;font-weight:500;white-space:nowrap">Back to the register</a>
+        <a href="#" style="display:flex;flex-direction:column;gap:8px;text-decoration:none;align-items:flex-end;text-align:right"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Next · by place →</span><span style="font-family:'Libre Caslon Display',serif;font-size:36px">Varkhadi</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">Tharad, Gujarat</span></a>
+      </div>
+    </div>
+
+    <div data-screen-label="Project with photos, mobile" style="width:360px;flex:none;background:#F4EFE6 url(assets/tex/sand.png)">
+      <nav style="height:64px;padding:0 12px 0 20px;display:flex;align-items:center;justify-content:space-between"><a href="Home.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#262654"><img src="assets/logo.png" alt="P.K. Sompura logo" style="height:36px;width:auto;display:block"><span style="font-family:'Libre Caslon Display',serif;font-size:21px;line-height:1;white-space:nowrap">P.K. Sompura</span></a><button style="height:44px;padding:0 8px;border:0;background:transparent;display:flex;align-items:center;gap:10px;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Menu<span style="display:flex;flex-direction:column;gap:5px"><span style="width:20px;height:1.5px;background:#262654;display:block"></span><span style="width:20px;height:1.5px;background:#262654;display:block"></span></span></button></nav>
+      <div style="padding:24px 20px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B"><a href="Register.dc.html" style="color:#262654">Temple Register</a> / Tharad</div>
+      <div style="padding:28px 20px 32px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#52606B">Register entry · No. 10</div>
+        <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:52px;line-height:.94;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.85))">Godiji Derasar</h1>
+        <dl style="margin:8px 0 0;display:grid;grid-template-columns:64px 1fr;gap:10px 12px;font-size:15px"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Place</dt><dd style="margin:0">Tharad, Gujarat</dd><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Type</dt><dd style="margin:0">Jain derasar</dd><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Scope</dt><dd style="margin:0">Hand carving · Construction</dd></dl>
+      </div>
+      <div style="padding:0 20px;display:flex;flex-direction:column;gap:20px">
+        <div style="height:440px;border-radius:9999px 9999px 0 0;overflow:hidden;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:12px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;border:1px solid #262654;padding:5px 8px">PHOTO 1 · lead, front elevation</span></div>
+        <div style="padding:16px;border:1px dashed #52606B;display:flex;flex-direction:column;gap:8px"><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Note · optional</div><p style="margin:0;font-family:'Libre Caslon Display',serif;font-size:22px;line-height:1.3">Note field, when present.</p></div>
+        <div style="height:240px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:10px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;border:1px solid #262654;padding:5px 8px">PHOTO 2</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div style="height:200px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:8px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;padding:3px 6px">PHOTO 3</span></div><div style="height:200px;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:8px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:#F4EFE6;padding:3px 6px">PHOTO 4</span></div></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">Photos 5–6 continue in the same two-up rhythm.</div>
+      </div>
+      <div style="margin:64px 20px 0;padding:24px 0 96px;border-top:1px solid #262654;display:flex;flex-direction:column;gap:16px">
+        <a href="#" style="display:flex;justify-content:space-between;align-items:center;min-height:56px;text-decoration:none;gap:12px"><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">← Previous</span><span style="font-family:'Libre Caslon Display',serif;font-size:24px">Mota Derasar</span></span></a>
+        <a href="#" style="display:flex;justify-content:flex-end;align-items:center;min-height:56px;text-decoration:none;text-align:right"><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">Next →</span><span style="font-family:'Libre Caslon Display',serif;font-size:24px">Varkhadi</span></span></a>
+        <a href="Register.dc.html" style="height:52px;border:1px solid #262654;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;font-weight:500">Back to the register</a>
+      </div>
+    </div>
+
+    <aside style="width:300px;flex:none;display:flex;flex-direction:column;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6">
+      <div style="letter-spacing:.08em;text-transform:uppercase">Project page · light theme</div>
+      <div>Lead photo: first in photos[], arch mask, cols 1–7. Gallery: photos 3–5 three-up, 6 wide. With 2–3 photos: lead + one; with 1: lead only (the right column holds note + meta).</div>
+      <div>Prev / next follow the register's default sort (place A–Z), not dates.</div>
+      <div style="border:1px solid #262654;background:#F4EFE6;padding:12px;display:flex;flex-direction:column;gap:6px"><strong style="letter-spacing:.08em">MOTION</strong><div>h1 static (LCP).</div><div>Photos: arch/rect mask grows from the bottom on enter at 85%, 0.9 s power2.out, stagger 100 ms.</div><div>Glare Hover on gallery photos, desktop only, 650 ms ease.</div><div>Tap/click a photo: full-size view, crossfade 250 ms; Esc closes.</div><div>Reduced motion: no reveal, no glare; the viewer opens instantly.</div></div>
+    </aside>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div data-screen-label="Project without photos, desktop" style="width:1440px;flex:none;background:#F4EFE6 url(assets/tex/sand.png)">
+      <nav style="height:88px;padding:0 80px;display:flex;align-items:center;justify-content:space-between">
+        <a href="Home.dc.html" style="display:flex;align-items:center;gap:14px;text-decoration:none;color:#262654"><img src="assets/logo.png" alt="P.K. Sompura logo" style="height:48px;width:auto;display:block"><span style="font-family:'Libre Caslon Display',serif;font-size:26px;line-height:1;white-space:nowrap">P.K. Sompura</span></a>
+        <div style="display:flex;gap:36px;font-size:15px;font-weight:500;white-space:nowrap"><a href="#" style="text-decoration:none">Stone Works</a><a href="#" style="text-decoration:none">CNC Works</a><a href="#" style="text-decoration:none">Fero Works</a><a href="Register.dc.html" style="text-decoration:underline;text-underline-offset:6px">Temple Register</a><a href="#" style="text-decoration:none">Contact</a></div>
+      </nav>
+      <div style="padding:64px 80px 0;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B;display:flex;gap:10px"><a href="Register.dc.html" style="color:#262654">Temple Register</a><span>/</span><span>Jaliya, Gujarat</span></div>
+      <div style="margin:48px 80px 0;background:#E7DFD2 url(assets/tex/stone.png);box-shadow:inset 0 1px 0 rgba(244,239,230,.6),inset 0 -1px 0 rgba(38,38,84,.15);padding:80px 72px 56px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:56px">
+        <div style="grid-column:1/13;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:500"><span>Register entry</span><span>No. 13</span></div>
+        <h1 style="grid-column:1/13;margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:200px;line-height:.9;letter-spacing:-.015em;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1.5px 0 rgba(244,239,230,.75))">Jaliya</h1>
+        <dl style="grid-column:1/13;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px;border-top:1px solid #52606B;padding-top:24px">
+          <div style="display:flex;flex-direction:column;gap:8px"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Place</dt><dd style="margin:0;font-family:'Libre Caslon Display',serif;font-size:32px">Jaliya, Gujarat</dd></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Type</dt><dd style="margin:0;font-family:'Libre Caslon Display',serif;font-size:32px">Jain derasar</dd></div>
+          <div style="display:flex;flex-direction:column;gap:10px"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Scope</dt><dd style="margin:0;display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;border:1px solid #262654;padding:6px 10px;white-space:nowrap">Hand carving</span></dd></div>
+        </dl>
+        <div style="grid-column:1/13;display:flex;justify-content:space-between;padding-top:8px"><sc-for list="{{ dentils }}" as="d" hint-placeholder-count="24"><span style="width:18px;height:18px;background:#E7DFD2;box-shadow:2px 3px 4px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span></sc-for></div>
+      </div>
+      <div style="margin:0 80px;padding:16px 0;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">Photographs of this project are not in the archive yet.</div>
+      <div style="margin:96px 80px 0;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid #262654"><h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:44px">More Jain derasars in the register</h2><a href="Register.dc.html" style="font-size:15px;font-weight:500;white-space:nowrap">See all by type →</a></div>
+        <sc-for list="{{ related }}" as="r" hint-placeholder-count="3"><a href="#" style="display:grid;grid-template-columns:minmax(0,1fr) 260px 32px;gap:24px;align-items:center;height:88px;border-bottom:1px solid #798A96;text-decoration:none"><span style="font-family:'Libre Caslon Display',serif;font-size:32px">{{ r.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px">{{ r.place }}</span><span style="text-align:right;font-size:20px">→</span></a></sc-for>
+      </div>
+      <div style="margin:120px 80px 0;padding:32px 0 160px;border-top:1px solid #262654;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:start">
+        <a href="#" style="display:flex;flex-direction:column;gap:8px;text-decoration:none"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">← Previous · by place</span><span style="font-family:'Libre Caslon Display',serif;font-size:36px">Hastgiri</span></a>
+        <a href="Register.dc.html" style="height:48px;padding:0 20px;border:1px solid #262654;display:flex;align-items:center;text-decoration:none;font-size:15px;font-weight:500;white-space:nowrap">Back to the register</a>
+        <a href="#" style="display:flex;flex-direction:column;gap:8px;text-decoration:none;align-items:flex-end"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">Next · by place →</span><span style="font-family:'Libre Caslon Display',serif;font-size:36px">Kachhi Bhavan</span></a>
+      </div>
+    </div>
+
+    <div data-screen-label="Project without photos, mobile" style="width:360px;flex:none;background:#F4EFE6 url(assets/tex/sand.png)">
+      <nav style="height:64px;padding:0 12px 0 20px;display:flex;align-items:center;justify-content:space-between"><a href="Home.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#262654"><img src="assets/logo.png" alt="P.K. Sompura logo" style="height:36px;width:auto;display:block"><span style="font-family:'Libre Caslon Display',serif;font-size:21px;line-height:1;white-space:nowrap">P.K. Sompura</span></a><button style="height:44px;padding:0 8px;border:0;background:transparent;display:flex;align-items:center;gap:10px;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Menu<span style="display:flex;flex-direction:column;gap:5px"><span style="width:20px;height:1.5px;background:#262654;display:block"></span><span style="width:20px;height:1.5px;background:#262654;display:block"></span></span></button></nav>
+      <div style="padding:24px 20px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B"><a href="Register.dc.html" style="color:#262654">Temple Register</a> / Jaliya</div>
+      <div style="margin:24px 20px 0;background:#E7DFD2 url(assets/tex/stone.png);box-shadow:inset 0 1px 0 rgba(244,239,230,.6),inset 0 -1px 0 rgba(38,38,84,.15);padding:28px 20px;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500"><span>Register entry</span><span>No. 13</span></div>
+        <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:72px;line-height:.9;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.75))">Jaliya</h1>
+        <dl style="margin:0;display:grid;grid-template-columns:64px 1fr;gap:10px 12px;border-top:1px solid #52606B;padding-top:16px;font-size:15px"><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Place</dt><dd style="margin:0">Jaliya, Gujarat</dd><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Type</dt><dd style="margin:0">Jain derasar</dd><dt style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Scope</dt><dd style="margin:0">Hand carving</dd></dl>
+        <div style="display:flex;justify-content:space-between"><sc-for list="{{ dentilsM }}" as="d" hint-placeholder-count="12"><span style="width:10px;height:10px;background:#E7DFD2;box-shadow:1px 2px 2px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span></sc-for></div>
+      </div>
+      <div style="margin:0 20px;padding:12px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.5;color:#52606B">Photographs of this project are not in the archive yet.</div>
+      <div style="margin:56px 20px 0;display:flex;flex-direction:column">
+        <h2 style="margin:0 0 12px;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:30px;line-height:1.1">More Jain derasars</h2>
+        <sc-for list="{{ related }}" as="r" hint-placeholder-count="3"><a href="#" style="display:flex;justify-content:space-between;align-items:center;min-height:68px;border-top:1px solid #798A96;text-decoration:none;gap:12px"><span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Libre Caslon Display',serif;font-size:22px">{{ r.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">{{ r.place }}</span></span><span>→</span></a></sc-for>
+      </div>
+      <div style="margin:48px 20px 0;padding:0 0 96px"><a href="Register.dc.html" style="height:52px;border:1px solid #262654;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:15px;font-weight:500">Back to the register</a></div>
+    </div>
+
+    <aside style="width:300px;flex:none;display:flex;flex-direction:column;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6">
+      <div style="letter-spacing:.08em;text-transform:uppercase">No photos · light theme</div>
+      <div>The typographic tablet (TypeCard, size "page") takes the place of the photos: the name is cut at display size into a stone panel, the fields become an inscription, and a dentil course runs along the bottom edge.</div>
+      <div>One quiet mono line says the photos are not in the archive yet. "Related" = the same type, 3 entries, by place.</div>
+      <div style="border:1px solid #262654;background:#F4EFE6;padding:12px;display:flex;flex-direction:column;gap:6px"><strong style="letter-spacing:.08em">MOTION</strong><div>Tablet: Masked Heading fill wipe on the name, 1.1 s power3.out, on load after first paint (the text is visible from the start; only the texture animates).</div><div>Reduced motion: static.</div></div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      dentils: Array.from({ length: 24 }, (_, i) => i),
+      dentilsM: Array.from({ length: 12 }, (_, i) => i),
+      related: [
+        { name: 'Adpur Dheti Pag', place: 'Adpur, Gujarat' },
+        { name: 'Bhavnagar', place: 'Bhavnagar, Gujarat' },
+        { name: 'Digambar Jain Derasar', place: 'Baroda, Gujarat' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

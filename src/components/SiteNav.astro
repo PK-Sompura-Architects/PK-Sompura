@@ -1,0 +1,70 @@
+---
+import LogoMark from './LogoMark.astro';
+import MobileMenu from './MobileMenu.astro';
+import { nav, type NavKey } from '../data/site';
+
+interface Props { theme?: 'light' | 'night'; current?: NavKey }
+const { theme = 'light', current } = Astro.props;
+const night = theme === 'night';
+const hover = night ? 'hover:text-saffron' : 'hover:text-saffron-text';
+---
+<header class:list={['site-nav relative z-40 max-lg:sticky max-lg:top-0', night ? 'nav-night text-sand' : 'nav-light text-navy']}>
+  <div class="mx-auto flex h-16 w-full items-center justify-between pl-5 pr-3 md:pl-10 md:pr-8 lg:h-22 lg:px-12 xl:max-w-[1440px] xl:px-20">
+    <a href="/" class="flex items-center gap-2.5 no-underline lg:gap-3.5">
+      <span class="lg:hidden"><LogoMark theme={theme} size="nav-sm" /></span>
+      <span class="max-lg:hidden"><LogoMark theme={theme} size="nav" /></span>
+      <span class="whitespace-nowrap font-display text-[21px] leading-none lg:text-[26px]">P.K. Sompura</span>
+    </a>
+
+    <nav aria-label="Main" class="max-lg:hidden">
+      <ul class="flex gap-9 text-[15px] font-medium">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={item.key === current ? 'page' : undefined}
+              class:list={['whitespace-nowrap underline-offset-[5px] transition-colors duration-150 hover:underline', hover,
+                item.key === current ? 'underline !underline-offset-[6px]' : 'no-underline']}
+            >{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      class="flex h-11 min-w-11 items-center gap-2.5 px-2 font-mono text-caption font-medium uppercase lg:hidden"
+      commandfor="site-menu"
+      command="show-modal"
+      aria-haspopup="dialog"
+    >
+      Menu
+      <span class="flex flex-col gap-[5px]" aria-hidden="true">
+        <span class="block h-[1.5px] w-5 bg-current"></span>
+        <span class="block h-[1.5px] w-5 bg-current"></span>
+      </span>
+    </button>
+  </div>
+</header>
+<MobileMenu current={current} />
+
+<style>
+  /* Below lg the header sticks, and once the page has scrolled 24 px it gets a solid fill and a hairline.
+     Done with a scroll-driven animation (no JS); browsers without it get the solid fill from the start. */
+  .site-nav { box-shadow: inset 0 -1px 0 var(--nav-line); background-color: var(--nav-fill); }
+  .nav-light { --fill: theme('colors.sand'); }
+  .nav-night { --fill: theme('colors.night'); }
+  .site-nav { --nav-fill: var(--fill); --nav-line: theme('colors.slate.DEFAULT'); }
+  @supports (animation-timeline: scroll()) {
+    @media (max-width: 1023.98px) {
+      .site-nav { animation: nav-fill linear both; animation-timeline: scroll(root); animation-range: 0 24px; }
+    }
+  }
+  @keyframes nav-fill {
+    from { background-color: transparent; box-shadow: inset 0 -1px 0 transparent; }
+    to { background-color: var(--fill); box-shadow: inset 0 -1px 0 theme('colors.slate.DEFAULT'); }
+  }
+  @media (min-width: 1024px) {
+    .site-nav { background-color: transparent; box-shadow: none; }
+  }
+</style>

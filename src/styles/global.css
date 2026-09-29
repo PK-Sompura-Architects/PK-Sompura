@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    /* Focus colour: navy on light grounds, saffron on night (Handoff §8). */
+    --focus: theme('colors.navy');
+  }
+  body {
+    @apply font-sans text-body text-navy;
+    overflow-x: clip;
+  }
+  .theme-night { --focus: theme('colors.saffron.DEFAULT'); }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  h1, h2, h3, h4 { text-wrap: balance; }
+  /* The mobile menu is a modal <dialog>; lock page scroll while it is open. */
+  html:has(dialog[open]) { overflow: hidden; }
+}
+
+@layer components {
+  /* Page container: margins 20 / 40 / 48 / 80, content max 1280 (Handoff §7). */
+  .wrap { @apply mx-auto w-full px-5 md:px-10 lg:px-12 xl:max-w-[1440px] xl:px-20; }
+  /* 4 / 8 / 12 columns, gutters 16 / 20 / 24. */
+  .grid-page { @apply grid grid-cols-4 gap-x-4 md:grid-cols-8 md:gap-x-5 lg:grid-cols-12 lg:gap-x-6; }
+  /* Section padding 96 / 128 / 176. */
+  .section-y { @apply py-24 md:py-32 xl:py-44; }
+
+  .eyebrow { @apply font-mono text-caption font-medium uppercase; }
+}
+
+@layer utilities {
+  /* Heading text cut into stone: cut.webp clipped to the letters, sand highlight 1 px below.
+     Headings ≥ 40 px only. Navy is the fallback where background-clip:text is unsupported. */
+  .text-cut { color: theme('colors.navy'); }
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .text-cut {
+      background-image: url('/tex/cut.webp');
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 0 rgb(244 239 230 / .85));
+    }
+  }
+  /* Headings on night. */
+  .text-cut-night { text-shadow: 0 -1px 0 theme('colors.night'), 0 1px 0 rgb(121 138 150 / .45); }
+}

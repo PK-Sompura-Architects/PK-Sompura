@@ -25,9 +25,12 @@ NIKON CAMERA/
 OUR WORK PHOTO/
 work_website_images/
 
-# Allowed: logo files and optimised, selected site images
+# Allowed: logo files, optimised selected site images, production assets and the design handoff
 !brand/**
 !media/**
+!public/logo.webp
+!public/tex/**
+!design_handoff_pk_sompura/**
 
 # --- Tooling ---
 node_modules/

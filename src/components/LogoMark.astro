@@ -1,0 +1,17 @@
+---
+// The symbol. On night it sits on a sand arch plate, because its navy line work disappears on night.
+interface Props { theme?: 'light' | 'night'; size: 'nav' | 'nav-sm' | 'footer' | 'footer-sm' }
+const { theme = 'light', size } = Astro.props;
+// Board sizes: light nav 48 / 36 px tall; night plates 38×50 / 30×40 (nav) and 64×84 / 48×62 (footer).
+const light = { nav: 'h-12', 'nav-sm': 'h-9', footer: 'h-[58px]', 'footer-sm': 'h-11' }[size];
+const plate = {
+  nav: 'w-[38px] h-[50px] pb-1', 'nav-sm': 'w-[30px] h-10 pb-[3px]',
+  footer: 'w-16 h-[84px] pb-2', 'footer-sm': 'w-12 h-[62px] pb-1.5',
+}[size];
+const inner = { nav: 'h-9', 'nav-sm': 'h-[29px]', footer: 'h-[58px]', 'footer-sm': 'h-11' }[size];
+---
+{theme === 'light'
+  ? <img src="/logo.webp" alt="" width="141" height="180" class={`${light} w-auto block`} />
+  : <span class={`${plate} flex-none rounded-t-full bg-sand flex items-end justify-center`}>
+      <img src="/logo.webp" alt="" width="141" height="180" class={`${inner} w-auto block`} />
+    </span>}

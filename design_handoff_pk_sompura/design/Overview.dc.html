@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+  <style>body{margin:0;background:#F4EFE6;-webkit-font-smoothing:antialiased}a{color:#262654}a:hover{color:#985A1F}</style>
+</helmet>
+<div style="max-width:1100px;margin:0 auto;padding:96px 24px 128px;display:flex;flex-direction:column;gap:56px;font-family:'Hanken Grotesk',sans-serif;color:#262654;background:#F4EFE6 url(assets/tex/sand.png)">
+  <header style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">P.K. Sompura · Carved in Sandstone · design package</div>
+    <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:clamp(48px,8vw,96px);line-height:.95;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.9))">Where Devotion Meets Stone.</h1>
+    <p style="margin:0;font-size:18px;line-height:1.6;max-width:720px">This package turns plan.md into designs. The plan's concept, facts, palette, fonts, section order and stack are unchanged.</p>
+  </header>
+  <nav style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+    <a href="Home.dc.html" style="border:1px solid #262654;padding:18px;text-decoration:none;display:flex;flex-direction:column;gap:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">01</span><span style="font-family:'Libre Caslon Display',serif;font-size:28px">Homepage</span><span style="font-size:14px;color:#52606B">8 sections · 1440 + 360 · motion notes</span></a>
+    <a href="Register.dc.html" style="border:1px solid #262654;padding:18px;text-decoration:none;display:flex;flex-direction:column;gap:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">02</span><span style="font-family:'Libre Caslon Display',serif;font-size:28px">Temple Register</span><span style="font-size:14px;color:#52606B">Live filters · row states · empty</span></a>
+    <a href="Project.dc.html" style="border:1px solid #262654;padding:18px;text-decoration:none;display:flex;flex-direction:column;gap:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">03</span><span style="font-family:'Libre Caslon Display',serif;font-size:28px">Project page</span><span style="font-size:14px;color:#52606B">With photos · without</span></a>
+    <a href="Contact Nav 404.dc.html" style="border:1px solid #262654;padding:18px;text-decoration:none;display:flex;flex-direction:column;gap:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">04</span><span style="font-family:'Libre Caslon Display',serif;font-size:28px">Contact · Menu · 404</span><span style="font-size:14px;color:#52606B">Night contact · Staggered Menu</span></a>
+    <a href="Posters.dc.html" style="border:1px solid #262654;padding:18px;text-decoration:none;display:flex;flex-direction:column;gap:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">05</span><span style="font-family:'Libre Caslon Display',serif;font-size:28px">3D poster frames</span><span style="font-size:14px;color:#52606B">Hero · toolpath · mountain K1–K4</span></a>
+    <a href="Handoff.dc.html" style="border:1px solid #262654;padding:18px;text-decoration:none;display:flex;flex-direction:column;gap:6px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">06</span><span style="font-family:'Libre Caslon Display',serif;font-size:28px">Handoff</span><span style="font-size:14px;color:#52606B">Tokens · components · grid · config</span></a>
+  </nav>
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:44px">Ambiguities in plan.md, and how I read them</h2>
+    <p style="margin:0;font-size:16px;line-height:1.6;color:#52606B">The same tags mark each spot in the boards. Each one needs a yes or a correction.</p>
+    <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;border-top:1px solid #262654">
+      <sc-for list="{{ items }}" as="a" hint-placeholder-count="16">
+        <li style="display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid #798A96;font-size:16px;line-height:1.55"><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500">{{ a.id }}</span><span><strong style="font-weight:500">{{ a.q }}</strong> {{ a.r }}</span></li>
+      </sc-for>
+    </ol>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const L = [
+      ['A1', 'Masked Heading "sandstone texture in the letters" on a sand ground would fail contrast.', 'The fill is navy to deep-slate strata (cut.png). Worst pixel: 5.65:1 on sand, 4.90:1 on stone.'],
+      ['A2', 'The plan does not name which real panel the relief is built from.', 'The posters are art-direction stand-ins (framing, light, grade). The final poster is rendered from the chosen panel with the same camera.'],
+      ['A3', 'Contact says "workshop address as plain text", but no address is in the facts.', 'Labelled placeholder, plus a map link once the address is confirmed.'],
+      ['A4', 'Type, scope and places for each register entry are not given; the names are archive folders "to confirm".', 'Sample data, flagged. The photo / no-photo split is illustrative, to show both states.'],
+      ['A5', 'Split Text on "main headings" conflicts with LCP < 2.5 s for the hero headline.', 'Hero and page h1s are static. Split Text is used on section headings below the fold.'],
+      ['A6', '"Three doorways" (Makhno) has no slot in the fixed section order.', 'Used as chapter markers, "Line of work 01–03" in §4–6, and in the menu numbering. No new section.'],
+      ['A7', 'Supabase enquiries are "only if"; section 3 says plain text.', 'No form is designed. Contact is tel / mailto / Instagram links.'],
+      ['A8', 'Five CNC machines, but the archive shows 3–4.', 'No caption implies that a photo shows all five. The wide machine-hall shot is noted as optional.'],
+      ['A9', 'Scroll Reveal "brightens, but is fully readable at rest".', 'Rest = deep slate (5.65:1), revealed = navy. No blur and no opacity drop.'],
+      ['A10', 'Stone Works close-ups are not among the section 10 key images.', 'Placeholders say "to select from the Stone Works archive".'],
+      ['A11', 'The desktop nav is not specified (only the phone menu is).', 'Plain text links from lg up; Staggered Menu below lg.'],
+      ['A12', 'The token names stone, slate and sky collide with Tailwind defaults.', 'Tokens go in theme.colors (replacing the defaults), not extend.'],
+      ['A13', '"About 21 documented" is an approximate count.', 'The site never prints 21. The register shows a computed count and "over 51 projects completed".'],
+      ['A14', 'The "note" field has no copy and no length.', 'Shown as a labelled, optional slot of 1–2 sentences, hidden when empty.'],
+      ['A15', 'Light Rays in saffron behind contact text.', 'Computed: at 25% rays, sand 11.45:1 and sky 8.71:1, but saffron text 4.49:1 fails. So there is no saffron text in the ray field.'],
+      ['A16', 'The logo is navy line art, and disappears on night.', 'On night sections it sits on a small sand arch plate. Tracing to SVG is not done (per the plan, the owner approves first).']
+    ];
+    return { items: L.map(([id, q, r]) => ({ id, q, r })) };
+  }
+}
+</script>
+</body>
+</html>

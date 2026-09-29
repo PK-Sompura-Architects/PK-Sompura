@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+  <style>body{margin:0;background:#CBC3B5;-webkit-font-smoothing:antialiased}a{color:#262654}a:hover{color:#985A1F}select{font:inherit}</style>
+</helmet>
+<div style="padding:80px;display:flex;flex-direction:column;gap:72px;font-family:'Hanken Grotesk',sans-serif;color:#262654">
+  <header style="display:flex;flex-direction:column;gap:12px;max-width:1200px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">P.K. Sompura · Board 02 · /projects</div>
+    <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:72px;line-height:1">The Temple Register</h1>
+    <p style="margin:0;font-size:18px;line-height:1.6;max-width:940px;text-wrap:pretty">The two top frames are live: filter by place and scope, sort, hover a row on desktop, tap a row on mobile. Below them are the fixed states: empty result, filter sheet and row specimens. <strong>[A4]</strong> The entries are archive folder names; place, type, scope and the photo/no-photo split are illustrative until the client's list arrives. Footer on this page = Home §8 footer.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap"><a href="Overview.dc.html">← Overview</a><a href="Home.dc.html">Home</a><a href="Project.dc.html">Project page</a><a href="Handoff.dc.html">Handoff</a></div>
+  </header>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div data-screen-label="Register desktop, full list" style="width:1440px;flex:none;background:#F4EFE6 url(assets/tex/sand.png)">
+      <nav style="height:88px;padding:0 80px;display:flex;align-items:center;justify-content:space-between">
+        <a href="Home.dc.html" style="display:flex;align-items:center;gap:14px;text-decoration:none;color:#262654"><img src="assets/logo.png" alt="P.K. Sompura logo" style="height:48px;width:auto;display:block"><span style="font-family:'Libre Caslon Display',serif;font-size:26px;line-height:1;white-space:nowrap">P.K. Sompura</span></a>
+        <div style="display:flex;gap:36px;font-size:15px;font-weight:500;white-space:nowrap">
+          <a href="Home.dc.html" style="text-decoration:none">Stone Works</a><a href="Home.dc.html" style="text-decoration:none">CNC Works</a><a href="Home.dc.html" style="text-decoration:none">Fero Works</a><a href="Register.dc.html" style="text-decoration:underline;text-underline-offset:6px" aria-current="page">Temple Register</a><a href="Contact Nav 404.dc.html" style="text-decoration:none">Contact</a>
+        </div>
+      </nav>
+      <div style="padding:120px 80px 64px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:end">
+        <div style="grid-column:1/9;display:flex;flex-direction:column;gap:24px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#52606B">Projects · the archive</div>
+          <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:124px;line-height:.94;letter-spacing:-.01em;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.85))">The Temple Register</h1>
+        </div>
+        <p style="grid-column:9/13;margin:0;font-size:19px;line-height:1.6;text-wrap:pretty">Over 51 projects completed. The register lists the documented ones; more are being added.</p>
+      </div>
+      <div style="margin:0 80px;padding:20px 0;border-top:1px solid #262654;border-bottom:1px solid #798A96;display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Place</span>
+          <select value="{{ place }}" onChange="{{ onPlace }}" style="height:44px;padding:0 36px 0 14px;border:1px solid #262654;background:#F4EFE6;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:13px;border-radius:0">
+            <sc-for list="{{ placeOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+          </select>
+        </label>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-right:4px">Scope</span>
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+            <sc-if value="{{ c.on }}" hint-placeholder-val="{{ false }}"><button onClick="{{ c.toggle }}" aria-pressed="true" style="height:40px;padding:0 14px;border:1px solid #262654;background:#262654;color:#F4EFE6;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px">{{ c.label }}<span aria-hidden="true">×</span></button></sc-if>
+            <sc-if value="{{ c.off }}" hint-placeholder-val="{{ true }}"><button onClick="{{ c.toggle }}" aria-pressed="false" style="height:40px;padding:0 14px;border:1px solid #262654;background:transparent;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap" style-hover="background:#E7DFD2">{{ c.label }}</button></sc-if>
+          </sc-for>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Sort</span>
+          <sc-for list="{{ sorts }}" as="s" hint-placeholder-count="2">
+            <button onClick="{{ s.pick }}" style="height:40px;padding:0 12px;border:0;border-bottom:2px solid {{ s.line }};background:transparent;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;cursor:pointer">{{ s.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin:0 80px;padding:14px 0;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">
+        <span>{{ countText }}</span>
+        <span style="margin-left:auto;margin-right:24px">Scope marks, left to right: Design · Hand carving · CNC · Construction · Fero</span>
+        <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clear }}" style="border:0;background:none;padding:0;font:inherit;color:#262654;text-decoration:underline;cursor:pointer">Clear filters</button></sc-if>
+      </div>
+      <div role="table" style="margin:0 80px 160px">
+        <div role="row" style="display:grid;grid-template-columns:56px minmax(0,1fr) 220px 180px 132px 64px 32px;column-gap:24px;padding:10px 0;border-bottom:1px solid #262654;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#52606B">
+          <span>No.</span><span>Name</span><span>Place</span><span>Type</span><span>Scope</span><span>Photo</span><span></span>
+        </div>
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:32px;padding:64px;background:#E7DFD2 url(assets/tex/stone.png);display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+            <div style="font-family:'Libre Caslon Display',serif;font-size:48px;line-height:1.05">Nothing in the register matches.</div>
+            <p style="margin:0;font-size:18px;line-height:1.6;max-width:620px;color:#262654">No entries for {{ emptyText }}. The register lists the documented projects; over 51 are completed.</p>
+            <button onClick="{{ clear }}" style="height:48px;padding:0 22px;border:0;background:#262654;color:#F4EFE6;font-size:15px;font-weight:500;cursor:pointer">Clear filters</button>
+          </div>
+        </sc-if>
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="12">
+          <a href="Project.dc.html" onMouseEnter="{{ r.enter }}" onMouseLeave="{{ r.leave }}" onFocus="{{ r.enter }}" onBlur="{{ r.leave }}" style="display:block;position:relative;height:96px;border-bottom:1px solid #798A96;text-decoration:none;color:#262654;overflow:hidden">
+            <div style="position:absolute;inset:0;display:grid;grid-template-columns:56px minmax(0,1fr) 220px 180px 132px 64px 32px;column-gap:24px;align-items:center">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">{{ r.no }}</span>
+              <span style="font-family:'Libre Caslon Display',serif;font-size:36px;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:14px">{{ r.placeFull }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#52606B">{{ r.type }}</span>
+              <span style="display:flex;gap:6px" aria-label="{{ r.scopeText }}"><sc-for list="{{ r.marks }}" as="m" hint-placeholder-count="5"><span style="width:12px;height:12px;box-sizing:border-box;border:1px solid {{ m.border }};background:{{ m.fill }}"></span></sc-for></span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">{{ r.photoMark }}</span>
+              <span style="font-size:20px;text-align:right">→</span>
+            </div>
+            <sc-if value="{{ r.isHover }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:0;background:#262654;display:flex;align-items:center;gap:28px;padding-left:80px;white-space:nowrap">
+                <sc-for list="{{ r.band }}" as="b" hint-placeholder-count="2">
+                  <span style="font-family:'Libre Caslon Display',serif;font-size:36px;color:#F4EFE6">{{ r.name }}</span>
+                  <span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">{{ r.placeFull }}</span>
+                  <sc-if value="{{ r.photo }}" hint-placeholder-val="{{ true }}"><span style="flex:none;width:56px;height:72px;border-radius:9999px 9999px 0 0;background:repeating-linear-gradient(135deg,#0E0E1F 0 6px,#262654 6px 7px);border:1px solid #AFD9EB;box-sizing:border-box"></span></sc-if>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">{{ r.type }}</span>
+                  <span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F4EFE6;text-transform:uppercase;letter-spacing:.06em">{{ r.scopeText }}</span>
+                  <span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span>
+                </sc-for>
+              </div>
+            </sc-if>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+
+    <div data-screen-label="Register mobile, full list" style="width:360px;flex:none;background:#F4EFE6 url(assets/tex/sand.png)">
+      <nav style="height:64px;padding:0 12px 0 20px;display:flex;align-items:center;justify-content:space-between">
+        <a href="Home.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#262654"><img src="assets/logo.png" alt="P.K. Sompura logo" style="height:36px;width:auto;display:block"><span style="font-family:'Libre Caslon Display',serif;font-size:21px;line-height:1;white-space:nowrap">P.K. Sompura</span></a>
+        <button style="height:44px;padding:0 8px;border:0;background:transparent;display:flex;align-items:center;gap:10px;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Menu<span style="display:flex;flex-direction:column;gap:5px"><span style="width:20px;height:1.5px;background:#262654;display:block"></span><span style="width:20px;height:1.5px;background:#262654;display:block"></span></span></button>
+      </nav>
+      <div style="padding:48px 20px 32px;display:flex;flex-direction:column;gap:18px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#52606B">Projects · the archive</div>
+        <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:52px;line-height:.94;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.85))">The Temple Register</h1>
+        <p style="margin:0;font-size:16px;line-height:1.6">Over 51 projects completed. The register lists the documented ones; more are being added.</p>
+      </div>
+      <div style="margin:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onClick="{{ openSheet }}" style="height:48px;border:1px solid #262654;background:#262654;color:#F4EFE6;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;cursor:pointer">Filter · {{ filterCount }}</button>
+        <button onClick="{{ toggleSort }}" style="height:48px;border:1px solid #262654;background:transparent;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;cursor:pointer">Sort: {{ sortLabel }}</button>
+      </div>
+      <div style="margin:0 20px;padding:12px 0;border-bottom:1px solid #262654;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">{{ countText }}</div>
+      <div style="margin:0 20px 96px">
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:20px;padding:28px 20px;background:#E7DFD2 url(assets/tex/stone.png);display:flex;flex-direction:column;gap:14px">
+            <div style="font-family:'Libre Caslon Display',serif;font-size:30px;line-height:1.1">Nothing in the register matches.</div>
+            <p style="margin:0;font-size:15px;line-height:1.55">No entries for {{ emptyText }}.</p>
+            <button onClick="{{ clear }}" style="height:48px;border:0;background:#262654;color:#F4EFE6;font-size:15px;font-weight:500">Clear filters</button>
+          </div>
+        </sc-if>
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="10">
+          <div style="border-bottom:1px solid #798A96">
+            <button onClick="{{ r.toggle }}" aria-expanded="{{ r.openAttr }}" style="width:100%;min-height:76px;padding:14px 0;border:0;background:transparent;display:flex;align-items:center;gap:12px;text-align:left;color:#262654;cursor:pointer">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B;width:24px;flex:none">{{ r.no }}</span>
+              <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-family:'Libre Caslon Display',serif;font-size:24px;line-height:1.1">{{ r.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">{{ r.placeFull }}</span></span>
+              <span style="width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;font-size:22px;font-family:'IBM Plex Mono',monospace">{{ r.sign }}</span>
+            </button>
+            <sc-if value="{{ r.openPhoto }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 0 24px;display:flex;flex-direction:column;gap:16px">
+                <div style="height:340px;border-radius:9999px 9999px 0 0;overflow:hidden;background:repeating-linear-gradient(135deg,#E7DFD2 0 12px,#F4EFE6 12px 13px);display:flex;align-items:flex-end;padding:12px;box-sizing:border-box"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.4;background:#F4EFE6;border:1px solid #262654;padding:5px 8px">PHOTO · {{ r.name }}, {{ r.place }}</span></div>
+                <dl style="margin:0;display:grid;grid-template-columns:72px 1fr;gap:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.5"><dt style="color:#52606B;text-transform:uppercase;letter-spacing:.08em">Type</dt><dd style="margin:0">{{ r.type }}</dd><dt style="color:#52606B;text-transform:uppercase;letter-spacing:.08em">Scope</dt><dd style="margin:0">{{ r.scopeText }}</dd></dl>
+                <a href="Project.dc.html" style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 16px;border:1px solid #262654;text-decoration:none;font-size:15px;font-weight:500">Open project<span>→</span></a>
+              </div>
+            </sc-if>
+            <sc-if value="{{ r.openCard }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 0 24px;display:flex;flex-direction:column;gap:16px">
+                <div style="background:#E7DFD2 url(assets/tex/stone.png);padding:24px 20px;display:flex;flex-direction:column;gap:16px;box-shadow:inset 0 1px 0 rgba(244,239,230,.6),inset 0 -1px 0 rgba(38,38,84,.15)">
+                  <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#262654"><span>Register entry</span><span>No. {{ r.no }}</span></div>
+                  <div style="font-family:'Libre Caslon Display',serif;font-size:40px;line-height:1;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.7))">{{ r.name }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#262654">{{ r.placeFull }} · {{ r.type }}</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ r.scope }}" as="s" hint-placeholder-count="2"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;border:1px solid #262654;padding:4px 8px;white-space:nowrap">{{ s }}</span></sc-for></div>
+                  <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid #52606B"><sc-for list="{{ dentils }}" as="d" hint-placeholder-count="12"><span style="width:10px;height:10px;background:#E7DFD2;box-shadow:1px 2px 2px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span></sc-for></div>
+                </div>
+                <a href="Project.dc.html" style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 16px;border:1px solid #262654;text-decoration:none;font-size:15px;font-weight:500">Open project<span>→</span></a>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:sticky;bottom:0;background:#F4EFE6;border-top:1px solid #262654;padding:20px;display:flex;flex-direction:column;gap:16px;box-shadow:0 -24px 48px rgba(14,14,31,.18)">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:'Libre Caslon Display',serif;font-size:28px">Filter</span><button onClick="{{ closeSheet }}" style="height:44px;padding:0 12px;border:1px solid #262654;background:transparent;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em">Done</button></div>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Place</span><select value="{{ place }}" onChange="{{ onPlace }}" style="height:48px;padding:0 12px;border:1px solid #262654;background:#F4EFE6;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:14px;border-radius:0"><sc-for list="{{ placeOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></label>
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Scope</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+              <sc-if value="{{ c.on }}" hint-placeholder-val="{{ false }}"><button onClick="{{ c.toggle }}" style="height:44px;padding:0 14px;border:1px solid #262654;background:#262654;color:#F4EFE6;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap">{{ c.label }} ×</button></sc-if>
+              <sc-if value="{{ c.off }}" hint-placeholder-val="{{ true }}"><button onClick="{{ c.toggle }}" style="height:44px;padding:0 14px;border:1px solid #262654;background:transparent;color:#262654;font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap">{{ c.label }}</button></sc-if>
+            </sc-for></div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <aside style="width:300px;flex:none;display:flex;flex-direction:column;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6">
+      <div style="letter-spacing:.08em;text-transform:uppercase">Register · light theme</div>
+      <div style="font-family:'Libre Caslon Display',serif;font-size:32px;line-height:1.05">Behaviour</div>
+      <div>Filters: one place (select) AND any of the chosen scopes (OR within scope). Sort: place A–Z or type A–Z, never by date. State lives in the URL: ?place=tharad&amp;scope=cnc,fero&amp;sort=type.</div>
+      <div>Desktop: the whole row is one link to /projects/[slug]. Mobile: tapping a row expands it; "Open project" goes to the page.</div>
+      <div>Scope marks, in order: Design · Hand carving · CNC · Construction · Fero; the legend sits above the table. Filled navy = in scope; outlined slate = not (3.11:1 on sand, non-text UI ≥ 3:1). The full words are in aria-label.</div>
+      <div style="border:1px solid #262654;background:#F4EFE6;padding:12px;display:flex;flex-direction:column;gap:6px"><strong style="letter-spacing:.08em">MOTION · Flowing Menu</strong><div>Trigger: hover or focus (desktop). The navy band slides in from the edge the pointer entered (top or bottom), 0.6 s expo.out; the marquee loops at 40 px/s, linear; exit reverses in 0.4 s. Row height stays fixed (no CLS).</div><div>Mobile expand: GSAP height 0 → auto, 0.45 s power2.out; arch photo opens from the bottom, 0.6 s.</div><div>Reduced motion: band appears in place with no slide or loop; expand is instant.</div></div>
+      <div>Mobile filter sheet: opens from the bottom, 0.35 s power3.out; focus is trapped; Esc and Done close it.</div>
+    </aside>
+  </div>
+
+  <div style="display:flex;gap:40px;align-items:flex-start">
+    <div data-screen-label="Register desktop, empty filter" style="width:1440px;flex:none;background:#F4EFE6 url(assets/tex/sand.png);padding:48px 80px 120px;box-sizing:border-box">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;color:#52606B">State: empty result · Place = Surat, Scope = Fero / mountain (static)</div>
+      <div style="padding:20px 0;border-top:1px solid #262654;border-bottom:1px solid #798A96;display:flex;align-items:center;gap:32px">
+        <div style="display:flex;align-items:center;gap:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Place</span><span style="height:44px;padding:0 36px 0 14px;border:1px solid #262654;display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:13px">Surat, Gujarat ▾</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-right:4px">Scope</span>
+          <span style="height:40px;padding:0 14px;border:1px solid #262654;display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500">Design</span>
+          <span style="height:40px;padding:0 14px;border:1px solid #262654;display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500">Hand carving</span>
+          <span style="height:40px;padding:0 14px;border:1px solid #262654;display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500">CNC</span>
+          <span style="height:40px;padding:0 14px;border:1px solid #262654;display:flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500">Construction</span>
+          <span style="height:40px;padding:0 14px;border:1px solid #262654;background:#262654;color:#F4EFE6;display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:500">Fero / mountain ×</span>
+        </div>
+      </div>
+      <div style="padding:14px 0;display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B"><span>Showing 0 of 32 entries · over 51 projects completed</span><span style="color:#262654;text-decoration:underline">Clear filters</span></div>
+      <div style="margin-top:24px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;background:#E7DFD2 url(assets/tex/stone.png);padding:72px 64px;box-sizing:border-box">
+        <div style="grid-column:1/8;display:flex;flex-direction:column;gap:20px;align-items:flex-start">
+          <div style="font-family:'Libre Caslon Display',serif;font-size:56px;line-height:1.02;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(244,239,230,.7))">Nothing in the register matches.</div>
+          <p style="margin:0;font-size:18px;line-height:1.6;max-width:560px">No entries for Surat, Gujarat with Fero / mountain. The register lists the documented projects; over 51 are completed.</p>
+          <div style="display:flex;gap:24px;align-items:center"><span style="height:48px;padding:0 22px;background:#262654;color:#F4EFE6;display:flex;align-items:center;font-size:15px;font-weight:500">Clear filters</span><span style="font-size:15px;font-weight:500;text-decoration:underline;text-underline-offset:5px">Show all Fero / mountain entries</span></div>
+        </div>
+        <div style="grid-column:9/13;align-self:end;display:flex;justify-content:space-between"><span style="width:14px;height:14px;background:#E7DFD2;box-shadow:2px 3px 3px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span><span style="width:14px;height:14px;background:#E7DFD2;box-shadow:2px 3px 3px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span><span style="width:14px;height:14px;background:#E7DFD2;box-shadow:2px 3px 3px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span><span style="width:14px;height:14px;background:#E7DFD2;box-shadow:2px 3px 3px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span><span style="width:14px;height:14px;background:#E7DFD2;box-shadow:2px 3px 3px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span><span style="width:14px;height:14px;background:#E7DFD2;box-shadow:2px 3px 3px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span><span style="width:14px;height:14px;background:#E7DFD2;box-shadow:2px 3px 3px rgba(38,38,84,.35),-1px -1px 0 rgba(244,239,230,.7)"></span></div>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B;margin-top:16px">The secondary link keeps the scope and drops the place, so it always has results.</div>
+    </div>
+    <div data-screen-label="Register mobile, empty filter" style="width:360px;flex:none;background:#F4EFE6 url(assets/tex/sand.png);padding:32px 20px 64px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#52606B">State: empty (static)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><span style="height:48px;background:#262654;color:#F4EFE6;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase">Filter · 2</span><span style="height:48px;border:1px solid #262654;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase">Sort: Place</span></div>
+      <div style="padding:12px 0;border-bottom:1px solid #262654;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">Showing 0 of 32 entries</div>
+      <div style="margin-top:8px;padding:28px 20px;background:#E7DFD2 url(assets/tex/stone.png);display:flex;flex-direction:column;gap:14px">
+        <div style="font-family:'Libre Caslon Display',serif;font-size:32px;line-height:1.05;color:#262654;background:url(assets/tex/cut.png);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Nothing in the register matches.</div>
+        <p style="margin:0;font-size:15px;line-height:1.55">No entries for Surat, Gujarat with Fero / mountain.</p>
+        <span style="height:48px;background:#262654;color:#F4EFE6;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500">Clear filters</span>
+        <span style="height:48px;border:1px solid #262654;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500">Show all Fero / mountain</span>
+      </div>
+    </div>
+  </div>
+
+  <section data-screen-label="Register row specimens" style="display:flex;flex-direction:column;gap:32px;width:1840px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">Specimens</span><h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:44px">Register row: every state</h2></div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+      <div style="width:1280px;flex:none;display:flex;flex-direction:column;gap:24px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Desktop · 1280 content width</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px">1 · Default</div>
+          <div style="background:#F4EFE6 url(assets/tex/sand.png);height:96px;border-bottom:1px solid #798A96;display:grid;grid-template-columns:56px minmax(0,1fr) 220px 180px 132px 64px 32px;column-gap:24px;align-items:center">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">10</span><span style="font-family:'Libre Caslon Display',serif;font-size:36px">Godiji Derasar</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px">Tharad, Gujarat</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#52606B">Jain derasar</span>
+            <span style="display:flex;gap:6px"><span style="width:12px;height:12px;box-sizing:border-box;border:1px solid #798A96"></span><span style="width:12px;height:12px;background:#262654"></span><span style="width:12px;height:12px;box-sizing:border-box;border:1px solid #798A96"></span><span style="width:12px;height:12px;background:#262654"></span><span style="width:12px;height:12px;box-sizing:border-box;border:1px solid #798A96"></span></span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#52606B">Photo</span><span style="font-size:20px;text-align:right">→</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px">2 · Hover / focus, with photo (Flowing Menu band)</div>
+          <div style="height:96px;background:#262654;display:flex;align-items:center;gap:28px;padding-left:80px;white-space:nowrap;overflow:hidden">
+            <span style="font-family:'Libre Caslon Display',serif;font-size:36px;color:#F4EFE6">Godiji Derasar</span><span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">Tharad, Gujarat</span><span style="flex:none;width:56px;height:72px;border-radius:9999px 9999px 0 0;background:repeating-linear-gradient(135deg,#0E0E1F 0 6px,#262654 6px 7px);border:1px solid #AFD9EB;box-sizing:border-box"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">Jain derasar</span><span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F4EFE6;text-transform:uppercase;letter-spacing:.06em">Hand carving · Construction</span><span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span><span style="font-family:'Libre Caslon Display',serif;font-size:36px;color:#F4EFE6">Godiji Derasar</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px">3 · Hover / focus, no photo: same band, the arch thumbnail is left out (never a grey box)</div>
+          <div style="height:96px;background:#262654;display:flex;align-items:center;gap:28px;padding-left:80px;white-space:nowrap;overflow:hidden">
+            <span style="font-family:'Libre Caslon Display',serif;font-size:36px;color:#F4EFE6">Asha Life Mission</span><span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">Place to confirm</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">Bhavan</span><span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#F4EFE6;text-transform:uppercase;letter-spacing:.06em">Design · Construction</span><span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span><span style="font-family:'Libre Caslon Display',serif;font-size:36px;color:#F4EFE6">Asha Life Mission</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px">4 · Keyboard focus-visible: band as in 2, plus 2 px sand outline inset 4 px (sand on navy 12.33:1)</div>
+          <div style="height:96px;background:#262654;display:flex;align-items:center;gap:28px;padding-left:80px;white-space:nowrap;overflow:hidden;outline:2px solid #F4EFE6;outline-offset:-6px">
+            <span style="font-family:'Libre Caslon Display',serif;font-size:36px;color:#F4EFE6">Gelmata</span><span style="width:9px;height:9px;background:#CD8841;transform:rotate(45deg);flex:none"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">Rajkot, Gujarat</span><span style="font-family:'IBM Plex Mono',monospace;font-size:14px;color:#AFD9EB">Hindu temple</span>
+          </div>
+        </div>
+      </div>
+      <div style="width:360px;flex:none;display:flex;flex-direction:column;gap:24px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase">Mobile · tap states</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px">5 · Collapsed</div>
+          <div style="background:#F4EFE6 url(assets/tex/sand.png);padding:14px 20px;border-bottom:1px solid #798A96;display:flex;align-items:center;gap:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B;width:24px">10</span><span style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font-family:'Libre Caslon Display',serif;font-size:24px">Godiji Derasar</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#52606B">Tharad, Gujarat</span></span><span style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:22px">+</span></div>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6">6 · Expanded with photo, and 7 · expanded without photo (the typographic card), are live in the mobile frame above: rows 10 and 02 open on load.</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6">The typographic card is a stone tablet: entry number, name cut in Caslon, place and type, scope tags, and a dentil course as the bottom edge. It is the same height class as the photo version (±20%), so the list keeps its rhythm.</div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SCOPES = ['Design', 'Hand carving', 'CNC', 'Construction', 'Fero / mountain'];
+const E = [
+  ['Adpur Dheti Pag','Adpur','Gujarat','Jain derasar',['Hand carving','Construction'],1],
+  ['Asha Life Mission','','','Bhavan',['Design','Construction'],0],
+  ['Bhamriya','Bhamriya','Gujarat','Hindu temple',['Construction'],1],
+  ['Bhavnagar','Bhavnagar','Gujarat','Jain derasar',['Design','Hand carving'],1],
+  ['Dadabhagavan','Kelanpur','Gujarat','Hindu temple',['CNC','Construction'],1],
+  ['Devilaya','','','Hindu temple',['Hand carving'],0],
+  ['Digambar Jain Derasar','Baroda','Gujarat','Jain derasar',['Design','Hand carving'],1],
+  ['Dhola','Dhola','Gujarat','Jain derasar',['Construction'],0],
+  ['Gelmata','Rajkot','Gujarat','Hindu temple',['CNC','Construction'],1],
+  ['Godiji Derasar','Tharad','Gujarat','Jain derasar',['Hand carving','Construction'],1],
+  ['Vaishno Devi','Gulbarga','Karnataka','Mountain temple',['Fero / mountain','Construction'],1],
+  ['Hastgiri','Hastgiri','Gujarat','Jain derasar',['Design','Construction'],1],
+  ['Jaliya','Jaliya','Gujarat','Jain derasar',['Hand carving'],0],
+  ['Jambudip','','','Jain derasar',['Design'],1],
+  ['Kachhi Bhavan','Junagadh','Gujarat','Bhavan',['Construction'],1],
+  ['Kachhi Bhavan','Palitana','Gujarat','Bhavan',['Design','Construction'],1],
+  ['Khajuri','Khajuri','Gujarat','Hindu temple',['Hand carving'],0],
+  ['Kotadi','Kotadi','Gujarat','Jain derasar',['Construction'],0],
+  ['Liliya','Liliya','Gujarat','Jain derasar',['Hand carving','CNC'],1],
+  ['Malav','Malav','Gujarat','Jain derasar',['Construction'],0],
+  ['Mota Derasar','Tharad','Gujarat','Jain derasar',['Hand carving'],1],
+  ['Osval','Palitana','Gujarat','Bhavan',['Construction'],1],
+  ['Parvala','Parvala','Gujarat','Hindu temple',['Construction'],0],
+  ['Rampara','Rampara','Gujarat','Hindu temple',['Hand carving'],1],
+  ['RRD','Limbdi','Gujarat','Jain derasar',['Design','CNC'],1],
+  ['Shobhavad','Shobhavad','Gujarat','Jain derasar',['Construction'],0],
+  ['Songadh','Songadh','Gujarat','Jain derasar',['Hand carving','Construction'],1],
+  ['Surat','Surat','Gujarat','Jain derasar',['CNC'],1],
+  ['Taleti','','','Jain derasar',['Hand carving'],0],
+  ['Tana','Tana','Gujarat','Jain derasar',['Construction'],0],
+  ['Varkhadi','Tharad','Gujarat','Jain derasar',['Design','Construction'],1],
+  ['Vaishno Devi','Ahmedabad','Gujarat','Mountain temple',['Fero / mountain','Construction'],1]
+].map((e, i) => ({ id: 'r' + i, name: e[0], place: e[1], state: e[2], type: e[3], scope: e[4], photo: !!e[5], placeFull: e[1] ? e[1] + ', ' + e[2] : 'Place to confirm' }));
+
+class Component extends DCLogic {
+  state = { place: 'All', scopes: [], sort: 'place', hover: null, open: { r9: true, r1: true }, sheet: false };
+  renderVals() {
+    const s = this.state;
+    const places = [...new Set(E.map(e => e.placeFull))].sort();
+    let list = E.filter(e => (s.place === 'All' || e.placeFull === s.place) && (!s.scopes.length || e.scope.some(x => s.scopes.includes(x))));
+    list = list.slice().sort((a, b) => s.sort === 'type' ? (a.type.localeCompare(b.type) || a.name.localeCompare(b.name)) : (a.placeFull.localeCompare(b.placeFull) || a.name.localeCompare(b.name)));
+    const rows = list.map(e => {
+      const idx = E.indexOf(e) + 1;
+      const isOpen = !!s.open[e.id];
+      return {
+        ...e, no: String(idx).padStart(2, '0'),
+        scopeText: e.scope.join(' · '),
+        marks: SCOPES.map(x => e.scope.includes(x) ? { fill: '#262654', border: '#262654' } : { fill: 'transparent', border: '#798A96' }),
+        photoMark: e.photo ? 'Photo' : '—',
+        isHover: s.hover === e.id,
+        band: [1, 2],
+        enter: () => this.setState({ hover: e.id }),
+        leave: () => this.setState(st => st.hover === e.id ? { hover: null } : null),
+        openPhoto: isOpen && e.photo, openCard: isOpen && !e.photo,
+        openAttr: isOpen ? 'true' : 'false', sign: isOpen ? '−' : '+',
+        toggle: () => this.setState(st => ({ open: { ...st.open, [e.id]: !st.open[e.id] } }))
+      };
+    });
+    const hasFilters = s.place !== 'All' || s.scopes.length > 0;
+    const where = [s.place !== 'All' ? s.place : null, s.scopes.length ? s.scopes.join(' or ') : null].filter(Boolean).join(' with ');
+    return {
+      place: s.place,
+      placeOptions: [{ value: 'All', label: 'All places' }, ...places.map(p => ({ value: p, label: p }))],
+      onPlace: ev => this.setState({ place: ev.target.value }),
+      chips: SCOPES.map(x => {
+        const on = s.scopes.includes(x);
+        return { label: x, on, off: !on, toggle: () => this.setState(st => ({ scopes: st.scopes.includes(x) ? st.scopes.filter(y => y !== x) : [...st.scopes, x] })) };
+      }),
+      sorts: [['place', 'By place'], ['type', 'By type']].map(([k, l]) => ({ label: l, line: s.sort === k ? '#262654' : 'transparent', pick: () => this.setState({ sort: k }) })),
+      sortLabel: s.sort === 'type' ? 'Type' : 'Place',
+      toggleSort: () => this.setState(st => ({ sort: st.sort === 'type' ? 'place' : 'type' })),
+      rows, isEmpty: rows.length === 0,
+      countText: `Showing ${rows.length} of ${E.length} entries · over 51 projects completed`,
+      hasFilters, clear: () => this.setState({ place: 'All', scopes: [] }),
+      emptyText: where,
+      filterCount: (s.place !== 'All' ? 1 : 0) + s.scopes.length,
+      sheetOpen: s.sheet, openSheet: () => this.setState({ sheet: true }), closeSheet: () => this.setState({ sheet: false }),
+      dentils: [1,2,3,4,5,6,7,8,9,10,11,12]
+    };
+  }
+}
+</script>
+</body>
+</html>

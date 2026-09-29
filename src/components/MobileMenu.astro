@@ -1,0 +1,62 @@
+---
+// Mobile navigation below lg. A modal <dialog>: native focus containment, Esc to close, page scroll locked in global.css.
+// Opened by the Menu button in SiteNav through invoker commands (commandfor / command), with a small fallback script.
+// Phase 4 adds the Staggered Menu motion (Board 04) on top of this markup.
+import LogoMark from './LogoMark.astro';
+import { contact, nav, type NavKey } from '../data/site';
+
+interface Props { current?: NavKey }
+const { current } = Astro.props;
+---
+<dialog id="site-menu" aria-label="Menu" class="theme-night m-0 h-dvh max-h-none w-full max-w-none bg-night bg-night-grain p-0 text-sand backdrop:bg-transparent lg:hidden">
+  <div class="flex min-h-full flex-col">
+    <div class="flex h-16 items-center justify-between pl-5 pr-3 md:pl-10 md:pr-8">
+      <a href="/" class="flex items-center gap-2.5 no-underline">
+        <LogoMark theme="night" size="nav-sm" />
+        <span class="whitespace-nowrap font-display text-[21px] leading-none">P.K. Sompura</span>
+      </a>
+      <button type="button" commandfor="site-menu" command="close" class="flex h-11 min-w-11 items-center gap-2.5 px-2 font-mono text-caption font-medium uppercase">
+        Close <span class="text-[20px] leading-none" aria-hidden="true">×</span>
+      </button>
+    </div>
+
+    <nav aria-label="Main">
+      <ol class="flex flex-col px-5 pt-10 md:px-10">
+        {nav.map((item, i) => (
+          <li class="flex min-h-16 items-baseline gap-3.5 border-b border-slate">
+            <span class="w-[22px] font-mono text-[12px] text-sky" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <a
+              href={item.href}
+              aria-current={item.key === current ? 'page' : undefined}
+              class:list={['font-display text-[40px] leading-[1.35] no-underline', item.key === current ? 'text-saffron' : 'text-sand']}
+            >{item.label}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="mt-auto flex flex-col gap-1.5 px-5 pb-7 pt-6 font-mono text-[13px] leading-normal md:px-10">
+      <a href={contact.phoneHref} class="flex min-h-11 items-center text-sky no-underline">{contact.phone}</a>
+      <a href={`mailto:${contact.email}`} class="flex min-h-11 items-center break-all text-sky no-underline">{contact.email}</a>
+      <a href={contact.instagramHref} class="flex min-h-11 items-center text-sky no-underline">{contact.instagram}</a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const menu = document.getElementById('site-menu') as HTMLDialogElement | null;
+  if (menu) {
+    // Close when a link is followed, so same-page anchors (/#stone-works) don't leave the menu open.
+    menu.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a')) menu.close();
+    });
+    // Fallback for browsers without invoker commands.
+    if (!('commandForElement' in HTMLButtonElement.prototype)) {
+      document.querySelectorAll<HTMLButtonElement>('[commandfor="site-menu"]').forEach((b) =>
+        b.addEventListener('click', () => (b.getAttribute('command') === 'close' ? menu.close() : menu.showModal())),
+      );
+    }
+    // The menu exists only below lg; close it if the viewport grows past that.
+    matchMedia('(min-width: 1024px)').addEventListener('change', (m) => m.matches && menu.close());
+  }
+</script>

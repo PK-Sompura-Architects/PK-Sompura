@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+  <style>body{margin:0;background:#CBC3B5;-webkit-font-smoothing:antialiased}a{color:#262654}a:hover{color:#985A1F}</style>
+</helmet>
+<div style="padding:80px;display:flex;flex-direction:column;gap:96px;font-family:'Hanken Grotesk',sans-serif;color:#262654">
+  <header style="display:flex;flex-direction:column;gap:12px;max-width:1100px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">P.K. Sompura · Board 05 · 3D poster frames</div>
+    <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:72px;line-height:1">Poster frames</h1>
+    <p style="margin:0;font-size:18px;line-height:1.6;max-width:820px;text-wrap:pretty">Each frame is a finished image: it is the low-end, no-WebGL2, Save-Data and reduced-motion fallback, and the first paint before the 3D chunk loads. The 3D scene must match the framing, light direction and grade shown here. The relief and mountain shown are art-direction stand-ins built from simple shapes. <strong>[A2]</strong> The final poster is rendered from the real scene (the chosen CNC panel, and the modelled mountain) with the same camera.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap"><a href="Overview.dc.html">← Overview</a><a href="Home.dc.html">Home</a><a href="Handoff.dc.html">Handoff</a></div>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">P1</span><h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:44px">Hero: carved panel under raking light</h2></div>
+    <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="width:1280px;height:720px;box-shadow:0 0 0 1px #262654"><dc-import name="Relief Poster" mode="hero" caption="hero-poster · 2400×1350 · AVIF ≤ 90 KB" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px">Desktop export 16:9 · used cropped to the right 6 columns of the hero (object-position: 50% 50%)</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="width:360px;height:450px;box-shadow:0 0 0 1px #262654"><dc-import name="Relief Poster" mode="hero" caption="hero-poster-m · 4:5" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px">Mobile export 4:5 · 960×1200</div>
+      </div>
+      <div style="width:300px;display:flex;flex-direction:column;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6">
+        <div style="border:1px solid #262654;background:#F4EFE6;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-weight:500;letter-spacing:.08em;text-transform:uppercase">Light</div>
+          <div>Key light: low raking light from upper-left, elevation 12°, azimuth 30° at rest. Shadows fall to lower right. Warm key (sand), cool fill (navy at 35%).</div>
+          <div>Grade: highlights clip to sand #F4EFE6, deepest shadow no darker than navy #262654 at 45% over stone.</div>
+        </div>
+        <div style="border:1px solid #262654;background:#F4EFE6;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-weight:500;letter-spacing:.08em;text-transform:uppercase">Motion · 3D scene 1 (three.js)</div>
+          <div>Trigger: scroll (plus cursor x on desktop pointer:fine). Light azimuth 30°→70° across the hero's scroll range; cursor adds ±10°. Lerp 0.08 per frame, no easing curve (damped follow).</div>
+          <div>Poster → canvas crossfade 600 ms, ease-out, after first frame renders.</div>
+          <div>Reduced motion: this poster, no canvas.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">P2</span><h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:44px">CNC chapter: toolpath carving the same panel</h2></div>
+    <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap">
+      <div style="width:1280px;height:620px;box-shadow:0 0 0 1px #262654"><dc-import name="Relief Poster" mode="toolpath" caption="toolpath-poster · cutter at 56%" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+      <div style="width:300px;display:flex;flex-direction:column;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6">
+        <div style="border:1px solid #262654;background:#F4EFE6;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-weight:500;letter-spacing:.08em;text-transform:uppercase">Motion · same mesh, toolpath mask</div>
+          <div>Trigger: scroll, section pinned for 150vh. Cutter line sweeps left→right, 0%→100% of the panel, scrubbed (ease: none). Uncarved side shows raster passes (deep slate lines, 16%).</div>
+          <div>Cutter line: saffron #CD8841, 2 px, glow 14 px. Ornament only, never text.</div>
+          <div>Reduced motion: this frame, cutter frozen at 56%.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">P3</span><h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:44px">Fero Works: the mountain that opens</h2></div>
+    <p style="margin:0;font-size:17px;line-height:1.6;max-width:880px">Section pinned for 250vh. Scroll progress 0 → 1 maps to the four keyframes. Each keyframe is exported as its own poster; <strong>K3 is the one shown when 3D does not run.</strong> Topography contours sit behind (slate #798A96 at 22%), Light Rays in saffron come from inside the mountain, Noise grain over everything, Gradual Blur on top and bottom edges.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,760px);gap:40px 32px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="width:760px;height:428px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="1" caption="K1 · Closed · progress 0.00" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;max-width:720px"><strong>K1 Closed.</strong> Mountain whole. A thin saffron seam shows light inside. Topography only, no rays. Enter: page ground crossfades sand → night over 40vh before pin (scrub, ease none).</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="width:760px;height:428px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="2" caption="K2 · Opening · progress 0.35" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;max-width:720px"><strong>K2 Opening.</strong> Halves part 7% each side. Rays fade in to 45%. Temple visible, dim. Scrubbed, power2.inOut mapped on progress 0→0.35.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="width:760px;height:428px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="3" caption="K3 · Open, lit in saffron · progress 0.70 · FALLBACK" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;max-width:720px"><strong>K3 Open.</strong> Halves at 29%. White-stone shikhara lit from inside in saffron; rays full. Hold for 0.70→0.85 (no movement: a rest the eye can read). This is the reduced-motion and low-end poster.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="width:760px;height:428px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="4" caption="K4 · Into the build sequence · progress 1.00" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;max-width:720px"><strong>K4 Transition.</strong> Rays ease to 60%; plate 01 (Sketch) of the Scroll Stack rises over the scene; Gradual Blur band above it. Pin releases, canvas stops rendering once off-screen.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase">Mobile crops · 360 × 640 · same keyframes</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div style="width:360px;height:640px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="1" caption="K1" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="width:360px;height:640px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="2" caption="K2" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="width:360px;height:640px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="3" caption="K3 · fallback" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+        <div style="width:360px;height:640px;box-shadow:0 0 0 1px #262654"><dc-import name="Mountain Poster" stage="4" caption="K4" style="width:100%;height:100%" hint-size="100%,100%"></dc-import></div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+</body>
+</html>
