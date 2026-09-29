@@ -1,9 +1,12 @@
-"""Render the stand-in posters (tools/posters/poster.html) to public/posters as AVIF + WebP.
+"""Encode the posters to public/posters as AVIF + WebP.
 
-Run from the project root:  python tools/posters/render.py
-Needs Google Chrome and Pillow with AVIF support.
+  python tools/posters/render.py          stand-ins drawn by tools/posters/poster.html (phase 2)
+  python tools/posters/render.py --real   frames rendered from the three.js scenes by render-3d.mjs (phase 5 on)
+
+Run from the project root. Needs Google Chrome and Pillow with AVIF support.
 """
 import os
+import sys
 import subprocess
 import tempfile
 from pathlib import Path
@@ -38,9 +41,10 @@ def shoot(query: str, w: int, h: int) -> Image.Image:
         return Image.open(png).convert("RGB").copy()
 
 
+REAL = "--real" in sys.argv
 OUT.mkdir(parents=True, exist_ok=True)
 for name, (query, w, h, widths) in POSTERS.items():
-    img = shoot(query, w, h)
+    img = Image.open(ROOT / f"tools/posters/out/{name}.png").convert("RGB") if REAL else shoot(query, w, h)
     assert img.size == (w, h), f"{name}: got {img.size}"
     for tw in widths:
         im = img if tw == w else img.resize((tw, round(h * tw / w)), Image.LANCZOS)

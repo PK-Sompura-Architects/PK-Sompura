@@ -34,6 +34,7 @@ work_website_images/
 !design_handoff_pk_sompura/**
 
 # --- Tooling ---
+tools/posters/out/
 node_modules/
 dist/
 build/
