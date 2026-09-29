@@ -29,6 +29,7 @@ work_website_images/
 !brand/**
 !media/**
 !public/logo.webp
+!public/logo-fill.webp
 !public/tex/**
 !public/posters/**
 !design_handoff_pk_sompura/**

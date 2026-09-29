@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 from scipy import ndimage as ndi
+from skimage.measure import find_contours
 from skimage.morphology import remove_small_objects, skeletonize
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -100,10 +101,28 @@ def group(stroke, width, ds):
     return f'<g stroke="{stroke}" stroke-width="{width}">\n{body}\n</g>\n'
 
 
+def split_blobs(mask, max_side=40, min_fill=0.3):
+    """Small solid shapes (the star, the Om's dot) collapse to a cross or vanish as centrelines, so they are traced
+    by their outline instead. Returns (mask without them, outline paths)."""
+    lab, _ = ndi.label(mask)
+    rest, outlines = mask.copy(), []
+    for i, sl in enumerate(ndi.find_objects(lab), 1):
+        comp = lab[sl] == i
+        h, w = comp.shape
+        if max(h, w) <= max_side and comp.mean() >= min_fill and comp.sum() >= 4:
+            rest[sl][comp] = False
+            for c in find_contours(np.pad(comp, 1).astype(float), 0.5):
+                outlines.append(rdp(c[:, ::-1] + [sl[1].start - 1, sl[0].start - 1], 0.5))
+    return rest, outlines
+
+
 groups = {}
-for pts, w in paths_from(clean(navy), 1.2):
+navy_lines, navy_blobs = split_blobs(clean(navy))
+for pts, w in paths_from(navy_lines, 1.2):
     groups.setdefault(width_class(w), []).append(to_d(pts))
-om = [to_d(p) for p, _ in paths_from(clean(saffron, 1, 6), 0.6)]
+groups.setdefault(2.4, []).extend(to_d(p) for p in navy_blobs)
+om_lines, om_blobs = split_blobs(clean(saffron, 1, 3), max_side=24)
+om = [to_d(p) for p, _ in paths_from(om_lines, 0.6)] + [to_d(p) for p in om_blobs]
 
 svg = (
     f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" fill="none" stroke-linecap="round" stroke-linejoin="round">\n'

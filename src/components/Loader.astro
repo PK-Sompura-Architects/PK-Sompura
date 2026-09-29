@@ -1,0 +1,70 @@
+---
+// First-load loader (plan.md §9). Inline HTML + CSS + a tiny inline script, so it paints in the first frame with no
+// bundle. The logo outline draws with stroke-dashoffset as the page really loads: the critical CSS, the DOM, the
+// fonts and the hero poster (each a quarter). The count under it eases towards that real value. At 100% the stroke
+// completes, the full-colour logo fades in over 300 ms, then the loader fades out.
+// Shown on every full load and reload; skipped only for internal links (same-origin referrer + type "navigate").
+// Hard cap: gone by 2.5 s after navigation start. Reduced motion: the static logo and the count, no fades.
+// Without JS it never shows (it's display:none until the head script adds html.pk-ld). The page is in the HTML
+// underneath the whole time; the loader is aria-hidden and a visually hidden status says "Loading".
+import outline from '../assets/logo-outline.svg?raw';
+// Each stroke gets its own window of the progress (--a start, 0.3 wide), ordered top to bottom, so the outline builds
+// down the mark instead of every stroke growing at once.
+let svg = outline.replace(/<!--[\s\S]*?-->\n?/, '');
+const tops = [...svg.matchAll(/<path pathLength="1" d="M(-?[\d.]+),(-?[\d.]+)/g)].map((m) => +m[2]);
+const rank = [...tops].sort((a, b) => a - b);
+let k = 0;
+svg = svg.replace(/<path pathLength="1"/g, () => `<path pathLength="1" style="--a:${((rank.indexOf(tops[k++]) / Math.max(1, tops.length - 1)) * 0.7).toFixed(3)}"`);
+---
+<div id="pk-ld" aria-hidden="true">
+  <div class="pk-ld-mark">
+    <Fragment set:html={svg} />
+    <img src="/logo-fill.webp" alt="" width="313" height="400" decoding="async" fetchpriority="low" />
+  </div>
+  <span class="pk-ld-n">0%</span>
+</div>
+<p id="pk-ld-status" role="status" class="sr-only">Loading</p>
+<script is:inline>
+(() => {
+  const d = document, root = d.documentElement, el = d.getElementById('pk-ld'), status = d.getElementById('pk-ld-status');
+  if (!root.classList.contains('pk-ld')) { el.remove(); status.remove(); return; }
+  const svg = el.querySelector('svg'), n = el.querySelector('.pk-ld-n');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FADE = 300, CAP = 2500 - 2 * FADE; // stroke done by 1.9 s, so fill + fade-out end by 2.5 s
+  let done = 0, target = 0, shown = 0, ending = false;
+  const tick = () => { done++; target = done / 4; };
+  const once = (fn) => { let hit = false; return () => { if (!hit) { hit = true; fn(); } }; };
+
+  // 1. Critical CSS: every stylesheet link in <head>.
+  const links = [...d.querySelectorAll('head link[rel="stylesheet"]')];
+  Promise.all(links.map((l) => l.sheet ? 0 : new Promise((r) => { l.addEventListener('load', r); l.addEventListener('error', r); })))
+    .then(tick);
+  // 2–4. DOM ready, then the fonts it asks for, and the hero poster (the eager, high-priority image), decoded.
+  const ready = once(() => {
+    tick();
+    requestAnimationFrame(() => (d.fonts ? d.fonts.ready : Promise.resolve()).then(tick));
+    const img = d.querySelector('img[fetchpriority="high"]');
+    if (!img) return tick();
+    const dec = once(() => (img.decode ? img.decode() : Promise.resolve()).catch(() => {}).then(tick));
+    img.complete ? dec() : (img.addEventListener('load', dec), img.addEventListener('error', dec));
+  });
+  d.readyState === 'loading' ? d.addEventListener('DOMContentLoaded', ready) : ready();
+
+  const paint = (p) => { svg.style.setProperty('--p', p); n.textContent = Math.round(p * 100) + '%'; };
+  const finish = () => {
+    ending = true; paint(1); el.classList.add('full');
+    setTimeout(() => {
+      el.classList.add('out');
+      setTimeout(() => { el.remove(); status.remove(); root.classList.remove('pk-ld'); }, still ? 0 : FADE);
+    }, still ? 0 : FADE);
+  };
+  setTimeout(() => { if (!ending) finish(); }, Math.max(0, CAP - performance.now()));
+  const frame = () => {
+    if (ending) return;
+    shown = still ? target : Math.min(target, shown + Math.max(0.004, (target - shown) * 0.18));
+    paint(shown);
+    shown >= 0.999 ? finish() : requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+})();
+</script>

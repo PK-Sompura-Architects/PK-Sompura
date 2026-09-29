@@ -211,7 +211,15 @@ Lighthouse 13.5, mobile preset (Moto G Power emulation, simulated slow 4G, 4× C
 
 LCP is over the 2.5 s target on all three pages before the loader is added. Not tuned yet: waiting for the owner's decision.
 
-**After the logo loader:** to be measured.
+**The logo loader (Phase 1).** Same pages and runs, measured right before and right after wiring it (commit before: `36dde29`). Two methods: Lighthouse's default *simulated* throttling (as above), and *devtools* throttling, which really slows the network and CPU. On localhost the whole page loads in ~60 ms, so the simulation replays every request, including JS deliberately deferred to after load, and it swung by ±0.4 s between identical builds; the devtools numbers are the more trustworthy ones here.
+
+| Page | LCP simulated, before → after | LCP devtools, before → after | CLS after | LCP element after |
+|---|---|---|---|---|
+| `/` | 3.39 → 3.61 s | 1.53 → 1.66 s | 0 | hero poster |
+| `/projects` | 3.31 → 4.21 s | 4.76 → 2.25 s | 0.01 | the loader's fill logo |
+| `/contact` | 2.86 → 3.53 s | 1.48 → 2.24 s | 0.05 | the loader's fill logo |
+
+Read with care: once the loader is in, its full-colour logo (`/logo-fill.webp`, 20 KB, shown at 100%) is the largest paint on `/projects` and `/contact`, so their LCP now measures the loader, not the page. The `/projects` h1 still waits for `cut.webp` (204 KB) underneath; that is a real problem the loader hides, not fixes. The loader adds ~7 KB gzipped of inline SVG to every page. Under devtools throttling all three pages are under 2.5 s; under simulation none are, before or after.
 
 ---
 
