@@ -16,7 +16,7 @@ The files in `design/` are **design references built in HTML**. They show the in
 ## Fidelity
 **High fidelity.** The colours, type, spacing, layout, copy and motion specs are final. There are two exceptions:
 - Photo placeholders (striped boxes) are labelled with the intended image from plan.md §10. Swap in the real photos when they're ready, and never use stock photos.
-- The 3D poster art (`Relief Poster`, `Mountain Poster`) are stand-ins for art direction: framing, light direction and colour grade. The final posters are rendered from the real three.js scenes with the same camera.
+- The 3D poster art (`Relief Poster`, `Flythrough Poster`) are stand-ins for art direction: framing, light direction and colour grade. The final posters are rendered from the real three.js scenes with the same camera.
 
 ## Hard rules (from plan.md, and they must hold)
 - Use only the facts in plan.md §2. Never show: "more than 40 years", a second phone number, the grandfather's name, any dates or years (the footer © has no year), awards, testimonials, or invented numbers.
@@ -33,7 +33,7 @@ The files in `design/` are **design references built in HTML**. They show the in
 | 02 | `design/Register.dc.html` | /projects: working filters (place select + scope chips), sort, row states (default, hover band with and without photo, focus), mobile tap-expand (with photo / TypeCard), empty state, mobile filter sheet |
 | 03 | `design/Project.dc.html` | /projects/[slug] with photos, and without photos (TypeCard "page") |
 | 04 | `design/Contact Nav 404.dc.html` | /contact (night), mobile Staggered Menu (closed / opening / open), 404 |
-| 05 | `design/Posters.dc.html` | Hero poster, toolpath poster, mountain keyframes K1–K4 (K3 = fallback) |
+| 05 | `design/Posters.dc.html` | Hero poster, toolpath poster, and the Fero Works fly-through (P3): five shots S1–S5 at 1440 and 360, camera moves between shots, camera nodes, fallbacks, and a labelled temple elevation |
 | 06 | `design/Handoff.dc.html` | **Tokens, type scale, spacing, radii, shadows, textures, grid, component inventory, per-section table, tailwind.config** |
 
 ## Design tokens (summary; the full table is in Handoff §1–7 and §10)
@@ -57,6 +57,12 @@ Every motion note names the React Bits component, what triggers it, its duration
 - 3D islands load only if WebGL2 is available, reduced motion is off, Save-Data is off, deviceMemory ≥ 4, and the section is near the viewport. Otherwise the `<img>` poster stays. The canvas stops rendering when off-screen.
 - Count Up: the final values are in the HTML (3 · 51+ · 5).
 - The Scroll Stack plates are a plain list in the HTML.
+- **Fero Works fly-through** (Posters P3). This replaces the parting mountain from the first plan.
+  - The section is pinned for 500vh on desktop and 400vh on mobile. One camera follows a CatmullRom spline through five nodes, and scroll progress drives it (scrub 0.6).
+  - The HTML title has three states: full, docked, and docked + line. Each shot shows which one. The text is never baked into a poster.
+  - Posters `fw-s1…s5` are exported at 2400×1350 and 1080×1920. S4 is the first paint.
+  - Reduced motion: no pin. The five posters stack as 100svh frames.
+  - Low-end devices: pinned, with the posters crossfading. No 3D.
 
 ## State
 - Register: `place` (single) and `scope[]` (OR within scope, AND with place), `sort` (place | type, never date). Mirror them in the URL (`?place=&scope=&sort=`).

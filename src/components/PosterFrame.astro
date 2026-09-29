@@ -3,14 +3,14 @@
 // Save-Data, low memory and prefers-reduced-motion. Phase 5 mounts the three.js chunk over it.
 // Posters are stand-ins rendered by tools/posters/render.py until phase 5 renders them from the real scenes.
 interface Props {
-  name: 'hero' | 'toolpath' | 'mountain-k3';
+  name: 'hero' | 'toolpath';
   alt: string;
   sizes: string; // desktop sizes attribute
   priority?: boolean;
   class?: string;
 }
 const { name, alt, sizes, priority = false, class: cls } = Astro.props;
-const dims = { hero: [2400, 1350, 960, 1200], toolpath: [2400, 1200, 960, 1120], 'mountain-k3': [2400, 1350, 960, 1494] }[name];
+const dims = { hero: [2400, 1350, 960, 1200], toolpath: [2400, 1200, 960, 1120] }[name];
 const d = (ext: string) => [960, 1600, 2400].map((w) => `/posters/${name}-${w}.${ext} ${w}w`).join(', ');
 const m = (ext: string) => [480, 960].map((w) => `/posters/${name}-m-${w}.${ext} ${w}w`).join(', ');
 ---
@@ -31,12 +31,6 @@ const m = (ext: string) => [480, 960].map((w) => `/posters/${name}-m-${w}.${ext}
       decoding={priority ? 'sync' : 'async'}
     />
   </picture>
-  {name === 'mountain-k3' && (
-    <div class="scene-edges pointer-events-none absolute inset-0" aria-hidden="true">
-      <div class="absolute inset-x-0 top-0 h-[12%] bg-gradient-to-b from-night to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 h-[10%] bg-gradient-to-t from-night to-transparent"></div>
-    </div>
-  )}
 </div>
 
 <script>import '../scripts/scene3d';</script>
@@ -45,10 +39,4 @@ const m = (ext: string) => [480, 960].map((w) => `/posters/${name}-m-${w}.${ext}
   /* Once a scene's first frame is up, the canvas fades in over 600 ms and the poster fades out underneath. */
   [data-scene] picture img { transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1); }
   [data-3d-live] picture img { opacity: 0; }
-  /* Mountain edges: the poster bakes these in; over the live canvas they are drawn here, with a Gradual Blur band. */
-  [data-scene] .scene-edges { display: none; z-index: 1; }
-  [data-3d-live] .scene-edges { display: block; }
-  [data-3d-live] .scene-edges > div { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
-  [data-3d-live] .scene-edges > div:first-child { mask-image: linear-gradient(#000, transparent); -webkit-mask-image: linear-gradient(#000, transparent); }
-  [data-3d-live] .scene-edges > div:last-child { mask-image: linear-gradient(transparent, #000); -webkit-mask-image: linear-gradient(transparent, #000); }
 </style>

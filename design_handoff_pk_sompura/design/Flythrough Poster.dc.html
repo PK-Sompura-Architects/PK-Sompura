@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <linearGradient id="fw-stone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:#CD8841"></stop><stop offset=".2" style="stop-color:#F4EFE6"></stop><stop offset=".55" style="stop-color:#F4EFE6"></stop><stop offset=".82" style="stop-color:#E7DFD2"></stop><stop offset="1" style="stop-color:#CD8841"></stop></linearGradient>
+    <radialGradient id="fw-door" cx=".5" cy=".75" r=".7"><stop offset="0" style="stop-color:#F4EFE6"></stop><stop offset=".5" style="stop-color:#CD8841"></stop><stop offset="1" style="stop-color:#985A1F"></stop></radialGradient>
+    <radialGradient id="fw-glow"><stop offset="0" style="stop-color:#CD8841;stop-opacity:.85"></stop><stop offset=".5" style="stop-color:#CD8841;stop-opacity:.25"></stop><stop offset="1" style="stop-color:#CD8841;stop-opacity:0"></stop></radialGradient>
+    <radialGradient id="fw-cave" cx=".5" cy=".72" r=".6"><stop offset="0" style="stop-color:#CD8841"></stop><stop offset=".55" style="stop-color:#985A1F"></stop><stop offset="1" style="stop-color:#262654"></stop></radialGradient>
+    <linearGradient id="fw-dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#0E0E1F"></stop><stop offset=".42" style="stop-color:#262654"></stop><stop offset=".55" style="stop-color:#52606B"></stop><stop offset=".62" style="stop-color:#CD8841"></stop></linearGradient>
+    <linearGradient id="fw-night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#0E0E1F"></stop><stop offset=".6" style="stop-color:#262654"></stop><stop offset="1" style="stop-color:#52606B"></stop></linearGradient>
+    <linearGradient id="fw-fogbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#262654"></stop><stop offset=".5" style="stop-color:#52606B"></stop><stop offset="1" style="stop-color:#262654"></stop></linearGradient>
+    <linearGradient id="fw-fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#798A96;stop-opacity:0"></stop><stop offset=".5" style="stop-color:#798A96;stop-opacity:.55"></stop><stop offset="1" style="stop-color:#798A96;stop-opacity:0"></stop></linearGradient>
+    <linearGradient id="fw-cloud-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#798A96"></stop><stop offset=".35" style="stop-color:#52606B"></stop><stop offset="1" style="stop-color:#262654"></stop></linearGradient>
+    <linearGradient id="fw-cloud-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#52606B"></stop><stop offset=".4" style="stop-color:#262654"></stop><stop offset="1" style="stop-color:#0E0E1F"></stop></linearGradient>
+    <linearGradient id="fw-cloud-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#262654"></stop><stop offset=".5" style="stop-color:#0E0E1F"></stop></linearGradient>
+    <linearGradient id="fw-mtn" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:#0E0E1F"></stop><stop offset=".45" style="stop-color:#262654"></stop><stop offset=".72" style="stop-color:#52606B"></stop><stop offset="1" style="stop-color:#262654"></stop></linearGradient>
+    <linearGradient id="fw-rock" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:#0E0E1F"></stop><stop offset=".3" style="stop-color:#262654"></stop><stop offset=".7" style="stop-color:#262654"></stop><stop offset="1" style="stop-color:#0E0E1F"></stop></linearGradient>
+    <linearGradient id="fw-scrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#0E0E1F;stop-opacity:.85"></stop><stop offset="1" style="stop-color:#0E0E1F;stop-opacity:0"></stop></linearGradient>
+    <pattern id="fw-tiers" patternUnits="userSpaceOnUse" width="20" height="13"><rect y="11" width="20" height="2" style="fill:#262654;opacity:.18"></rect></pattern>
+    <pattern id="fw-strata" patternUnits="userSpaceOnUse" width="40" height="26"><rect y="23" width="40" height="3" style="fill:#0E0E1F;opacity:.4"></rect></pattern>
+    <filter id="fw-b2" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="2"></feGaussianBlur></filter>
+    <filter id="fw-b8" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"></feGaussianBlur></filter>
+    <filter id="fw-b28" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="28"></feGaussianBlur></filter>
+    <clipPath id="fw-mtn-clip"><path d="M150 1000 L260 760 L330 740 L400 610 L470 590 L540 450 L610 430 L660 330 L700 300 L760 296 L800 330 L850 420 L920 440 L990 580 L1060 600 L1130 740 L1200 760 L1300 1000 Z"></path></clipPath>
+    <symbol id="fw-temple" viewBox="0 0 400 560">
+      <path d="M40 382 C46 352 56 322 64 306 L78 306 C84 322 92 352 98 382 Z" style="fill:url(#fw-stone)"></path>
+      <path d="M40 382 C46 352 56 322 64 306 L78 306 C84 322 92 352 98 382 Z" style="fill:url(#fw-tiers)"></path>
+      <ellipse cx="71" cy="302" rx="10" ry="4" style="fill:#E7DFD2"></ellipse><circle cx="71" cy="294" r="3.5" style="fill:#CD8841"></circle>
+      <path d="M360 382 C354 352 344 322 336 306 L322 306 C316 322 308 352 302 382 Z" style="fill:url(#fw-stone)"></path>
+      <path d="M360 382 C354 352 344 322 336 306 L322 306 C316 322 308 352 302 382 Z" style="fill:url(#fw-tiers)"></path>
+      <ellipse cx="329" cy="302" rx="10" ry="4" style="fill:#E7DFD2"></ellipse><circle cx="329" cy="294" r="3.5" style="fill:#CD8841"></circle>
+      <path d="M76 382 C82 332 96 282 110 250 L128 250 C136 282 148 332 154 382 Z" style="fill:url(#fw-stone)"></path>
+      <path d="M76 382 C82 332 96 282 110 250 L128 250 C136 282 148 332 154 382 Z" style="fill:url(#fw-tiers)"></path>
+      <ellipse cx="119" cy="246" rx="13" ry="5" style="fill:#E7DFD2"></ellipse><circle cx="119" cy="236" r="4" style="fill:#CD8841"></circle>
+      <path d="M324 382 C318 332 304 282 290 250 L272 250 C264 282 252 332 246 382 Z" style="fill:url(#fw-stone)"></path>
+      <path d="M324 382 C318 332 304 282 290 250 L272 250 C264 282 252 332 246 382 Z" style="fill:url(#fw-tiers)"></path>
+      <ellipse cx="281" cy="246" rx="13" ry="5" style="fill:#E7DFD2"></ellipse><circle cx="281" cy="236" r="4" style="fill:#CD8841"></circle>
+      <path d="M112 382 C120 282 150 172 178 108 L222 108 C250 172 280 282 288 382 Z" style="fill:url(#fw-stone)"></path>
+      <path d="M172 382 C175 282 184 172 190 108 L210 108 C216 172 225 282 228 382 Z" style="fill:#F4EFE6;opacity:.55"></path>
+      <path d="M112 382 C120 282 150 172 178 108 L222 108 C250 172 280 282 288 382 Z" style="fill:url(#fw-tiers)"></path>
+      <path d="M150 382 C155 282 172 172 185 108" style="fill:none;stroke:#262654;stroke-width:1.2;opacity:.2"></path>
+      <path d="M250 382 C245 282 228 172 215 108" style="fill:none;stroke:#262654;stroke-width:1.2;opacity:.2"></path>
+      <rect x="186" y="96" width="28" height="14" style="fill:#E7DFD2"></rect>
+      <ellipse cx="200" cy="90" rx="40" ry="13" style="fill:url(#fw-stone)"></ellipse>
+      <path d="M172 81 V99 M180 79 V101 M188 78 V102 M196 77 V103 M204 77 V103 M212 78 V102 M220 79 V101 M228 81 V99" style="fill:none;stroke:#262654;stroke-width:1.2;opacity:.25"></path>
+      <ellipse cx="200" cy="75" rx="20" ry="4" style="fill:#E7DFD2"></ellipse>
+      <path d="M190 71 C183 62 188 51 200 49 C212 51 217 62 210 71 Z" style="fill:#CD8841"></path>
+      <rect x="196" y="41" width="8" height="9" style="fill:#CD8841"></rect>
+      <circle cx="200" cy="37" r="4.5" style="fill:#CD8841"></circle>
+      <path d="M207 70 V8" style="fill:none;stroke:#E7DFD2;stroke-width:1.5"></path>
+      <polygon points="207,8 242,18 207,28" style="fill:#CD8841"></polygon>
+      <rect x="36" y="380" width="328" height="12" style="fill:url(#fw-stone)"></rect>
+      <rect x="44" y="392" width="312" height="102" style="fill:url(#fw-stone)"></rect>
+      <rect x="36" y="392" width="328" height="3" style="fill:#262654;opacity:.25"></rect>
+      <rect x="150" y="395" width="100" height="99" style="fill:#F4EFE6;opacity:.45"></rect>
+      <rect x="96" y="395" width="40" height="99" style="fill:#F4EFE6;opacity:.22"></rect>
+      <rect x="264" y="395" width="40" height="99" style="fill:#F4EFE6;opacity:.22"></rect>
+      <path d="M96 395 V494 M136 395 V494 M150 395 V494 M250 395 V494 M264 395 V494 M304 395 V494" style="fill:none;stroke:#262654;stroke-width:1.5;opacity:.16"></path>
+      <rect x="44" y="476" width="312" height="6" style="fill:#262654;opacity:.12"></rect>
+      <path d="M180 494 L180 446 Q200 422 220 446 L220 494 Z" style="fill:url(#fw-door)"></path>
+      <rect x="40" y="494" width="320" height="20" style="fill:url(#fw-stone)"></rect>
+      <rect x="20" y="514" width="360" height="22" style="fill:url(#fw-stone)"></rect>
+      <rect x="0" y="536" width="400" height="24" style="fill:url(#fw-stone)"></rect>
+      <rect x="40" y="494" width="320" height="3" style="fill:#262654;opacity:.22"></rect>
+      <rect x="20" y="514" width="360" height="3" style="fill:#262654;opacity:.22"></rect>
+      <rect x="0" y="536" width="400" height="3" style="fill:#262654;opacity:.22"></rect>
+    </symbol>
+  </defs>
+</svg>
+<div style="position:relative;width:100%;height:100%;container-type:size;overflow:hidden;background:#0E0E1F;font-family:'Hanken Grotesk',sans-serif">
+
+  <sc-if value="{{ s1 }}" hint-placeholder-val="{{ false }}">
+    <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <rect width="1440" height="1000" style="fill:url(#fw-dusk)"></rect>
+      <ellipse cx="760" cy="610" rx="640" ry="180" style="fill:url(#fw-glow)"></ellipse>
+      <g style="fill:#F4EFE6">
+        <circle cx="560" cy="150" r="1.4" style="opacity:.7"></circle><circle cx="640" cy="230" r="1" style="opacity:.5"></circle><circle cx="820" cy="130" r="1.6" style="opacity:.8"></circle><circle cx="900" cy="260" r="1" style="opacity:.45"></circle><circle cx="700" cy="120" r="1" style="opacity:.6"></circle><circle cx="980" cy="180" r="1.3" style="opacity:.6"></circle><circle cx="1180" cy="140" r="1.4" style="opacity:.7"></circle><circle cx="1300" cy="230" r="1" style="opacity:.5"></circle><circle cx="1080" cy="300" r="1" style="opacity:.35"></circle><circle cx="760" cy="320" r="1.1" style="opacity:.35"></circle><circle cx="480" cy="300" r="1" style="opacity:.4"></circle><circle cx="1380" cy="120" r="1.2" style="opacity:.6"></circle>
+      </g>
+      <path d="M836 612 L880 574 L900 566 L926 584 L968 612 Z" style="fill:#262654;opacity:.85"></path>
+      <ellipse cx="300" cy="600" rx="260" ry="14" style="fill:#F4EFE6;opacity:.1;filter:url(#fw-b8)"></ellipse>
+      <ellipse cx="1150" cy="596" rx="220" ry="12" style="fill:#F4EFE6;opacity:.08;filter:url(#fw-b8)"></ellipse>
+      <path d="M0 640 Q60 604 130 622 Q190 590 260 614 Q330 584 410 608 Q480 582 560 604 Q640 580 720 602 Q800 578 880 600 Q960 580 1040 606 Q1120 584 1200 610 Q1280 590 1360 614 Q1410 604 1440 618 L1440 1000 L0 1000 Z" style="fill:url(#fw-cloud-a);filter:url(#fw-b2)"></path>
+      <path d="M0 640 Q60 604 130 622 Q190 590 260 614 Q330 584 410 608 Q480 582 560 604 Q640 580 720 602 Q800 578 880 600 Q960 580 1040 606 Q1120 584 1200 610 Q1280 590 1360 614 Q1410 604 1440 618" style="fill:none;stroke:#CD8841;stroke-width:3;opacity:.7;filter:url(#fw-b2)"></path>
+      <path d="M0 730 Q90 690 180 716 Q260 676 350 704 Q430 668 520 700 Q600 664 700 694 Q790 660 880 692 Q970 662 1060 696 Q1150 668 1240 700 Q1340 676 1440 706 L1440 1000 L0 1000 Z" style="fill:url(#fw-cloud-b);filter:url(#fw-b2)"></path>
+      <path d="M0 730 Q90 690 180 716 Q260 676 350 704 Q430 668 520 700 Q600 664 700 694 Q790 660 880 692 Q970 662 1060 696 Q1150 668 1240 700 Q1340 676 1440 706" style="fill:none;stroke:#CD8841;stroke-width:2;opacity:.35;filter:url(#fw-b2)"></path>
+      <path d="M0 860 Q110 800 230 836 Q330 786 450 826 Q560 780 680 822 Q780 784 900 824 Q1010 790 1120 830 Q1230 796 1340 834 Q1400 820 1440 830 L1440 1000 L0 1000 Z" style="fill:url(#fw-cloud-c);filter:url(#fw-b2)"></path>
+      <path d="M0 860 Q110 800 230 836 Q330 786 450 826 Q560 780 680 822 Q780 784 900 824 Q1010 790 1120 830 Q1230 796 1340 834 Q1400 820 1440 830" style="fill:none;stroke:#798A96;stroke-width:2;opacity:.4;filter:url(#fw-b2)"></path>
+    </svg>
+  </sc-if>
+
+  <sc-if value="{{ s2 }}" hint-placeholder-val="{{ false }}">
+    <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <rect width="1440" height="1000" style="fill:url(#fw-fogbg)"></rect>
+      <ellipse cx="740" cy="560" rx="700" ry="300" style="fill:url(#fw-glow);opacity:.6"></ellipse>
+      <path d="M0 1000 L0 860 L90 830 L150 846 L240 790 L310 812 L400 770 L470 798 L560 752 L640 790 L720 760 L800 800 L880 770 L960 812 L1040 780 L1130 826 L1220 800 L1320 846 L1440 820 L1440 1000 Z" style="fill:#0E0E1F;opacity:.85;filter:url(#fw-b2)"></path>
+      <g style="filter:url(#fw-b28)">
+        <ellipse cx="200" cy="300" rx="420" ry="170" style="fill:#798A96;opacity:.55"></ellipse>
+        <ellipse cx="1220" cy="260" rx="460" ry="180" style="fill:#798A96;opacity:.5"></ellipse>
+        <ellipse cx="720" cy="140" rx="700" ry="150" style="fill:#AFD9EB;opacity:.16"></ellipse>
+        <ellipse cx="740" cy="470" rx="300" ry="90" style="fill:#CD8841;opacity:.28"></ellipse>
+        <ellipse cx="360" cy="700" rx="460" ry="130" style="fill:#52606B;opacity:.75"></ellipse>
+        <ellipse cx="1120" cy="720" rx="440" ry="130" style="fill:#52606B;opacity:.75"></ellipse>
+        <ellipse cx="720" cy="960" rx="560" ry="80" style="fill:#798A96;opacity:.45"></ellipse>
+      </g>
+      <g style="fill:#F4EFE6;filter:url(#fw-b8)">
+        <ellipse cx="520" cy="420" rx="5" ry="130" style="opacity:.1"></ellipse><ellipse cx="610" cy="260" rx="4" ry="110" style="opacity:.08"></ellipse><ellipse cx="860" cy="380" rx="5" ry="140" style="opacity:.1"></ellipse><ellipse cx="930" cy="620" rx="4" ry="100" style="opacity:.07"></ellipse><ellipse cx="700" cy="660" rx="4" ry="90" style="opacity:.07"></ellipse><ellipse cx="300" cy="520" rx="5" ry="120" style="opacity:.07"></ellipse><ellipse cx="1160" cy="480" rx="5" ry="120" style="opacity:.07"></ellipse>
+      </g>
+      <rect width="1440" height="380" style="fill:url(#fw-scrim)"></rect>
+    </svg>
+  </sc-if>
+
+  <sc-if value="{{ s3 }}" hint-placeholder-val="{{ false }}">
+    <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <rect width="1440" height="1000" style="fill:url(#fw-night)"></rect>
+      <ellipse cx="760" cy="420" rx="480" ry="130" style="fill:url(#fw-glow);opacity:.5"></ellipse>
+      <path d="M0 470 L80 452 L160 462 L240 430 L330 450 L420 418 L500 440 L590 404 L660 428 L740 396 L820 424 L900 400 L990 436 L1080 414 L1170 446 L1260 424 L1350 452 L1440 440 L1440 1000 L0 1000 Z" style="fill:#798A96;opacity:.55"></path>
+      <rect y="420" width="1440" height="160" style="fill:url(#fw-fog);filter:url(#fw-b8)"></rect>
+      <path d="M0 600 L70 560 L130 574 L210 520 L270 540 L350 496 L420 530 L500 508 L560 540 L640 520 L720 556 L800 530 L880 560 L950 522 L1030 548 L1110 500 L1190 530 L1270 510 L1350 548 L1440 530 L1440 1000 L0 1000 Z" style="fill:#52606B"></path>
+      <path d="M350 496 L420 530 L390 590 Z M1110 500 L1190 530 L1150 600 Z M740 396 L820 424 L790 470 Z M210 520 L270 540 L240 600 Z" style="fill:#798A96;opacity:.3"></path>
+      <rect y="560" width="1440" height="150" style="fill:url(#fw-fog);opacity:.8;filter:url(#fw-b8)"></rect>
+      <path d="M0 760 L60 700 L110 716 L180 640 L230 668 L300 610 L360 650 L420 628 L480 680 L540 660 L600 720 L680 700 L740 740 L820 690 L880 712 L960 650 L1020 676 L1100 620 L1170 660 L1240 640 L1320 690 L1380 670 L1440 700 L1440 1000 L0 1000 Z" style="fill:#262654"></path>
+      <path d="M0 760 L60 700 L110 716 L180 640 L230 668 L300 610 L360 650 L420 628 L480 680 L540 660 L600 720 L680 700 L740 740 L820 690 L880 712 L960 650 L1020 676 L1100 620 L1170 660 L1240 640 L1320 690 L1380 670 L1440 700" style="fill:none;stroke:#AFD9EB;stroke-width:1.5;opacity:.28"></path>
+      <path d="M300 610 L360 650 L330 720 Z M960 650 L1020 676 L990 740 Z M1100 620 L1170 660 L1130 730 Z M820 690 L880 712 L850 770 Z" style="fill:#52606B;opacity:.45"></path>
+      <rect y="700" width="1440" height="160" style="fill:url(#fw-fog);opacity:.6;filter:url(#fw-b8)"></rect>
+      <path d="M0 1000 L0 900 L80 870 L140 884 L220 836 L300 862 L380 820 L450 850 L520 880 L600 868 L680 900 L760 890 L840 910 L920 880 L1000 860 L1080 830 L1160 852 L1240 810 L1320 846 L1440 824 L1440 1000 Z" style="fill:#0E0E1F"></path>
+      <path d="M0 900 L80 870 L140 884 L220 836 L300 862 L380 820 L450 850 L520 880 L600 868 L680 900 L760 890 L840 910 L920 880 L1000 860 L1080 830 L1160 852 L1240 810 L1320 846 L1440 824" style="fill:none;stroke:#798A96;stroke-width:2;opacity:.45"></path>
+    </svg>
+  </sc-if>
+
+  <sc-if value="{{ s4 }}" hint-placeholder-val="{{ false }}">
+    <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <rect width="1440" height="1000" style="fill:url(#fw-night)"></rect>
+      <path d="M0 680 L120 650 L240 668 L380 630 L520 660 L700 640 L880 662 L1040 634 L1200 660 L1320 640 L1440 656 L1440 1000 L0 1000 Z" style="fill:#52606B;opacity:.55"></path>
+      <ellipse cx="720" cy="820" rx="540" ry="280" style="fill:url(#fw-glow);opacity:.45"></ellipse>
+      <path d="M150 1000 L260 760 L330 740 L400 610 L470 590 L540 450 L610 430 L660 330 L700 300 L760 296 L800 330 L850 420 L920 440 L990 580 L1060 600 L1130 740 L1200 760 L1300 1000 Z" style="fill:url(#fw-mtn)"></path>
+      <g style="clip-path:url(#fw-mtn-clip)">
+        <rect width="1440" height="1000" style="fill:url(#fw-strata)"></rect>
+        <path d="M760 296 L800 330 L850 420 L780 520 Z M850 420 L920 440 L990 580 L900 620 Z M990 580 L1060 600 L1130 740 L1020 780 Z" style="fill:#798A96;opacity:.25"></path>
+        <path d="M612 1000 L612 720 C612 610 660 560 720 540 C780 560 828 610 828 720 L828 1000 Z" style="fill:none;stroke:#CD8841;stroke-width:60;opacity:.18;filter:url(#fw-b28)"></path>
+      </g>
+      <path d="M612 1000 L612 720 C612 610 660 560 720 540 C780 560 828 610 828 720 L828 1000 Z" style="fill:url(#fw-cave)"></path>
+      <g style="fill:#CD8841;filter:url(#fw-b8)">
+        <polygon points="720,700 360,1000 440,1000" style="opacity:.12"></polygon><polygon points="720,700 540,1000 600,1000" style="opacity:.14"></polygon><polygon points="720,700 840,1000 900,1000" style="opacity:.14"></polygon><polygon points="720,700 1000,1000 1080,1000" style="opacity:.12"></polygon>
+      </g>
+      <ellipse cx="720" cy="886" rx="120" ry="14" style="fill:#F4EFE6;opacity:.3;filter:url(#fw-b8)"></ellipse>
+      <use href="#fw-temple" x="626" y="620" width="188" height="263"></use>
+      <path d="M612 1000 L612 720 C612 610 660 560 720 540 C780 560 828 610 828 720 L828 1000" style="fill:none;stroke:#CD8841;stroke-width:3;opacity:.6;filter:url(#fw-b2)"></path>
+      <ellipse cx="720" cy="960" rx="420" ry="70" style="fill:#CD8841;opacity:.3;filter:url(#fw-b28)"></ellipse>
+      <rect y="860" width="1440" height="160" style="fill:url(#fw-fog);opacity:.55;filter:url(#fw-b8)"></rect>
+      <path d="M-10 120 C120 180 260 330 360 520 C440 680 500 840 540 1000 L-10 1000 Z" style="fill:#0E0E1F"></path>
+      <path d="M-10 120 C120 180 260 330 360 520 C440 680 500 840 540 1000" style="fill:none;stroke:#798A96;stroke-width:2;opacity:.45;filter:url(#fw-b2)"></path>
+      <path d="M440 700 C480 820 515 920 540 1000" style="fill:none;stroke:#CD8841;stroke-width:2.5;opacity:.45;filter:url(#fw-b2)"></path>
+    </svg>
+  </sc-if>
+
+  <sc-if value="{{ s5 }}" hint-placeholder-val="{{ false }}">
+    <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <rect width="1440" height="1000" style="fill:url(#fw-cave)"></rect>
+      <rect width="1440" height="1000" style="fill:url(#fw-strata);opacity:.5"></rect>
+      <ellipse cx="720" cy="560" rx="360" ry="340" style="fill:url(#fw-glow);opacity:.8"></ellipse>
+      <g style="fill:#CD8841;filter:url(#fw-b8)">
+        <polygon points="720,560 470,60 540,60" style="opacity:.14"></polygon><polygon points="720,560 640,40 690,40" style="opacity:.16"></polygon><polygon points="720,560 760,40 810,40" style="opacity:.16"></polygon><polygon points="720,560 910,60 980,60" style="opacity:.14"></polygon><polygon points="720,560 440,260 440,340" style="opacity:.1"></polygon><polygon points="720,560 1000,260 1000,340" style="opacity:.1"></polygon>
+      </g>
+      <rect y="838" width="1440" height="162" style="fill:#985A1F;opacity:.6"></rect>
+      <ellipse cx="720" cy="846" rx="320" ry="26" style="fill:#F4EFE6;opacity:.3;filter:url(#fw-b8)"></ellipse>
+      <use href="#fw-temple" x="510" y="250" width="420" height="588"></use>
+      <path d="M-10 -10 H1450 V1010 H-10 Z M470 1010 L470 470 C470 260 580 120 720 76 C860 120 970 260 970 470 L970 1010 Z" style="fill:url(#fw-rock);fill-rule:evenodd"></path>
+      <path d="M470 1010 L470 470 C470 260 580 120 720 76 C860 120 970 260 970 470 L970 1010" style="fill:none;stroke:#CD8841;stroke-width:3;opacity:.55;filter:url(#fw-b2)"></path>
+      <path d="M120 180 L300 240 M60 420 L260 470 M160 700 L360 740 M1140 200 L1320 150 M1180 460 L1400 420 M1100 720 L1340 690" style="fill:none;stroke:#0E0E1F;stroke-width:3;opacity:.5"></path>
+    </svg>
+  </sc-if>
+
+  <sc-if value="{{ elevation }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 50% 60%,#985A1F 0,#262654 70%,#0E0E1F 100%);display:flex;align-items:center;justify-content:center">
+      <div style="position:relative;width:400px;height:560px">
+        <svg viewBox="0 0 400 560" style="position:absolute;inset:0;width:100%;height:100%;display:block"><use href="#fw-temple" x="0" y="0" width="400" height="560"></use></svg>
+        <sc-for list="{{ labelsL }}" as="l" hint-placeholder-count="4">
+          <div style="position:absolute;right:{{ l.r }}px;top:{{ l.y }}px;display:flex;align-items:center;gap:8px;transform:translateY(-50%);white-space:nowrap">
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#AFD9EB">{{ l.term }}</span><span style="font-size:13px;color:#F4EFE6">{{ l.en }}</span></div>
+            <div style="width:{{ l.w }}px;height:1px;background:#AFD9EB"></div>
+          </div>
+        </sc-for>
+        <sc-for list="{{ labelsR }}" as="l" hint-placeholder-count="4">
+          <div style="position:absolute;left:{{ l.x }}px;top:{{ l.y }}px;display:flex;align-items:center;gap:8px;transform:translateY(-50%);white-space:nowrap">
+            <div style="width:{{ l.w }}px;height:1px;background:#AFD9EB"></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#AFD9EB">{{ l.term }}</span><span style="font-size:13px;color:#F4EFE6">{{ l.en }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute;inset:0;background:url(assets/tex/grain-night.png);pointer-events:none"></div>
+
+  <sc-if value="{{ showFull }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:max(24px,6cqw);top:min(18cqh,calc(9cqw + 20px));width:min(440px,calc(100cqw - 48px));display:flex;flex-direction:column;gap:14px;outline:{{ outline }};outline-offset:10px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#AFD9EB">Line of work 03 / 03</div>
+      <h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:clamp(44px,5cqw,72px);line-height:.95;color:#F4EFE6">Fero Works</h2>
+      <p style="margin:0;font-size:clamp(15px,1.3cqw,19px);line-height:1.55;color:#F4EFE6;text-wrap:pretty">An artificial mountain, built around the temple it holds.</p>
+      <sc-if value="{{ annotate }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:-10px;top:-34px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:#AFD9EB;color:#0E0E1F;padding:2px 6px;white-space:nowrap">HTML · eyebrow + h2 + p · full</div></sc-if>
+    </div>
+  </sc-if>
+  <sc-if value="{{ showDocked }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:max(24px,6cqw);top:max(28px,6cqh);width:min(380px,calc(100cqw - 48px));display:flex;flex-direction:column;gap:6px;outline:{{ outline }};outline-offset:10px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:#AFD9EB">Line of work 03 / 03</div>
+      <div style="font-family:'Libre Caslon Display',serif;font-size:28px;line-height:1;color:#F4EFE6">Fero Works</div>
+      <sc-if value="{{ showLine }}" hint-placeholder-val="{{ false }}"><p style="margin:6px 0 0;font-size:clamp(15px,1.2cqw,17px);line-height:1.55;color:#F4EFE6;text-wrap:pretty">An artificial mountain, built around the temple it holds.</p></sc-if>
+      <sc-if value="{{ annotate }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:-10px;top:-34px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:#AFD9EB;color:#0E0E1F;padding:2px 6px;white-space:nowrap">{{ dockTag }}</div></sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showPlate }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:max(16px,6cqw);right:max(16px,6cqw);bottom:0;height:60px;background:#262654;box-shadow:0 -1px 0 #798A96,0 -24px 48px rgba(14,14,31,.6);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 20px;box-sizing:border-box;outline:{{ outline }};outline-offset:6px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#AFD9EB;white-space:nowrap">Build sequence · 01 / 05</div>
+      <div style="font-family:'Libre Caslon Display',serif;font-size:26px;line-height:1;color:#F4EFE6">Sketch</div>
+      <sc-if value="{{ annotate }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:-6px;top:-30px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:#AFD9EB;color:#0E0E1F;padding:2px 6px;white-space:nowrap">HTML · StackPlate 01 rising</div></sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasCaption }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;right:16px;top:16px;background:#0E0E1F;color:#AFD9EB;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.4;letter-spacing:.04em;border:1px solid #798A96">{{ caption }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:810},&quot;shot&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;elevation&quot;],&quot;default&quot;:&quot;4&quot;,&quot;tsType&quot;:&quot;'1'|'2'|'3'|'4'|'5'|'elevation'&quot;},&quot;format&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;desktop&quot;,&quot;mobile&quot;],&quot;default&quot;:&quot;desktop&quot;,&quot;tsType&quot;:&quot;'desktop'|'mobile'&quot;},&quot;text&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;annotate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;caption&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const shot = String(this.props.shot ?? '4');
+    const mobile = (this.props.format ?? 'desktop') === 'mobile';
+    const flag = (v) => !(v === false || v === 'false');
+    const text = flag(this.props.text ?? true);
+    const annotate = flag(this.props.annotate ?? true) && text;
+    const n = Number(shot);
+    let mode = 'none';
+    if (text && n >= 1) mode = n === 1 ? 'full' : n === 5 ? (mobile ? 'dockedLine' : 'full') : n === 4 ? 'dockedLine' : 'docked';
+    return {
+      s1: shot === '1', s2: shot === '2', s3: shot === '3', s4: shot === '4', s5: shot === '5',
+      elevation: shot === 'elevation',
+      showFull: mode === 'full',
+      showDocked: mode === 'docked' || mode === 'dockedLine',
+      showLine: mode === 'dockedLine',
+      dockTag: mode === 'dockedLine' ? 'HTML · docked title + p' : 'HTML · docked title',
+      showPlate: text && n === 5,
+      annotate,
+      outline: annotate ? '1px dashed rgba(175,217,235,.7)' : 'none',
+      hasCaption: !!this.props.caption, caption: this.props.caption,
+      labelsL: [
+        { term: 'Kalash', en: 'Finial pot', y: 50, r: 214, w: 20 },
+        { term: 'Urushringa', en: 'Side spires, 2 per side', y: 262, r: 290, w: 30 },
+        { term: 'Mandovara', en: 'Wall with projecting bays', y: 440, r: 366, w: 20 },
+        { term: 'Jagati', en: 'Stepped base, 3 steps', y: 526, r: 410, w: 30 }
+      ],
+      labelsR: [
+        { term: 'Dhvaja', en: 'Flag', y: 18, x: 250, w: 30 },
+        { term: 'Amalaka', en: 'Ribbed disc', y: 90, x: 246, w: 40 },
+        { term: 'Shikhara', en: 'Tiered, curved spire', y: 200, x: 254, w: 40 },
+        { term: 'Garbhagriha door', en: 'Lit sanctum', y: 468, x: 226, w: 150 }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

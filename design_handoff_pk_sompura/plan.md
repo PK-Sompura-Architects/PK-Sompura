@@ -49,7 +49,7 @@ A single long homepage carries the story; projects get their own pages.
 3. **Numbers.** 3 generations · 51+ projects · 5 CNC machines (Count Up, with final values in the HTML).
 4. **Stone Works.** Hand carving in sandstone and marble to Shilpa Shastra geometry. Close-up photographs of their panels; headings filled with sandstone texture (Masked Heading).
 5. **CNC Works.** The toolpath carving the hero panel live, with Line Waves behind. The workshop photographs (machines cleaned of date stamps).
-6. **Fero Works: the mountain.** The page turns to night. The 3D mountain opens as you scroll to show the white-stone temple inside, lit in saffron (Light Rays), with Topography contour lines behind. Then the real build sequence as stacked plates (Scroll Stack): sketch → model → foundation → rock shell → finished Gulbarga temple.
+6. **Fero Works: the fly-through.** *(Revised: this replaces the mountain that opens.)* The page turns to night. Scroll drives one camera through five shots: above a cloud layer at dusk, down through the clouds, low over rocky ridges in fog, round the last ridge to an artificial mountain with a cave mouth, and a hold on the white-stone Nagara shikhara inside, lit in saffron. The five shots are in `design/Posters.dc.html` P3. Then the real build sequence as stacked plates (Scroll Stack): sketch → model → foundation → rock shell → finished Gulbarga temple.
 7. **Selected projects.** Five or six register entries with the best photographs, and a link to the full register.
 8. **Contact.** Phone, email, Instagram and workshop address as plain text, with Light Rays behind.
 
@@ -75,7 +75,7 @@ Two scenes, both plain three.js, each loaded as its own chunk only when its sect
 | Scene | Where | How it's built | Size target |
 |---|---|---|---|
 | **Carved relief + toolpath** | Hero and CNC chapter | A flat plane displaced by a depth map made from one real CNC panel photo. Raking light moves with scroll. The toolpath is a mask sweeping across the same mesh. | ≈150 KB assets, one mesh, one KTX2 texture |
-| **Mountain that opens** | Fero Works chapter | Modelled by us (there is no client 3D file) from the pencil elevations in the `FERO` folder and the Gulbarga photographs: two rock halves that part, and a white-stone shikhara inside. | ≤ 400 KB total, Draco + KTX2 |
+| **Fero Works fly-through** *(revised)* | Fero Works chapter | Modelled by us (there is no client 3D file) from the pencil elevations in the `FERO` folder and the Gulbarga photographs: an artificial mountain with a cave mouth and a white-stone Nagara shikhara inside. Clouds, fog and ridges are procedural (shader noise and heightfields), not meshes. One scroll-scrubbed camera spline; the nodes are in Posters P3. | ≤ 400 KB total, Draco + KTX2 |
 
 **Non-negotiable guardrails (from the brief):**
 - 3D and heavy animation never ship in the initial bundle.
@@ -199,7 +199,7 @@ All three are self-hosted, subset, `font-display: swap`.
 2. **Photographs.** Select, clean, export; posters for both 3D scenes.
 3. **Motion.** The React Bits lab, then text animations, Scroll Stack, the register rows, the menu, Lenis. Reduced-motion paths.
 4. **3D: carved relief + toolpath.** Depth map, scene, poster fallback, off-screen pause, measurements.
-5. **3D: the mountain.** Modelling, compression, the scroll reveal, measurements.
+5. **3D: the Fero fly-through.** Temple and mountain modelling, procedural clouds/ridges/fog, the camera spline, poster fallbacks, compression, measurements.
 6. **Deploy.** Vercel settings, the Supabase decision (listed for approval first), final performance run on a real phone.
 
 ---

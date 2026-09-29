@@ -6,7 +6,7 @@ The main idea we build on. Research and evidence are in `research/`; the reasoni
 
 ## 1. The idea in one paragraph
 
-**Carved in Sandstone.** A light, material-led site on a pale sandstone ground with navy ink, where type and relief look cut into stone rather than printed. The opening shot is one of the firm's own carved panels, rebuilt in 3D and lit by a low raking light that moves as you scroll. In the CNC chapter a toolpath sweeps across the same panel and carves it live. Halfway down, the tone deepens into night for the **one big 3D moment**: an artificial mountain that opens to reveal the temple inside, which is the work nobody else does. Projects are presented as a **Temple Register**, an archive that works whether or not a project has photographs.
+**Carved in Sandstone.** A light, material-led site on a pale sandstone ground with navy ink, where type and relief look cut into stone rather than printed. The opening shot is one of the firm's own carved panels, rebuilt in 3D and lit by a low raking light that moves as you scroll. In the CNC chapter a toolpath sweeps across the same panel and carves it live. Halfway down, the tone deepens into night for the **one big 3D moment**: a scroll-driven flight over clouds and ridges to an artificial mountain, whose cave holds the temple, which is the work nobody else does. Projects are presented as a **Temple Register**, an archive that works whether or not a project has photographs.
 
 Line from the company's own material: **"Where Devotion Meets Stone."**
 
