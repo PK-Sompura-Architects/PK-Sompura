@@ -102,7 +102,6 @@ if (cnc) {
     } else tip.style.opacity = '0';
     cnc.style.setProperty('--lines', String(1 - 0.75 * depth));
     cnc.style.setProperty('--blank', String(1 - depth));
-    cnc.style.setProperty('--cue', String(1 - Math.min(1, Math.max(0, (p - 0.9) / 0.07))));
     scene?.dispatchEvent(new CustomEvent('cnc:progress', { detail: p }));
   };
   ScrollTrigger.create({ trigger: cnc, start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: (st) => apply(st.progress) });
@@ -118,13 +117,15 @@ if (fero) {
   });
 }
 
-// ── Scroll Stack (§6, desktop): plates stick at 120 px (CSS); the plate underneath scales to 0.96 and dims to 80%.
+// ── Scroll Stack (§6, desktop): plates stick at 120 px (CSS); the plate underneath scales to 0.96 and dims to 80%,
+//    only while the next plate slides over it (from touching its bottom edge to covering it). fromTo, because GSAP
+//    would tween filter up from brightness(0) when starting from 'none'.
 if (matchMedia('(min-width: 1024px)').matches) {
   const plates = $$('[data-stack] > li');
   plates.slice(1).forEach((plate, i) => {
-    gsap.to(plates[i], {
+    gsap.fromTo(plates[i], { scale: 1, filter: 'brightness(1)' }, {
       scale: 0.96, filter: 'brightness(0.8)', ease: 'none', transformOrigin: '50% 0%',
-      scrollTrigger: { trigger: plate, start: 'top bottom', end: 'top 120px', scrub: true },
+      scrollTrigger: { trigger: plate, start: () => `top ${120 + plates[i].offsetHeight}px`, end: 'top 120px', scrub: true, invalidateOnRefresh: true },
     });
   });
 }

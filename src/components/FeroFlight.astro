@@ -43,12 +43,10 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
     <!-- A night scrim over the top 38% (S2 fog, and S4–S5 cave glow), so sand text keeps 4.5:1. -->
     <div class="fly-scrim pointer-events-none absolute inset-x-0 top-0 h-[38%] bg-gradient-to-b from-night to-transparent" aria-hidden="true"></div>
 
-    <div class="scroll-cue text-sand" aria-hidden="true"><span>Scroll</span><svg width="14" height="18" viewBox="0 0 14 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v15M1 10l6 6 6-6"/></svg></div>
-
     <div class="fly-text wrap absolute inset-x-0 top-0 pt-24 lg:pt-32">
       <p class="eyebrow text-sky">Line of work 03 / 03</p>
       <h2 id="fero-title" class="fly-h2 mt-5 w-fit origin-top-left font-display text-h2 text-sand lg:mt-6">Fero Works</h2>
-      <p class="fly-line max-w-[26rem] text-body text-sand">{line}</p>
+      <p class="fly-line inset-x-5 max-w-[26rem] text-body text-sand md:inset-x-10 lg:inset-x-12 xl:inset-x-20">{line}</p>
     </div>
 
   </div>
@@ -85,7 +83,6 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
       // The line: out 0.06–0.12, back in under the docked title 0.66–0.72.
       text.style.setProperty('--lo', String(clamp(1 - smooth(0.06, 0.12, p) + smooth(0.66, 0.72, p))));
       // Night scrim over the top 38%: in S2 (over fog) and from the reveal on (over the cave glow), so text stays on night.
-      stage.style.setProperty('--cue', String(1 - smooth(0.9, 0.97, p)));
       stage.style.setProperty('--scrim', String(Math.max(smooth(0.1, 0.18, p) * (1 - smooth(0.4, 0.5, p)), smooth(0.62, 0.72, p))));
       // Posters (low-end, and until the canvas is live): each fades in over the one before at its boundary.
       frames.forEach((f, i) => { f.style.opacity = i === 0 ? '1' : String(smooth(EDGES[i - 1] - 0.03, EDGES[i - 1] + 0.03, p)); });

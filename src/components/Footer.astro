@@ -3,7 +3,6 @@
 import LogoMark from './LogoMark.astro';
 import { nav } from '../data/site';
 
-const links = nav.filter((n) => n.key !== 'contact');
 ---
 <footer class="theme-night border-t border-slate bg-night bg-night-grain text-sand">
   <div class="wrap grid-page items-end gap-y-6 pb-10 pt-8 lg:pb-14 lg:pt-12">
@@ -21,7 +20,7 @@ const links = nav.filter((n) => n.key !== 'contact');
     <div class="col-span-4 flex flex-col gap-6 md:col-span-8 lg:col-span-6 lg:items-end lg:gap-4">
       <nav aria-label="Footer">
         <ul class="grid grid-cols-2 gap-x-4 text-[15px] font-medium lg:flex lg:gap-7">
-          {links.map((item) => (
+          {nav.map((item) => (
             <li>
               <a href={item.href} class="flex min-h-11 items-center whitespace-nowrap text-sand no-underline underline-offset-[5px] transition-colors duration-150 hover:text-saffron hover:underline">{item.label}</a>
             </li>

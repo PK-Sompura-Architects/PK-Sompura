@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Component, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { mediaSet } from '../lib/media';
 
 // The Temple Register: filter bar + list (Board 02). Server-rendered in full, so with JS off every entry shows;
@@ -35,7 +35,42 @@ function readUrl(entries: Entry[]) {
   return { place, scopes, sort };
 }
 
+// The island's root. If the browser throws while hydrating or rendering, the error boundary swaps in a plain list of
+// every entry (links, no filters), so the page never goes empty.
 export default function RegisterBrowser({ entries }: { entries: Entry[] }) {
+  return <Boundary entries={entries}><Browser entries={entries} /></Boundary>;
+}
+
+class Boundary extends Component<{ entries: Entry[]; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch(error: unknown) { console.error('Temple Register: showing the plain list after an error.', error); }
+  render() { return this.state.failed ? <PlainList entries={this.props.entries} /> : this.props.children; }
+}
+
+function PlainList({ entries }: { entries: Entry[] }) {
+  return (
+    <>
+      <p className="border-b border-navy py-3 font-mono text-[12px] text-slate-deep lg:text-[13px]">Showing all {entries.length} entries · over 51 projects completed</p>
+      <ol>
+        {[...entries].sort(byPlace).map((e, i) => (
+          <li key={e.id} className="border-b border-slate">
+            <a href={`/projects/${e.id}`} className="flex min-h-[76px] items-center gap-3 py-3.5 lg:min-h-24 lg:gap-6">
+              <span className="w-6 flex-none font-mono text-[12px] text-slate-deep lg:w-12 lg:text-[13px]">{pad(i + 1)}</span>
+              <span className="flex min-w-0 flex-1 flex-col gap-1 lg:flex-row lg:items-baseline lg:gap-6">
+                <span className="font-display text-[24px] leading-[1.1] lg:text-title">{e.name}</span>
+                <span className="font-mono text-[12px] text-slate-deep lg:text-[14px]">{e.placeFull} · {e.type}</span>
+              </span>
+              <span className="text-[20px]" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </>
+  );
+}
+
+function Browser({ entries }: { entries: Entry[] }) {
   const [ready, setReady] = useState(false);
   const [place, setPlace] = useState('All');
   const [scopes, setScopes] = useState<Scope[]>([]);

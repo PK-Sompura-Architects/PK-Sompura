@@ -121,21 +121,6 @@
    fires and their JavaScript is never downloaded. */
 @media (prefers-reduced-motion: reduce) { .motion-only { display: none; } }
 
-/* "Scroll" cue at the foot of the pinned animations (Fero fly-through, CNC panel). Only where they pin (JS, motion
-   allowed); fades out as the animation completes (--cue from the page scripts). */
-.scroll-cue { display: none; }
-@media (prefers-reduced-motion: no-preference) {
-  .js .scroll-cue {
-    position: absolute; left: 50%; bottom: 20px; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 6px;
-    transform: translateX(-50%); opacity: var(--cue, 1); transition: opacity 300ms ease; pointer-events: none;
-    font: 500 12px/1 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase;
-  }
-  .scroll-cue svg { animation: cue-bob 1.6s ease-in-out infinite; }
-  @keyframes cue-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-}
-
-.scroll-cue.text-sand { text-shadow: 0 1px 8px rgb(14 14 31 / .9); }
-
 /* Hero drawing: rises 24 px as the page appears. Transform only, so the image (the LCP) paints at once; held while
    the loader is up (html.pk-ld), then plays. */
 @media (prefers-reduced-motion: no-preference) {
