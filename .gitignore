@@ -25,7 +25,7 @@ NIKON CAMERA/
 OUR WORK PHOTO/
 work_website_images/
 
-# Allowed: logo files, optimised selected site images, production assets and the design handoff
+# Allowed: logo files, optimised selected site images and production assets
 !brand/**
 !media/**
 !public/logo.webp
@@ -33,7 +33,6 @@ work_website_images/
 !public/tex/**
 !public/posters/**
 !public/media/**
-!design_handoff_pk_sompura/**
 
 # --- Tooling ---
 tools/posters/out/
@@ -58,3 +57,9 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# --- Local working files, not part of the site ---
+design_handoff_pk_sompura/
+research/
+.claude/
+palette.txt
