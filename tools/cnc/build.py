@@ -71,7 +71,7 @@ def h(qx, qy):
     Hh += 1.1 * np.sqrt(np.maximum(0.0, 1.0 - r * r / 10.9))
     s8 = np.floor(a / 0.7854 + 0.5) * 0.7854
     lx, ly = qx - (35.2 + 27.7 * np.sin(s8)), qy - (44.0 - 27.7 * np.cos(s8))
-    Hh += 0.9 * smoothstep(0.0, 0.6, 3.32 - (np.abs(lx) + np.abs(ly)))
+    Hh += 0.9 * smoothstep(0.0, 0.6, 3.32 - (np.abs(lx) + np.abs(ly))) * (np.abs(np.sin(s8)) < 0.99)  # not the two on the side grooves
     return Hh
 
 
@@ -101,7 +101,7 @@ def classify(q):
     if hh > 40 or (w < 4 and hh < 4 and (cy < 12 or cy > 76)):
         return 2                             # side grooves, dentils (the moulding)
     if r < 1 and w > 18 or 3 < w < 8 and abs(r - 27.7) < 1.5:
-        return 3                             # rosette rings and the 8 diamonds
+        return 3                             # rosette rings and the 6 diamonds
     return 4                                 # 12 bosses, inner recess, centre boss
 
 

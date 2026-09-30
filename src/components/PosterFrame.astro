@@ -3,14 +3,14 @@
 // Save-Data, low memory and prefers-reduced-motion. Phase 5 mounts the three.js chunk over it.
 // Posters are stand-ins rendered by tools/posters/render.py until phase 5 renders them from the real scenes.
 interface Props {
-  name: 'hero' | 'toolpath';
+  name: 'toolpath';
   alt: string;
   sizes: string; // desktop sizes attribute
   priority?: boolean;
   class?: string;
 }
 const { name, alt, sizes, priority = false, class: cls } = Astro.props;
-const dims = { hero: [2400, 1350, 960, 1200], toolpath: [2400, 1200, 960, 1120] }[name];
+const dims = { toolpath: [2400, 1200, 960, 1120] }[name];
 const d = (ext: string) => [960, 1600, 2400].map((w) => `/posters/${name}-${w}.${ext} ${w}w`).join(', ');
 const m = (ext: string) => [480, 960].map((w) => `/posters/${name}-m-${w}.${ext} ${w}w`).join(', ');
 ---

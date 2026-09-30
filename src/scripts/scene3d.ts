@@ -1,6 +1,6 @@
 // The 3D gate (Handoff §8): the scenes load only with WebGL2, no prefers-reduced-motion, no Save-Data and
 // deviceMemory ≥ 4 (browsers that don't report it are allowed). Otherwise the <img> poster stays, and nothing
-// else downloads. `?still=hero|toolpath|fero[:progress]` renders one frame for re-exporting the posters.
+// else downloads. `?still=toolpath|fero[:progress]` renders one frame for re-exporting the posters.
 import { afterLoad } from './after-load';
 
 const els = [...document.querySelectorAll<HTMLElement>('[data-scene]')];
@@ -15,7 +15,7 @@ export function gate() {
 }
 
 if (els.length && (q || gate())) {
-  const still = q ? { name: q.split(':')[0] as 'hero', progress: Number(q.split(':')[1] ?? 0.7) } : undefined;
+  const still = q ? { name: q.split(':')[0] as 'toolpath', progress: Number(q.split(':')[1] ?? 0.7) } : undefined;
   const go = () => import('./three/boot').then((m) => m.boot(els, still));
   if (still) go();
   else afterLoad(go);

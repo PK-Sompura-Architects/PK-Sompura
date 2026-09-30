@@ -1,4 +1,4 @@
-// Scene 1: the carved panel under raking light (Board 05 P1), and the same panel cut in machine order (CNC chapter):
+// The carved panel under raking light, cut in machine order (CNC chapter):
 // the relief depth appears only where the tool has been (cut-order map), after the SVG lines have drawn.
 // The relief is a height field evaluated per pixel: no mesh or texture download beyond the shared stone tile.
 // [A2] Stand-in panel following the poster geometry (frame, dentils, grooves, rosette, bosses, diamonds).
@@ -49,9 +49,9 @@ float h(vec2 q) {
   H += 1.2 * smoothstep(11.75, 11.1, r);                              // inner disc
   H -= 0.7 * smoothstep(7.0, 6.4, r);                                 // inner recess
   H += 1.1 * sqrt(max(0.0, 1.0 - r * r / 10.9));                      // centre boss (dome, r 3.3)
-  float s8 = floor(a / 0.7854 + 0.5) * 0.7854;                        // 8 diamonds
+  float s8 = floor(a / 0.7854 + 0.5) * 0.7854;                        // 6 diamonds: the 8 minus the two on the side grooves
   vec2 l = q - (c + 27.7 * vec2(sin(s8), -cos(s8)));
-  H += 0.9 * smoothstep(0.0, 0.6, 3.32 - (abs(l.x) + abs(l.y)));
+  H += 0.9 * smoothstep(0.0, 0.6, 3.32 - (abs(l.x) + abs(l.y))) * (1.0 - step(0.99, abs(sin(s8))));
   return H;
 }
 
@@ -102,11 +102,11 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }`;
 
-export default function mount(host: HTMLElement, state: SceneState, mode: 'hero' | 'toolpath'): SceneHandle {
+export default function mount(host: HTMLElement, state: SceneState): SceneHandle {
   const renderer = new WebGLRenderer({ antialias: false, powerPreference: 'low-power' });
   renderer.outputColorSpace = SRGBColorSpace;
   const mobile = matchMedia('(max-width: 1023px)').matches;
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25)); // the relief is soft; 24 shadow taps per pixel
+  renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1 : 1.25)); // the relief is soft; 16 shadow taps per pixel
   const stone = new TextureLoader().load('/tex/stone.webp');
   const order = new TextureLoader().load('/tex/cut-order.webp');
   stone.wrapS = stone.wrapT = RepeatWrapping;
@@ -123,7 +123,6 @@ export default function mount(host: HTMLElement, state: SceneState, mode: 'hero'
   const camera = new OrthographicCamera();
   const canvas = renderer.domElement;
 
-  let az = 30;
   return {
     canvas,
     compile: () => renderer.compileAsync(scene, camera),
@@ -132,14 +131,7 @@ export default function mount(host: HTMLElement, state: SceneState, mode: 'hero'
       mat.uniforms.uRes.value.set(w * renderer.getPixelRatio(), h * renderer.getPixelRatio());
     },
     render() {
-      if (mode === 'hero') {
-        // Light azimuth 30° → 70° across the hero's scroll range, ±10° from the cursor; damped follow (lerp 0.08).
-        const target = 30 + 40 * state.progress + 10 * state.pointer;
-        az += (target - az) * (state.still ? 1 : 0.08);
-        mat.uniforms.uAz.value = az;
-      } else {
-        mat.uniforms.uDepth.value = Math.min(1, Math.max(0, (state.progress - DEPTH_FROM) / (1 - DEPTH_FROM))); // stage 5
-      }
+      mat.uniforms.uDepth.value = Math.min(1, Math.max(0, (state.progress - DEPTH_FROM) / (1 - DEPTH_FROM))); // stage 5
       renderer.render(scene, camera);
     },
     dispose() { renderer.dispose(); mat.dispose(); stone.dispose(); order.dispose(); },

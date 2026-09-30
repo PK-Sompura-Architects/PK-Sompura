@@ -13,8 +13,6 @@ fs.mkdirSync(OUT, { recursive: true });
 
 // name: [still param, css width, css height] rendered at device scale 2 → export size
 const JOBS = {
-  hero: ['hero:0', 1200, 675],
-  'hero-m': ['hero:0', 480, 600],
   toolpath: ['toolpath:1', 1200, 600],
   'toolpath-m': ['toolpath:1', 480, 560],
   // Fero Works fly-through (Posters P3): shots S1–S5 at their progress points, 2400×1350 and 1080×1920.

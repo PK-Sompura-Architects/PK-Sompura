@@ -20,8 +20,6 @@ OUT = ROOT / "public/posters"
 
 # name: (query, render width, render height, export widths)
 POSTERS = {
-    "hero": ("mode=hero", 2400, 1350, [2400, 1600, 960]),
-    "hero-m": ("mode=hero", 960, 1200, [960, 480]),
     "toolpath": ("mode=toolpath", 2400, 1200, [2400, 1600, 960]),
     "toolpath-m": ("mode=toolpath", 960, 1120, [960, 480]),
 }

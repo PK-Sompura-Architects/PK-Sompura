@@ -6,31 +6,23 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export interface SceneState { progress: number; pointer: number; still: boolean }
+export interface SceneState { progress: number; still: boolean }
 export interface SceneHandle { canvas: HTMLCanvasElement; resize(w: number, h: number): void; render(): void; dispose(): void; compile?(): Promise<unknown> }
-type Name = 'hero' | 'toolpath' | 'fero';
+type Name = 'toolpath' | 'fero';
 
 const loaders: Record<Name, (el: HTMLElement, s: SceneState) => Promise<SceneHandle>> = {
-  hero: (el, s) => import('./relief').then((m) => m.default(el, s, 'hero')),
-  toolpath: (el, s) => import('./relief').then((m) => m.default(el, s, 'toolpath')),
+  toolpath: (el, s) => import('./relief').then((m) => m.default(el, s)),
   fero: (el, s) => import('./fero').then((m) => m.default(el, s)),
 };
 
 export function boot(els: HTMLElement[], still?: { name: Name; progress: number }) {
-  const pointer = { x: 0 };
-  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    addEventListener('pointermove', (e) => (pointer.x = (e.clientX / innerWidth) * 2 - 1), { passive: true });
-  }
-
   for (const el of els) {
     const name = el.dataset.scene as Name;
     if (still && still.name !== name) continue;
-    const state: SceneState = { progress: still ? still.progress : name === 'toolpath' ? 0 : 0, pointer: 0, still: !!still };
+    const state: SceneState = { progress: still ? still.progress : 0, still: !!still };
 
     if (!still) {
-      if (name === 'hero') {
-        ScrollTrigger.create({ trigger: el, start: 'top top', end: 'bottom top', onUpdate: (st) => (state.progress = st.progress) });
-      } else if (name === 'fero') {
+      if (name === 'fero') {
         // The stage is pinned by CSS (sticky inside [data-fly]); ScrollTrigger scrubs the progress across the container.
         // Scrub 0.6 (P3). The HTML text follows the same smoothed progress, so words and camera move together.
         gsap.to(state, { progress: 1, ease: 'none', scrollTrigger: { trigger: el.closest('[data-fly]'), start: 'top top', end: 'bottom bottom', scrub: 0.6 },
@@ -43,13 +35,15 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
 
     let handle: SceneHandle | null = null;
     let visible = false, raf = 0;
-    // Frame-rate guard: time the first ~90 visible frames; if the scene can't hold 30 fps, hand back to the poster.
+    // Draw only when the scroll progress has moved: a still scene costs nothing (phones stay cool, scrolling stays
+    // smooth). Frame-rate guard: time ~90 consecutive drawn frames; under 30 fps, hand back to the poster.
     const times: number[] = [];
-    let last = 0;
+    let last = 0, drawn = NaN;
     const loop = (now: number) => {
       raf = 0;
       if (!handle || !visible || document.hidden) { last = 0; return; }
-      state.pointer = pointer.x;
+      if (Math.abs(state.progress - drawn) < 1e-5) { last = 0; raf = requestAnimationFrame(loop); return; }
+      drawn = state.progress;
       handle.render();
       if (last && times.length < 100) {
         times.push(now - last);
@@ -81,7 +75,7 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
       c.style.opacity = '0';
       el.append(c);
       // Resizing clears the WebGL buffer, so draw again right away (no blank frame, and stills stay valid).
-      const size = () => { handle!.resize(el.clientWidth, el.clientHeight); handle!.render(); };
+      const size = () => { handle!.resize(el.clientWidth, el.clientHeight); handle!.render(); drawn = state.progress; };
       size();
       new ResizeObserver(size).observe(el);
       handle.render(); // first frame, then crossfade poster → canvas (600 ms, ease-out)

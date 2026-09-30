@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import LightRays from './reactbits/LightRays';
 import Topography from './reactbits/Topography';
-import LineWaves from './reactbits/LineWaves';
 import { afterLoad } from '../scripts/after-load';
 
-// Ambient WebGL backgrounds (React Bits), recoloured to the palette. The CSS still frame underneath is the
+// Ambient WebGL backgrounds (React Bits), recoloured to the palette. Desktop only: the pages hydrate this island with
+// client:media="(min-width: 1024px) and (pointer: fine)", so phones and tablets never load it and keep the CSS still frame. The still frame is also the
 // reduced-motion / no-WebGL / Save-Data state; it fades out once the canvas is live ([data-live] in global.css).
-type Kind = 'rays' | 'topo' | 'waves';
+type Kind = 'rays' | 'topo';
 
 const canRun = () => {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
@@ -42,14 +42,6 @@ export default function Ambient({ kind }: { kind: Kind }) {
       {kind === 'topo' && (
         <Topography lowColor="#798A96" midColor="#798A96" highColor="#798A96" colorMode="uniform" speed={0.1}
           morphSpeed={0.02} opacity={0.22} glow={0.2} grain={false} mouseInteraction={false} />
-      )}
-      {kind === 'waves' && (
-        // Light mode on sand. At 50% the darkest line pixel stays at least as light as sky, so navy text
-        // crossing the waves keeps ≥ 9.38:1 (Handoff §1: navy on sky allowed; deep slate is masked out).
-        <div className="h-full w-full opacity-50">
-          <LineWaves color1="#AFD9EB" color2="#AFD9EB" color3="#AFD9EB" speed={0.2} lightMode
-            enableMouseInteraction={false} colorCycleSpeed={0} brightness={0.9} />
-        </div>
       )}
       </>}
     </div>

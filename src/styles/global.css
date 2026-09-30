@@ -59,14 +59,6 @@
     -webkit-mask-image: radial-gradient(ellipse 70% 80% at var(--ray-x, 50%) 0, #000, transparent 75%);
     mask-image: radial-gradient(ellipse 70% 80% at var(--ray-x, 50%) 0, #000, transparent 75%);
   }
-  /* Faded in at the top, out at the bottom and right, so neither the CSS frame nor the canvas shows an edge. */
-  .bg-waves {
-    background: repeating-radial-gradient(ellipse 160% 120% at 30% -60%, rgb(175 217 235 / 0) 0 30px, theme('colors.sky') 30px 31.5px);
-    -webkit-mask-image: linear-gradient(90deg, #000 55%, transparent), linear-gradient(transparent, #000 15%, #000 40%, transparent);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(90deg, #000 55%, transparent), linear-gradient(transparent, #000 15%, #000 40%, transparent);
-    mask-composite: intersect;
-  }
 }
 
 @layer utilities {

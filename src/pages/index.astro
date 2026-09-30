@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import PosterFrame from '../components/PosterFrame.astro';
 import PhotoFrame from '../components/PhotoFrame.astro';
 import ScopeTag from '../components/ScopeTag.astro';
 import Ambient from '../components/Ambient';
@@ -30,7 +29,7 @@ const cncPhotos = [
 ---
 <Base title="P.K. Sompura · Temple Architect & Contractor, Palitana">
 
-  <!-- §1 Hero: the carved panel -->
+  <!-- §1 Hero: a finished temple (Rampara) -->
   <section aria-labelledby="hero-title" class="lg:wrap lg:grid lg:grid-cols-12 lg:gap-x-6">
     <div class="flex flex-col gap-6 px-5 pb-10 pt-8 md:px-10 lg:col-span-6 lg:justify-center lg:gap-9 lg:px-0 lg:py-10">
       <p class="eyebrow text-slate-deep">Temple Architect &amp; Contractor<br class="lg:hidden" /><span class="max-lg:hidden"> · </span>Palitana, Gujarat</p>
@@ -42,13 +41,9 @@ const cncPhotos = [
         <a href="/contact" class="text-link inline-flex min-h-11 items-center max-md:hidden">Contact the workshop →</a>
       </div>
     </div>
-    <PosterFrame
-      name="hero"
-      priority
-      alt="A carved stone panel under low raking light"
-      sizes="(min-width: 1440px) 720px, 50vw"
-      class="aspect-[4/5] w-full lg:col-span-6 lg:w-auto lg:aspect-auto lg:h-[min(812px,calc(100svh-88px))] lg:min-h-[600px] lg:-mr-12 xl:mr-[calc(-80px-max(0px,(100vw-1440px)/2))]"
-    />
+    <PhotoFrame src="rampara" priority label="Rampara" sizes="(min-width: 1440px) 720px, (min-width: 1024px) 50vw, 100vw"
+      class="lg:col-span-6 lg:-mr-12 xl:mr-[calc(-80px-max(0px,(100vw-1440px)/2))]"
+      frame="aspect-[4/5] w-full lg:aspect-auto lg:h-[min(812px,calc(100svh-88px))] lg:min-h-[600px]" />
   </section>
 
   <!-- §2 The family -->
@@ -97,7 +92,7 @@ const cncPhotos = [
 
   <!-- §5 CNC Works -->
   <section id="cnc-works" aria-labelledby="cnc-title" class="relative section-y scroll-mt-16 overflow-clip lg:scroll-mt-0">
-    <div data-ambient class="bg-topo cnc-topo pointer-events-none absolute inset-x-0 top-0 h-[420px] lg:h-[720px]" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:visible kind="topo" /></div></div>
+    <div data-ambient class="bg-topo cnc-topo pointer-events-none absolute inset-x-0 top-0 h-[420px] lg:h-[720px]" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:media="(min-width: 1024px) and (pointer: fine)" kind="topo" /></div></div>
     <div class="wrap relative grid-page gap-y-6">
       <div class="col-span-4 flex flex-col gap-6 md:col-span-8 lg:col-span-7">
         <p class="eyebrow text-navy">Line of work 02 / 03</p>
@@ -127,7 +122,7 @@ const cncPhotos = [
     <FeroFlight />
     <!-- Topography behind the build sequence only: behind the fly-through it would render full-screen under the canvas. -->
     <div class="relative">
-      <div data-ambient class="bg-topo pointer-events-none absolute inset-0" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:visible kind="topo" /></div></div>
+      <div data-ambient class="bg-topo pointer-events-none absolute inset-0" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:media="(min-width: 1024px) and (pointer: fine)" kind="topo" /></div></div>
     <div class="wrap relative flex flex-col gap-4 pb-24 pt-18 lg:gap-6 lg:pb-44 lg:pt-36">
       <div class="mb-4 flex flex-col gap-4 lg:mb-12 lg:w-7/12">
         <p class="eyebrow text-sky">The build sequence<span class="max-lg:hidden"> · Vaishno Devi</span>, Gulbarga</p>
@@ -192,7 +187,7 @@ const cncPhotos = [
 
   <!-- §8 Contact (night); the footer follows on the same ground -->
   <section aria-labelledby="contact-title" class="theme-night relative overflow-hidden bg-night text-sand">
-    <div data-ambient class="bg-rays pointer-events-none absolute inset-0" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:visible kind="rays" /></div></div>
+    <div data-ambient class="bg-rays pointer-events-none absolute inset-0" aria-hidden="true"><div class="motion-only absolute inset-0"><Ambient client:media="(min-width: 1024px) and (pointer: fine)" kind="rays" /></div></div>
     <div class="bg-night-grain pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="wrap relative grid-page gap-y-5 pb-22 pt-24 md:pt-32 lg:pb-36 lg:pt-44">
       <div class="col-span-4 flex flex-col gap-5 md:col-span-8 lg:col-span-6 lg:gap-7">
