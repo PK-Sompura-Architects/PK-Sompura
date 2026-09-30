@@ -8,7 +8,8 @@ import PosterFrame from './PosterFrame.astro';
 import cnc from '../data/cnc-paths.json';
 ---
 <div data-cnc class="cnc relative mt-10 lg:mt-24">
-  <div class="cnc-stage">
+  <div class="cnc-stage relative">
+    <div class="scroll-cue text-navy" aria-hidden="true"><span>Scroll</span><svg width="14" height="18" viewBox="0 0 14 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v15M1 10l6 6 6-6"/></svg></div>
     <figure class="relative w-full lg:wrap">
       <div class="relative">
         <PosterFrame name="toolpath" alt="A carved stone panel with a rosette, cut on the CNC machine" sizes="(min-width: 1440px) 1280px, 90vw" class="aspect-[6/7] w-full md:aspect-[2/1]" />

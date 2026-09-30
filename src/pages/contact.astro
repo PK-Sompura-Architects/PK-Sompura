@@ -38,7 +38,7 @@ const rows = [
         ))}
         <div class="col-span-2 grid grid-cols-subgrid items-baseline gap-x-6 border-b border-slate py-5 max-[480px]:flex max-[480px]:flex-col max-[480px]:gap-1.5 lg:hidden">
           <dt class="eyebrow text-sky">Workshop</dt>
-          <dd class="min-w-0 text-[16px] leading-[1.55]">[A3] Street address, to be supplied<br />Palitana, Gujarat</dd>
+          <dd class="min-w-0 text-[16px] leading-[1.55]">{contact.address.map((l) => <span class="block">{l}</span>)}<a href={contact.mapsHref} class="text-link mt-1 inline-flex min-h-11 items-center text-sand hover:text-saffron">Open in Maps →</a></dd>
         </div>
       </dl>
     </div>
@@ -48,8 +48,8 @@ const rows = [
         <div class="col-span-4 flex flex-col gap-3.5 max-lg:hidden">
           <p class="eyebrow text-sky">The workshop</p>
           <p class="font-display text-[40px] leading-[1.1]">Palitana, Gujarat</p>
-          <p class="text-[18px] leading-[1.6]">[A3] Street address, to be supplied</p>
-          <p class="font-mono text-[13px] text-sky">[A3] "Open in Maps" link, once the address is confirmed</p>
+          <p class="text-[18px] leading-[1.6]">{contact.address.slice(0, 3).map((l) => <span class="block">{l}</span>)}</p>
+          <a href={contact.mapsHref} class="text-link inline-flex min-h-11 w-fit items-center text-sand hover:text-saffron">Open in Maps →</a>
         </div>
         <div class="col-span-4 md:col-span-8 lg:col-span-7 lg:col-start-6">
           <PhotoFrame shape="arch" tone="night" frame="h-[300px] lg:h-[420px]" src="workshop" sizes="(min-width: 1024px) 55vw, 100vw"

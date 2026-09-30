@@ -50,6 +50,8 @@
 
   /* Static frames of the ambient effects. These are also the reduced-motion states. */
   .bg-topo { background: repeating-radial-gradient(ellipse 110% 70% at 70% 8%, rgb(121 138 150 / 0) 0 34px, rgb(121 138 150 / .16) 34px 35px); }
+  /* CNC heading: the Fero contour lines, faded out below the heading. */
+  .cnc-topo { -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
   .bg-rays {
     background:
       radial-gradient(ellipse 50% 40% at var(--ray-x, 50%) 0, rgb(205 136 65 / .16), rgb(205 136 65 / 0)),
@@ -126,3 +128,18 @@
 /* Islands that only exist for motion: with reduced motion the box is not displayed, so client:visible never
    fires and their JavaScript is never downloaded. */
 @media (prefers-reduced-motion: reduce) { .motion-only { display: none; } }
+
+/* "Scroll" cue at the foot of the pinned animations (Fero fly-through, CNC panel). Only where they pin (JS, motion
+   allowed); fades out as the animation completes (--cue from the page scripts). */
+.scroll-cue { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .scroll-cue {
+    position: absolute; left: 50%; bottom: 20px; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transform: translateX(-50%); opacity: var(--cue, 1); transition: opacity 300ms ease; pointer-events: none;
+    font: 500 12px/1 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .scroll-cue svg { animation: cue-bob 1.6s ease-in-out infinite; }
+  @keyframes cue-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+}
+
+.scroll-cue.text-sand { text-shadow: 0 1px 8px rgb(14 14 31 / .9); }

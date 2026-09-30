@@ -5,6 +5,9 @@ export const contact = {
   email: 'pksompura35@gmail.com',
   instagram: '@p.k_sompura',
   instagramHref: 'https://instagram.com/p.k_sompura',
+  // Workshop address, supplied by the owner.
+  address: ['Mahashakti Plastic Industry', 'Opp. Adhidweep Temple', 'Palitana–Bhavnagar Highway', 'Palitana 364270, Gujarat'],
+  mapsHref: 'https://www.google.com/maps/search/?api=1&query=Mahashakti%20Plastic%20Industry%2C%20Palitana-Bhavnagar%20Highway%2C%20Palitana%20364270',
 };
 
 export type NavKey = 'stone' | 'cnc' | 'fero' | 'register' | 'contact';

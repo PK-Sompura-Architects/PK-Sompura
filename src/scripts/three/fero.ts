@@ -16,7 +16,7 @@ import type { SceneHandle, SceneState } from './boot';
 
 // Palette tokens only.
 const NIGHT = 0x0e0e1f, NAVY = 0x262654, SLATE = 0x798a96, SLATE_DEEP = 0x52606b, SAFFRON = 0xcd8841, SAND = 0xf4efe6;
-const MOUTH_Z = -875, TEMPLE_Z = -915, MOUNT = new Vector3(0, 0, -985);
+const MOUTH_Z = -875, TEMPLE_Z = -915;
 
 // ── Camera rig (P3 "Camera nodes").
 const v = (x: number, y: number, z: number) => new Vector3(x, y, z);
@@ -41,45 +41,24 @@ const pitchOf = (from: Vector3, to: Vector3) => Math.atan2(to.y - from.y, Math.h
 // P3 pitch: 0° at S1, −20° at S2, −3° at S3; S4 and S5 are framed by their lookAt nodes.
 const KEY_PITCH = [0, -20 * DEG, -3 * DEG, pitchOf(POS.points[3], AIM.points[3]), pitchOf(POS.points[4], AIM.points[4])];
 
-// ── Heightfield: four ridge layers across the valley (slate far → night near), two spurs (the last ridge on the
-// left, and the foreground ridge at the reveal), a notch along the flight path and a plain around the mountain.
-function hash(x: number, y: number) { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); }
-function vnoise(x: number, y: number) {
-  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), w = yf * yf * (3 - 2 * yf);
-  const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
-  return a + (b - a) * u + (c - a) * w + (a - b - c + d) * u * w;
-}
-const fbm = (x: number, y: number, o = 4) => { let s = 0, a = 0.5, f = 1; for (let i = 0; i < o; i++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; };
-const ridged = (x: number, y: number) => { let s = 0, a = 0.6, f = 1; for (let i = 0; i < 4; i++) { s += a * (1 - Math.abs(vnoise(x * f, y * f) * 2 - 1)) ** 2; f *= 2.2; a *= 0.5; } return s; };
-const LAYERS = [[-130, 58], [-280, 72], [-450, 90], [-660, 110]];              // z, crest height (60–110 m)
-const SPURS = [[-100, -470, 60, 96], [-20, -625, 48, 78]];                    // x, z, radius, height
-const PATH_XZ = POS.getSpacedPoints(160).map((p) => [p.x, p.z]);
-function height(x: number, z: number) {
-  let h = 0;
-  for (const [zc, a] of LAYERS) {
-    const d = Math.abs(z - (zc + 60 * (fbm(x * 0.003 + zc, 3) - 0.5)));
-    const prof = Math.max(0, 1 - d / (80 + 40 * fbm(x * 0.01, zc))) ** 1.3;
-    h = Math.max(h, prof * a * (0.5 + 0.55 * ridged(x * 0.005 + zc * 0.1, zc * 0.013)));
-  }
-  for (const [sx, sz, r, a] of SPURS) h = Math.max(h, a * Math.exp(-((x - sx) ** 2 + (z - sz) ** 2) / (2 * r * r)) * (0.8 + 0.4 * ridged(x * 0.02, z * 0.02)));
-  h += 5 * fbm(x * 0.04, z * 0.04);
-  let d2 = 1e12; for (const [px, pz] of PATH_XZ) d2 = Math.min(d2, (x - px) ** 2 + (z - pz) ** 2);
-  h *= 0.3 + 0.7 * smooth(25, 140, Math.sqrt(d2));                           // stay ~25 m under the camera
-  h *= smooth(150, 250, Math.hypot(x - MOUNT.x, z - MOUNT.z));              // the plain the mountain stands on
-  return h - 1;
-}
-function ridges(mobile: boolean) {
-  const g = new PlaneGeometry(2800, 2400, mobile ? 230 : 340, mobile ? 200 : 290);
-  g.rotateX(-Math.PI / 2); g.translate(0, 0, -520);
-  const pos = g.attributes.position as BufferAttribute, col = new Float32Array(pos.count * 3);
-  const lo = new Color(NIGHT), mid = new Color(NAVY), hi = new Color(SLATE_DEEP), c = new Color();
-  for (let i = 0; i < pos.count; i++) {
-    const y = height(pos.getX(i), pos.getZ(i));
-    pos.setY(i, y);
-    c.copy(lo).lerp(mid, smooth(0, 35, y)).lerp(hi, smooth(45, 100, y) * 0.8).toArray(col, i * 3);
-  }
-  g.setAttribute('color', new BufferAttribute(col, 3)); g.computeVertexNormals();
-  return new Mesh(g, new MeshLambertMaterial({ vertexColors: true, flatShading: true }));
+function hash(x: number, y: number) { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); } // wisp placement
+
+// ── Heightfield (ridges.ts), built in a worker so the main thread never stalls on it.
+const PATH_XZ = POS.getSpacedPoints(160).map((p) => [p.x, p.z] as [number, number]);
+function ridges(mobile: boolean): Promise<Mesh> {
+  const w = new Worker(new URL('./ridges.worker.ts', import.meta.url), { type: 'module' });
+  return new Promise((resolve, reject) => {
+    w.onerror = (e) => { w.terminate(); reject(e); };
+    w.onmessage = (e) => {
+      w.terminate();
+      const { position, normal, color, index } = e.data as { position: Float32Array; normal: Float32Array; color: Float32Array; index: Uint32Array };
+      const g = new BufferGeometry();
+      g.setAttribute('position', new BufferAttribute(position, 3)); g.setAttribute('normal', new BufferAttribute(normal, 3));
+      g.setAttribute('color', new BufferAttribute(color, 3)); g.setIndex(new BufferAttribute(index, 1));
+      resolve(new Mesh(g, new MeshLambertMaterial({ vertexColors: true, flatShading: true })));
+    };
+    w.postMessage({ mobile, path: PATH_XZ });
+  });
 }
 
 // ── Sky: night → navy, a saffron horizon band toward the mountain (−z), and one small far peak on the horizon.
@@ -172,6 +151,7 @@ export default async function mount(host: HTMLElement, state: SceneState): Promi
   // Both loaders use their bundled decoders (Vite emits and fingerprints the wasm); they load with this chunk only.
   const draco = new DRACOLoader();
   const ktx2 = new KTX2Loader().detectSupport(renderer);
+  const ridgeMesh = ridges(mobileGPU);                                       // starts in the worker now
   const gltf = await new GLTFLoader().setDRACOLoader(draco).setKTX2Loader(ktx2).loadAsync('/models/fero.glb');
   draco.dispose(); ktx2.dispose();
 
@@ -181,7 +161,7 @@ export default async function mount(host: HTMLElement, state: SceneState): Promi
   scene.add(camera);
 
   const skyMesh = sky(); scene.add(skyMesh);
-  scene.add(ridges(mobileGPU));
+  scene.add(await ridgeMesh);
   scene.add(gltf.scene);
   const deck = new Group();
   [420, 392, 356, 310, 262, 222].forEach((y, i) => deck.add(cloudLayer(y, i * 3.7)));
@@ -211,6 +191,7 @@ export default async function mount(host: HTMLElement, state: SceneState): Promi
 
   return {
     canvas: renderer.domElement,
+    compile: () => renderer.compileAsync(scene, camera),
     resize(width, height) { renderer.setSize(width, height, false); aspect = width / height; camera.aspect = aspect; camera.updateProjectionMatrix(); },
     render() {
       const p = MathUtils.clamp(state.progress, 0, 1);

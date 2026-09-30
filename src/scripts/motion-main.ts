@@ -102,6 +102,7 @@ if (cnc) {
     } else tip.style.opacity = '0';
     cnc.style.setProperty('--lines', String(1 - 0.75 * depth));
     cnc.style.setProperty('--blank', String(1 - depth));
+    cnc.style.setProperty('--cue', String(1 - Math.min(1, Math.max(0, (p - 0.9) / 0.07))));
     scene?.dispatchEvent(new CustomEvent('cnc:progress', { detail: p }));
   };
   ScrollTrigger.create({ trigger: cnc, start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: (st) => apply(st.progress) });

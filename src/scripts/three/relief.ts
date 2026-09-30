@@ -126,6 +126,7 @@ export default function mount(host: HTMLElement, state: SceneState, mode: 'hero'
   let az = 30;
   return {
     canvas,
+    compile: () => renderer.compileAsync(scene, camera),
     resize(w, h) {
       renderer.setSize(w, h, false);
       mat.uniforms.uRes.value.set(w * renderer.getPixelRatio(), h * renderer.getPixelRatio());

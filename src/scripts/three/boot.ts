@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export interface SceneState { progress: number; pointer: number; still: boolean }
-export interface SceneHandle { canvas: HTMLCanvasElement; resize(w: number, h: number): void; render(): void; dispose(): void }
+export interface SceneHandle { canvas: HTMLCanvasElement; resize(w: number, h: number): void; render(): void; dispose(): void; compile?(): Promise<unknown> }
 type Name = 'hero' | 'toolpath' | 'fero';
 
 const loaders: Record<Name, (el: HTMLElement, s: SceneState) => Promise<SceneHandle>> = {
@@ -74,6 +74,7 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
 
     const mountNow = async () => {
       handle = await loaders[name](el, state);
+      await handle.compile?.(); // shaders compile in parallel (KHR_parallel_shader_compile), not in the first frame
       const c = handle.canvas;
       c.className = 'absolute inset-0 h-full w-full';
       c.setAttribute('aria-hidden', 'true');
