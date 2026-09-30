@@ -12,7 +12,6 @@ const DEPTH_FROM = depth[0]; // CNC stage 5 starts here (tools/cnc/build.py)
 const frag = /* glsl */ `
 precision highp float;
 uniform vec2 uRes;       // canvas size in px
-uniform float uAz;       // light azimuth in degrees (30 → 70)
 uniform float uDepth;    // CNC stage 5: depth cut progress 0..1; < 0 = the finished panel (hero)
 uniform sampler2D uOrder; // cut order: when the tool reaches each point (tools/cnc/build.py)
 uniform sampler2D uStone;
@@ -22,9 +21,8 @@ varying vec2 vUv;
 const vec3 SAND = vec3(0.957, 0.937, 0.902);
 const vec3 STONE = vec3(0.906, 0.875, 0.824);
 const vec3 NAVY = vec3(0.149, 0.149, 0.329);
-const vec3 SAFFRON = vec3(0.804, 0.533, 0.255);
-const vec3 SLATE_DEEP = vec3(0.322, 0.376, 0.420);
 const float EL = 0.2094;  // light elevation, 12°
+const float AZ = 0.5236;  // light azimuth, 30°
 const float DEPTH = 0.6;  // relief depth in panel units per height unit
 
 float box(vec2 q, vec2 a, vec2 b, float bev) { vec2 d = min(q - a, b - q); return smoothstep(0.0, bev, min(d.x, d.y)); }
@@ -77,10 +75,9 @@ void main() {
     float hx = (hc(q + vec2(e, 0.0)) - hc(q - vec2(e, 0.0))) / (2.0 * e);
     float hy = (hc(q + vec2(0.0, e)) - hc(q - vec2(0.0, e))) / (2.0 * e);
     vec3 N = normalize(vec3(-hx * DEPTH, hy * DEPTH, 1.0));      // hy flips: panel y is down
-    float az = radians(uAz);
-    vec3 L = normalize(vec3(-cos(az) * cos(EL), sin(az) * cos(EL), sin(EL)));
+    vec3 L = normalize(vec3(-cos(AZ) * cos(EL), sin(AZ) * cos(EL), sin(EL)));
     // Soft cast shadow: march toward the light across the height field.
-    vec2 dir = normalize(vec2(-cos(az), -sin(az)));              // panel y down
+    vec2 dir = normalize(vec2(-cos(AZ), -sin(AZ)));              // panel y down
     float sh = 0.0, h0 = H * DEPTH;
     for (float k = 1.0; k <= 24.0; k++) {
       if (k > uSteps) break;
@@ -114,7 +111,7 @@ export default function mount(host: HTMLElement, state: SceneState): SceneHandle
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy * 2.0, 0.0, 1.0); }',
     fragmentShader: frag,
     uniforms: {
-      uRes: { value: new Vector2(1, 1) }, uAz: { value: 30 }, uDepth: { value: -1 }, uOrder: { value: order },
+      uRes: { value: new Vector2(1, 1) }, uDepth: { value: -1 }, uOrder: { value: order },
       uStone: { value: stone }, uSteps: { value: mobile ? 10 : 16 },
     },
   });

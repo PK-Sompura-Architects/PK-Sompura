@@ -35,14 +35,10 @@ export default function Ambient({ kind }: { kind: Kind }) {
         // Rays stay at or below 25% saffron behind text (Board 01 §8). Measured: the shader's glow is ~7% saffron (p99)
         // at full opacity, so the layer runs at 75% (≈21%).
         <div className="h-full w-full opacity-75">
-          <LightRays raysOrigin="top-center" raysColor="#CD8841" raysSpeed={0.3} lightSpread={0.9} rayLength={1.6}
-            followMouse={false} mouseInfluence={0} fadeDistance={0.9} />
+          <LightRays />
         </div>
       )}
-      {kind === 'topo' && (
-        <Topography lowColor="#798A96" midColor="#798A96" highColor="#798A96" colorMode="uniform" speed={0.1}
-          morphSpeed={0.02} opacity={0.22} glow={0.2} grain={false} mouseInteraction={false} />
-      )}
+      {kind === 'topo' && <Topography />}
       </>}
     </div>
   );

@@ -21,7 +21,7 @@ const line = 'An artificial mountain, built around the temple it holds.';
 const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3: 'docked', 4: 'docked-line', 5: 'full' };
 ---
 <div data-fly class="fly relative">
-  <div data-scene="fero" data-shot="4" class="fly-stage">
+  <div data-scene="fero" class="fly-stage">
     {shots.map((s) => (
       <div class="fly-frame" data-frame={s.n}>
         <picture>
@@ -89,7 +89,6 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
       stage.style.setProperty('--scrim', String(Math.max(smooth(0.1, 0.18, p) * (1 - smooth(0.4, 0.5, p)), smooth(0.62, 0.72, p))));
       // Posters (low-end, and until the canvas is live): each fades in over the one before at its boundary.
       frames.forEach((f, i) => { f.style.opacity = i === 0 ? '1' : String(smooth(EDGES[i - 1] - 0.03, EDGES[i - 1] + 0.03, p)); });
-      stage.dataset.shot = String([0, 0.11, 0.335, 0.585, 0.8].filter((e) => p >= e).length);
     };
     const raw = () => { const r = fly.getBoundingClientRect(); return clamp(-r.top / Math.max(1, r.height - innerHeight)); };
     let driven = false, queued = false;

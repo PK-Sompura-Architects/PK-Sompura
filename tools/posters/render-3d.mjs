@@ -1,7 +1,7 @@
-// Renders the posters from the real three.js scenes (same camera and light as the live canvas), replacing the
-// stand-ins. Usage (project root):  npm run build  then  node tools/posters/render-3d.mjs  then  python tools/posters/render.py --real
+// Renders the posters from the real three.js scenes (same camera and light as the live canvas).
+// Usage (project root):  npm run build  then  node tools/posters/render-3d.mjs  then  python tools/posters/render.py
 // Needs Google Chrome, and no other `astro preview` running (Astro allows one at a time).
-// Needs Google Chrome. Writes PNGs to tools/posters/out/ (not committed); render.py --real encodes them.
+// Writes PNGs to tools/posters/out/ (not committed); render.py encodes them.
 import puppeteer from 'puppeteer-core';
 import { spawn, spawnSync } from 'node:child_process';
 import fs from 'node:fs';

@@ -1,34 +1,30 @@
 ---
 // Scene3D poster: an <img> that is always in the HTML. It is the first paint, and the fallback for no WebGL2,
 // Save-Data, low memory and prefers-reduced-motion. Phase 5 mounts the three.js chunk over it.
-// Posters are stand-ins rendered by tools/posters/render.py until phase 5 renders them from the real scenes.
+// The poster is rendered from the real scene (tools/posters/render-3d.mjs). Only the CNC panel uses it.
 interface Props {
-  name: 'toolpath';
   alt: string;
   sizes: string; // desktop sizes attribute
-  priority?: boolean;
   class?: string;
 }
-const { name, alt, sizes, priority = false, class: cls } = Astro.props;
-const dims = { toolpath: [2400, 1200, 960, 1120] }[name];
-const d = (ext: string) => [960, 1600, 2400].map((w) => `/posters/${name}-${w}.${ext} ${w}w`).join(', ');
-const m = (ext: string) => [480, 960].map((w) => `/posters/${name}-m-${w}.${ext} ${w}w`).join(', ');
+const { alt, sizes, class: cls } = Astro.props;
+const d = (ext: string) => [960, 1600, 2400].map((w) => `/posters/toolpath-${w}.${ext} ${w}w`).join(', ');
+const m = (ext: string) => [480, 960].map((w) => `/posters/toolpath-m-${w}.${ext} ${w}w`).join(', ');
 ---
-<div class:list={['relative overflow-hidden', cls]} data-scene={name}>
+<div class:list={['relative overflow-hidden', cls]} data-scene="toolpath">
   <picture>
-    <source media="(min-width: 1024px)" type="image/avif" srcset={d('avif')} sizes={sizes} width={dims[0]} height={dims[1]} />
-    <source media="(min-width: 1024px)" type="image/webp" srcset={d('webp')} sizes={sizes} width={dims[0]} height={dims[1]} />
-    <source type="image/avif" srcset={m('avif')} sizes="100vw" width={dims[2]} height={dims[3]} />
-    <source type="image/webp" srcset={m('webp')} sizes="100vw" width={dims[2]} height={dims[3]} />
+    <source media="(min-width: 1024px)" type="image/avif" srcset={d('avif')} sizes={sizes} width="2400" height="1200" />
+    <source media="(min-width: 1024px)" type="image/webp" srcset={d('webp')} sizes={sizes} width="2400" height="1200" />
+    <source type="image/avif" srcset={m('avif')} sizes="100vw" width="960" height="1120" />
+    <source type="image/webp" srcset={m('webp')} sizes="100vw" width="960" height="1120" />
     <img
-      src={`/posters/${name}-m-960.webp`}
+      src="/posters/toolpath-m-960.webp"
       alt={alt}
-      width={dims[2]}
-      height={dims[3]}
+      width="960"
+      height="1120"
       class="absolute inset-0 h-full w-full object-cover"
-      loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : 'auto'}
-      decoding={priority ? 'sync' : 'async'}
+      loading="lazy"
+      decoding="async"
     />
   </picture>
 </div>
