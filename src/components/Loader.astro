@@ -31,6 +31,8 @@ svg = svg.replace(/<path pathLength="1"/g, () => `<path pathLength="1" style="--
   const svg = el.querySelector('svg'), n = el.querySelector('.pk-ld-n');
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const FADE = 300, CAP = 2500 - 2 * FADE; // stroke done by 1.9 s, so fill + fade-out end by 2.5 s
+  // The outline never draws faster than MIN, so on a fast connection it still visibly draws instead of flickering.
+  const MIN = 900, t0 = performance.now();
   let done = 0, target = 0, shown = 0, ending = false;
   const tick = () => { done++; target = done / 4; };
   const once = (fn) => { let hit = false; return () => { if (!hit) { hit = true; fn(); } }; };
@@ -61,7 +63,7 @@ svg = svg.replace(/<path pathLength="1"/g, () => `<path pathLength="1" style="--
   setTimeout(() => { if (!ending) finish(); }, Math.max(0, CAP - performance.now()));
   const frame = () => {
     if (ending) return;
-    shown = still ? target : Math.min(target, shown + Math.max(0.004, (target - shown) * 0.18));
+    shown = still ? target : Math.min(target, shown + Math.max(0.004, (target - shown) * 0.18), (performance.now() - t0) / MIN);
     paint(shown);
     shown >= 0.999 ? finish() : requestAnimationFrame(frame);
   };
