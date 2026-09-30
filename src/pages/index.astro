@@ -29,7 +29,7 @@ const cncPhotos = [
 ---
 <Base title="P.K. Sompura · Temple Architect & Contractor, Palitana">
 
-  <!-- §1 Hero: a finished temple (Rampara) -->
+  <!-- §1 Hero: carved sandstone in a stone arch (outer stone shell, inner photo: concentric arches) -->
   <section aria-labelledby="hero-title" class="lg:wrap lg:grid lg:grid-cols-12 lg:gap-x-6">
     <div class="flex flex-col gap-6 px-5 pb-10 pt-8 md:px-10 lg:col-span-6 lg:justify-center lg:gap-9 lg:px-0 lg:py-10">
       <p class="eyebrow text-slate-deep">Temple Architect &amp; Contractor<br class="lg:hidden" /><span class="max-lg:hidden"> · </span>Palitana, Gujarat</p>
@@ -41,9 +41,13 @@ const cncPhotos = [
         <a href="/contact" class="text-link inline-flex min-h-11 items-center max-md:hidden">Contact the workshop →</a>
       </div>
     </div>
-    <PhotoFrame src="rampara" priority label="Rampara" sizes="(min-width: 1440px) 720px, (min-width: 1024px) 50vw, 100vw"
-      class="lg:col-span-6 lg:-mr-12 xl:mr-[calc(-80px-max(0px,(100vw-1440px)/2))]"
-      frame="aspect-[4/5] w-full lg:aspect-auto lg:h-[min(812px,calc(100svh-88px))] lg:min-h-[600px]" />
+    <div class="px-5 pb-12 md:px-10 lg:col-span-5 lg:col-start-8 lg:flex lg:flex-col lg:justify-center lg:px-0 lg:py-10">
+      <div class="hero-shell rounded-t-full bg-stone bg-stone-tex p-2 ring-1 ring-navy/10 shadow-[0_48px_96px_-48px_rgba(38,38,84,0.35)] lg:p-3">
+        <PhotoFrame src="hero-carving" priority shape="arch" label="Carved sandstone" sizes="(min-width: 1440px) 520px, (min-width: 1024px) 38vw, 100vw"
+          class="hero-photo" frame="aspect-[4/5] w-full ring-1 ring-navy/10 lg:aspect-auto lg:h-[min(720px,calc(100svh-160px))] lg:min-h-[540px]" />
+      </div>
+      <p class="mt-3.5 font-mono text-[12px] text-slate-deep lg:text-[13px]">Carved sandstone rosettes</p>
+    </div>
   </section>
 
   <!-- §2 The family -->

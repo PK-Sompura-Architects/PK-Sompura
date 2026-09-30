@@ -301,5 +301,15 @@
    0.88
   ],
   "alt": "The machine hall of the workshop in Palitana"
+ },
+ "hero-carving": {
+  "src": "OUR WORK PHOTO/work/Work/20160218_105014.jpg",
+  "crop": [
+   0,
+   0.15,
+   1,
+   0.853
+  ],
+  "alt": "Carved sandstone rosettes, deep-cut petals and scrollwork"
  }
 }

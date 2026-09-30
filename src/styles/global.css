@@ -135,3 +135,13 @@
 }
 
 .scroll-cue.text-sand { text-shadow: 0 1px 8px rgb(14 14 31 / .9); }
+
+/* Hero arch: the stone shell rises 24 px and the carving settles from 108% as the page appears. Transform only, so
+   the photo (the LCP image) paints at once; held while the loader is up (html.pk-ld), then plays. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-shell { animation: hero-rise 1.2s cubic-bezier(0.32, 0.72, 0, 1) both; }
+  .hero-photo img { animation: hero-settle 1.8s cubic-bezier(0.32, 0.72, 0, 1) both; }
+  .pk-ld .hero-shell, .pk-ld .hero-photo img { animation-play-state: paused; }
+  @keyframes hero-rise { from { transform: translateY(24px); } }
+  @keyframes hero-settle { from { transform: scale(1.08); } }
+}
