@@ -33,6 +33,7 @@ work_website_images/
 !public/tex/**
 !public/posters/**
 !public/media/**
+!public/cnc/**
 
 # --- Tooling ---
 tools/posters/out/

@@ -13,8 +13,6 @@ fs.mkdirSync(OUT, { recursive: true });
 
 // name: [still param, css width, css height] rendered at device scale 2 → export size
 const JOBS = {
-  toolpath: ['toolpath:1', 1200, 600],
-  'toolpath-m': ['toolpath:1', 480, 560],
   // Fero Works fly-through (Posters P3): shots S1–S5 at their progress points, 2400×1350 and 1080×1920.
   ...Object.fromEntries([[1, 0], [2, 0.22], [3, 0.45], [4, 0.72], [5, 1]].flatMap(([n, p]) => [
     [`fw-s${n}`, [`fero:${p}`, 1200, 675]], [`fw-s${n}-m`, [`fero:${p}`, 540, 960]]])),

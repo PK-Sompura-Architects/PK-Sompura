@@ -8,10 +8,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 export interface SceneState { progress: number; still: boolean }
 export interface SceneHandle { canvas: HTMLCanvasElement; resize(w: number, h: number): void; render(): void; dispose(): void; compile?(): Promise<unknown> }
-type Name = 'toolpath' | 'fero';
+type Name = 'fero';
 
 const loaders: Record<Name, (el: HTMLElement, s: SceneState) => Promise<SceneHandle>> = {
-  toolpath: (el, s) => import('./relief').then((m) => m.default(el, s)),
   fero: (el, s) => import('./fero').then((m) => m.default(el, s)),
 };
 
@@ -22,15 +21,10 @@ export function boot(els: HTMLElement[], still?: { name: Name; progress: number 
     const state: SceneState = { progress: still ? still.progress : 0, still: !!still };
 
     if (!still) {
-      if (name === 'fero') {
-        // The stage is pinned by CSS (sticky inside [data-fly]); ScrollTrigger scrubs the progress across the container.
-        // Scrub 0.6 (P3). The HTML text follows the same smoothed progress, so words and camera move together.
-        gsap.to(state, { progress: 1, ease: 'none', scrollTrigger: { trigger: el.closest('[data-fly]'), start: 'top top', end: 'bottom bottom', scrub: 0.6 },
-          onUpdate: () => el.dispatchEvent(new CustomEvent('fly:progress', { detail: state.progress })) });
-      } else {
-        // Toolpath: pinned by CSS (CncCut.astro); the motion layer scrubs the machine order and hands the progress on.
-        el.addEventListener('cnc:progress', (e) => (state.progress = (e as CustomEvent<number>).detail));
-      }
+      // The stage is pinned by CSS (sticky inside [data-fly]); ScrollTrigger scrubs the progress across the container.
+      // Scrub 0.6 (P3). The HTML text follows the same smoothed progress, so words and camera move together.
+      gsap.to(state, { progress: 1, ease: 'none', scrollTrigger: { trigger: el.closest('[data-fly]'), start: 'top top', end: 'bottom bottom', scrub: 0.6 },
+        onUpdate: () => el.dispatchEvent(new CustomEvent('fly:progress', { detail: state.progress })) });
     }
 
     let handle: SceneHandle | null = null;

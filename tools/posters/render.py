@@ -11,15 +11,10 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "public/posters"
 
-# name: (render width, render height, export widths)
-POSTERS = {
-    "toolpath": (2400, 1200, [2400, 1600, 960]),
-    "toolpath-m": (960, 1120, [960, 480]),
-}
-# The Fero fly-through shots (Posters P3): fw-s1…s5 (2400×1350) and fw-sN-m (1080×1920), AVIF, plus half-size AVIFs
-# and a 1200 WebP fallback.
-POSTERS |= {f"fw-s{n}{m}": ((2400, 1350, [2400, 1200]) if not m else (1080, 1920, [1080, 540]))
-            for n in range(1, 6) for m in ("", "-m")}
+# name: (render width, render height, export widths). The Fero fly-through shots (Posters P3): fw-s1…s5 (2400×1350)
+# and fw-sN-m (1080×1920), AVIF, plus half-size AVIFs and a 1200 WebP fallback.
+POSTERS = {f"fw-s{n}{m}": ((2400, 1350, [2400, 1200]) if not m else (1080, 1920, [1080, 540]))
+           for n in range(1, 6) for m in ("", "-m")}
 
 OUT.mkdir(parents=True, exist_ok=True)
 for name, (w, h, widths) in POSTERS.items():
