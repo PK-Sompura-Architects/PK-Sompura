@@ -5,6 +5,7 @@ import ScopeTag from '../../components/ScopeTag.astro';
 import TypeCard from '../../components/TypeCard.astro';
 import { pad, placeFull, sortedProjects, type Project } from '../../lib/projects';
 import { contact } from '../../data/site';
+import { mediaSet } from '../../lib/media';
 
 export async function getStaticPaths() {
   const all = await sortedProjects();
@@ -29,8 +30,12 @@ const wide = rest[3];
 const total = p.photos.length;
 const cap = (i: number, c?: string) => (total > 1 ? `${i} / ${total}${c ? ` · ${c}` : ''}` : c);
 const crumb = p.place ? placeFull(p) : 'Place to confirm';
+// The lead photo is the page's LCP: preloaded with the same srcset and sizes the PhotoFrame below uses.
+const LEAD_SIZES = '(min-width: 1024px) 50vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)'; // inside the page gutters
+const leadSet = lead && mediaSet(lead.src);
 ---
 <Base title={`${p.name}${p.place && p.place !== p.name ? `, ${p.place}` : ''} · Temple Register · P.K. Sompura`} current="register"
+  preload={leadSet ? { srcset: leadSet.avif, sizes: LEAD_SIZES } : undefined}
   image={p.photos[0] ? `/og/projects/${project.id}.jpg` : undefined} imageAlt={p.photos[0] ? `${p.name}, ${placeFull(p)}: ${p.type}` : undefined}
   description={`${p.name}, ${placeFull(p)}. ${p.type} in the Temple Register of P.K. Sompura, temple architects and contractors.`}>
   <nav aria-label="Breadcrumb" class="wrap pt-6 font-mono text-[12px] text-slate-deep lg:pt-16 lg:text-[13px]">
@@ -55,7 +60,7 @@ const crumb = p.place ? placeFull(p) : 'Place to confirm';
 
       <div class="wrap grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-x-6 lg:gap-y-6">
         <div class="col-span-2 lg:col-span-7">
-          <PhotoFrame reveal glare shape="arch" frame="aspect-[8/11] lg:aspect-[4/5]" label={lead.label} src={lead.src} alt={`${p.name}, ${lead.caption ?? 'lead image'}`} caption={cap(1, lead.caption)} />
+          <PhotoFrame priority reveal glare shape="arch" frame="aspect-[8/11] lg:aspect-[4/5]" sizes={LEAD_SIZES} label={lead.label} src={lead.src} alt={`${p.name}, ${lead.caption ?? 'lead image'}`} caption={cap(1, lead.caption)} />
         </div>
         {(second || p.note) && (
           <div class="col-span-2 mt-2 flex flex-col gap-5 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:justify-end lg:gap-12 lg:pb-10">

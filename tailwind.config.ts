@@ -46,7 +46,8 @@ export default {
       dropShadow: { cut: '0 1px 0 rgb(244 239 230 / .85)' },
       backgroundImage: {
         'sand-tex': "url('/tex/sand.webp')", 'stone-tex': "url('/tex/stone.webp')",
-        cut: "url('/tex/cut.webp')", 'night-grain': "url('/tex/grain-night.webp')",
+        // AVIF where it is smaller at the same grain (sand and stone are not), WebP for browsers without image-set().
+        cut: "image-set(url('/tex/cut.avif') type('image/avif'), url('/tex/cut.webp') type('image/webp'))", 'night-grain': "image-set(url('/tex/grain-night.avif') type('image/avif'), url('/tex/grain-night.webp') type('image/webp'))",
       },
     },
   },

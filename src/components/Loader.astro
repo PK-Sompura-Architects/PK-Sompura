@@ -7,6 +7,8 @@
 // Hard cap: gone by 2.5 s after navigation start. Reduced motion: the static logo and the count, no fades.
 // Without JS it never shows (it's display:none until the head script adds html.pk-ld). The page is in the HTML
 // underneath the whole time; the loader is aria-hidden and a visually hidden status says "Loading".
+// The full-colour logo is drawn into a <canvas> rather than shown as an <img>: it looks the same, but as an <img> it
+// became the page's Largest Contentful Paint (it appears last), hiding the real LCP behind the loader's timing.
 import outline from '../assets/logo-outline.svg?raw';
 // Each stroke gets its own window of the progress (--a start, 0.3 wide), ordered top to bottom, so the outline builds
 // down the mark instead of every stroke growing at once.
@@ -19,7 +21,7 @@ svg = svg.replace(/<path pathLength="1"/g, () => `<path pathLength="1" style="--
 <div id="pk-ld" aria-hidden="true">
   <div class="pk-ld-mark">
     <Fragment set:html={svg} />
-    <img src="/logo-fill.webp" alt="" width="313" height="400" decoding="async" fetchpriority="low" />
+    <canvas width="313" height="400"></canvas>
   </div>
   <span class="pk-ld-n">0%</span>
 </div>
@@ -28,7 +30,10 @@ svg = svg.replace(/<path pathLength="1"/g, () => `<path pathLength="1" style="--
 (() => {
   const d = document, root = d.documentElement, el = d.getElementById('pk-ld'), status = d.getElementById('pk-ld-status');
   if (!root.classList.contains('pk-ld')) { el.remove(); status.remove(); return; }
-  const svg = el.querySelector('svg'), n = el.querySelector('.pk-ld-n');
+  const svg = el.querySelector('svg'), n = el.querySelector('.pk-ld-n'), cv = el.querySelector('canvas');
+  const logo = new Image(); logo.decoding = 'async';
+  logo.onload = () => cv.getContext('2d').drawImage(logo, 0, 0, cv.width, cv.height);
+  logo.src = '/logo-fill.webp';
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const FADE = 300, CAP = 2500 - 2 * FADE; // stroke done by 1.9 s, so fill + fade-out end by 2.5 s
   // The outline never draws faster than MIN, so on a fast connection it still visibly draws instead of flickering.

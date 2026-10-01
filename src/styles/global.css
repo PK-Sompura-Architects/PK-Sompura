@@ -68,6 +68,7 @@
   @supports ((-webkit-background-clip: text) or (background-clip: text)) {
     .text-cut {
       background-image: url('/tex/cut.webp');
+      background-image: image-set(url('/tex/cut.avif') type('image/avif'), url('/tex/cut.webp') type('image/webp'));
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -82,6 +83,7 @@
   @supports ((-webkit-background-clip: text) or (background-clip: text)) {
     .text-cut.wipe {
       background-image: linear-gradient(to top, rgb(38 38 84 / 0) var(--wipe, 100%), theme('colors.navy') var(--wipe, 100%)), url('/tex/cut.webp');
+      background-image: linear-gradient(to top, rgb(38 38 84 / 0) var(--wipe, 100%), theme('colors.navy') var(--wipe, 100%)), image-set(url('/tex/cut.avif') type('image/avif'), url('/tex/cut.webp') type('image/webp'));
       background-size: 100% 100%, auto;
     }
   }

@@ -1,4 +1,4 @@
-// Photos exported by tools/photos/export.py (AVIF + WebP at 480/960/1600/2400, never wider than the source).
+// Photos exported by tools/photos/export.py (AVIF + WebP at 480/720/960/1600/2400, never wider than the source).
 import media from '../data/media.json';
 
 export type Media = { avif: string; webp: string; src: string; w: number; h: number; alt: string };

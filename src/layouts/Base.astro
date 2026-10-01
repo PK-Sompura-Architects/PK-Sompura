@@ -21,6 +21,7 @@ interface Props {
   current?: NavKey;
   image?: string; // link-preview image, 1200 × 630 (tools/og/render.mjs); the site card by default
   imageAlt?: string;
+  preload?: { srcset: string; sizes: string }; // the page's LCP photo (AVIF srcset), fetched before everything else
 }
 const {
   title,
@@ -29,6 +30,7 @@ const {
   current,
   image = '/og/default.jpg',
   imageAlt = 'P.K. Sompura, Temple Architect & Contractor, Palitana, Gujarat: Where Devotion Meets Stone.',
+  preload,
 } = Astro.props;
 // Absolute URLs from the one site address in astro.config.mjs.
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -77,7 +79,8 @@ const business = {
     <link rel="preload" as="font" type="font/woff2" href={caslon} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={hanken} crossorigin />
     {/* Light pages' h1 is .text-cut: its letters are this texture, so the h1 (LCP) can't paint before it arrives. */}
-    {theme === 'light' && <link rel="preload" as="image" href="/tex/cut.webp" fetchpriority="high" />}
+    {theme === 'light' && <link rel="preload" as="image" href="/tex/cut.avif" type="image/avif" fetchpriority="high" />}
+    {preload && <link rel="preload" as="image" type="image/avif" imagesrcset={preload.srcset} imagesizes={preload.sizes} fetchpriority="high" />}
     <script is:inline>
       document.documentElement.classList.add('js');
       // Loader: every full load and reload; not when arriving by an internal link, nor in ?still= poster renders.
@@ -94,17 +97,17 @@ const business = {
       .pk-ld #pk-ld { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center;
         justify-content: center; gap: 24px; background: #F4EFE6; transition: opacity 300ms ease; }
       #pk-ld .pk-ld-mark { position: relative; height: min(40vh, 280px); aspect-ratio: 442 / 565; }
-      #pk-ld svg, #pk-ld img { position: absolute; inset: 0; width: 100%; height: 100%; }
+      #pk-ld svg, #pk-ld canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
       #pk-ld path { stroke-dasharray: 1; stroke-dashoffset: calc(1 - clamp(0, (var(--p, 0) - var(--a, 0)) / 0.3, 1)); }
-      #pk-ld img { opacity: 0; transition: opacity 300ms ease; }
-      #pk-ld.full img { opacity: 1; }
+      #pk-ld canvas { opacity: 0; transition: opacity 300ms ease; }
+      #pk-ld.full canvas { opacity: 1; }
       #pk-ld.out { opacity: 0; }
       #pk-ld .pk-ld-n { font: 500 14px/1 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .08em; color: #262654;
         font-variant-numeric: tabular-nums; }
       @media (prefers-reduced-motion: reduce) {
         #pk-ld path { stroke-dasharray: none; stroke-dashoffset: 0; }
-        #pk-ld img { opacity: 1; }
-        #pk-ld, #pk-ld img { transition: none; }
+        #pk-ld canvas { opacity: 1; }
+        #pk-ld, #pk-ld canvas { transition: none; }
       }
     </style>
   </head>
