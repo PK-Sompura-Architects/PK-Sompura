@@ -28,7 +28,7 @@ const m = mediaSet(src);
     !m && (night ? 'ph-night' : 'ph-light')]}>
     {m
       ? <picture><source type="image/avif" srcset={m.avif} sizes={sizes} /><img src={m.src} srcset={m.webp} sizes={sizes} alt={alt ?? m.alt} width={m.w} height={m.h}
-          loading={priority ? 'eager' : 'lazy'} fetchpriority={priority ? 'high' : 'auto'} decoding={priority ? 'sync' : 'async'} class="absolute inset-0 h-full w-full object-cover" /></picture>
+          loading={priority ? 'eager' : 'lazy'} fetchpriority={priority ? 'high' : 'low'} decoding={priority ? 'sync' : 'async'} class="absolute inset-0 h-full w-full object-cover" /></picture>
       : compact
         ? <span class="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-sand px-1 py-0.5 font-mono text-[9px]" title={label}>PHOTO</span>
         : <span class:list={['absolute bottom-3 left-3 right-3 w-fit max-w-[calc(100%-24px)] px-2 py-1.5 font-mono text-[12px] leading-snug lg:bottom-4 lg:left-4',

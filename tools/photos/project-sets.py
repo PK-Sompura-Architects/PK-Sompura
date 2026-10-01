@@ -155,6 +155,9 @@ SETS = {
   ('OUR WORK PHOTO/VARKHADI THARAD/DSCN0497.jpg', None, 'The main temple in scaffolding', True)]),
 }
 
+# AVIF quality of the lead photo (each page's LCP): 45, lower for leads whose detail makes the file heavy.
+LEAD_Q = {'adpur-dheti-pag': 40}
+
 # Detail tiles for projects with a single photo: crops of that photo at full resolution, at least 600 px of real pixels.
 DETAILS = {
  'adpur-dheti-pag': [
@@ -183,7 +186,7 @@ if __name__ == '__main__':
         p['photos'] = []
         for i, (src, crop, alt, building) in enumerate(photos, 1):
             key = f"{p['id']}--{i}"
-            picks[key] = {'src': src, 'alt': alt, **({'crop': crop} if crop else {}), **({'max': 1600} if i > 1 else {'avif_q': 45})}  # the lead is the page's LCP: lighter AVIF
+            picks[key] = {'src': src, 'alt': alt, **({'crop': crop} if crop else {}), **({'max': 1600} if i > 1 else {'avif_q': LEAD_Q.get(p['id'], 45)})}  # the lead is the page's LCP: lighter AVIF
             p['photos'].append({'label': alt, 'src': key, **({'construction': True} if building else {})})
             changed.append(key)
     for p in projects:

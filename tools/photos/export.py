@@ -1,5 +1,5 @@
 """Exports the approved photos (tools/photos/picks.json) from the private archive into public/media/ as AVIF + WebP at
-480 / 720 / 960 / 1600 / 2400 px wide (never wider than the source), and writes src/data/media.json (id -> size, widths, alt)
+480 / 720 / 960 / 1600 px wide (never wider than the source), and writes src/data/media.json (id -> size, widths, alt)
 for the <picture> markup. The archive (D:\\projects\\ALBUM-IMAGES) is only read; the originals are never copied.
 Run from the project root:  python tools/photos/export.py [id ...]   (ids: re-export only those; the rest of
 media.json is kept, and entries no longer in picks.json are dropped)
@@ -13,7 +13,7 @@ from PIL import Image, ImageOps
 ROOT = Path(__file__).resolve().parents[2]
 ARCHIVE = Path(r"D:\projects\ALBUM-IMAGES")
 OUT = ROOT / "public/media"
-WIDTHS = [480, 720, 960, 1600, 2400]
+WIDTHS = [480, 720, 960, 1600]  # 1600 covers the widest use: 50vw at 2x on a 1440 screen
 
 picks = {k: v for k, v in json.loads((ROOT / "tools/photos/picks.json").read_text(encoding="utf-8")).items() if not k.startswith("_")}
 OUT.mkdir(parents=True, exist_ok=True)
@@ -30,7 +30,7 @@ for key, p in picks.items():
     im = im.crop((round(l * im.width), round(t * im.height), round(r * im.width), round(b * im.height)))
     if p.get("rotate"):
         im = im.rotate(p["rotate"], expand=True)
-    # "max": the widest export (gallery photos stop at 1600; leads go to 2400)
+    # "max": the widest export, if below 1600
     cap = min(im.width, p.get("max", WIDTHS[-1]))
     widths = [w for w in WIDTHS if w <= cap]
     if not widths or (widths[-1] < cap and cap == im.width):
