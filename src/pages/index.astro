@@ -176,7 +176,7 @@ const cncPhotos = [
               </div>
               <div class="flex min-w-0 flex-1 flex-col gap-1.5 lg:gap-2.5">
                 <p class="font-display text-[24px] leading-[1.08] group-hover:text-saffron-text lg:text-[36px] lg:leading-[1.05]">{p.name}</p>
-                <p class="font-mono text-[12px] leading-[1.45] text-slate-deep lg:text-[13px]">{placeFull(p)}<br class="lg:hidden" /><span class="max-lg:hidden"> · </span>{p.type}</p>
+                <p class="font-mono text-[12px] leading-[1.45] text-slate-deep lg:text-[13px]">{p.place && <>{placeFull(p)}<br class="lg:hidden" /><span class="max-lg:hidden"> · </span></>}{p.type}</p>
                 <div class="mt-1 flex flex-wrap gap-1.5 max-lg:hidden">{p.scope.map((s) => <ScopeTag label={s} size="sm" />)}</div>
               </div>
             </a>

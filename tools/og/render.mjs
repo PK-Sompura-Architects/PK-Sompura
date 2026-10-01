@@ -43,7 +43,7 @@ const card = (p, img) => page(`
   <div style="position:absolute;left:0;bottom:0;width:640px;padding:36px 48px 40px 56px;background:#F4EFE6 url(/public/tex/sand.webp)">
     <p class="mono" style="font-size:17px">Temple Register · P.K. Sompura</p>
     <p style="font:400 64px/1.02 Caslon;margin-top:14px">${esc(p.name)}</p>
-    <p class="mono" style="margin-top:14px;font-size:18px;color:#262654">${esc([p.place, p.state].filter(Boolean).join(', ') || 'Place to be confirmed')} · ${esc(p.type)}</p>
+    <p class="mono" style="margin-top:14px;font-size:18px;color:#262654">${esc([p.place && [p.place, p.state].join(', '), p.type].filter(Boolean).join(' · '))}</p>
   </div>`);
 
 const browser = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new' });

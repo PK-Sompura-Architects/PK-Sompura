@@ -13,7 +13,7 @@ export interface Entry {
   id: string;
   no: number;
   name: string;
-  placeFull: string;
+  placeFull: string; // '' when the place isn't known (the line is hidden)
   placeKey: string; // URL value, e.g. "tharad"
   type: string;
   scope: Scope[];
@@ -22,7 +22,9 @@ export interface Entry {
 
 const scopeKey = (s: Scope) => (s === 'Fero / mountain' ? 'fero' : s.toLowerCase().replace(/\s+/g, '-'));
 const pad = (n: number) => String(n).padStart(2, '0');
-const byPlace = (a: Entry, b: Entry) => a.placeFull.localeCompare(b.placeFull) || a.name.localeCompare(b.name);
+const placeSort = (e: Entry) => e.placeFull || '￿'; // unknown places last
+const byPlace = (a: Entry, b: Entry) => placeSort(a).localeCompare(placeSort(b)) || a.name.localeCompare(b.name);
+const placeType = (e: Entry) => [e.placeFull, e.type].filter(Boolean).join(' · ');
 const byType = (a: Entry, b: Entry) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name);
 const COLS = 'grid-cols-[48px_minmax(0,1fr)_200px_132px_32px] xl:grid-cols-[56px_minmax(0,1fr)_220px_180px_132px_64px_32px]';
 
@@ -59,7 +61,7 @@ function PlainList({ entries }: { entries: Entry[] }) {
               <span className="w-6 flex-none font-mono text-[12px] text-slate-deep lg:w-12 lg:text-[13px]">{pad(i + 1)}</span>
               <span className="flex min-w-0 flex-1 flex-col gap-1 lg:flex-row lg:items-baseline lg:gap-6">
                 <span className="font-display text-[24px] leading-[1.1] lg:text-title">{e.name}</span>
-                <span className="font-mono text-[12px] text-slate-deep lg:text-[14px]">{e.placeFull} · {e.type}</span>
+                <span className="font-mono text-[12px] text-slate-deep lg:text-[14px]">{placeType(e)}</span>
               </span>
               <span className="text-[20px]" aria-hidden="true">→</span>
             </a>
@@ -97,7 +99,7 @@ function Browser({ entries }: { entries: Entry[] }) {
     history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
   }, [ready, place, scopes, sort]);
 
-  const places = useMemo(() => [...new Set(entries.map((e) => e.placeFull))].sort(), [entries]);
+  const places = useMemo(() => [...new Set(entries.map((e) => e.placeFull).filter(Boolean))].sort(), [entries]);
   const rows = useMemo(
     () => entries
       .filter((e) => (place === 'All' || e.placeFull === place) && (!scopes.length || e.scope.some((s) => scopes.includes(s))))
@@ -203,7 +205,7 @@ function Browser({ entries }: { entries: Entry[] }) {
                       <span key={k} className="flex flex-none items-center gap-7 pr-7">
                         <span className="font-display text-title text-sand">{e.name}</span>
                         <Diamond />
-                        <span className="font-mono text-[14px] text-sky">{e.placeFull}</span>
+                        {e.placeFull && <span className="font-mono text-[14px] text-sky">{e.placeFull}</span>}
                         {e.lead && <img src={`/media/${e.lead}-480.webp`} alt="" loading="lazy" decoding="async" className="h-[72px] w-14 flex-none rounded-t-full border border-sky object-cover" />}
                         <span className="font-mono text-[14px] text-sky">{e.type}</span>
                         <Diamond />
@@ -228,7 +230,7 @@ function Browser({ entries }: { entries: Entry[] }) {
                 <span className="w-6 flex-none font-mono text-[12px] text-slate-deep">{pad(e.no)}</span>
                 <span className="flex min-w-0 flex-1 flex-col gap-1">
                   <span className="font-display text-[24px] leading-[1.1]">{e.name}</span>
-                  <span className="font-mono text-[12px] text-slate-deep">{e.placeFull}</span>
+                  {e.placeFull && <span className="font-mono text-[12px] text-slate-deep">{e.placeFull}</span>}
                 </span>
                 <span className="flex h-11 w-11 flex-none items-center justify-center font-mono text-[22px]" aria-hidden="true">
                   <span className="group-open:hidden">+</span><span className="hidden group-open:inline">−</span>
@@ -306,7 +308,7 @@ function TypeCardRow({ e }: { e: Entry }) {
     <div className="flex flex-col gap-4 bg-stone bg-stone-tex px-5 py-6 shadow-tablet">
       <div className="flex justify-between font-mono text-[12px] uppercase tracking-[.08em]"><span>Register entry</span><span>No. {pad(e.no)}</span></div>
       <p className="text-cut font-display text-[40px] leading-none">{e.name}</p>
-      <p className="font-mono text-[13px]">{e.placeFull} · {e.type}</p>
+      <p className="font-mono text-[13px]">{placeType(e)}</p>
       <div className="flex flex-wrap gap-1.5">
         {e.scope.map((s) => <span key={s} className="inline-block whitespace-nowrap border border-navy px-2 py-1 font-mono text-[11px] font-medium uppercase leading-none tracking-[.08em]">{s}</span>)}
       </div>

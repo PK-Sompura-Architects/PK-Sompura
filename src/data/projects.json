@@ -51,39 +51,6 @@
   "featured": false
  },
  {
-  "id": "bhavnagar",
-  "no": 5,
-  "name": "Bhavnagar",
-  "place": "Bhavnagar",
-  "state": "Gujarat",
-  "type": "Jain derasar",
-  "scope": [
-   "Design",
-   "Hand carving"
-  ],
-  "photos": [
-   {
-    "label": "Bhavnagar, Bhavnagar · lead image",
-    "src": "bhavnagar"
-   }
-  ],
-  "featured": false
- },
- {
-  "id": "dadabhagavan",
-  "no": 11,
-  "name": "Dadabhagavan",
-  "place": "Kelanpur",
-  "state": "Gujarat",
-  "type": "Hindu temple",
-  "scope": [
-   "CNC",
-   "Construction"
-  ],
-  "photos": [],
-  "featured": false
- },
- {
   "id": "devilaya",
   "no": 21,
   "name": "Devilaya",
@@ -146,20 +113,6 @@
    }
   ],
   "featured": true
- },
- {
-  "id": "godiji-derasar",
-  "no": 30,
-  "name": "Godiji Derasar",
-  "place": "Tharad",
-  "state": "Gujarat",
-  "type": "Jain derasar",
-  "scope": [
-   "Hand carving",
-   "Construction"
-  ],
-  "photos": [],
-  "featured": false
  },
  {
   "id": "vaishno-devi-gulbarga",
@@ -412,19 +365,6 @@
   "featured": false
  },
  {
-  "id": "shobhavad",
-  "no": 26,
-  "name": "Shobhavad",
-  "place": "Shobhavad",
-  "state": "Gujarat",
-  "type": "Jain derasar",
-  "scope": [
-   "Construction"
-  ],
-  "photos": [],
-  "featured": false
- },
- {
   "id": "songadh",
   "no": 27,
   "name": "Songadh",
@@ -444,24 +384,6 @@
   "featured": false
  },
  {
-  "id": "surat",
-  "no": 28,
-  "name": "Surat",
-  "place": "Surat",
-  "state": "Gujarat",
-  "type": "Jain derasar",
-  "scope": [
-   "CNC"
-  ],
-  "photos": [
-   {
-    "label": "Surat, Surat · lead image",
-    "src": "surat"
-   }
-  ],
-  "featured": false
- },
- {
   "id": "taleti",
   "no": 23,
   "name": "Taleti",
@@ -470,19 +392,6 @@
   "type": "Jain derasar",
   "scope": [
    "Hand carving"
-  ],
-  "photos": [],
-  "featured": false
- },
- {
-  "id": "tana",
-  "no": 29,
-  "name": "Tana",
-  "place": "Tana",
-  "state": "Gujarat",
-  "type": "Jain derasar",
-  "scope": [
-   "Construction"
   ],
   "photos": [],
   "featured": false
@@ -517,7 +426,12 @@
    "Fero / mountain",
    "Construction"
   ],
-  "photos": [],
+  "photos": [
+   {
+    "label": "Vaishno Devi, Ahmedabad · lead image",
+    "src": "vaishno-devi-ahmedabad"
+   }
+  ],
   "featured": false
  }
 ]

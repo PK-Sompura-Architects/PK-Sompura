@@ -1,0 +1,34 @@
+{
+  "redirects": [
+    {
+      "source": "/projects/bhavnagar",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/projects/surat",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/projects/shobhavad",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/projects/tana",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/projects/godiji-derasar",
+      "destination": "/projects",
+      "permanent": true
+    },
+    {
+      "source": "/projects/dadabhagavan",
+      "destination": "/projects",
+      "permanent": true
+    }
+  ]
+}

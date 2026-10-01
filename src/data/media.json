@@ -20,17 +20,6 @@
   ],
   "alt": "Bhamriya: the white stone shikhara rising in scaffolding"
  },
- "bhavnagar": {
-  "w": 1600,
-  "h": 1080,
-  "widths": [
-   480,
-   720,
-   960,
-   1600
-  ],
-  "alt": "Bhavnagar: the rock shell of an artificial mountain under construction"
- },
  "digambar-jain-derasar": {
   "w": 3456,
   "h": 4608,
@@ -164,18 +153,6 @@
    2400
   ],
   "alt": "Songadh: a white gateway with red arches"
- },
- "surat": {
-  "w": 3600,
-  "h": 2160,
-  "widths": [
-   480,
-   720,
-   960,
-   1600,
-   2400
-  ],
-  "alt": "Surat: a painted model of an artificial mountain with caves and a waterfall"
  },
  "varkhadi": {
   "w": 2256,
@@ -336,5 +313,15 @@
    2400
   ],
   "alt": "The machine hall of the workshop in Palitana"
+ },
+ "vaishno-devi-ahmedabad": {
+  "w": 1280,
+  "h": 640,
+  "widths": [
+   480,
+   720,
+   960
+  ],
+  "alt": "Vaishno Devi, Ahmedabad: the finished artificial mountain in red and grey rock, its cave entrance and white shrines above a paved court"
  }
 }

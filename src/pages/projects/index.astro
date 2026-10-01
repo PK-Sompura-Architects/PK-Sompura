@@ -9,7 +9,7 @@ const entries: Entry[] = (await sortedProjects()).map(({ id, data: p }) => ({
   no: p.no,
   name: p.name,
   placeFull: placeFull(p),
-  placeKey: p.place ? slug(p.place) : 'to-confirm',
+  placeKey: slug(p.place),
   type: p.type,
   scope: p.scope,
   lead: p.photos[0]?.src,
