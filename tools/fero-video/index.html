@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Fero Works offline render</title>
+<style>html, body { margin: 0; background: #0e0e1f; overflow: hidden; } canvas { display: block; }</style>
+<script type="importmap">
+{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+  import { build } from './scene.js';
+  const q = new URLSearchParams(location.search);
+  const w = +q.get('w') || 1920, h = +q.get('h') || 1080;
+  const c = document.getElementById('c'); c.style.width = w + 'px'; c.style.height = h + 'px';
+  window.scene = await build(c, w, h);
+  window.ready = true;
+</script>
+</body>
+</html>

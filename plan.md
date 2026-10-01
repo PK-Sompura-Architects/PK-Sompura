@@ -75,31 +75,28 @@ Candidate projects from the photo archive folders, to confirm with the client (n
 
 ---
 
-## 5. 3D
+## 5. Motion pieces: the CNC drawing and the Fero Works video
 
-Two scenes, both plain three.js, each loaded as its own chunk only when its section approaches the viewport.
+No real-time 3D ships. three.js is a devDependency, used only offline to render the Fero Works video.
 
-| Scene | Where | How it's built | Size target |
+| Piece | Where | How it's built | Size |
 |---|---|---|---|
-| **Carved relief + toolpath** | Hero and CNC chapter | A flat plane displaced by a depth map made from one real CNC panel photo ([A2]: a stand-in height field until it arrives). Raking light moves with scroll. **CNC chapter: drawn, not revealed** (Phase 5): pinned 160vh; contour paths extracted from the depth map (`tools/cnc/build.py`) draw with stroke-dashoffset in machine order (1 outer border, 2 inner frame and moulding, 3 main motif outlines, 4 fine interior detail) with a glowing tool tip on the active path, then 5 the relief depth cuts in behind the lines in the same order: the shader shows displacement only where a baked cut-order map (5 KB) is below progress. Without 3D the finished poster fades in for stage 5; reduced motion shows the finished panel. | ≈150 KB assets, one mesh, one KTX2 texture |
-| **Fero Works fly-through** | Fero Works chapter | Pinned 500vh desktop / 400vh mobile (CSS sticky); GSAP ScrollTrigger, scrub 0.6, drives the progress. One `CatmullRomCurve3` for position and one for the lookAt target through P3's five nodes, with P3's per-move ranges, eases, pitch, yaw, roll and fov (38° → 30°; ×1.23 vertical on portrait). **Model** (`public/models/fero.glb`, built by `tools/fero/build-model.mjs`): the terraced mountain (140 m) with its 36 × 44 m arched mouth, the tunnel, the arch rim and a sanctum arch, and the Nagara shikhara to the P3 elevation (24 m with the flag: 3-step jagati, mandovara with bays, tiered curved shikhara with bhumi bands every 2.3%, a lighter central ratha projecting 0.3 m, 2 urushringas per side at 0.45× and 0.28×, amalaka, kalash, dhvaja). Draco geometry, one KTX2 (ETC1S) stone texture. **Procedural:** sky and far peak (shader), cloud deck (six fbm shader layers), ridges (heightfield), FogExp2, wisps, rays. | ≤ 400 KB model; actual recorded below |
+| **CNC panel drawing** | CNC chapter | A line trace of one of the firm's CNC-cut sandstone panels (`OUR WORK PHOTO\cnc work\IMG_20220626_211446.jpg`), made by `tools/cnc/trace.py`: the photo flattened to a rectangle, the carving's edges traced, the right half mirrored (the panel is symmetric), the three sunflowers redrawn on the photo's flowers. 419 SVG paths in machine order, in 4 stages: outer border, frame and moulding, main motifs, fine detail. It auto-plays over about 5 s when the panel is 60% in view (once per page view; pauses off-screen, resumes; a saffron tool tip rides the active path), then the panel photo fades in behind the lines (600 ms); Replay afterwards. No pin. Reduced motion and no JS: the finished panel. | Path data 45 KB raw in the page; panel photo 29 / 77 / 297 KB AVIF at 640 / 1040 / 2080 px (WebP fallbacks 51 / 124 / 434 KB), loaded lazily |
+| **Fero Works fly-through** | Fero Works chapter | A pre-rendered 8 s video at 30 fps (`tools/fero-video/render.mjs`): the P3 camera path over the P3 scene, rendered offline with three.js in headless Chrome at a fixed time step, pixel ratio 2 with MSAA (captured at 1×, so 2× supersampled), soft shadows, a light bloom and dithering; encoded with ffmpeg (`ffmpeg-static`). The scene is built for the video: a Nagara shikhara (stepped jagati with a front stair, a pancharatha mandovara with mouldings, niches and cornice, a curved shikhara in 10 bhumi tiers with corner amalakas, 2 urushringas per side, ribbed amalaka, kalash, dhvaja), a hewn-rock cave with a boulder rim, a 36-layer cloud deck, ridges to the horizon. The final shot frames the whole temple, base included. No pin: one screen tall. Text is HTML over the video, its states (full → docked → docked + line) synced to `video.currentTime` at P3's progress points. | See below |
 
-**Fly-through specifics:** device pixel ratio capped at 1.5; rendering stops when the section is off-screen; the first ~100 frames are timed and below 30 fps it hands back to the posters. Posters `fw-s1…s5` (2400×1350 and 1080×1920 AVIF, plus half sizes and a 1200 WebP) are rendered from the real scene with the same camera; the text is never baked in. S4 is the first paint. **Reduced motion and no JS:** no pin; the five posters stack as 100svh frames, each with its own text state. **Low-end** (no WebGL2, Save-Data, deviceMemory < 4, or under 30 fps): pinned 400vh, the posters crossfade over 0.06 of progress at each boundary, no 3D.
+**Fero Works video, measured sizes** (loaded late: `preload="none"`; the file is requested only when the section comes within one screen, so it is never part of the first load):
+- Desktop 1920×1080: `fero-desktop.mp4` (H.264, two-pass) 2.55 MB; `fero-desktop.webm` (VP9, two-pass) 1.92 MB.
+- Portrait 1080×1920: `fero-mobile.mp4` 1.20 MB; `fero-mobile.webm` 0.90 MB.
+- Posters (the final frame): desktop 48 KB AVIF / 53 KB WebP; portrait 38 KB AVIF / 45 KB WebP.
+- A browser downloads one file: WebM where supported, else MP4; the portrait pair when the screen is portrait.
 
-**Fly-through, measured size** (Phase 3, gzipped transfer, loaded only when the chapter nears the viewport):
-- Model `fero.glb`: 131 KB raw (Draco geometry 43k triangles, KTX2 texture 14 KB). Inside the 400 KB budget.
-- Scene code (`fero.ts` with GLTFLoader, DRACOLoader, KTX2Loader): 43 KB. three.js is shared with the carved panel: 140 KB.
-- Decoders, fetched at runtime: Draco 100 KB (wasm 88 + wrapper 12), Basis 260 KB (wasm 245 + js 15). **The Basis transcoder is 260 KB to decode one 14 KB texture**; a WebP texture would save it. Kept because the brief asks for Draco + KTX2.
-- Posters: 54 KB for the five desktop AVIFs, 43 KB for the five mobile AVIFs.
-- Frame rate: the 30 fps guard is in place. Not yet measured on a real mid-range Android phone (none attached); headless numbers are software rendering and don't count.
+**Behaviour:** it plays once when 60% visible, pauses below 20% and resumes at 60%, and after the end keeps the last frame with a Replay button. With reduced motion or Save-Data it shows the final-frame poster and a Play button, and loads nothing until pressed. If `play()` is refused, the same poster and Play button. Without JS, the poster with the full title.
 
-**Non-negotiable guardrails (from the brief):**
-- 3D and heavy animation never ship in the initial bundle.
-- Every scene has a designed poster image. The poster shows on low-end devices, when WebGL2 is missing, with `prefers-reduced-motion`, and with Save-Data. 3D replaces it only on capable devices.
-- Rendering stops when the scene is off-screen.
-- All text, project data and contact details are ordinary HTML and never wait for a canvas or an animation.
-- Every asset is compressed (Draco or Meshopt geometry, KTX2 textures) and its size is recorded in this file.
-- Load time and frame timing are measured, not assumed (section 9).
+**Guardrails (from the brief):**
+- Heavy media never ships in the initial load; the video is requested only near its section.
+- All text, project data and contact details are ordinary HTML and never wait for a video or an animation.
+- Every asset is compressed and its size is recorded in this file.
+- Load time is measured, not assumed (section 9).
 
 Logo as a 3D object: not planned. If the design needs the logo large, trace `brand/LOGO_2.png` to SVG and show it to the owner before use.
 

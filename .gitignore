@@ -31,12 +31,12 @@ work_website_images/
 !public/logo.webp
 !public/logo-fill.webp
 !public/tex/**
-!public/posters/**
 !public/media/**
 !public/cnc/**
+!public/video/**
 
 # --- Tooling ---
-tools/posters/out/
+tools/fero-video/out/
 node_modules/
 dist/
 build/

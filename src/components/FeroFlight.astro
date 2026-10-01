@@ -1,46 +1,30 @@
 ---
-// Fero Works fly-through (design/Posters.dc.html P3). Five shots S1–S5, each also a finished poster (fw-s1…s5,
-// rendered from the real scene with the same camera). The HTML text is never in the canvas or a poster.
-//   3D (gate passes): pinned 500vh desktop / 400vh mobile; the canvas (fero.ts) over the posters.
-//   Low-end (gate fails): pinned 400vh; the five posters crossfade over 0.06 of progress at each boundary. No 3D.
-//   Reduced motion, and no JS: no pin; the five posters stack as 100svh frames, each with its own text state.
-// Text states: full (eyebrow + h2 + line), docked (small title, top-left), docked + line. Scrubbed FLIP between
-// them at P3's progress points. The pin then releases straight into the Scroll Stack (the rising copy of plate 01
-// was dropped: it showed plate 01 twice).
-const shots = [
-  { n: 1, alt: 'Above a cloud deck at dusk, a saffron band on the horizon and one small far peak' },
-  { n: 2, alt: 'Descending through the clouds, saffron light diffused below' },
-  { n: 3, alt: 'Gliding low over rocky ridges in fog, a faint glow on the far horizon' },
-  { n: 4, alt: 'Rounding the last ridge: the artificial mountain, its arched cave mouth lit from inside' },
-  { n: 5, alt: 'Inside the cave mouth: a white-stone Nagara shikhara lit in saffron, framed by the arch' },
-];
-const land = (n: number) => `/posters/fw-s${n}-1200.avif 1200w, /posters/fw-s${n}.avif 2400w`;
-const port = (n: number) => `/posters/fw-s${n}-m-540.avif 540w, /posters/fw-s${n}-m.avif 1080w`;
+// Fero Works fly-through (design/Posters.dc.html P3): a pre-rendered 8 s video (tools/fero-video/render.mjs), the P3
+// camera from above the cloud deck down over the ridges into the cave mouth. Desktop 1920×1080 and portrait 1080×1920,
+// each as VP9 WebM and H.264 MP4, picked by orientation; the final frame is the poster. Text is HTML, never in the video.
+//   Motion: the video loads when the section comes within a screen (preload none, so never part of the first load),
+//   plays once when 60% visible, pauses when scrolled away and resumes; at the end it keeps the last frame, Replay.
+//   Reduced motion or Save-Data: the final-frame poster and a Play button; nothing loads until it's pressed.
+//   play() rejected: the same poster and Play button. No JS: the poster, with the full title.
+// Text states (full → docked → docked + line) follow video.currentTime at P3's progress points (t / 8 s).
 const line = 'An artificial mountain, built around the temple it holds.';
-// Text state of each frame when the posters stack (reduced motion). Frame 1 carries the real heading.
-const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3: 'docked', 4: 'docked-line', 5: 'full' };
+const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Nagara temple lit in saffron';
 ---
 <div data-fly class="fly relative">
-  <div data-scene="fero" class="fly-stage">
-    {shots.map((s) => (
-      <div class="fly-frame" data-frame={s.n}>
-        <picture>
-          <source media="(orientation: landscape)" type="image/avif" srcset={land(s.n)} sizes="100vw" width="2400" height="1350" />
-          <source type="image/avif" srcset={port(s.n)} sizes="100vw" width="1080" height="1920" />
-          <img src={`/posters/fw-s${s.n}-1200.webp`} alt={s.alt} width="2400" height="1350" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
-        </picture>
-        {copy[s.n] && (
-          <div class="fly-copy wrap absolute inset-x-0 top-0 pt-24 lg:pt-32" aria-hidden="true">
-            <p class="eyebrow text-sky">Line of work 03 / 03</p>
-            {copy[s.n] === 'full'
-              ? <p class={`mt-5 font-display text-h2 text-sand lg:mt-6 ${s.n === 5 ? 'max-lg:text-[28px] max-lg:leading-none max-lg:mt-2' : ''}`}>Fero Works</p>
-              : <p class="mt-2 font-display text-[28px] leading-none text-sand lg:text-[32px]">Fero Works</p>}
-            {copy[s.n] !== 'docked' && <p class="mt-3 max-w-[26rem] text-body text-sand lg:mt-4">{line}</p>}
-          </div>
-        )}
-      </div>
-    ))}
-    <!-- A night scrim over the top 38% (S2 fog, and S4–S5 cave glow), so sand text keeps 4.5:1. -->
+  <div class="fly-stage relative h-[100svh] min-h-[560px] overflow-hidden">
+    <picture class="fly-poster">
+      <source media="(orientation: portrait)" type="image/avif" srcset="/video/fero-mobile-poster.avif" />
+      <source media="(orientation: portrait)" type="image/webp" srcset="/video/fero-mobile-poster.webp" />
+      <source type="image/avif" srcset="/video/fero-desktop-poster.avif" />
+      <img src="/video/fero-desktop-poster.webp" alt={alt} width="1920" height="1080" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
+    </picture>
+    <video class="fly-video absolute inset-0 h-full w-full object-cover" muted playsinline preload="none" disablepictureinpicture aria-hidden="true">
+      <source media="(orientation: portrait)" src="/video/fero-mobile.webm" type="video/webm" />
+      <source media="(orientation: portrait)" src="/video/fero-mobile.mp4" type="video/mp4" />
+      <source src="/video/fero-desktop.webm" type="video/webm" />
+      <source src="/video/fero-desktop.mp4" type="video/mp4" />
+    </video>
+    <!-- A night scrim over the top 38% (the fog, and the cave glow at the end), so sand text keeps 4.5:1. -->
     <div class="fly-scrim pointer-events-none absolute inset-x-0 top-0 h-[38%] bg-gradient-to-b from-night to-transparent" aria-hidden="true"></div>
 
     <div class="fly-text wrap absolute inset-x-0 top-0 pt-24 lg:pt-32">
@@ -49,76 +33,114 @@ const copy: Record<number, 'docked' | 'docked-line' | 'full'> = { 2: 'docked', 3
       <p class="fly-line inset-x-5 max-w-[26rem] text-body text-sand md:inset-x-10 lg:inset-x-12 xl:inset-x-20">{line}</p>
     </div>
 
+    <button type="button" class="fly-btn" hidden>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path class="i-play" d="M4 2.5v9l7-4.5z" /><path class="i-replay" d="M2.5 7a4.5 4.5 0 1 0 1.3-3.2M2.5 1.5v2.8h2.8" />
+      </svg>
+      <span>Play</span>
+    </button>
   </div>
 </div>
 
 <script>
-  import { gate } from '../scripts/scene3d';
   const fly = document.querySelector<HTMLElement>('[data-fly]');
-  const stage = fly?.querySelector<HTMLElement>('[data-scene="fero"]');
-  if (fly && stage && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    if (!gate()) fly.dataset.low = '';                    // low-end: pinned 400vh, posters crossfade, no 3D
-    const desk = matchMedia('(min-width: 1024px)');
-    const frames = [...stage.querySelectorAll<HTMLElement>('[data-frame]')];
+  if (fly) {
+    const stage = fly.querySelector<HTMLElement>('.fly-stage')!;
+    const video = fly.querySelector<HTMLVideoElement>('video')!;
+    const btn = fly.querySelector<HTMLButtonElement>('.fly-btn')!;
     const text = stage.querySelector<HTMLElement>('.fly-text')!, h2 = text.querySelector<HTMLElement>('.fly-h2')!;
+    const desk = matchMedia('(min-width: 1024px)');
+    const DUR = 8;
     const clamp = (x: number) => Math.min(1, Math.max(0, x));
     const smooth = (a: number, b: number, x: number) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
     const inOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);  // power2.inOut (quad)
-    const EDGES = [0.11, 0.335, 0.585, 0.8];                                         // poster crossfades, 0.06 each
-    let full = 1, dockTop = 0, fullTop = 0;
+    let full = 1, dockTop = 0, p = 0;
     const measure = () => {
       full = parseFloat(getComputedStyle(h2).fontSize);
       text.style.setProperty('--h2h', `${h2.offsetHeight}px`);
       text.style.setProperty('--h2y', `${h2.offsetTop}px`);
       dockTop = (desk.matches ? 88 : 64) + 16 - parseFloat(getComputedStyle(text).paddingTop);
-      fullTop = 0;
     };
-    const apply = (p: number) => {
+    const apply = (x: number) => {
+      p = x;
       // Title: full → docked 0.10–0.18; desktop back to full 0.82–0.88 (mobile stays docked).
-      let dock = inOut(clamp((p - 0.1) / 0.08));
-      if (desk.matches) dock -= inOut(clamp((p - 0.82) / 0.06));
-      const s = 1 + ((desk.matches ? 32 : 28) / full - 1) * dock;
-      text.style.setProperty('--ty', `${fullTop + (dockTop - fullTop) * dock}px`);
-      text.style.setProperty('--s', String(s));
+      let dock = inOut(clamp((x - 0.1) / 0.08));
+      if (desk.matches) dock -= inOut(clamp((x - 0.82) / 0.06));
+      text.style.setProperty('--ty', `${dockTop * dock}px`);
+      text.style.setProperty('--s', String(1 + ((desk.matches ? 32 : 28) / full - 1) * dock));
       // The line: out 0.06–0.12, back in under the docked title 0.66–0.72.
-      text.style.setProperty('--lo', String(clamp(1 - smooth(0.06, 0.12, p) + smooth(0.66, 0.72, p))));
-      // Night scrim over the top 38%: in S2 (over fog) and from the reveal on (over the cave glow), so text stays on night.
-      stage.style.setProperty('--scrim', String(Math.max(smooth(0.1, 0.18, p) * (1 - smooth(0.4, 0.5, p)), smooth(0.62, 0.72, p))));
-      // Posters (low-end, and until the canvas is live): each fades in over the one before at its boundary.
-      frames.forEach((f, i) => { f.style.opacity = i === 0 ? '1' : String(smooth(EDGES[i - 1] - 0.03, EDGES[i - 1] + 0.03, p)); });
+      text.style.setProperty('--lo', String(clamp(1 - smooth(0.06, 0.12, x) + smooth(0.66, 0.72, x))));
+      // Night scrim over the top 38%: in the fog (S2) and from the reveal on, so the text stays on night.
+      stage.style.setProperty('--scrim', String(Math.max(smooth(0.1, 0.18, x) * (1 - smooth(0.4, 0.5, x)), smooth(0.62, 0.72, x))));
     };
-    const raw = () => { const r = fly.getBoundingClientRect(); return clamp(-r.top / Math.max(1, r.height - innerHeight)); };
-    let driven = false, queued = false;
-    stage.addEventListener('fly:progress', (e) => { driven = true; apply((e as CustomEvent<number>).detail); });
-    addEventListener('scroll', () => { if (!driven && !queued) { queued = true; requestAnimationFrame(() => { queued = false; apply(raw()); }); } }, { passive: true });
-    const redo = () => { measure(); apply(raw()); };
+    const redo = () => { measure(); apply(p); };
     addEventListener('resize', redo); desk.addEventListener('change', redo);
     document.fonts?.ready.then(redo);
     redo();
+
+    // Text follows the video frame by frame while it plays.
+    const sync = () => {
+      apply(clamp(video.currentTime / DUR));
+      if (!video.paused && !video.ended) 'requestVideoFrameCallback' in video ? video.requestVideoFrameCallback(sync) : requestAnimationFrame(sync);
+    };
+    const button = (label: 'Play' | 'Replay' | null) => {
+      btn.hidden = !label;
+      if (label) { btn.querySelector('span')!.textContent = label; btn.dataset.kind = label.toLowerCase(); }
+    };
+    const posterUrl = () => `/video/fero-${matchMedia('(orientation: portrait)').matches ? 'mobile' : 'desktop'}-poster.webp`;
+    const still = () => { stage.classList.add('fly-still'); video.poster = posterUrl(); apply(1); button('Play'); };
+    const load = () => { if (video.preload !== 'auto') { video.preload = 'auto'; video.load(); } };
+    const play = () => video.play().catch(() => { if (video.paused) still(); });
+
+    video.addEventListener('playing', () => { stage.classList.remove('fly-still'); stage.classList.add('fly-live'); button(null); sync(); });
+    video.addEventListener('ended', () => { apply(1); button('Replay'); });
+    btn.addEventListener('click', () => {
+      load();
+      if (video.ended) video.currentTime = 0;
+      play();
+    });
+
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || nav.connection?.saveData) still();
+    else {
+      stage.classList.add('fly-motion');
+      apply(0);
+      // Load within a screen of the section; play at 60% visible, pause below 20%, resume at 60%.
+      const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); load(); } }, { rootMargin: '100% 0px' });
+      near.observe(stage);
+      new IntersectionObserver(([e]) => {
+        if (e.intersectionRatio >= 0.6) { if (!video.ended && btn.hidden) { load(); play(); } }
+        else if (e.intersectionRatio < 0.2 && !video.paused) video.pause();
+      }, { threshold: [0, 0.2, 0.6] }).observe(stage);
+    }
   }
 </script>
 
 <style>
-  /* Stacked (no JS, reduced motion): five 100svh frames, each with its own text state. */
-  .fly-frame { position: relative; height: 100svh; overflow: hidden; }
   .fly-text { z-index: 2; }
   .fly-line { margin-top: 0.75rem; }
-  .fly-scrim { display: none; }
-  .fly-copy { z-index: 2; }
-
-  /* Pinned (JS, motion allowed): 500vh desktop / 400vh mobile and low-end, plus the 100vh stage itself. */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .fly { height: 600svh; }
-    :global(.js) .fly[data-low] { height: 500svh; }
-    @media (max-width: 1023px) { :global(.js) .fly { height: 500svh; } }
-    :global(.js) .fly-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
-    :global(.js) .fly-frame { position: absolute; inset: 0; height: auto; opacity: 0; }
-    :global(.js) .fly-frame[data-frame='4'] { opacity: 1; }                /* first paint: S4 */
-    :global(.js) .fly-copy { display: none; }
-    :global(.js) [data-3d-live] .fly-frame { opacity: 0 !important; }      /* the canvas is on top */
-    :global(.js) .fly-text { transform: translateY(var(--ty, 0px)); }
-    :global(.js) .fly-h2 { transform: scale(var(--s, 1)); }
-    :global(.js) .fly-line { position: absolute; margin: 0; top: calc(var(--h2y, 0px) + var(--h2h, 0px) * var(--s, 1) + 16px); opacity: var(--lo, 1); }
-    :global(.js) .fly-scrim { display: block; z-index: 1; opacity: var(--scrim, 0); }
+  .fly-scrim { z-index: 1; opacity: 0; }
+  .fly-video { opacity: 0; transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1); }
+  /* Motion: night until the video's first frame is up (it shows frame 0 once loaded), then the video. */
+  :global(.js) .fly-motion:not(.fly-still) .fly-poster { display: none; }
+  :global(.js) .fly-motion:not(.fly-still) .fly-video, .fly-live .fly-video { opacity: 1; }
+  /* Still (reduced motion, Save-Data, or play() refused): the final-frame poster until Play; .fly-live once playing. */
+  /* With JS the text follows the video (--ty, --s, --lo, --scrim from the script). */
+  :global(.js) .fly-text { transform: translateY(var(--ty, 0px)); }
+  :global(.js) .fly-h2 { transform: scale(var(--s, 1)); }
+  :global(.js) .fly-line { position: absolute; margin: 0; top: calc(var(--h2y, 0px) + var(--h2h, 0px) * var(--s, 1) + 16px); opacity: var(--lo, 1); }
+  :global(.js) .fly-scrim { opacity: var(--scrim, 0); }
+  .fly-btn {
+    position: absolute; right: 20px; bottom: 20px; z-index: 3; display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+    padding: 0 16px; border: 1px solid #F4EFE6; background: rgb(14 14 31 / 0.6); color: #F4EFE6;
+    font: 500 12px/1 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: 0.06em; text-transform: uppercase;
+    transition: background-color 150ms ease, color 150ms ease;
   }
+  .fly-btn[hidden] { display: none; }
+  .fly-btn:hover { background: #F4EFE6; color: #0E0E1F; }
+  .fly-btn:focus-visible { outline: 2px solid #CD8841; outline-offset: 2px; }
+  .fly-btn .i-replay, .fly-btn[data-kind='replay'] .i-play { display: none; }
+  .fly-btn[data-kind='replay'] .i-replay { display: inline; }
+  @media (min-width: 1024px) { .fly-btn { right: 48px; bottom: 32px; } }
+  @media (min-width: 1280px) { .fly-btn { right: 80px; } }
 </style>
