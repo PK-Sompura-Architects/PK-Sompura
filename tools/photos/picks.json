@@ -1,165 +1,5 @@
 {
  "_note": "Phase 4 photo picks. src is relative to D:\\projects\\ALBUM-IMAGES (read-only, never committed). crop = [left, top, right, bottom] as fractions of the upright image; rotate = degrees counter-clockwise, applied after the crop. Crops remove the orange date stamps (NIKON), the REDMI watermark, a small PK mark, and people at the edges.",
- "adpur-dheti-pag": {
-  "src": "OUR WORK PHOTO/upload/adpur gheti pag-1.JPG",
-  "crop": [
-   0,
-   0,
-   1,
-   0.93
-  ],
-  "alt": "Adpur Dheti Pag: a white marble derasar with a tall carved shikhara, seen from above"
- },
- "bhamriya": {
-  "src": "OUR WORK PHOTO/BHAMRIYA/IMG-20230421-WA0017.jpg",
-  "crop": [
-   0,
-   0,
-   1,
-   0.94
-  ],
-  "alt": "Bhamriya: the white stone shikhara rising in scaffolding"
- },
- "digambar-jain-derasar": {
-  "src": "OUR WORK PHOTO/upload/DJD-baroda-2.jpg",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Digambar Jain Derasar, Baroda: a carved sandstone facade and stair"
- },
- "gelmata": {
-  "src": "Gelmata Rajkot/WhatsApp Image 2026-04-16 at 6.33.51 PM.jpeg",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Gelmata, Rajkot: a white temple and its shikhara across a paved court"
- },
- "hastgiri": {
-  "src": "OUR WORK PHOTO/upload/GN1.JPG",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Hastgiri: three pink sandstone shikharas above a hillside"
- },
- "jambudip": {
-  "src": "OUR WORK PHOTO/upload/jambudeep-2.JPG",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Jambudip: a domed sandstone temple under a blue sky"
- },
- "kachhi-bhavan-junagadh": {
-  "src": "OUR WORK PHOTO/upload/KBJ-1.jpg",
-  "crop": [
-   0,
-   0,
-   0.86,
-   1
-  ],
-  "alt": "Kachhi Bhavan, Junagadh: a white marble temple with twin shikharas"
- },
- "kachhi-bhavan-palitana": {
-  "src": "OUR WORK PHOTO/upload/DSCF5664.JPG",
-  "crop": [
-   0,
-   0,
-   0.72,
-   1
-  ],
-  "alt": "Kachhi Bhavan, Palitana: a carved sandstone temple and its shikhara"
- },
- "liliya": {
-  "src": "OUR WORK PHOTO/LILIYA/20140925_142309.jpg",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Liliya: a stone shikhara nearing completion"
- },
- "mota-derasar": {
-  "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/DSC_0171.jpg",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Mota Derasar, Tharad: a white stone wall of carved bands and niches"
- },
- "osval": {
-  "src": "OUR WORK PHOTO/OSVAL PALITANA/DSCF5634.JPG",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Osval, Palitana: a carved temple with a pink dome and white mandapa"
- },
- "rampara": {
-  "src": "OUR WORK PHOTO/RAMAPARA/20200316_122339.jpg",
-  "crop": [
-   0,
-   0,
-   0.88,
-   1
-  ],
-  "alt": "Rampara: twin sandstone shikharas above a carved mandapa"
- },
- "rrd": {
-  "src": "OUR WORK PHOTO/1 (20).JPG",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "RRD, Limbdi: a long sandstone temple with its shikharas in scaffolding"
- },
- "songadh": {
-  "src": "OUR WORK PHOTO/SONGHATH/20140909_183322.jpg",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Songadh: a white gateway with red arches"
- },
- "varkhadi": {
-  "src": "OUR WORK PHOTO/VARKHADI THARAD/DSC_0108.JPG",
-  "crop": [
-   0,
-   0,
-   1,
-   1
-  ],
-  "alt": "Varkhadi, Tharad: the rock shell of an artificial mountain around white shrines"
- },
- "vaishno-devi-gulbarga": {
-  "src": "OUR WORK PHOTO/GULBARGA/IMG_20180620_173731.jpg",
-  "crop": [
-   0,
-   0,
-   0.66,
-   1
-  ],
-  "alt": "Vaishno Devi, Gulbarga: the red rock mountain and its white shrines in evening light"
- },
  "stone-sandstone": {
   "src": "OUR WORK PHOTO/HASTGIRI/DSCF5590.JPG",
   "crop": [
@@ -282,8 +122,688 @@
   ],
   "alt": "The machine hall of the workshop in Palitana"
  },
- "vaishno-devi-ahmedabad": {
+ "adpur-dheti-pag--1": {
+  "src": "OUR WORK PHOTO/upload/adpur gheti pag-2.JPG",
+  "alt": "Inside Adpur Dheti Pag: white marble walls with carved niches and seated figures around the sanctum doorway, over an inlaid marble floor"
+ },
+ "asha-life-mission--1": {
+  "src": "Asha life mission/IMG-20230224-WA0015.jpg",
+  "alt": "Asha Life Mission at dusk: a white marble temple with its shikhara, mandapa and courtyard wall"
+ },
+ "asha-life-mission--2": {
+  "src": "OUR WORK PHOTO/upload/asha-2.jpg",
+  "alt": "The temple seen from its entrance path, a white marble shikhara over a pillared porch on a stepped plinth",
+  "max": 1600
+ },
+ "asha-life-mission--3": {
+  "src": "Asha life mission/IMG-20230226-WA0003.jpg",
+  "alt": "A carved marble gateway with lions on its crown, lit by the evening sun",
+  "crop": [
+   0,
+   0,
+   1,
+   0.86
+  ],
+  "max": 1600
+ },
+ "asha-life-mission--4": {
+  "src": "OUR WORK PHOTO/LIFE MISSION ASHA/IMG_20230224_112500.jpg",
+  "alt": "A carved white marble shrine niche",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ],
+  "max": 1600
+ },
+ "asha-life-mission--5": {
+  "src": "OUR WORK PHOTO/LIFE MISSION ASHA/IMG_20230224_112552.jpg",
+  "alt": "Looking up into a carved marble dome",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ],
+  "max": 1600
+ },
+ "asha-life-mission--6": {
+  "src": "OUR WORK PHOTO/LIFE MISSION ASHA/IMG_20230104_161552.jpg",
+  "alt": "The shikhara in scaffolding while the temple was being built",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ],
+  "max": 1600
+ },
+ "bhamriya--1": {
+  "src": "OUR WORK PHOTO/BHAMRIYA/IMG-20240307-WA0000.jpg",
+  "alt": "Bhamriya: a white marble temple above a double flight of steps, its shikhara behind the pillared porch"
+ },
+ "bhamriya--2": {
+  "src": "OUR WORK PHOTO/BHAMRIYA/IMG-20230421-WA0008.jpg",
+  "alt": "A white marble dome carved in rings of petals",
+  "crop": [
+   0,
+   0,
+   0.86,
+   1
+  ],
+  "max": 1600
+ },
+ "bhamriya--3": {
+  "src": "OUR WORK PHOTO/BHAMRIYA/IMG_20221215_110300.jpg",
+  "alt": "Looking up through a carved marble dome to the sky",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ],
+  "max": 1600
+ },
+ "bhamriya--4": {
+  "src": "OUR WORK PHOTO/BHAMRIYA/IMG-20230421-WA0017.jpg",
+  "alt": "The shikhara in scaffolding, a crane beside it",
+  "crop": [
+   0,
+   0,
+   1,
+   0.92
+  ],
+  "max": 1600
+ },
+ "devilaya--1": {
+  "src": "DEVILAYA/IMG_20190612_114304.jpg",
+  "alt": "Devilaya: a sandstone porch of carved columns and scalloped arches"
+ },
+ "devilaya--2": {
+  "src": "DEVILAYA/IMG_20190612_115357.jpg",
+  "alt": "The sandstone shikhara rising behind the porch",
+  "max": 1600
+ },
+ "devilaya--3": {
+  "src": "DEVILAYA/IMG_20190612_105512.jpg",
+  "alt": "Inside the porch: a carved dome over a ring of arches",
+  "max": 1600
+ },
+ "devilaya--4": {
+  "src": "DEVILAYA/IMG_20190612_105515.jpg",
+  "alt": "A carved sandstone dome, its rings of petals closing to a pendant",
+  "max": 1600
+ },
+ "digambar-jain-derasar--1": {
+  "src": "OUR WORK PHOTO/upload/DJD-baroda-2.jpg",
+  "alt": "Digambar Jain Derasar, Baroda: a carved sandstone facade and stair, with stone elephants at its foot"
+ },
+ "digambar-jain-derasar--2": {
+  "src": "OUR WORK PHOTO/upload/DJD-baroda-1.jpg",
+  "alt": "The derasar from the front: a carved sandstone facade, side stair and shikhara",
+  "max": 1600
+ },
+ "digambar-jain-derasar--3": {
+  "src": "DIGAMABAR JAIN DERASAR BARODA/DSCN0307.jpg",
+  "alt": "A carved sandstone figure panel beside a doorway",
+  "max": 1600
+ },
+ "digambar-jain-derasar--4": {
+  "src": "DIGAMABAR JAIN DERASAR BARODA/DSCN0324.jpg",
+  "alt": "A brass door set in a carved sandstone frame with figure panels",
+  "max": 1600
+ },
+ "digambar-jain-derasar--5": {
+  "src": "OUR WORK PHOTO/DIGAMABAR JAIN DERASAR BARODA/DSCN0335.jpg",
+  "alt": "Inside: the sanctum doorway in silver, framed by carved stone pillars",
+  "max": 1600
+ },
+ "digambar-jain-derasar--6": {
+  "src": "DIGAMABAR JAIN DERASAR BARODA/DSCN0311.jpg",
+  "alt": "A carved sandstone balcony with pierced railings",
+  "max": 1600
+ },
+ "digambar-jain-derasar--7": {
+  "src": "OUR WORK PHOTO/upload/DJD-baroda-4.jpg",
+  "alt": "Carved sandstone garlands and pendants, a detail of the facade",
+  "max": 1600
+ },
+ "digambar-jain-derasar--8": {
+  "src": "OUR WORK PHOTO/DIGAMABAR JAIN DERASAR BARODA/DSCN0329.jpg",
+  "alt": "The shikhara in scaffolding during construction",
+  "max": 1600
+ },
+ "digambar-jain-derasar--9": {
+  "src": "OUR WORK PHOTO/DIGAMABAR JAIN DERASAR BARODA/DSCN0302.jpg",
+  "alt": "The shikhara rising in scaffolding above the carved walls",
+  "max": 1600
+ },
+ "dhola--1": {
+  "src": "OUR WORK PHOTO/DHOLA/20161110_130205.jpg",
+  "alt": "Dhola: three white marble shikharas against a blue sky"
+ },
+ "dhola--2": {
+  "src": "OUR WORK PHOTO/DHOLA/20161110_131051.jpg",
+  "alt": "The derasar from the side: white marble shikharas over an arched, pillared mandapa",
+  "max": 1600
+ },
+ "dhola--3": {
+  "src": "Dhola/20161020_164919.jpg",
+  "alt": "Inside: a carved marble dome above arches and a shrine",
+  "max": 1600
+ },
+ "dhola--4": {
+  "src": "OUR WORK PHOTO/DHOLA/20140802_171539.jpg",
+  "alt": "A white marble ceiling panel carved with flowers",
+  "max": 1600
+ },
+ "dhola--5": {
+  "src": "OUR WORK PHOTO/DHOLA/20140802_171038.jpg",
+  "alt": "The marble walls in scaffolding while the derasar was being built",
+  "max": 1600
+ },
+ "gelmata--1": {
+  "src": "Gelmata Rajkot/WhatsApp Image 2026-04-16 at 6.33.51 PM.jpeg",
+  "alt": "Gelmata, Rajkot: a white temple and its shikhara across a paved court"
+ },
+ "gelmata--2": {
+  "src": "Gelmata Rajkot/WhatsApp Image 2026-04-16 at 6.33.52 PM.jpeg",
+  "alt": "The temple from the side: a domed mandapa and a tall white shikhara",
+  "max": 1600
+ },
+ "gelmata--3": {
+  "src": "Gelmata Rajkot/WhatsApp Image 2026-04-16 at 6.33.53 PM.jpeg",
+  "alt": "The temple from the far end of its court",
+  "max": 1600
+ },
+ "gelmata--4": {
+  "src": "Gelmata Rajkot/IMG-20170818-WA0013.jpg",
+  "alt": "The front of the temple, a stair up to its pillared entrance",
+  "max": 1600
+ },
+ "vaishno-devi-gulbarga--1": {
+  "src": "IMG_20180620_173801.jpg",
+  "alt": "Vaishno Devi, Gulbarga: the red rock mountain and its white shrines in evening light"
+ },
+ "vaishno-devi-gulbarga--2": {
+  "src": "Gulbarga/IMG-20180619-WA0016.jpg",
+  "alt": "The mountain and its shrines in low sun",
+  "max": 1600
+ },
+ "vaishno-devi-gulbarga--3": {
+  "src": "OUR WORK PHOTO/GULBARGA/IMG-20160303-WA0003.jpg",
+  "alt": "Steel reinforcement laid for the foundation",
+  "max": 1600
+ },
+ "vaishno-devi-gulbarga--4": {
+  "src": "OUR WORK PHOTO/GULBARGA/IMG-20160501-WA0016.jpg",
+  "alt": "The stone walls and columns of the core rising",
+  "max": 1600
+ },
+ "vaishno-devi-gulbarga--5": {
+  "src": "OUR WORK PHOTO/GULBARGA/IMG-20160503-WA0004.jpg",
+  "alt": "Curved stone walls of the rock shell taking shape",
+  "max": 1600
+ },
+ "hastgiri--1": {
+  "src": "OUR WORK PHOTO/upload/GN1.JPG",
+  "alt": "Hastgiri: three pink sandstone shikharas above a hillside"
+ },
+ "hastgiri--2": {
+  "src": "Hastgiri/GN2.JPG",
+  "alt": "A pink sandstone temple at the top of a long marble stair",
+  "crop": [
+   0.1,
+   0,
+   1,
+   1
+  ],
+  "max": 1600
+ },
+ "hastgiri--3": {
+  "src": "OUR WORK PHOTO/upload/DK2.JPG",
+  "alt": "A sandstone shikhara and dome against a cloudy sky",
+  "max": 1600
+ },
+ "hastgiri--4": {
+  "src": "OUR WORK PHOTO/upload/44S2.JPG",
+  "alt": "White shikharas seen from above, the hills beyond",
+  "max": 1600
+ },
+ "hastgiri--5": {
+  "src": "OUR WORK PHOTO/HASTGIRI/DSCF5562.JPG",
+  "alt": "A sandstone dome carved ring within ring",
+  "max": 1600
+ },
+ "jaliya--1": {
+  "src": "JALIYA/IMG_20220425_165659.jpg",
+  "alt": "Jaliya: a sandstone shikhara and pillared mandapa above a paved court",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ]
+ },
+ "jaliya--2": {
+  "src": "OUR WORK PHOTO/JALIYA/IMG-20220428-WA0004.jpg",
+  "alt": "The mandapa from the side, steps up to its carved columns",
+  "max": 1600
+ },
+ "jaliya--3": {
+  "src": "JALIYA/IMG-20220311-WA0022.jpg",
+  "alt": "The sandstone plinth carved with rows of rosettes",
+  "max": 1600
+ },
+ "jambudip--1": {
+  "src": "OUR WORK PHOTO/upload/jambudeep-2.JPG",
+  "alt": "Jambudip: a domed sandstone temple with carved niches in its walls"
+ },
+ "kachhi-bhavan-junagadh--1": {
+  "src": "OUR WORK PHOTO/upload/KBJ-1.jpg",
+  "alt": "Kachhi Bhavan, Junagadh: a white marble temple with twin shikharas",
+  "crop": [
+   0,
+   0,
+   0.86,
+   1
+  ]
+ },
+ "kachhi-bhavan-junagadh--2": {
+  "src": "OUR WORK PHOTO/upload/KBJ-2.jpg",
+  "alt": "The twin shikharas from the side",
+  "max": 1600
+ },
+ "kachhi-bhavan-junagadh--3": {
+  "src": "KACHHI BHAVAN JUNAGHATH/20140613_170218.jpg",
+  "alt": "The white marble porch and its carved columns",
+  "crop": [
+   0,
+   0,
+   0.85,
+   1
+  ],
+  "max": 1600
+ },
+ "kachhi-bhavan-palitana--1": {
+  "src": "OUR WORK PHOTO/upload/DSCF5664.JPG",
+  "alt": "Kachhi Bhavan, Palitana: a carved sandstone temple and its shikhara",
+  "crop": [
+   0,
+   0,
+   0.72,
+   1
+  ]
+ },
+ "kachhi-bhavan-palitana--2": {
+  "src": "OUR WORK PHOTO/upload/DSCF5656.JPG",
+  "alt": "A carved sandstone gateway at the top of a stair",
+  "max": 1600
+ },
+ "kachhi-bhavan-palitana--3": {
+  "src": "OUR WORK PHOTO/upload/DSCF5663.JPG",
+  "alt": "Carved sandstone figure panels on the temple wall",
+  "max": 1600
+ },
+ "kachhi-bhavan-palitana--4": {
+  "src": "OUR WORK PHOTO/upload/DSCF5675.JPG",
+  "alt": "A sandstone ceiling carved in a geometric pattern",
+  "max": 1600
+ },
+ "khajuri--1": {
+  "src": "KHAJURI/IMG-20230502-WA0023.jpg",
+  "alt": "Khajuri: a sandstone shikhara above a small porch"
+ },
+ "khajuri--2": {
+  "src": "KHAJURI/IMG-20230502-WA0017.jpg",
+  "alt": "The temple from the side, the shikhara and porch",
+  "max": 1600
+ },
+ "khajuri--3": {
+  "src": "KHAJURI/IMG-20230428-WA0026.jpg",
+  "alt": "A carved sandstone ceiling above a doorway",
+  "max": 1600
+ },
+ "kotadi--1": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0605.jpg",
+  "alt": "Kotadi: three pink sandstone shikharas above a wide stair with stone elephants"
+ },
+ "kotadi--2": {
+  "src": "Kotadi/DSCN0609.jpg",
+  "alt": "The carved sandstone gateway to the derasar",
+  "max": 1600
+ },
+ "kotadi--3": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0617.jpg",
+  "alt": "The shikharas from across the paved terrace",
+  "max": 1600
+ },
+ "kotadi--4": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0610.jpg",
+  "alt": "A carved wooden door in a sandstone frame",
+  "max": 1600
+ },
+ "kotadi--5": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0624.jpg",
+  "alt": "A carved sandstone figure in a niche",
+  "max": 1600
+ },
+ "kotadi--6": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0654.jpg",
+  "alt": "A carved dome above a crystal chandelier",
+  "max": 1600
+ },
+ "kotadi--7": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0613.jpg",
+  "alt": "A sandstone ceiling carved with a large flower",
+  "max": 1600
+ },
+ "kotadi--8": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0651.jpg",
+  "alt": "An inlaid marble floor with flowers in coloured stone",
+  "max": 1600
+ },
+ "kotadi--9": {
+  "src": "OUR WORK PHOTO/KOTADI/DSCN0626.jpg",
+  "alt": "Carved sandstone columns and wall panels",
+  "max": 1600
+ },
+ "liliya--1": {
+  "src": "Liliya/IMG-20210703-WA0010.jpg",
+  "alt": "Liliya: a sandstone shikhara and domed mandapa behind a garden"
+ },
+ "liliya--2": {
+  "src": "Liliya/IMG-20210703-WA0011.jpg",
+  "alt": "The main shikhara between two smaller ones",
+  "max": 1600
+ },
+ "liliya--3": {
+  "src": "OUR WORK PHOTO/IMG-20210703-WA0014.jpg",
+  "alt": "Steps up to the pillared entrance",
+  "max": 1600
+ },
+ "liliya--4": {
+  "src": "OUR WORK PHOTO/LILIYA/IMG-20210702-WA0004.jpg",
+  "alt": "Inside a carved sandstone dome",
+  "max": 1600
+ },
+ "liliya--5": {
+  "src": "OUR WORK PHOTO/LILIYA/20140925_142309.jpg",
+  "alt": "The shikhara nearing completion, stone blocks at its foot",
+  "max": 1600
+ },
+ "malav--1": {
+  "src": "Malav/WhatsApp Image 2026-05-12 at 11.01.27 AM.jpeg",
+  "alt": "Malav: a pink sandstone temple front, its entrance hung with garlands"
+ },
+ "malav--2": {
+  "src": "Malav/WhatsApp Image 2026-05-12 at 11.01.28 AM.jpeg",
+  "alt": "The entrance lit at dusk",
+  "max": 1600
+ },
+ "malav--3": {
+  "src": "Malav/WhatsApp Image 2026-05-12 at 11.01.29 AM.jpeg",
+  "alt": "The temple and its gateway lit at night",
+  "max": 1600
+ },
+ "malav--4": {
+  "src": "Malav/WhatsApp Image 2026-05-12 at 11.14.01 AM.jpeg",
+  "alt": "A sandstone dome carved in rings of petals",
+  "max": 1600
+ },
+ "mota-derasar--1": {
+  "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/D5.jpg",
+  "alt": "Mota Derasar, Tharad: a broad white marble stair up to a hall of carved pillars"
+ },
+ "mota-derasar--2": {
+  "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/D3 - Copy.jpg",
+  "alt": "A carved white marble panel of a figure in motion",
+  "max": 1600
+ },
+ "mota-derasar--3": {
+  "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/DSC_0171.jpg",
+  "alt": "The carved marble walls rising during construction",
+  "max": 1600
+ },
+ "mota-derasar--4": {
+  "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/DSCN0561.jpg",
+  "alt": "The shikharas in scaffolding during construction",
+  "crop": [
+   0,
+   0,
+   1,
+   0.88
+  ],
+  "max": 1600
+ },
+ "osval--1": {
+  "src": "OUR WORK PHOTO/OSVAL PALITANA/DSCF5634.JPG",
+  "alt": "Osval, Palitana: a carved temple with a stone dome and white mandapa"
+ },
+ "osval--2": {
+  "src": "OUR WORK PHOTO/OSVAL PALITANA/DSCF5639.jpg",
+  "alt": "The carved stone shikhara above white marble",
+  "max": 1600
+ },
+ "osval--3": {
+  "src": "OUR WORK PHOTO/OSVAL PALITANA/DSCF5638.jpg",
+  "alt": "A pierced white marble screen in a carved frame",
+  "max": 1600
+ },
+ "parvala--1": {
+  "src": "OUR WORK PHOTO/PARVALA/20160605_110058.jpg",
+  "alt": "Parvala: a sandstone temple with a stepped roof over a pillared porch",
+  "crop": [
+   0,
+   0,
+   0.84,
+   1
+  ]
+ },
+ "parvala--2": {
+  "src": "OUR WORK PHOTO/PARVALA/20160709_135620.jpg",
+  "alt": "A sandstone dome carved in rings",
+  "max": 1600
+ },
+ "rampara--1": {
+  "src": "Rampara/IMG-20220415-WA0000.jpg",
+  "alt": "Rampara: a sandstone temple with its shikharas above a broad stair and garden"
+ },
+ "rampara--2": {
+  "src": "Rampara/WhatsApp Image 2026-05-12 at 11.14.02 AM.jpeg",
+  "alt": "The temple and its tall flagpole under a cloudy sky",
+  "max": 1600
+ },
+ "rampara--3": {
+  "src": "Rampara/WhatsApp Image 2026-05-12 at 11.14.03 AM.jpeg",
+  "alt": "The temple across an open field at dusk",
+  "max": 1600
+ },
+ "rampara--4": {
+  "src": "OUR WORK PHOTO/RAMAPARA/20200316_122339.jpg",
+  "alt": "Twin sandstone shikharas above a carved mandapa",
+  "crop": [
+   0,
+   0,
+   0.84,
+   1
+  ],
+  "max": 1600
+ },
+ "rampara--5": {
+  "src": "Rampara/20161113_131507.jpg",
+  "alt": "A sandstone ceiling carved with a large rosette",
+  "max": 1600
+ },
+ "rampara--6": {
+  "src": "Rampara/20160302_104729.jpg",
+  "alt": "Sandstone carved with scrolls and flowers",
+  "max": 1600
+ },
+ "rampara--7": {
+  "src": "OUR WORK PHOTO/RAMAPARA/20170107_113027.jpg",
+  "alt": "A shikhara in scaffolding during construction",
+  "max": 1600
+ },
+ "rrd--1": {
+  "src": "OUR WORK PHOTO/RRD LIMDI/IMG_20240118_121834.jpg",
+  "alt": "RRD, Limbdi: a long sandstone temple with shikharas at either end",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ]
+ },
+ "rrd--2": {
+  "src": "IMG_20240118_122022.jpg",
+  "alt": "The front of the temple, a wide stair up to the mandapa",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ],
+  "max": 1600
+ },
+ "rrd--3": {
+  "src": "OUR WORK PHOTO/RRD LIMDI/IMG_20240118_134027.jpg",
+  "alt": "The temple from the side, its tallest shikhara at the left",
+  "crop": [
+   0,
+   0,
+   1,
+   0.93
+  ],
+  "max": 1600
+ },
+ "rrd--4": {
+  "src": "OUR WORK PHOTO/1 (8).JPG",
+  "alt": "A sandstone ceiling carved in squares of rosettes",
+  "max": 1600
+ },
+ "rrd--5": {
+  "src": "OUR WORK PHOTO/1 (20).JPG",
+  "alt": "The temple with its shikharas in scaffolding",
+  "max": 1600
+ },
+ "songadh--1": {
+  "src": "OUR WORK PHOTO/SONGHATH/20140909_183217.jpg",
+  "alt": "Songadh: a white gateway with red arches, the temple framed beyond it"
+ },
+ "songadh--2": {
+  "src": "OUR WORK PHOTO/SONGHATH/20140909_183245.jpg",
+  "alt": "The gateway and the path to the temple",
+  "max": 1600
+ },
+ "taleti--1": {
+  "src": "OUR WORK PHOTO/upload/DSCF5602.JPG",
+  "alt": "Taleti: a carved sandstone gateway at the top of a flight of steps",
+  "crop": [
+   0.12,
+   0,
+   1,
+   0.9
+  ]
+ },
+ "taleti--2": {
+  "src": "OUR WORK PHOTO/upload/DSCF5606.jpg",
+  "alt": "A sandstone figure carved in a niche of the gateway",
+  "crop": [
+   0,
+   0,
+   1,
+   0.84
+  ],
+  "max": 1600
+ },
+ "varkhadi--1": {
+  "src": "OUR WORK PHOTO/VARKHADI THARAD/IMG-20201108-WA0010.jpg",
+  "alt": "Varkhadi, Tharad: the carved stone entrance building"
+ },
+ "varkhadi--2": {
+  "src": "OUR WORK PHOTO/VARKHADI THARAD/IMG_20180425_091722.jpg",
+  "alt": "The artificial rock mountain, a stair climbing its side",
+  "max": 1600
+ },
+ "varkhadi--3": {
+  "src": "OUR WORK PHOTO/VARKHADI THARAD/V2.jpg",
+  "alt": "A white marble shrine inside the temple",
+  "max": 1600
+ },
+ "varkhadi--4": {
+  "src": "OUR WORK PHOTO/VARKHADI THARAD/V5.jpg",
+  "alt": "White marble shrine niches with seated figures",
+  "max": 1600
+ },
+ "varkhadi--5": {
+  "src": "OUR WORK PHOTO/VARKHADI THARAD/DSC_0108.JPG",
+  "alt": "The rock mountain under construction, shrines among the boulders",
+  "max": 1600
+ },
+ "varkhadi--6": {
+  "src": "OUR WORK PHOTO/VARKHADI THARAD/DSCN0497.jpg",
+  "alt": "The main temple in scaffolding",
+  "max": 1600
+ },
+ "vaishno-devi-ahmedabad--1": {
   "src": "vaishodevi ahmedabad/i3.webp",
   "alt": "Vaishno Devi, Ahmedabad: the finished artificial mountain in red and grey rock, its cave entrance and white shrines above a paved court"
+ },
+ "vaishno-devi-ahmedabad--2": {
+  "src": "vaishodevi ahmedabad/vaishno-devi-temple-ahmedabad.webp",
+  "alt": "The rock mountain from the front, a shrine on its slope",
+  "max": 1600
+ },
+ "vaishno-devi-ahmedabad--3": {
+  "src": "vaishodevi ahmedabad/i1.webp",
+  "alt": "The mountain and the temple court",
+  "max": 1600
+ },
+ "vaishno-devi-ahmedabad--4": {
+  "src": "vaishodevi ahmedabad/Vaishno-Devi-Temple.webp",
+  "alt": "The mountain temple from across the road",
+  "max": 1600
+ },
+ "adpur-dheti-pag--d1": {
+  "src": "OUR WORK PHOTO/upload/adpur gheti pag-2.JPG",
+  "alt": "Detail: the sanctum doorway, a carved frame around the dark stone idol",
+  "crop": [
+   0.36,
+   0.36,
+   0.66,
+   0.76
+  ]
+ },
+ "adpur-dheti-pag--d2": {
+  "src": "OUR WORK PHOTO/upload/adpur gheti pag-2.JPG",
+  "alt": "Detail: a carved white marble niche with a seated figure",
+  "crop": [
+   0.08,
+   0.33,
+   0.38,
+   0.73
+  ]
+ },
+ "jambudip--d1": {
+  "src": "OUR WORK PHOTO/upload/jambudeep-2.JPG",
+  "alt": "Detail: the domes, carved in overlapping petals, under the stepped roof",
+  "crop": [
+   0.36,
+   0.06,
+   0.66,
+   0.46
+  ]
+ },
+ "jambudip--d2": {
+  "src": "OUR WORK PHOTO/upload/jambudeep-2.JPG",
+  "alt": "Detail: a carved stone window screen beside a carved pillar",
+  "crop": [
+   0.56,
+   0.48,
+   0.86,
+   0.88
+  ]
  }
 }

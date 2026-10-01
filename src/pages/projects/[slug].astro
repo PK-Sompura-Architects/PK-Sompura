@@ -2,110 +2,138 @@
 import Base from '../../layouts/Base.astro';
 import PhotoFrame from '../../components/PhotoFrame.astro';
 import ScopeTag from '../../components/ScopeTag.astro';
-import TypeCard from '../../components/TypeCard.astro';
+import Lightbox from '../../components/Lightbox.astro';
 import { pad, placeFull, placeType, sortedProjects, type Project } from '../../lib/projects';
 import { contact } from '../../data/site';
-import { mediaSet } from '../../lib/media';
+import { mediaFull, mediaSet } from '../../lib/media';
 
 export async function getStaticPaths() {
   const all = await sortedProjects();
   // Prev / next follow the register's default order (place A–Z), not dates.
-  return all.map((project, i) => ({
-    params: { slug: project.id },
-    props: {
-      project,
-      prev: all[i - 1],
-      next: all[i + 1],
-      related: all.filter((o) => o.data.type === project.data.type && o.id !== project.id).slice(0, 3),
-    },
-  }));
+  return all.map((project, i) => {
+    const { type, place } = project.data;
+    // Related: same type first, then same place.
+    const others = all.filter((o) => o.id !== project.id);
+    const related = [
+      ...others.filter((o) => o.data.type === type),
+      ...others.filter((o) => o.data.type !== type && place && o.data.place === place),
+    ].slice(0, 3);
+    return { params: { slug: project.id }, props: { project, prev: all[i - 1], next: all[i + 1], related } };
+  });
 }
 
 interface Props { project: Project; prev?: Project; next?: Project; related: Project[] }
 const { project, prev, next, related } = Astro.props;
 const p = project.data;
-const [lead, second, ...rest] = p.photos;
-const three = rest.slice(0, 3);
-const wide = rest[3];
-const total = p.photos.length;
-const cap = (i: number, c?: string) => (total > 1 ? `${i} / ${total}${c ? ` · ${c}` : ''}` : c);
+// Every project in the register has at least one photo of the finished temple (the register rule, Phase 3).
+const finished = p.photos.filter((ph) => ph.src && !ph.construction);
+const building = p.photos.filter((ph) => ph.src && ph.construction);
+const [lead, ...more] = finished;
+// Layout by the number of finished photos: A 1 (detail crops), B 2–3 (stacked right), C 4+ (gallery below).
+const layout = finished.length === 1 ? 'A' : finished.length <= 3 ? 'B' : 'C';
+const details = layout === 'A' ? (p.details ?? []) : [];
+// Lightbox order: the photos as they appear on the page.
+const shown = [lead, ...details, ...more, ...building].filter((ph) => ph?.src) as { src: string; label: string }[];
+const lb = (src: string) => shown.findIndex((ph) => ph.src === src);
 // The lead photo is the page's LCP: preloaded with the same srcset and sizes the PhotoFrame below uses.
 const LEAD_SIZES = '(min-width: 1024px) 50vw, (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)'; // inside the page gutters
-const leadSet = lead && mediaSet(lead.src);
+const leadSet = mediaSet(lead.src);
+const place = placeFull(p);
 ---
 <Base title={`${p.name}${p.place && p.place !== p.name ? `, ${p.place}` : ''} · Temple Register · P.K. Sompura`} current="register"
   preload={leadSet ? { srcset: leadSet.avif, sizes: LEAD_SIZES } : undefined}
-  image={p.photos[0] ? `/og/projects/${project.id}.jpg` : undefined} imageAlt={p.photos[0] ? `${[p.name, placeFull(p)].filter(Boolean).join(', ')}: ${p.type}` : undefined}
-  description={`${[p.name, placeFull(p)].filter(Boolean).join(', ')}. ${p.type} in the Temple Register of P.K. Sompura, temple architects and contractors.`}>
+  image={`/og/projects/${project.id}.jpg`} imageAlt={`${[p.name, place].filter(Boolean).join(', ')}: ${p.type}`}
+  description={`${[p.name, place].filter(Boolean).join(', ')}. ${p.type} in the Temple Register of P.K. Sompura, temple architects and contractors.`}>
   <nav aria-label="Breadcrumb" class="wrap pt-6 font-mono text-[12px] text-slate-deep lg:pt-16 lg:text-[13px]">
     <a href="/projects" class="inline-flex min-h-11 items-center text-navy underline underline-offset-4 hover:text-saffron-text">Temple Register</a>
     <span class="mx-2.5" aria-hidden="true">/</span><span>{p.place || p.name}<span class="max-lg:hidden">{p.place && `, ${p.state}`}</span></span>
   </nav>
 
-  {total > 0 ? (
-    <>
-      <header class="wrap grid-page gap-y-4 pb-8 pt-7 lg:items-end lg:pb-24 lg:pt-12">
-        <div class="col-span-4 flex flex-col gap-4 md:col-span-8 lg:gap-6">
-          <p class="eyebrow text-slate-deep">Register entry · No. {pad(p.no)}</p>
-          <h1 class="text-cut font-display text-[clamp(40px,13vw,52px)] leading-[.94] lg:text-display">{p.name}</h1>
-        </div>
-        <dl class="col-span-4 mt-2 grid grid-cols-[64px_1fr] gap-x-3 gap-y-2.5 text-[15px] md:col-span-6 lg:col-span-4 lg:mt-0 lg:flex lg:flex-col lg:gap-0 lg:text-[17px]">
-          {p.place && <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-t lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Place</dt><dd>{placeFull(p)}</dd></div>}
-          <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-t lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Type</dt><dd>{p.type}</dd></div>
-          <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-y lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Scope</dt>
-            <dd><span class="lg:hidden">{p.scope.join(' · ')}</span><span class="flex flex-wrap gap-1.5 max-lg:hidden">{p.scope.map((s) => <ScopeTag label={s} size="sm" />)}</span></dd></div>
-        </dl>
-      </header>
+  <header class="wrap flex flex-col gap-4 pb-8 pt-7 lg:gap-6 lg:pb-16 lg:pt-12">
+    <p class="eyebrow text-slate-deep">Register entry · No. {pad(p.no)}</p>
+    <h1 class="text-cut font-display text-[clamp(40px,13vw,52px)] leading-[.94] lg:text-display">{p.name}</h1>
+  </header>
 
-      <div class="wrap grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-x-6 lg:gap-y-6">
-        <div class="col-span-2 lg:col-span-7">
-          <!-- Alt text: each photo's own description from src/data/media.json (PhotoFrame's default). -->
-          <PhotoFrame priority reveal glare shape="arch" frame="aspect-[8/11] lg:aspect-[4/5]" sizes={LEAD_SIZES} label={lead.label} src={lead.src} caption={cap(1, lead.caption)} />
+  <!-- Lead photo left; on the right the facts, the text, then detail tiles (A) or the other photos (B).
+       Mobile stacks: lead → facts → text → details / photos → gallery → related → call to action. -->
+  <div class="wrap grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-6">
+    <div class="lg:col-span-7">
+      <a href={mediaFull(lead.src!)} data-lb={lb(lead.src!)} class="block" aria-label={`Open photo: ${lead.label}`}>
+        <PhotoFrame priority reveal glare shape="arch" frame={layout === 'A' ? 'aspect-[8/11] lg:aspect-[3/4]' : 'aspect-[8/11] lg:aspect-[4/5]'}
+          sizes={LEAD_SIZES} label={lead.label} src={lead.src} />
+      </a>
+    </div>
+    <div class="flex flex-col gap-8 lg:col-span-4 lg:col-start-9 lg:gap-10">
+      <dl class="grid grid-cols-[64px_1fr] gap-x-3 gap-y-2.5 text-[15px] lg:flex lg:flex-col lg:gap-0 lg:text-[17px]">
+        {p.place && <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-t lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Place</dt><dd>{place}</dd></div>}
+        <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-t lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Type</dt><dd>{p.type}</dd></div>
+        <div class="contents lg:grid lg:grid-cols-[88px_1fr] lg:gap-4 lg:border-y lg:border-slate lg:py-3.5"><dt class="font-mono text-[12px] uppercase tracking-[.08em] text-slate-deep">Scope</dt>
+          <dd><span class="lg:hidden">{p.scope.join(' · ')}</span><span class="flex flex-wrap gap-1.5 max-lg:hidden">{p.scope.map((s) => <ScopeTag label={s} size="sm" />)}</span></dd></div>
+      </dl>
+      {p.text && <p class="max-w-[46ch] text-body">{p.text}</p>}
+      {details.length > 0 && (
+        <div class="grid grid-cols-2 gap-3 lg:gap-4">
+          {details.map((d) => (
+            <a href={mediaFull(d.src)} data-lb={lb(d.src)} class="block" aria-label={`Open photo: ${d.label}`}>
+              <PhotoFrame reveal glare frame="aspect-square" sizes="(min-width: 1024px) 16vw, 45vw" label={d.label} src={d.src} caption="Detail" />
+            </a>
+          ))}
         </div>
-        {(second || p.note) && (
-          <div class="col-span-2 mt-2 flex flex-col gap-5 lg:col-span-4 lg:col-start-9 lg:mt-0 lg:justify-end lg:gap-12 lg:pb-10">
-            {p.note && <p class="font-display text-[22px] leading-[1.3] lg:text-[28px] lg:leading-[1.25]">{p.note}</p>}
-            {second && <PhotoFrame reveal glare frame="aspect-[4/3] lg:aspect-[40/41]" label={second.label} src={second.src} caption={cap(2, second.caption)} />}
-          </div>
-        )}
-        {three.map((ph, i) => (
-          <div class="col-span-1 lg:col-span-4 lg:mt-18">
-            <PhotoFrame reveal glare frame="aspect-[3/4] lg:aspect-square" label={ph.label} src={ph.src} caption={cap(i + 3, ph.caption)} />
-          </div>
-        ))}
-        {wide && (
-          <div class="col-span-1 lg:col-span-8 lg:col-start-3 lg:mt-18">
-            <PhotoFrame reveal glare frame="aspect-[3/4] lg:aspect-[3/2]" label={wide.label} src={wide.src} caption={cap(6, wide.caption)} />
-          </div>
-        )}
-      </div>
-    </>
-  ) : (
-    <>
-      <div class="wrap pt-6 lg:pt-12"><TypeCard project={project} size="page" /></div>
-      <p class="wrap py-3 font-mono text-[12px] leading-normal text-slate-deep lg:py-4 lg:text-[13px]">Photographs of this project are not in the archive yet.</p>
-      {related.length > 0 && (
-        <section class="wrap mt-14 lg:mt-24" aria-labelledby="related-title">
-          <div class="mb-3 flex items-baseline justify-between gap-6 lg:mb-0 lg:border-b lg:border-navy lg:pb-3.5">
-            <h2 id="related-title" class="font-display text-[30px] leading-[1.1] lg:text-[44px]">More {p.type.toLowerCase()}s<span class="max-lg:hidden"> in the register</span></h2>
-            <a href="/projects?sort=type" class="text-link inline-flex min-h-11 items-center whitespace-nowrap text-[15px] max-lg:hidden">See all by type →</a>
-          </div>
-          <ul>
-            {related.map((r) => (
-              <li>
-                <a href={`/projects/${r.id}`} class="flex min-h-[68px] items-center justify-between gap-3 border-t border-slate hover:text-saffron-text lg:grid lg:h-22 lg:grid-cols-[minmax(0,1fr)_260px_32px] lg:gap-6 lg:border-b lg:border-t-0">
-                  <span class="flex flex-col gap-1 lg:contents">
-                    <span class="font-display text-[22px] lg:text-[32px]">{r.data.name}</span>
-                    {r.data.place && <span class="font-mono text-[12px] text-slate-deep lg:text-[14px] lg:text-navy">{placeFull(r.data)}</span>}
-                  </span>
-                  <span class="text-right lg:text-[20px]" aria-hidden="true">→</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
       )}
-    </>
+      {layout === 'B' && more.map((ph) => (
+        <a href={mediaFull(ph.src!)} data-lb={lb(ph.src!)} class="block" aria-label={`Open photo: ${ph.label}`}>
+          <PhotoFrame reveal glare frame="aspect-[4/3]" sizes="(min-width: 1024px) 30vw, calc(100vw - 40px)" label={ph.label} src={ph.src} />
+        </a>
+      ))}
+    </div>
+  </div>
+
+  {layout === 'C' && (
+    <section class="wrap mt-14 lg:mt-24" aria-label="Photographs">
+      <ul class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:gap-6">
+        {more.map((ph) => (
+          <li><a href={mediaFull(ph.src!)} data-lb={lb(ph.src!)} class="block" aria-label={`Open photo: ${ph.label}`}>
+            <PhotoFrame reveal glare frame="aspect-[4/3]" sizes="(min-width: 768px) 30vw, 45vw" label={ph.label} src={ph.src} />
+          </a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {building.length > 0 && (
+    <section class="wrap mt-14 lg:mt-24" aria-labelledby="building-title">
+      <h2 id="building-title" class="eyebrow mb-4 border-b border-slate pb-3 text-slate-deep lg:mb-6">During construction</h2>
+      <ul class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+        {building.map((ph) => (
+          <li><a href={mediaFull(ph.src!)} data-lb={lb(ph.src!)} class="block" aria-label={`Open photo: ${ph.label}`}>
+            <PhotoFrame reveal frame="aspect-[4/3]" sizes="(min-width: 1024px) 22vw, (min-width: 768px) 30vw, 45vw" label={ph.label} src={ph.src} />
+          </a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {related.length > 0 && (
+    <section class="wrap mt-14 lg:mt-24" aria-labelledby="related-title">
+      <div class="mb-4 flex items-baseline justify-between gap-6 border-b border-navy pb-3 lg:mb-6">
+        <h2 id="related-title" class="font-display text-[30px] leading-[1.1] lg:text-[44px]">More {p.type.toLowerCase()}s</h2>
+        <a href="/projects?sort=type" class="text-link inline-flex min-h-11 items-center whitespace-nowrap text-[15px] max-lg:hidden">See all by type →</a>
+      </div>
+      <ul class="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {related.map((r) => (
+          <li>
+            <a href={`/projects/${r.id}`} class="group flex gap-4 md:flex-col md:gap-3">
+              <PhotoFrame class="w-28 flex-none md:w-full" frame="aspect-[4/5] md:aspect-[4/3]" sizes="(min-width: 768px) 30vw, 112px"
+                label={r.data.photos[0]?.label ?? r.data.name} src={r.data.photos.find((ph) => !ph.construction)?.src} />
+              <span class="flex flex-col gap-1 self-center md:self-start">
+                <span class="font-display text-[22px] leading-[1.15] group-hover:text-saffron-text lg:text-[28px]">{r.data.name}</span>
+                <span class="font-mono text-[12px] text-slate-deep lg:text-[13px]">{placeType(r.data)}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   )}
 
   <!-- Closing call to action on every project page. -->
@@ -143,4 +171,6 @@ const leadSet = lead && mediaSet(lead.src);
       )}
     </div>
   </nav>
+
+  <Lightbox photos={shown.map((ph) => ({ src: mediaFull(ph.src), alt: ph.label }))} />
 </Base>

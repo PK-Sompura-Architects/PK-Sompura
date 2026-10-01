@@ -30,7 +30,11 @@ for key, p in picks.items():
     im = im.crop((round(l * im.width), round(t * im.height), round(r * im.width), round(b * im.height)))
     if p.get("rotate"):
         im = im.rotate(p["rotate"], expand=True)
-    widths = [w for w in WIDTHS if w <= im.width] or [im.width]
+    # "max": the widest export (gallery photos stop at 1600; leads go to 2400)
+    cap = min(im.width, p.get("max", WIDTHS[-1]))
+    widths = [w for w in WIDTHS if w <= cap]
+    if not widths or (widths[-1] < cap and cap == im.width):
+        widths.append(im.width)  # the photo's own width when it falls between the steps
     for w in widths:
         s = im if w == im.width else im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
         for ext, kw in (("avif", {"quality": 55, "speed": 4}), ("webp", {"quality": 78, "method": 6})):

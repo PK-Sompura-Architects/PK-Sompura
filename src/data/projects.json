@@ -12,11 +12,22 @@
   ],
   "photos": [
    {
-    "label": "Adpur Dheti Pag, Adpur · lead image",
-    "src": "adpur-dheti-pag"
+    "label": "Inside Adpur Dheti Pag: white marble walls with carved niches and seated figures around the sanctum doorway, over an inlaid marble floor",
+    "src": "adpur-dheti-pag--1"
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Jain derasar in Adpur, hand-carved and built by the firm. Inside, white marble niches with seated figures line the walls on either side of the sanctum doorway, and the floor is laid with an inlaid marble pattern.",
+  "details": [
+   {
+    "label": "Detail: the sanctum doorway, a carved frame around the dark stone idol",
+    "src": "adpur-dheti-pag--d1"
+   },
+   {
+    "label": "Detail: a carved white marble niche with a seated figure",
+    "src": "adpur-dheti-pag--d2"
+   }
+  ]
  },
  {
   "id": "asha-life-mission",
@@ -29,8 +40,35 @@
    "Design",
    "Construction"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Asha Life Mission at dusk: a white marble temple with its shikhara, mandapa and courtyard wall",
+    "src": "asha-life-mission--1"
+   },
+   {
+    "label": "The temple seen from its entrance path, a white marble shikhara over a pillared porch on a stepped plinth",
+    "src": "asha-life-mission--2"
+   },
+   {
+    "label": "A carved marble gateway with lions on its crown, lit by the evening sun",
+    "src": "asha-life-mission--3"
+   },
+   {
+    "label": "A carved white marble shrine niche",
+    "src": "asha-life-mission--4"
+   },
+   {
+    "label": "Looking up into a carved marble dome",
+    "src": "asha-life-mission--5"
+   },
+   {
+    "label": "The shikhara in scaffolding while the temple was being built",
+    "src": "asha-life-mission--6",
+    "construction": true
+   }
+  ],
+  "featured": false,
+  "text": "A white marble temple designed and built by the firm. A carved gateway with lions on its crown opens onto the courtyard, and inside, the shrine niches and domed ceilings are carved in the same white stone."
  },
  {
   "id": "bhamriya",
@@ -44,11 +82,25 @@
   ],
   "photos": [
    {
-    "label": "Bhamriya, Bhamriya · lead image",
-    "src": "bhamriya"
+    "label": "Bhamriya: a white marble temple above a double flight of steps, its shikhara behind the pillared porch",
+    "src": "bhamriya--1"
+   },
+   {
+    "label": "A white marble dome carved in rings of petals",
+    "src": "bhamriya--2"
+   },
+   {
+    "label": "Looking up through a carved marble dome to the sky",
+    "src": "bhamriya--3"
+   },
+   {
+    "label": "The shikhara in scaffolding, a crane beside it",
+    "src": "bhamriya--4",
+    "construction": true
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Hindu temple at Bhamriya built by the firm in white marble. A double flight of steps rises to the pillared entrance, and the domes inside are carved in rings of petals."
  },
  {
   "id": "devilaya",
@@ -60,8 +112,26 @@
   "scope": [
    "Hand carving"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Devilaya: a sandstone porch of carved columns and scalloped arches",
+    "src": "devilaya--1"
+   },
+   {
+    "label": "The sandstone shikhara rising behind the porch",
+    "src": "devilaya--2"
+   },
+   {
+    "label": "Inside the porch: a carved dome over a ring of arches",
+    "src": "devilaya--3"
+   },
+   {
+    "label": "A carved sandstone dome, its rings of petals closing to a pendant",
+    "src": "devilaya--4"
+   }
+  ],
+  "featured": false,
+  "text": "A Hindu temple hand-carved by the firm in sandstone. A porch of carved columns and scalloped arches stands before the sanctum, under a shikhara banded with carved niches."
  },
  {
   "id": "digambar-jain-derasar",
@@ -76,11 +146,46 @@
   ],
   "photos": [
    {
-    "label": "Digambar Jain Derasar, Baroda · lead image",
-    "src": "digambar-jain-derasar"
+    "label": "Digambar Jain Derasar, Baroda: a carved sandstone facade and stair, with stone elephants at its foot",
+    "src": "digambar-jain-derasar--1"
+   },
+   {
+    "label": "The derasar from the front: a carved sandstone facade, side stair and shikhara",
+    "src": "digambar-jain-derasar--2"
+   },
+   {
+    "label": "A carved sandstone figure panel beside a doorway",
+    "src": "digambar-jain-derasar--3"
+   },
+   {
+    "label": "A brass door set in a carved sandstone frame with figure panels",
+    "src": "digambar-jain-derasar--4"
+   },
+   {
+    "label": "Inside: the sanctum doorway in silver, framed by carved stone pillars",
+    "src": "digambar-jain-derasar--5"
+   },
+   {
+    "label": "A carved sandstone balcony with pierced railings",
+    "src": "digambar-jain-derasar--6"
+   },
+   {
+    "label": "Carved sandstone garlands and pendants, a detail of the facade",
+    "src": "digambar-jain-derasar--7"
+   },
+   {
+    "label": "The shikhara in scaffolding during construction",
+    "src": "digambar-jain-derasar--8",
+    "construction": true
+   },
+   {
+    "label": "The shikhara rising in scaffolding above the carved walls",
+    "src": "digambar-jain-derasar--9",
+    "construction": true
    }
   ],
-  "featured": true
+  "featured": true,
+  "text": "A Jain derasar in Baroda, designed and hand-carved by the firm in sandstone. The facade is carved band over band, with figure panels beside the doorways, carved elephants at the foot of the stair, and a shikhara above."
  },
  {
   "id": "dhola",
@@ -92,8 +197,31 @@
   "scope": [
    "Construction"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Dhola: three white marble shikharas against a blue sky",
+    "src": "dhola--1"
+   },
+   {
+    "label": "The derasar from the side: white marble shikharas over an arched, pillared mandapa",
+    "src": "dhola--2"
+   },
+   {
+    "label": "Inside: a carved marble dome above arches and a shrine",
+    "src": "dhola--3"
+   },
+   {
+    "label": "A white marble ceiling panel carved with flowers",
+    "src": "dhola--4"
+   },
+   {
+    "label": "The marble walls in scaffolding while the derasar was being built",
+    "src": "dhola--5",
+    "construction": true
+   }
+  ],
+  "featured": false,
+  "text": "A Jain derasar at Dhola built by the firm in white marble. Three carved shikharas rise above a pillared mandapa, and inside, the ceilings are carved with flowers and rings."
  },
  {
   "id": "gelmata",
@@ -108,11 +236,24 @@
   ],
   "photos": [
    {
-    "label": "Gelmata, Rajkot · lead image",
-    "src": "gelmata"
+    "label": "Gelmata, Rajkot: a white temple and its shikhara across a paved court",
+    "src": "gelmata--1"
+   },
+   {
+    "label": "The temple from the side: a domed mandapa and a tall white shikhara",
+    "src": "gelmata--2"
+   },
+   {
+    "label": "The temple from the far end of its court",
+    "src": "gelmata--3"
+   },
+   {
+    "label": "The front of the temple, a stair up to its pillared entrance",
+    "src": "gelmata--4"
    }
   ],
-  "featured": true
+  "featured": true,
+  "text": "A Hindu temple in Rajkot built by the firm, with CNC-cut work. A white temple with a domed mandapa and a tall shikhara stands at the end of a wide paved court."
  },
  {
   "id": "vaishno-devi-gulbarga",
@@ -127,11 +268,31 @@
   ],
   "photos": [
    {
-    "label": "Vaishno Devi, Gulbarga · lead image",
-    "src": "vaishno-devi-gulbarga"
+    "label": "Vaishno Devi, Gulbarga: the red rock mountain and its white shrines in evening light",
+    "src": "vaishno-devi-gulbarga--1"
+   },
+   {
+    "label": "The mountain and its shrines in low sun",
+    "src": "vaishno-devi-gulbarga--2"
+   },
+   {
+    "label": "Steel reinforcement laid for the foundation",
+    "src": "vaishno-devi-gulbarga--3",
+    "construction": true
+   },
+   {
+    "label": "The stone walls and columns of the core rising",
+    "src": "vaishno-devi-gulbarga--4",
+    "construction": true
+   },
+   {
+    "label": "Curved stone walls of the rock shell taking shape",
+    "src": "vaishno-devi-gulbarga--5",
+    "construction": true
    }
   ],
-  "featured": true
+  "featured": true,
+  "text": "A mountain temple in Gulbarga built by the firm: an artificial mountain of red rock, raised around white shrines. The photographs follow it from the foundation to the finished mountain."
  },
  {
   "id": "hastgiri",
@@ -146,11 +307,28 @@
   ],
   "photos": [
    {
-    "label": "Hastgiri, Hastgiri · lead image",
-    "src": "hastgiri"
+    "label": "Hastgiri: three pink sandstone shikharas above a hillside",
+    "src": "hastgiri--1"
+   },
+   {
+    "label": "A pink sandstone temple at the top of a long marble stair",
+    "src": "hastgiri--2"
+   },
+   {
+    "label": "A sandstone shikhara and dome against a cloudy sky",
+    "src": "hastgiri--3"
+   },
+   {
+    "label": "White shikharas seen from above, the hills beyond",
+    "src": "hastgiri--4"
+   },
+   {
+    "label": "A sandstone dome carved ring within ring",
+    "src": "hastgiri--5"
    }
   ],
-  "featured": true
+  "featured": true,
+  "text": "A Jain derasar at Hastgiri, designed and built by the firm. Pink sandstone shikharas stand on a hillside above the valley, and inside, a sandstone dome is carved ring within ring."
  },
  {
   "id": "jaliya",
@@ -162,8 +340,22 @@
   "scope": [
    "Hand carving"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Jaliya: a sandstone shikhara and pillared mandapa above a paved court",
+    "src": "jaliya--1"
+   },
+   {
+    "label": "The mandapa from the side, steps up to its carved columns",
+    "src": "jaliya--2"
+   },
+   {
+    "label": "The sandstone plinth carved with rows of rosettes",
+    "src": "jaliya--3"
+   }
+  ],
+  "featured": false,
+  "text": "A Jain derasar at Jaliya, hand-carved by the firm in sandstone. The plinth is carved with rows of rosettes, and steps lead up to a pillared mandapa under a carved shikhara."
  },
  {
   "id": "jambudip",
@@ -177,11 +369,22 @@
   ],
   "photos": [
    {
-    "label": "Jambudip · lead image",
-    "src": "jambudip"
+    "label": "Jambudip: a domed sandstone temple with carved niches in its walls",
+    "src": "jambudip--1"
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Jain derasar at Jambudip, designed by the firm. A domed sandstone temple with carved niches in its walls, under a blue sky.",
+  "details": [
+   {
+    "label": "Detail: the domes, carved in overlapping petals, under the stepped roof",
+    "src": "jambudip--d1"
+   },
+   {
+    "label": "Detail: a carved stone window screen beside a carved pillar",
+    "src": "jambudip--d2"
+   }
+  ]
  },
  {
   "id": "kachhi-bhavan-junagadh",
@@ -195,11 +398,20 @@
   ],
   "photos": [
    {
-    "label": "Kachhi Bhavan, Junagadh · lead image",
-    "src": "kachhi-bhavan-junagadh"
+    "label": "Kachhi Bhavan, Junagadh: a white marble temple with twin shikharas",
+    "src": "kachhi-bhavan-junagadh--1"
+   },
+   {
+    "label": "The twin shikharas from the side",
+    "src": "kachhi-bhavan-junagadh--2"
+   },
+   {
+    "label": "The white marble porch and its carved columns",
+    "src": "kachhi-bhavan-junagadh--3"
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A temple in Junagadh built by the firm in white marble, with twin carved shikharas over a pillared porch."
  },
  {
   "id": "kachhi-bhavan-palitana",
@@ -214,11 +426,24 @@
   ],
   "photos": [
    {
-    "label": "Kachhi Bhavan, Palitana · lead image",
-    "src": "kachhi-bhavan-palitana"
+    "label": "Kachhi Bhavan, Palitana: a carved sandstone temple and its shikhara",
+    "src": "kachhi-bhavan-palitana--1"
+   },
+   {
+    "label": "A carved sandstone gateway at the top of a stair",
+    "src": "kachhi-bhavan-palitana--2"
+   },
+   {
+    "label": "Carved sandstone figure panels on the temple wall",
+    "src": "kachhi-bhavan-palitana--3"
+   },
+   {
+    "label": "A sandstone ceiling carved in a geometric pattern",
+    "src": "kachhi-bhavan-palitana--4"
    }
   ],
-  "featured": true
+  "featured": true,
+  "text": "A temple in Palitana, designed and built by the firm in carved sandstone. The gateway and the walls are carved densely, and the ceilings are carved in geometric patterns."
  },
  {
   "id": "khajuri",
@@ -230,8 +455,22 @@
   "scope": [
    "Hand carving"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Khajuri: a sandstone shikhara above a small porch",
+    "src": "khajuri--1"
+   },
+   {
+    "label": "The temple from the side, the shikhara and porch",
+    "src": "khajuri--2"
+   },
+   {
+    "label": "A carved sandstone ceiling above a doorway",
+    "src": "khajuri--3"
+   }
+  ],
+  "featured": false,
+  "text": "A Hindu temple at Khajuri, hand-carved by the firm in sandstone: a small porch before the sanctum, under a tall carved shikhara."
  },
  {
   "id": "kotadi",
@@ -243,8 +482,46 @@
   "scope": [
    "Construction"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Kotadi: three pink sandstone shikharas above a wide stair with stone elephants",
+    "src": "kotadi--1"
+   },
+   {
+    "label": "The carved sandstone gateway to the derasar",
+    "src": "kotadi--2"
+   },
+   {
+    "label": "The shikharas from across the paved terrace",
+    "src": "kotadi--3"
+   },
+   {
+    "label": "A carved wooden door in a sandstone frame",
+    "src": "kotadi--4"
+   },
+   {
+    "label": "A carved sandstone figure in a niche",
+    "src": "kotadi--5"
+   },
+   {
+    "label": "A carved dome above a crystal chandelier",
+    "src": "kotadi--6"
+   },
+   {
+    "label": "A sandstone ceiling carved with a large flower",
+    "src": "kotadi--7"
+   },
+   {
+    "label": "An inlaid marble floor with flowers in coloured stone",
+    "src": "kotadi--8"
+   },
+   {
+    "label": "Carved sandstone columns and wall panels",
+    "src": "kotadi--9"
+   }
+  ],
+  "featured": false,
+  "text": "A Jain derasar at Kotadi built by the firm in pink sandstone. Three shikharas stand above a wide stair flanked by stone elephants; the doorways have carved wooden doors, and the ceilings and floors are carved and inlaid."
  },
  {
   "id": "liliya",
@@ -259,11 +536,29 @@
   ],
   "photos": [
    {
-    "label": "Liliya, Liliya · lead image",
-    "src": "liliya"
+    "label": "Liliya: a sandstone shikhara and domed mandapa behind a garden",
+    "src": "liliya--1"
+   },
+   {
+    "label": "The main shikhara between two smaller ones",
+    "src": "liliya--2"
+   },
+   {
+    "label": "Steps up to the pillared entrance",
+    "src": "liliya--3"
+   },
+   {
+    "label": "Inside a carved sandstone dome",
+    "src": "liliya--4"
+   },
+   {
+    "label": "The shikhara nearing completion, stone blocks at its foot",
+    "src": "liliya--5",
+    "construction": true
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Jain derasar at Liliya, hand-carved by the firm with CNC-cut work. A tall sandstone shikhara rises over a domed mandapa, and steps lead up to the entrance between two smaller shikharas."
  },
  {
   "id": "malav",
@@ -275,8 +570,26 @@
   "scope": [
    "Construction"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Malav: a pink sandstone temple front, its entrance hung with garlands",
+    "src": "malav--1"
+   },
+   {
+    "label": "The entrance lit at dusk",
+    "src": "malav--2"
+   },
+   {
+    "label": "The temple and its gateway lit at night",
+    "src": "malav--3"
+   },
+   {
+    "label": "A sandstone dome carved in rings of petals",
+    "src": "malav--4"
+   }
+  ],
+  "featured": false,
+  "text": "A Jain derasar at Malav built by the firm in pink sandstone, with a carved gateway beside the temple and domes carved in rings of petals."
  },
  {
   "id": "mota-derasar",
@@ -290,11 +603,26 @@
   ],
   "photos": [
    {
-    "label": "Mota Derasar, Tharad · lead image",
-    "src": "mota-derasar"
+    "label": "Mota Derasar, Tharad: a broad white marble stair up to a hall of carved pillars",
+    "src": "mota-derasar--1"
+   },
+   {
+    "label": "A carved white marble panel of a figure in motion",
+    "src": "mota-derasar--2"
+   },
+   {
+    "label": "The carved marble walls rising during construction",
+    "src": "mota-derasar--3",
+    "construction": true
+   },
+   {
+    "label": "The shikharas in scaffolding during construction",
+    "src": "mota-derasar--4",
+    "construction": true
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Jain derasar in Tharad, hand-carved by the firm in white marble. A broad stair leads up to a hall of carved pillars, and inside, a wide dome is carved in rings above arched bays."
  },
  {
   "id": "osval",
@@ -308,11 +636,20 @@
   ],
   "photos": [
    {
-    "label": "Osval, Palitana · lead image",
-    "src": "osval"
+    "label": "Osval, Palitana: a carved temple with a stone dome and white mandapa",
+    "src": "osval--1"
+   },
+   {
+    "label": "The carved stone shikhara above white marble",
+    "src": "osval--2"
+   },
+   {
+    "label": "A pierced white marble screen in a carved frame",
+    "src": "osval--3"
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A temple in Palitana built by the firm: a carved stone dome over a white marble mandapa, with pierced marble screens in its windows."
  },
  {
   "id": "parvala",
@@ -324,8 +661,18 @@
   "scope": [
    "Construction"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Parvala: a sandstone temple with a stepped roof over a pillared porch",
+    "src": "parvala--1"
+   },
+   {
+    "label": "A sandstone dome carved in rings",
+    "src": "parvala--2"
+   }
+  ],
+  "featured": false,
+  "text": "A Hindu temple at Parvala built by the firm in sandstone: a stepped roof over a pillared porch, and a dome carved in rings inside."
  },
  {
   "id": "rampara",
@@ -339,11 +686,37 @@
   ],
   "photos": [
    {
-    "label": "Rampara, Rampara · lead image",
-    "src": "rampara"
+    "label": "Rampara: a sandstone temple with its shikharas above a broad stair and garden",
+    "src": "rampara--1"
+   },
+   {
+    "label": "The temple and its tall flagpole under a cloudy sky",
+    "src": "rampara--2"
+   },
+   {
+    "label": "The temple across an open field at dusk",
+    "src": "rampara--3"
+   },
+   {
+    "label": "Twin sandstone shikharas above a carved mandapa",
+    "src": "rampara--4"
+   },
+   {
+    "label": "A sandstone ceiling carved with a large rosette",
+    "src": "rampara--5"
+   },
+   {
+    "label": "Sandstone carved with scrolls and flowers",
+    "src": "rampara--6"
+   },
+   {
+    "label": "A shikhara in scaffolding during construction",
+    "src": "rampara--7",
+    "construction": true
    }
   ],
-  "featured": true
+  "featured": true,
+  "text": "A Hindu temple at Rampara, hand-carved by the firm in sandstone. Two tall shikharas rise above a broad pillared mandapa reached by a wide stair, and inside, the ceilings are carved in flowers and scrolls."
  },
  {
   "id": "rrd",
@@ -358,11 +731,29 @@
   ],
   "photos": [
    {
-    "label": "RRD, Limbdi · lead image",
-    "src": "rrd"
+    "label": "RRD, Limbdi: a long sandstone temple with shikharas at either end",
+    "src": "rrd--1"
+   },
+   {
+    "label": "The front of the temple, a wide stair up to the mandapa",
+    "src": "rrd--2"
+   },
+   {
+    "label": "The temple from the side, its tallest shikhara at the left",
+    "src": "rrd--3"
+   },
+   {
+    "label": "A sandstone ceiling carved in squares of rosettes",
+    "src": "rrd--4"
+   },
+   {
+    "label": "The temple with its shikharas in scaffolding",
+    "src": "rrd--5",
+    "construction": true
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Jain derasar in Limbdi, designed by the firm and built with CNC-cut work. A long sandstone temple with shikharas at either end and a pillared mandapa between them, and carved ceilings inside."
  },
  {
   "id": "songadh",
@@ -377,11 +768,16 @@
   ],
   "photos": [
    {
-    "label": "Songadh, Songadh · lead image",
-    "src": "songadh"
+    "label": "Songadh: a white gateway with red arches, the temple framed beyond it",
+    "src": "songadh--1"
+   },
+   {
+    "label": "The gateway and the path to the temple",
+    "src": "songadh--2"
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Jain derasar at Songadh, hand-carved and built by the firm. A white gateway with red sandstone arches frames the temple beyond it."
  },
  {
   "id": "taleti",
@@ -393,8 +789,18 @@
   "scope": [
    "Hand carving"
   ],
-  "photos": [],
-  "featured": false
+  "photos": [
+   {
+    "label": "Taleti: a carved sandstone gateway at the top of a flight of steps",
+    "src": "taleti--1"
+   },
+   {
+    "label": "A sandstone figure carved in a niche of the gateway",
+    "src": "taleti--2"
+   }
+  ],
+  "featured": false,
+  "text": "A Jain derasar at Taleti, hand-carved by the firm in sandstone: a carved gateway, and figures carved in niches in its walls."
  },
  {
   "id": "varkhadi",
@@ -409,11 +815,34 @@
   ],
   "photos": [
    {
-    "label": "Varkhadi, Tharad · lead image",
-    "src": "varkhadi"
+    "label": "Varkhadi, Tharad: the carved stone entrance building",
+    "src": "varkhadi--1"
+   },
+   {
+    "label": "The artificial rock mountain, a stair climbing its side",
+    "src": "varkhadi--2"
+   },
+   {
+    "label": "A white marble shrine inside the temple",
+    "src": "varkhadi--3"
+   },
+   {
+    "label": "White marble shrine niches with seated figures",
+    "src": "varkhadi--4"
+   },
+   {
+    "label": "The rock mountain under construction, shrines among the boulders",
+    "src": "varkhadi--5",
+    "construction": true
+   },
+   {
+    "label": "The main temple in scaffolding",
+    "src": "varkhadi--6",
+    "construction": true
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A Jain derasar in Tharad, designed and built by the firm, with an artificial rock mountain among its shrines. A carved stone entrance faces the road, and inside, white marble shrines stand in carved niches."
  },
  {
   "id": "vaishno-devi-ahmedabad",
@@ -428,10 +857,23 @@
   ],
   "photos": [
    {
-    "label": "Vaishno Devi, Ahmedabad · lead image",
-    "src": "vaishno-devi-ahmedabad"
+    "label": "Vaishno Devi, Ahmedabad: the finished artificial mountain in red and grey rock, its cave entrance and white shrines above a paved court",
+    "src": "vaishno-devi-ahmedabad--1"
+   },
+   {
+    "label": "The rock mountain from the front, a shrine on its slope",
+    "src": "vaishno-devi-ahmedabad--2"
+   },
+   {
+    "label": "The mountain and the temple court",
+    "src": "vaishno-devi-ahmedabad--3"
+   },
+   {
+    "label": "The mountain temple from across the road",
+    "src": "vaishno-devi-ahmedabad--4"
    }
   ],
-  "featured": false
+  "featured": false,
+  "text": "A mountain temple in Ahmedabad built by the firm: an artificial mountain of red and grey rock with a cave entrance at its foot and white shrines on its slopes."
  }
 ]
