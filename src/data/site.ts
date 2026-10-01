@@ -5,7 +5,8 @@ export const contact = {
   email: 'pksompura35@gmail.com',
   instagram: '@p.k_sompura',
   instagramHref: 'https://instagram.com/p.k_sompura',
-  // Workshop address, supplied by the owner.
+  // Workshop address, supplied and confirmed by the owner: the firm's own PVC pipe factory, which houses the workshop
+  // on the same site, with the office at the main entry gate.
   address: ['Mahashakti Plastic Industry', 'Opp. Adhidweep Temple', 'Palitana–Bhavnagar Highway', 'Palitana 364270, Gujarat'],
   mapsHref: 'https://www.google.com/maps/search/?api=1&query=Mahashakti%20Plastic%20Industry%2C%20Palitana-Bhavnagar%20Highway%2C%20Palitana%20364270',
   whatsapp: 'Send a message',

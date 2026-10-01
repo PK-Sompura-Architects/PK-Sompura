@@ -22,6 +22,7 @@ interface Props {
   image?: string; // link-preview image, 1200 × 630 (tools/og/render.mjs); the site card by default
   imageAlt?: string;
   preload?: { srcset: string; sizes: string }; // the page's LCP photo (AVIF srcset), fetched before everything else
+  noindex?: boolean; // kept out of search results (the 404 page), with no canonical URL
 }
 const {
   title,
@@ -31,6 +32,7 @@ const {
   image = '/og/default.jpg',
   imageAlt = 'P.K. Sompura, Temple Architect & Contractor, Palitana, Gujarat: Where Devotion Meets Stone.',
   preload,
+  noindex = false,
 } = Astro.props;
 // Absolute URLs from the one site address in astro.config.mjs.
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -57,7 +59,7 @@ const business = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="P.K. Sompura" />
     <meta property="og:title" content={title} />
