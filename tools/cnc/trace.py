@@ -174,13 +174,19 @@ xy = lambda p: f"{num(p[0])} {num(p[1])}"
 
 def curve(pts):
     # Catmull-Rom through the points, as cubic Beziers; straight runs (2 points, the frame rectangles' sides) stay lines.
+    # Compact: whole viewBox units (at most half a pixel on screen) and relative commands, measured from the rounded
+    # previous point so the rounding never accumulates; a minus sign doubles as the separator.
     P = [np.array(q, float) for q in pts]
-    if len(P) < 3 or (len(P) == 5 and np.allclose(P[0], P[-1])): return 'M' + ' L'.join(xy(q) for q in P)
-    d = 'M' + xy(P[0])
+    r = lambda v: [int(round(v[0])), int(round(v[1]))]
+    if len(P) < 3 or (len(P) == 5 and np.allclose(P[0], P[-1])):
+        return 'M' + ' L'.join(xy(q) for q in P)
+    cur = r(P[0]); d = f"M{cur[0]} {cur[1]}c"; parts = []
     for i in range(len(P) - 1):
         p0, p1, p2, p3 = P[max(i - 1, 0)], P[i], P[i + 1], P[min(i + 2, len(P) - 1)]
-        d += f" C{xy(p1 + (p2 - p0) / 6)} {xy(p2 - (p3 - p1) / 6)} {xy(p2)}"
-    return d
+        c1, c2, e = r(p1 + (p2 - p0) / 6), r(p2 - (p3 - p1) / 6), r(p2)
+        parts += [c1[0] - cur[0], c1[1] - cur[1], c2[0] - cur[0], c2[1] - cur[1], e[0] - cur[0], e[1] - cur[1]]
+        cur = e
+    return (d + ' '.join(str(v) for v in parts)).replace(' -', '-')
 
 for p in ordered:
     if 'd' not in p: p['d'] = curve(p['pts'])

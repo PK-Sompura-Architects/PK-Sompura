@@ -169,7 +169,9 @@ function Browser({ entries }: { entries: Entry[] }) {
       </div>
 
       <div className="flex flex-wrap justify-between gap-x-6 gap-y-1 border-b border-navy py-3 font-mono text-[12px] text-slate-deep lg:border-b-0 lg:py-3.5 lg:text-[13px]">
-        <span aria-live="polite">{count}</span>
+        {/* Two lines reserved on mobile: the count wraps or not depending on whether the mono web font has loaded, and
+            a late font must not push the list down (layout shift). */}
+        <span aria-live="polite" className="max-lg:min-h-[2lh]">{count}</span>
         <span className="ml-auto max-lg:hidden">Scope marks, left to right: Design · Hand carving · CNC · Construction · Fero</span>
         {ready && hasFilters && <button type="button" onClick={clear} className="text-navy underline underline-offset-4 hover:text-saffron-text max-lg:hidden">Clear filters</button>}
       </div>

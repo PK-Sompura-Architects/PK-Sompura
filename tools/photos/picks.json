@@ -124,11 +124,13 @@
  },
  "adpur-dheti-pag--1": {
   "src": "OUR WORK PHOTO/upload/adpur gheti pag-2.JPG",
-  "alt": "Inside Adpur Dheti Pag: white marble walls with carved niches and seated figures around the sanctum doorway, over an inlaid marble floor"
+  "alt": "Inside Adpur Dheti Pag: white marble walls with carved niches and seated figures around the sanctum doorway, over an inlaid marble floor",
+  "avif_q": 45
  },
  "asha-life-mission--1": {
   "src": "Asha life mission/IMG-20230224-WA0015.jpg",
-  "alt": "Asha Life Mission at dusk: a white marble temple with its shikhara, mandapa and courtyard wall"
+  "alt": "Asha Life Mission at dusk: a white marble temple with its shikhara, mandapa and courtyard wall",
+  "avif_q": 45
  },
  "asha-life-mission--2": {
   "src": "OUR WORK PHOTO/upload/asha-2.jpg",
@@ -181,7 +183,8 @@
  },
  "bhamriya--1": {
   "src": "OUR WORK PHOTO/BHAMRIYA/IMG-20240307-WA0000.jpg",
-  "alt": "Bhamriya: a white marble temple above a double flight of steps, its shikhara behind the pillared porch"
+  "alt": "Bhamriya: a white marble temple above a double flight of steps, its shikhara behind the pillared porch",
+  "avif_q": 45
  },
  "bhamriya--2": {
   "src": "OUR WORK PHOTO/BHAMRIYA/IMG-20230421-WA0008.jpg",
@@ -218,7 +221,8 @@
  },
  "devilaya--1": {
   "src": "DEVILAYA/IMG_20190612_114304.jpg",
-  "alt": "Devilaya: a sandstone porch of carved columns and scalloped arches"
+  "alt": "Devilaya: a sandstone porch of carved columns and scalloped arches",
+  "avif_q": 45
  },
  "devilaya--2": {
   "src": "DEVILAYA/IMG_20190612_115357.jpg",
@@ -237,7 +241,8 @@
  },
  "digambar-jain-derasar--1": {
   "src": "OUR WORK PHOTO/upload/DJD-baroda-2.jpg",
-  "alt": "Digambar Jain Derasar, Baroda: a carved sandstone facade and stair, with stone elephants at its foot"
+  "alt": "Digambar Jain Derasar, Baroda: a carved sandstone facade and stair, with stone elephants at its foot",
+  "avif_q": 45
  },
  "digambar-jain-derasar--2": {
   "src": "OUR WORK PHOTO/upload/DJD-baroda-1.jpg",
@@ -281,7 +286,8 @@
  },
  "dhola--1": {
   "src": "OUR WORK PHOTO/DHOLA/20161110_130205.jpg",
-  "alt": "Dhola: three white marble shikharas against a blue sky"
+  "alt": "Dhola: three white marble shikharas against a blue sky",
+  "avif_q": 45
  },
  "dhola--2": {
   "src": "OUR WORK PHOTO/DHOLA/20161110_131051.jpg",
@@ -305,7 +311,8 @@
  },
  "gelmata--1": {
   "src": "Gelmata Rajkot/WhatsApp Image 2026-04-16 at 6.33.51 PM.jpeg",
-  "alt": "Gelmata, Rajkot: a white temple and its shikhara across a paved court"
+  "alt": "Gelmata, Rajkot: a white temple and its shikhara across a paved court",
+  "avif_q": 45
  },
  "gelmata--2": {
   "src": "Gelmata Rajkot/WhatsApp Image 2026-04-16 at 6.33.52 PM.jpeg",
@@ -324,7 +331,8 @@
  },
  "vaishno-devi-gulbarga--1": {
   "src": "IMG_20180620_173801.jpg",
-  "alt": "Vaishno Devi, Gulbarga: the red rock mountain and its white shrines in evening light"
+  "alt": "Vaishno Devi, Gulbarga: the red rock mountain and its white shrines in evening light",
+  "avif_q": 45
  },
  "vaishno-devi-gulbarga--2": {
   "src": "Gulbarga/IMG-20180619-WA0016.jpg",
@@ -348,7 +356,8 @@
  },
  "hastgiri--1": {
   "src": "OUR WORK PHOTO/upload/GN1.JPG",
-  "alt": "Hastgiri: three pink sandstone shikharas above a hillside"
+  "alt": "Hastgiri: three pink sandstone shikharas above a hillside",
+  "avif_q": 45
  },
  "hastgiri--2": {
   "src": "Hastgiri/GN2.JPG",
@@ -384,7 +393,8 @@
    0,
    1,
    0.93
-  ]
+  ],
+  "avif_q": 45
  },
  "jaliya--2": {
   "src": "OUR WORK PHOTO/JALIYA/IMG-20220428-WA0004.jpg",
@@ -398,7 +408,8 @@
  },
  "jambudip--1": {
   "src": "OUR WORK PHOTO/upload/jambudeep-2.JPG",
-  "alt": "Jambudip: a domed sandstone temple with carved niches in its walls"
+  "alt": "Jambudip: a domed sandstone temple with carved niches in its walls",
+  "avif_q": 45
  },
  "kachhi-bhavan-junagadh--1": {
   "src": "OUR WORK PHOTO/upload/KBJ-1.jpg",
@@ -408,7 +419,8 @@
    0,
    0.86,
    1
-  ]
+  ],
+  "avif_q": 45
  },
  "kachhi-bhavan-junagadh--2": {
   "src": "OUR WORK PHOTO/upload/KBJ-2.jpg",
@@ -434,7 +446,8 @@
    0,
    0.72,
    1
-  ]
+  ],
+  "avif_q": 45
  },
  "kachhi-bhavan-palitana--2": {
   "src": "OUR WORK PHOTO/upload/DSCF5656.JPG",
@@ -453,7 +466,8 @@
  },
  "khajuri--1": {
   "src": "KHAJURI/IMG-20230502-WA0023.jpg",
-  "alt": "Khajuri: a sandstone shikhara above a small porch"
+  "alt": "Khajuri: a sandstone shikhara above a small porch",
+  "avif_q": 45
  },
  "khajuri--2": {
   "src": "KHAJURI/IMG-20230502-WA0017.jpg",
@@ -467,7 +481,8 @@
  },
  "kotadi--1": {
   "src": "OUR WORK PHOTO/KOTADI/DSCN0605.jpg",
-  "alt": "Kotadi: three pink sandstone shikharas above a wide stair with stone elephants"
+  "alt": "Kotadi: three pink sandstone shikharas above a wide stair with stone elephants",
+  "avif_q": 45
  },
  "kotadi--2": {
   "src": "Kotadi/DSCN0609.jpg",
@@ -511,7 +526,8 @@
  },
  "liliya--1": {
   "src": "Liliya/IMG-20210703-WA0010.jpg",
-  "alt": "Liliya: a sandstone shikhara and domed mandapa behind a garden"
+  "alt": "Liliya: a sandstone shikhara and domed mandapa behind a garden",
+  "avif_q": 45
  },
  "liliya--2": {
   "src": "Liliya/IMG-20210703-WA0011.jpg",
@@ -535,7 +551,8 @@
  },
  "malav--1": {
   "src": "Malav/WhatsApp Image 2026-05-12 at 11.01.27 AM.jpeg",
-  "alt": "Malav: a pink sandstone temple front, its entrance hung with garlands"
+  "alt": "Malav: a pink sandstone temple front, its entrance hung with garlands",
+  "avif_q": 45
  },
  "malav--2": {
   "src": "Malav/WhatsApp Image 2026-05-12 at 11.01.28 AM.jpeg",
@@ -554,7 +571,8 @@
  },
  "mota-derasar--1": {
   "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/D5.jpg",
-  "alt": "Mota Derasar, Tharad: a broad white marble stair up to a hall of carved pillars"
+  "alt": "Mota Derasar, Tharad: a broad white marble stair up to a hall of carved pillars",
+  "avif_q": 45
  },
  "mota-derasar--2": {
   "src": "OUR WORK PHOTO/MOTA DERASAR THARAD/D3 - Copy.jpg",
@@ -579,7 +597,8 @@
  },
  "osval--1": {
   "src": "OUR WORK PHOTO/OSVAL PALITANA/DSCF5634.JPG",
-  "alt": "Osval, Palitana: a carved temple with a stone dome and white mandapa"
+  "alt": "Osval, Palitana: a carved temple with a stone dome and white mandapa",
+  "avif_q": 45
  },
  "osval--2": {
   "src": "OUR WORK PHOTO/OSVAL PALITANA/DSCF5639.jpg",
@@ -599,7 +618,8 @@
    0,
    0.84,
    1
-  ]
+  ],
+  "avif_q": 45
  },
  "parvala--2": {
   "src": "OUR WORK PHOTO/PARVALA/20160709_135620.jpg",
@@ -608,7 +628,8 @@
  },
  "rampara--1": {
   "src": "Rampara/IMG-20220415-WA0000.jpg",
-  "alt": "Rampara: a sandstone temple with its shikharas above a broad stair and garden"
+  "alt": "Rampara: a sandstone temple with its shikharas above a broad stair and garden",
+  "avif_q": 45
  },
  "rampara--2": {
   "src": "Rampara/WhatsApp Image 2026-05-12 at 11.14.02 AM.jpeg",
@@ -654,7 +675,8 @@
    0,
    1,
    0.93
-  ]
+  ],
+  "avif_q": 45
  },
  "rrd--2": {
   "src": "IMG_20240118_122022.jpg",
@@ -690,7 +712,8 @@
  },
  "songadh--1": {
   "src": "OUR WORK PHOTO/SONGHATH/20140909_183217.jpg",
-  "alt": "Songadh: a white gateway with red arches, the temple framed beyond it"
+  "alt": "Songadh: a white gateway with red arches, the temple framed beyond it",
+  "avif_q": 45
  },
  "songadh--2": {
   "src": "OUR WORK PHOTO/SONGHATH/20140909_183245.jpg",
@@ -705,7 +728,8 @@
    0,
    1,
    0.9
-  ]
+  ],
+  "avif_q": 45
  },
  "taleti--2": {
   "src": "OUR WORK PHOTO/upload/DSCF5606.jpg",
@@ -720,7 +744,8 @@
  },
  "varkhadi--1": {
   "src": "OUR WORK PHOTO/VARKHADI THARAD/IMG-20201108-WA0010.jpg",
-  "alt": "Varkhadi, Tharad: the carved stone entrance building"
+  "alt": "Varkhadi, Tharad: the carved stone entrance building",
+  "avif_q": 45
  },
  "varkhadi--2": {
   "src": "OUR WORK PHOTO/VARKHADI THARAD/IMG_20180425_091722.jpg",
@@ -749,7 +774,8 @@
  },
  "vaishno-devi-ahmedabad--1": {
   "src": "vaishodevi ahmedabad/i3.webp",
-  "alt": "Vaishno Devi, Ahmedabad: the finished artificial mountain in red and grey rock, its cave entrance and white shrines above a paved court"
+  "alt": "Vaishno Devi, Ahmedabad: the finished artificial mountain in red and grey rock, its cave entrance and white shrines above a paved court",
+  "avif_q": 45
  },
  "vaishno-devi-ahmedabad--2": {
   "src": "vaishodevi ahmedabad/vaishno-devi-temple-ahmedabad.webp",

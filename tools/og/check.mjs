@@ -53,7 +53,7 @@ fs.mkdirSync(OUT, { recursive: true });
 const browser = await puppeteer.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new' });
 const tab = await browser.newPage(); await tab.setViewport({ width: 1100, height: 100, deviceScaleFactor: 1 });
 const cards = [];
-for (const rel of ['/', '/contact', '/projects/vaishno-devi-gulbarga', '/projects/godiji-derasar']) {
+for (const rel of ['/', '/contact', '/projects/vaishno-devi-gulbarga', '/projects/kotadi']) {
   const f = path.join(DIST, rel === '/' ? 'index.html' : `${rel.slice(1)}/index.html`);
   const m = meta(fs.readFileSync(f, 'utf8')), host = new URL(SITE).host;
   cards.push(`<div class="pair"><p class="lbl">${rel}</p>

@@ -183,7 +183,7 @@ if __name__ == '__main__':
         p['photos'] = []
         for i, (src, crop, alt, building) in enumerate(photos, 1):
             key = f"{p['id']}--{i}"
-            picks[key] = {'src': src, 'alt': alt, **({'crop': crop} if crop else {}), **({'max': 1600} if i > 1 else {})}
+            picks[key] = {'src': src, 'alt': alt, **({'crop': crop} if crop else {}), **({'max': 1600} if i > 1 else {'avif_q': 45})}  # the lead is the page's LCP: lighter AVIF
             p['photos'].append({'label': alt, 'src': key, **({'construction': True} if building else {})})
             changed.append(key)
     for p in projects:

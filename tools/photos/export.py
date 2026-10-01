@@ -37,7 +37,7 @@ for key, p in picks.items():
         widths.append(im.width)  # the photo's own width when it falls between the steps
     for w in widths:
         s = im if w == im.width else im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
-        for ext, kw in (("avif", {"quality": 55, "speed": 4}), ("webp", {"quality": 78, "method": 6})):
+        for ext, kw in (("avif", {"quality": p.get("avif_q", 55), "speed": 4}), ("webp", {"quality": 78, "method": 6})):
             path = OUT / f"{key}-{w}.{ext}"
             s.save(path, **kw)
             total += path.stat().st_size
