@@ -21,8 +21,6 @@
   h1, h2, h3, h4 { text-wrap: balance; }
   /* The mobile menu is a modal <dialog>; lock page scroll while it is open. */
   html:has(dialog[open]) { overflow: hidden; }
-  /* First play of the CNC trace or the Fero video (src/scripts/scroll-hold.ts). */
-  html.scroll-held { overflow: hidden; }
 }
 
 @layer components {

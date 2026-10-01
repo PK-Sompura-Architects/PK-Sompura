@@ -4,11 +4,12 @@
 
 Reads the archive photo (read-only), flattens it to a rectangle, traces the carving's edges, and writes
   src/data/cnc-paths.json   viewBox + paths in machine order, each tagged with its stage 1-4
-  public/cnc/panel-*.avif|webp  the finished panel (flattened, lighting evened out) that fades in after the lines
+The line drawing is the finished state; no photo is shown. Cleanup: fragments under MIN_LEN are dropped, the rest
+simplified (Douglas-Peucker) and drawn as smooth curves (Catmull-Rom through the kept points, as cubic Beziers).
 Stages: 1 outer border, 2 frame and moulding, 3 main motifs (the longer strokes and the three sunflowers),
 4 fine detail. The panel is carved mirror-symmetric; its right half traces cleanest, so the trace is that half mirrored.
 The three sunflowers are redrawn as clean petal outlines on the photo's flowers (their petals trace patchily).
-Needs opencv-python, scikit-image, scipy, Pillow (AVIF). Run from the project root.
+Needs opencv-python, scikit-image, scipy. Run from the project root.
 """
 import json
 import math
@@ -17,7 +18,6 @@ from pathlib import Path
 
 import cv2
 import numpy as np
-from PIL import Image
 from scipy.ndimage import gaussian_filter1d
 from skimage.morphology import skeletonize
 
@@ -31,6 +31,7 @@ FW, FH = W + 2 * M, H + 2 * M                       # flattened size, 2280 x 165
 CROP = 100                                           # final frame: 100 px in, which also drops the phone marks
 AXIS = 1001                                          # mirror axis, in trace (norm) coordinates: found by correlation
 S = 0.5                                              # output scale: viewBox 0 0 1040 725
+MIN_LEN = 40                                         # shortest traced stroke kept, in viewBox units
 
 photo = cv2.imdecode(np.fromfile(str(SRC), np.uint8), cv2.IMREAD_COLOR)
 P = cv2.getPerspectiveTransform(np.float32(CORNERS), np.float32([(M, M), (M + W, M), (M + W, M + H), (M, M + H)]))
@@ -101,12 +102,12 @@ to_vb = lambda x, y: [(x + OFF - CROP) * S, (y + OFF - CROP) * S]
 strokes = []
 for a in chains:
     length = float(np.sum(np.linalg.norm(np.diff(a, axis=0), axis=1)))
-    if length < 55: continue
+    if length * S < MIN_LEN: continue
     if len(a) > 7:
-        s = np.stack([gaussian_filter1d(a[:, 0], 2.5, mode='nearest'), gaussian_filter1d(a[:, 1], 2.5, mode='nearest')], 1)
+        s = np.stack([gaussian_filter1d(a[:, 0], 3.5, mode='nearest'), gaussian_filter1d(a[:, 1], 3.5, mode='nearest')], 1)
         s[0], s[-1] = a[0], a[-1]
     else: s = a
-    s = cv2.approxPolyDP(s.reshape(-1, 1, 2).astype(np.float32), 1.1, False).reshape(-1, 2)
+    s = cv2.approxPolyDP(s.reshape(-1, 1, 2).astype(np.float32), 1.6, False).reshape(-1, 2)
     v = [to_vb(x, y) for x, y in s]
     strokes.append({'pts': v, 'len': length})
     if max(abs(x - AXIS) for x, _ in s) > 3:          # the mirror image, for the other half
@@ -118,7 +119,7 @@ rect = lambda m: [[m, m], [VW - m, m], [VW - m, VH - m], [m, VH - m], [m, m]]
 paths = [{'stage': 1, 'pts': rect(3)}, {'stage': 2, 'pts': rect(12)}, {'stage': 2, 'pts': rect(20)}]
 cut = np.percentile([s['len'] for s in strokes], 62)
 for s in strokes:
-    s2 = cv2.approxPolyDP(np.array(s['pts'], np.float32).reshape(-1, 1, 2), 0.8, False).reshape(-1, 2).tolist()
+    s2 = cv2.approxPolyDP(np.array(s['pts'], np.float32).reshape(-1, 1, 2), 1.0, False).reshape(-1, 2).tolist()
     paths.append({'stage': 3 if s['len'] >= cut else 4, 'pts': s2})
 
 # 5. The three sunflowers, redrawn on the photo's flowers: petal outlines + domed centre (stage 3), petal midribs and
@@ -141,7 +142,7 @@ for p in paths:
     if p['stage'] < 3: kept.append(p); continue
     segs = [p['pts']]
     for cx, cy, _, R, _, _ in FLOWERS: segs = [q for sg in segs for q in outside(sg, cx, cy, R * 0.98)]
-    kept += [{'stage': p['stage'], 'pts': q} for q in segs if sum(math.dist(q[i], q[i + 1]) for i in range(len(q) - 1)) >= 12]
+    kept += [{'stage': p['stage'], 'pts': q} for q in segs if sum(math.dist(q[i], q[i + 1]) for i in range(len(q) - 1)) >= MIN_LEN]
 paths = kept
 f2 = lambda p: f"{p[0]:.1f} {p[1]:.1f}"
 for cx, cy, rd, R, n, shape in FLOWERS:
@@ -169,21 +170,21 @@ for st in (1, 2, 3, 4):
         if 'd' not in p and np.linalg.norm(np.array(p['pts'][-1]) - cur) < np.linalg.norm(np.array(p['pts'][0]) - cur): p['pts'] = p['pts'][::-1]
         ordered.append(p); cur = np.array(p['pts'][-1], float)
 num = lambda v: ('%.1f' % v).rstrip('0').rstrip('.')
+xy = lambda p: f"{num(p[0])} {num(p[1])}"
+
+def curve(pts):
+    # Catmull-Rom through the points, as cubic Beziers; straight runs (2 points, the frame rectangles' sides) stay lines.
+    P = [np.array(q, float) for q in pts]
+    if len(P) < 3 or (len(P) == 5 and np.allclose(P[0], P[-1])): return 'M' + ' L'.join(xy(q) for q in P)
+    d = 'M' + xy(P[0])
+    for i in range(len(P) - 1):
+        p0, p1, p2, p3 = P[max(i - 1, 0)], P[i], P[i + 1], P[min(i + 2, len(P) - 1)]
+        d += f" C{xy(p1 + (p2 - p0) / 6)} {xy(p2 - (p3 - p1) / 6)} {xy(p2)}"
+    return d
+
 for p in ordered:
-    if 'd' not in p: p['d'] = 'M' + ' '.join(f"{num(x)} {num(y)}" for x, y in p['pts'])
+    if 'd' not in p: p['d'] = curve(p['pts'])
 out = {'viewBox': f"0 0 {num(VW)} {num(VH)}", 'paths': [{'stage': p['stage'], 'd': p['d']} for p in ordered]}
 (ROOT / 'src/data/cnc-paths.json').write_text(json.dumps(out, separators=(',', ':')), encoding='utf-8')
 print('paths by stage', {s: sum(p['stage'] == s for p in ordered) for s in (1, 2, 3, 4)}, '| viewBox', out['viewBox'])
 
-# 7. The finished panel: the flattened photo, cropped to the frame, lighting evened out (the flash left a hot centre
-#    and dark corners), exported as AVIF + WebP.
-img = flat[CROP:FH - CROP, CROP:FW - CROP].astype(np.float32)
-lum = cv2.GaussianBlur(cv2.cvtColor(img.astype(np.uint8), cv2.COLOR_BGR2GRAY).astype(np.float32), (0, 0), 180)
-img = np.clip(img * (lum.mean() / np.maximum(lum, 1))[..., None] ** 0.8 * 1.12, 0, 255).astype(np.uint8)
-pil = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-dest = ROOT / 'public/cnc'; dest.mkdir(parents=True, exist_ok=True)
-for w in (640, 1040, 2080):
-    im = pil if w == pil.width else pil.resize((w, round(pil.height * w / pil.width)), Image.LANCZOS)
-    for ext, kw in (('avif', {'quality': 55, 'speed': 4}), ('webp', {'quality': 78, 'method': 6})):
-        im.save(dest / f'panel-{w}.{ext}', **kw)
-        print(f'panel-{w}.{ext}', f"{(dest / f'panel-{w}.{ext}').stat().st_size // 1024} KB")

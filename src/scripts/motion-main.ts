@@ -6,7 +6,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
-import { useLenis } from './scroll-hold';
+import { useLenis } from './snap';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -19,8 +19,8 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((t) => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
 useLenis(lenis);
-// Stop smooth scrolling while any modal dialog (menu, filter sheet) is open, or a first play holds the page.
-new MutationObserver(() => ($$('dialog[open]').length || document.documentElement.classList.contains('scroll-held') ? lenis.stop() : lenis.start()))
+// Stop smooth scrolling while any modal dialog (menu, filter sheet) is open.
+new MutationObserver(() => ($$('dialog[open]').length ? lenis.stop() : lenis.start()))
   .observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
 
 // ── Split Text (§5, §7, §8 headings): lines rise y 40% → 0 with opacity, 0.8 s power3.out, 80 ms stagger, at 75%.

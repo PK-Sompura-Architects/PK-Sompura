@@ -1,27 +1,20 @@
 ---
 // CNC chapter: a line trace of one of the firm's CNC-cut sandstone panels (tools/cnc/trace.py), drawn in machine
-// order: 1 outer border → 2 frame and moulding → 3 main motifs → 4 fine detail, a saffron tool tip riding the active
-// path; then the panel photo fades in behind the lines (600 ms). About 5 s. It starts when the panel is 60% in view
-// and plays once per page view: it pauses when scrolled away and resumes on return; Replay when it has finished.
-// The first play brings the panel to the middle of the screen and holds the page still until it ends; Replay doesn't.
+// order on a 5 s timeline: 1 outer border 0.8 s → 2 frame and mouldings 1.0 s → 3 main motifs 1.6 s → 4 fine detail
+// 1.6 s. Paths within a stage draw in parallel, slightly staggered; a saffron tool tip rides the stage's longest path.
+// The drawing is the finished state. It starts when the panel is 35% in view (scrolling down into it snaps the panel
+// to fill the screen once, src/scripts/snap.ts), pauses off-screen and resumes in view; Replay when finished.
+// Before it starts, the outer border shows faintly on the uncut stone. No JS or reduced motion: the finished drawing.
 // The panel's width is capped so panel and caption fit one screen.
-// Before it starts, the outer border shows faintly on the uncut stone. No JS or reduced motion: the finished panel.
 import cnc from '../data/cnc-paths.json';
 
 const [, , vw, vh] = cnc.viewBox.split(' ').map(Number);
-const set = (ext: string) => [640, 1040, 2080].map((w) => `/cnc/panel-${w}.${ext} ${w}w`).join(', ');
-const sizes = '(min-width: 1440px) 1280px, (min-width: 1024px) calc(100vw - 96px), (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)';
 ---
 <div data-cnc class="cnc wrap mt-10 lg:mt-24">
   <figure class="m-0 mx-auto flex flex-col gap-3 lg:gap-3.5" style={`max-width: calc((100svh - 128px) * ${vw / vh})`}>
     <div class="relative w-full overflow-hidden bg-stone bg-stone-tex" style={`aspect-ratio: ${vw} / ${vh}`}>
-      <picture class="cnc-photo">
-        <source type="image/avif" srcset={set('avif')} sizes={sizes} />
-        <img src="/cnc/panel-1040.webp" srcset={set('webp')} sizes={sizes} width="2080" height="1450" loading="lazy" decoding="async"
-          alt="A CNC-cut sandstone panel: a sheaf of stems tied with a band, a sunflower at the centre and at each end, and mirrored scrolls"
-          class="absolute inset-0 h-full w-full object-cover" />
-      </picture>
-      <svg class="cnc-lines absolute inset-0 h-full w-full" viewBox={cnc.viewBox} fill="none" aria-hidden="true">
+      <svg class="cnc-lines absolute inset-0 h-full w-full" viewBox={cnc.viewBox} fill="none" role="img"
+        aria-label="Line drawing of a CNC-cut sandstone panel: a sheaf of stems tied with a band, a sunflower at the centre and at each end, and mirrored scrolls">
         <defs><filter id="cnc-glow" x="-2" y="-2" width="5" height="5"><feGaussianBlur stdDeviation="2" /></filter></defs>
         <path class="cnc-ghost" d={cnc.paths[0].d} />
         {cnc.paths.map((p) => <path d={p.d} pathLength="1" data-stage={p.stage} />)}
@@ -39,44 +32,55 @@ const sizes = '(min-width: 1440px) 1280px, (min-width: 1024px) calc(100vw - 96px
 </div>
 
 <script>
-  import { hold } from '../scripts/scroll-hold';
+  import { snap } from '../scripts/snap';
   const root = document.querySelector<HTMLElement>('[data-cnc]');
   if (root && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const paths = [...root.querySelectorAll<SVGPathElement>('path[data-stage]')];
     const tip = root.querySelector<SVGGElement>('.cnc-tip')!;
     const replay = root.querySelector<HTMLButtonElement>('.cnc-replay')!;
-    // Seconds per stage, shared across its paths by length; the photo then takes 0.6 s (CSS): 4.6 + 0.6 ≈ 5 s.
-    const BUDGET: Record<string, number> = { 1: 0.5, 2: 0.7, 3: 2.2, 4: 1.2 };
+    const fig = root.querySelector<HTMLElement>('figure')!;
+    // Stage durations (s); each path starts within the first 35% of its stage and takes the remaining 65%.
+    const STAGES: [string, number][] = [['1', 0.8], ['2', 1.0], ['3', 1.6], ['4', 1.6]];
+    const STAGGER = 0.35;
     const lens = paths.map((p) => p.getTotalLength());
     const seg: { t0: number; t1: number }[] = [];
+    const lead: { i: number; t0: number; t1: number }[] = []; // the path the tip rides in each stage
     let t = 0;
-    for (const st of ['1', '2', '3', '4']) {
+    for (const [st, dur] of STAGES) {
       const idx = paths.flatMap((p, i) => (p.dataset.stage === st ? [i] : []));
-      const total = idx.reduce((a, i) => a + lens[i], 0);
-      for (const i of idx) { seg[i] = { t0: t, t1: t + (BUDGET[st] * lens[i]) / total }; t = seg[i].t1; }
+      idx.forEach((i, k) => {
+        const t0 = t + (idx.length > 1 ? (dur * STAGGER * k) / (idx.length - 1) : 0);
+        seg[i] = { t0, t1: idx.length > 1 ? t0 + dur * (1 - STAGGER) : t + dur };
+      });
+      const li = idx.reduce((a, i) => (lens[i] > lens[a] ? i : a), idx[0]);
+      lead.push({ i: li, ...seg[li] });
+      t += dur;
     }
+    const TOTAL = t;
 
-    let elapsed = 0, done = 0, raf = 0, last = 0, started = false, finished = false, inView = false;
-    let release = () => {};
+    let elapsed = 0, raf = 0, last = 0, started = false, finished = false, inView = false, wall0 = 0;
     const finish = () => {
       finished = true;
-      setTimeout(release, 600); // once the photo has faded in
       tip.style.opacity = '0';
       root.classList.add('cnc-done');
       replay.hidden = false;
+      if (import.meta.env.DEV) console.info(`[cnc] drawn: timeline ${elapsed.toFixed(2)} s, wall clock ${((performance.now() - wall0) / 1000).toFixed(2)} s`);
     };
     const draw = () => {
-      while (done < paths.length && seg[done].t1 <= elapsed) paths[done++].style.strokeDashoffset = '0';
-      if (done === paths.length) return finish();
-      const s = seg[done], f = Math.max(0, (elapsed - s.t0) / (s.t1 - s.t0));
-      paths[done].style.strokeDashoffset = String(1 - f);
-      const pt = paths[done].getPointAtLength(lens[done] * f);
+      for (let i = 0; i < paths.length; i++) {
+        const f = Math.min(1, Math.max(0, (elapsed - seg[i].t0) / (seg[i].t1 - seg[i].t0)));
+        paths[i].style.strokeDashoffset = String(1 - f);
+      }
+      const l = lead.find((s) => elapsed < s.t1) ?? lead[lead.length - 1];
+      const f = Math.min(1, Math.max(0, (elapsed - l.t0) / (l.t1 - l.t0)));
+      const pt = paths[l.i].getPointAtLength(lens[l.i] * f);
       tip.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
-      tip.style.opacity = '1';
+      tip.style.opacity = f > 0 ? '1' : '0';
+      if (elapsed >= TOTAL) finish();
     };
     const frame = (now: number) => {
       raf = 0;
-      elapsed += Math.min(now - (last || now), 50) / 1000; // capped, so a stalled frame never skips ahead
+      elapsed = Math.min(TOTAL, elapsed + Math.min(now - (last || now), 50) / 1000); // capped: a stalled frame never skips ahead
       last = now;
       draw();
       if (!finished && inView) raf = requestAnimationFrame(frame);
@@ -85,41 +89,38 @@ const sizes = '(min-width: 1440px) 1280px, (min-width: 1024px) calc(100vw - 96px
     const pause = () => { cancelAnimationFrame(raf); raf = 0; };
 
     root.classList.add('cnc-armed');
-    // Start (once) at 60% visible, after the page has settled on the panel; pause below 20%, resume at 60% again.
+    // Starts (once) at 35% visible, snapping when scrolled down into; pauses off-screen, resumes back in view.
+    let initial = true;
     new IntersectionObserver(([e]) => {
-      if (e.intersectionRatio >= 0.6) {
-        inView = true;
-        if (started) play();
-        else { started = true; release = hold(root.querySelector('figure')!, play, 8000); }
-      }
-      else if (e.intersectionRatio < 0.2) { inView = false; pause(); }
-    }, { threshold: [0, 0.2, 0.6] }).observe(root.querySelector('figure > div')!);
+      const first = initial; initial = false;
+      if (!e.isIntersecting) { inView = false; return pause(); }
+      if (!started && e.intersectionRatio < 0.35) return;
+      inView = true;
+      if (!started) { started = true; wall0 = performance.now(); if (!first) snap(fig); }
+      play();
+    }, { threshold: [0, 0.35] }).observe(fig);
     replay.addEventListener('click', () => {
       paths.forEach((p) => (p.style.strokeDashoffset = ''));
       root.classList.remove('cnc-done');
       replay.hidden = true;
-      elapsed = 0; done = 0; finished = false; inView = true;
-      if (started) play();
+      elapsed = 0; finished = false; inView = true; wall0 = performance.now();
+      play();
     });
   }
 </script>
 
 <style>
-  .cnc-lines path { stroke: #262654; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
-  .cnc-lines path[data-stage='4'] { stroke: #52606b; stroke-width: 0.9; }
+  /* Stroke weights: the border and frame heaviest, main motifs medium, fine detail lightest. */
+  .cnc-lines path { stroke: #262654; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+  .cnc-lines path[data-stage='1'] { stroke-width: 2; }
+  .cnc-lines path[data-stage='2'] { stroke-width: 1.6; }
+  .cnc-lines path[data-stage='4'] { stroke: #52606b; stroke-width: 0.75; }
   .cnc-lines .cnc-ghost { display: none; }
   .cnc-tip { opacity: 0; }
-  /* Finished (no JS, reduced motion, and after the play): the photo, with the lines kept faintly over it. */
-  .cnc-lines { opacity: 0.45; transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1); }
-  .cnc-photo img { transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1); }
   /* Armed: uncut stone, the outer border faint, every path hidden until the tool reaches it. */
-  :global(.cnc-armed) .cnc-lines { opacity: 1; }
-  :global(.cnc-armed) .cnc-lines .cnc-ghost { display: block; opacity: 0.3; }
+  :global(.cnc-armed) .cnc-lines .cnc-ghost { display: block; opacity: 0.3; stroke-width: 2; }
   /* Gap 2 > the path's length 1, so a hidden path leaves no round-cap dot at its end. */
   :global(.cnc-armed) .cnc-lines path[data-stage] { stroke-dasharray: 1 2; stroke-dashoffset: 1; }
-  :global(.cnc-armed) .cnc-photo img { opacity: 0; }
-  :global(.cnc-armed.cnc-done) .cnc-lines { opacity: 0.45; }
-  :global(.cnc-armed.cnc-done) .cnc-photo img { opacity: 1; }
   .cnc-replay {
     flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
     padding: 0 14px; border: 1px solid #262654; background: #F4EFE6; color: #262654;

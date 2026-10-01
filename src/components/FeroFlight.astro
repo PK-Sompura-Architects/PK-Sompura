@@ -3,8 +3,8 @@
 // camera from above the cloud deck down over the ridges into the cave mouth. Desktop 1920×1080 and portrait 1080×1920,
 // each as VP9 WebM and H.264 MP4, picked by orientation; the final frame is the poster. Text is HTML, never in the video.
 //   Motion: the video loads when the section comes within a screen (preload none, so never part of the first load),
-//   plays once when 60% visible, pauses when scrolled away and resumes; at the end it keeps the last frame, Replay.
-//   The first play brings the stage to fill the screen and holds the page still until the video ends; Replay doesn't.
+//   plays once when 35% visible, pauses off-screen and resumes in view; at the end it keeps the last frame, Replay.
+//   Scrolling down into it snaps the stage to fill the screen once (src/scripts/snap.ts); scrolling is never held.
 //   Reduced motion or Save-Data: the final-frame poster and a Play button; nothing loads until it's pressed.
 //   play() rejected: the same poster and Play button. No JS: the poster, with the full title.
 // Text states (full → docked → docked + line) follow video.currentTime at P3's progress points (t / 8 s).
@@ -44,7 +44,7 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
 </div>
 
 <script>
-  import { hold } from '../scripts/scroll-hold';
+  import { snap } from '../scripts/snap';
   const fly = document.querySelector<HTMLElement>('[data-fly]');
   if (fly) {
     const stage = fly.querySelector<HTMLElement>('.fly-stage')!;
@@ -92,12 +92,10 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
     const posterUrl = () => `/video/fero-${matchMedia('(orientation: portrait)').matches ? 'mobile' : 'desktop'}-poster.webp`;
     const still = () => { stage.classList.add('fly-still'); video.poster = posterUrl(); apply(1); button('Play'); };
     const load = () => { if (video.preload !== 'auto') { video.preload = 'auto'; video.load(); } };
-    let release = () => {}, held = false;
-    const play = () => video.play().catch(() => { if (video.paused) { release(); still(); } });
+    const play = () => video.play().catch(() => { if (video.paused) still(); });
 
     video.addEventListener('playing', () => { stage.classList.remove('fly-still'); stage.classList.add('fly-live'); button(null); sync(); });
-    video.addEventListener('ended', () => { release(); apply(1); button('Replay'); });
-    video.addEventListener('error', () => release(), true);
+    video.addEventListener('ended', () => { apply(1); button('Replay'); });
     btn.addEventListener('click', () => {
       load();
       if (video.ended) video.currentTime = 0;
@@ -109,17 +107,18 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
     else {
       stage.classList.add('fly-motion');
       apply(0);
-      // Load within a screen of the section; play at 60% visible, pause below 20%, resume at 60%.
+      // Load within a screen of the section; start at 35% visible (snapping when scrolled down into), pause off-screen,
+      // resume back in view.
       const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); load(); } }, { rootMargin: '100% 0px' });
       near.observe(stage);
+      let started = false, initial = true;
       new IntersectionObserver(([e]) => {
-        if (e.intersectionRatio >= 0.6 && !video.ended && btn.hidden) {
-          load();
-          // First time: the 8 s video plus loading time, at most 14 s held.
-          if (held) play(); else { held = true; release = hold(stage, play, 14000); }
-        }
-        else if (e.intersectionRatio < 0.2 && !video.paused) video.pause();
-      }, { threshold: [0, 0.2, 0.6] }).observe(stage);
+        const first = initial; initial = false;
+        if (!e.isIntersecting) { if (!video.paused) video.pause(); return; }
+        if (video.ended || !btn.hidden || (!started && e.intersectionRatio < 0.35)) return;
+        if (!started) { started = true; if (!first) snap(stage); }
+        load(); play();
+      }, { threshold: [0, 0.35] }).observe(stage);
     }
   }
 </script>
