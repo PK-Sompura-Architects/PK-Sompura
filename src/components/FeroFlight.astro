@@ -4,6 +4,7 @@
 // each as VP9 WebM and H.264 MP4, picked by orientation; the final frame is the poster. Text is HTML, never in the video.
 //   Motion: the video loads when the section comes within a screen (preload none, so never part of the first load),
 //   plays once when 60% visible, pauses when scrolled away and resumes; at the end it keeps the last frame, Replay.
+//   The first play brings the stage to fill the screen and holds the page still until the video ends; Replay doesn't.
 //   Reduced motion or Save-Data: the final-frame poster and a Play button; nothing loads until it's pressed.
 //   play() rejected: the same poster and Play button. No JS: the poster, with the full title.
 // Text states (full → docked → docked + line) follow video.currentTime at P3's progress points (t / 8 s).
@@ -43,6 +44,7 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
 </div>
 
 <script>
+  import { hold } from '../scripts/scroll-hold';
   const fly = document.querySelector<HTMLElement>('[data-fly]');
   if (fly) {
     const stage = fly.querySelector<HTMLElement>('.fly-stage')!;
@@ -90,10 +92,12 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
     const posterUrl = () => `/video/fero-${matchMedia('(orientation: portrait)').matches ? 'mobile' : 'desktop'}-poster.webp`;
     const still = () => { stage.classList.add('fly-still'); video.poster = posterUrl(); apply(1); button('Play'); };
     const load = () => { if (video.preload !== 'auto') { video.preload = 'auto'; video.load(); } };
-    const play = () => video.play().catch(() => { if (video.paused) still(); });
+    let release = () => {}, held = false;
+    const play = () => video.play().catch(() => { if (video.paused) { release(); still(); } });
 
     video.addEventListener('playing', () => { stage.classList.remove('fly-still'); stage.classList.add('fly-live'); button(null); sync(); });
-    video.addEventListener('ended', () => { apply(1); button('Replay'); });
+    video.addEventListener('ended', () => { release(); apply(1); button('Replay'); });
+    video.addEventListener('error', () => release(), true);
     btn.addEventListener('click', () => {
       load();
       if (video.ended) video.currentTime = 0;
@@ -109,7 +113,11 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
       const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); load(); } }, { rootMargin: '100% 0px' });
       near.observe(stage);
       new IntersectionObserver(([e]) => {
-        if (e.intersectionRatio >= 0.6) { if (!video.ended && btn.hidden) { load(); play(); } }
+        if (e.intersectionRatio >= 0.6 && !video.ended && btn.hidden) {
+          load();
+          // First time: the 8 s video plus loading time, at most 14 s held.
+          if (held) play(); else { held = true; release = hold(stage, play, 14000); }
+        }
         else if (e.intersectionRatio < 0.2 && !video.paused) video.pause();
       }, { threshold: [0, 0.2, 0.6] }).observe(stage);
     }

@@ -3,6 +3,8 @@
 // order: 1 outer border → 2 frame and moulding → 3 main motifs → 4 fine detail, a saffron tool tip riding the active
 // path; then the panel photo fades in behind the lines (600 ms). About 5 s. It starts when the panel is 60% in view
 // and plays once per page view: it pauses when scrolled away and resumes on return; Replay when it has finished.
+// The first play brings the panel to the middle of the screen and holds the page still until it ends; Replay doesn't.
+// The panel's width is capped so panel and caption fit one screen.
 // Before it starts, the outer border shows faintly on the uncut stone. No JS or reduced motion: the finished panel.
 import cnc from '../data/cnc-paths.json';
 
@@ -11,7 +13,7 @@ const set = (ext: string) => [640, 1040, 2080].map((w) => `/cnc/panel-${w}.${ext
 const sizes = '(min-width: 1440px) 1280px, (min-width: 1024px) calc(100vw - 96px), (min-width: 768px) calc(100vw - 80px), calc(100vw - 40px)';
 ---
 <div data-cnc class="cnc wrap mt-10 lg:mt-24">
-  <figure class="m-0 flex flex-col gap-3 lg:gap-3.5">
+  <figure class="m-0 mx-auto flex flex-col gap-3 lg:gap-3.5" style={`max-width: calc((100svh - 128px) * ${vw / vh})`}>
     <div class="relative w-full overflow-hidden bg-stone bg-stone-tex" style={`aspect-ratio: ${vw} / ${vh}`}>
       <picture class="cnc-photo">
         <source type="image/avif" srcset={set('avif')} sizes={sizes} />
@@ -37,6 +39,7 @@ const sizes = '(min-width: 1440px) 1280px, (min-width: 1024px) calc(100vw - 96px
 </div>
 
 <script>
+  import { hold } from '../scripts/scroll-hold';
   const root = document.querySelector<HTMLElement>('[data-cnc]');
   if (root && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const paths = [...root.querySelectorAll<SVGPathElement>('path[data-stage]')];
@@ -54,8 +57,10 @@ const sizes = '(min-width: 1440px) 1280px, (min-width: 1024px) calc(100vw - 96px
     }
 
     let elapsed = 0, done = 0, raf = 0, last = 0, started = false, finished = false, inView = false;
+    let release = () => {};
     const finish = () => {
       finished = true;
+      setTimeout(release, 600); // once the photo has faded in
       tip.style.opacity = '0';
       root.classList.add('cnc-done');
       replay.hidden = false;
@@ -80,9 +85,13 @@ const sizes = '(min-width: 1440px) 1280px, (min-width: 1024px) calc(100vw - 96px
     const pause = () => { cancelAnimationFrame(raf); raf = 0; };
 
     root.classList.add('cnc-armed');
-    // Start (once) at 60% visible; pause below 20%, resume at 60% again.
+    // Start (once) at 60% visible, after the page has settled on the panel; pause below 20%, resume at 60% again.
     new IntersectionObserver(([e]) => {
-      if (e.intersectionRatio >= 0.6) { inView = true; started = true; play(); }
+      if (e.intersectionRatio >= 0.6) {
+        inView = true;
+        if (started) play();
+        else { started = true; release = hold(root.querySelector('figure')!, play, 8000); }
+      }
       else if (e.intersectionRatio < 0.2) { inView = false; pause(); }
     }, { threshold: [0, 0.2, 0.6] }).observe(root.querySelector('figure > div')!);
     replay.addEventListener('click', () => {
