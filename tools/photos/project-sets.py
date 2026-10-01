@@ -82,7 +82,7 @@ SETS = {
   ('KHAJURI/IMG-20230502-WA0023.jpg', None, 'Khajuri: a sandstone shikhara above a small porch', False),
   ('KHAJURI/IMG-20230502-WA0017.jpg', None, 'The temple from the side, the shikhara and porch', False),
   ('KHAJURI/IMG-20230428-WA0026.jpg', None, 'A carved sandstone ceiling above a doorway', False)]),
- 'kotadi': ("A Jain derasar at Kotadi built by the firm in pink sandstone. Three shikharas stand above a wide stair flanked by stone elephants; the doorways have carved wooden doors, and the ceilings and floors are carved and inlaid.", [
+ 'kotadi': ("A Jain derasar at Kotadi, hand-carved and built by the firm in pink sandstone. Three shikharas stand above a wide stair flanked by stone elephants; the doorways have carved wooden doors, and the ceilings and floors are carved and inlaid.", [
   ('OUR WORK PHOTO/KOTADI/DSCN0605.jpg', None, 'Kotadi: three pink sandstone shikharas above a wide stair with stone elephants', False),
   ('Kotadi/DSCN0609.jpg', None, 'The carved sandstone gateway to the derasar', False),
   ('OUR WORK PHOTO/KOTADI/DSCN0617.jpg', None, 'The shikharas from across the paved terrace', False),

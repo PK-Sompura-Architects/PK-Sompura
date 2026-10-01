@@ -35,7 +35,7 @@
   "name": "Asha Life Mission",
   "place": "",
   "state": "",
-  "type": "Bhavan",
+  "type": "Hindu temple",
   "scope": [
    "Design",
    "Construction"
@@ -480,6 +480,7 @@
   "state": "Gujarat",
   "type": "Jain derasar",
   "scope": [
+   "Hand carving",
    "Construction"
   ],
   "photos": [
@@ -521,7 +522,7 @@
    }
   ],
   "featured": false,
-  "text": "A Jain derasar at Kotadi built by the firm in pink sandstone. Three shikharas stand above a wide stair flanked by stone elephants; the doorways have carved wooden doors, and the ceilings and floors are carved and inlaid."
+  "text": "A Jain derasar at Kotadi, hand-carved and built by the firm in pink sandstone. Three shikharas stand above a wide stair flanked by stone elephants; the doorways have carved wooden doors, and the ceilings and floors are carved and inlaid."
  },
  {
   "id": "liliya",
