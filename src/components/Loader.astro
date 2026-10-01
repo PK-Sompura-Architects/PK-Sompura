@@ -4,7 +4,8 @@
 // fonts and the hero poster (each a quarter). The count under it eases towards that real value. At 100% the stroke
 // completes, the full-colour logo fades in over 300 ms, then the loader fades out.
 // Shown on every full load and reload; skipped only for internal links (same-origin referrer + type "navigate").
-// Hard cap: gone by 2.5 s after navigation start. Reduced motion: the static logo and the count, no fades.
+// Hard cap: gone 2.5 s after the loader first appears (not after navigation start: on a slow connection the page
+// itself arrives late, and counting from navigation cut the drawing short and snapped it to 100%). Reduced motion: the static logo and the count, no fades.
 // Without JS it never shows (it's display:none until the head script adds html.pk-ld). The page is in the HTML
 // underneath the whole time; the loader is aria-hidden and a visually hidden status says "Loading".
 // The full-colour logo is drawn into a <canvas> rather than shown as an <img>: it looks the same, but as an <img> it
@@ -65,10 +66,13 @@ svg = svg.replace(/<path pathLength="1"/g, () => `<path pathLength="1" style="--
       setTimeout(() => { el.remove(); status.remove(); root.classList.remove('pk-ld'); }, still ? 0 : FADE);
     }, still ? 0 : FADE);
   };
-  setTimeout(() => { if (!ending) finish(); }, Math.max(0, CAP - performance.now()));
+  setTimeout(() => { if (!ending) finish(); }, CAP); // t0: this script runs as the loader first paints
   const frame = () => {
     if (ending) return;
-    shown = still ? target : Math.min(target, shown + Math.max(0.004, (target - shown) * 0.18), (performance.now() - t0) / MIN);
+    // A floor rising to 1 at the cap: when the real progress stalls (slow connections) the outline keeps drawing and
+    // completes at the cap instead of snapping to 100%. Eased in, so on a normal connection the real value leads.
+    const f = Math.min(1, (performance.now() - t0) / CAP), goal = Math.max(target, f * f * f);
+    shown = still ? goal : Math.min(goal, shown + Math.max(0.004, (goal - shown) * 0.18), (performance.now() - t0) / MIN);
     paint(shown);
     shown >= 0.999 ? finish() : requestAnimationFrame(frame);
   };

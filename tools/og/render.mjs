@@ -1,7 +1,8 @@
 // Link-preview images (Open Graph / Twitter), 1200 × 630 JPEG, rendered from HTML in headless Chrome with the site's
 // own fonts and images:
 //   public/og/default.jpg            the logo, name and tagline on sand, with the hero's temple drawing
-//   public/og/projects/<id>.jpg      each project that has a photo: the photo, with its name on a sand panel
+//   public/og/projects/<id>.jpg      each project that has a photo: the photo, with its name on a sand panel at the top
+//                                    (X lays its title strip over the bottom left of the image)
 // Run from the project root after the photos are exported:  node tools/og/render.mjs
 import http from 'node:http';
 import fs from 'node:fs';
@@ -40,7 +41,7 @@ const DEFAULT = page(`
 
 const card = (p, img) => page(`
   <img src="${img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-  <div style="position:absolute;left:0;bottom:0;width:640px;padding:36px 48px 40px 56px;background:#F4EFE6 url(/public/tex/sand.webp)">
+  <div style="position:absolute;left:0;top:0;width:640px;padding:40px 48px 36px 56px;background:#F4EFE6 url(/public/tex/sand.webp)">
     <p class="mono" style="font-size:17px">Temple Register · P.K. Sompura</p>
     <p style="font:400 64px/1.02 Caslon;margin-top:14px">${esc(p.name)}</p>
     <p class="mono" style="margin-top:14px;font-size:18px;color:#262654">${esc([p.place && [p.place, p.state].join(', '), p.type].filter(Boolean).join(' · '))}</p>

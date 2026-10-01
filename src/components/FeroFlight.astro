@@ -27,6 +27,8 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
     </video>
     <!-- A night scrim over the top 38% (the fog, and the cave glow at the end), so sand text keeps 4.5:1. -->
     <div class="fly-scrim pointer-events-none absolute inset-x-0 top-0 h-[38%] bg-gradient-to-b from-night to-transparent" aria-hidden="true"></div>
+    <!-- Desktop end: a soft night shade behind the full-size title, so it doesn't sit on the busy cave edge. -->
+    <div class="fly-shade pointer-events-none absolute inset-0 max-lg:hidden" aria-hidden="true"></div>
 
     <div class="fly-text wrap absolute inset-x-0 top-0 pt-24 lg:pt-32">
       <p class="eyebrow text-sky">Line of work 03 / 03</p>
@@ -74,6 +76,8 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
       text.style.setProperty('--lo', String(clamp(1 - smooth(0.06, 0.12, x) + smooth(0.66, 0.72, x))));
       // Night scrim over the top 38%: in the fog (S2) and from the reveal on, so the text stays on night.
       stage.style.setProperty('--scrim', String(Math.max(smooth(0.1, 0.18, x) * (1 - smooth(0.4, 0.5, x)), smooth(0.62, 0.72, x))));
+      // Shade behind the title as it returns to full size at the end (desktop).
+      stage.style.setProperty('--shade', String(smooth(0.8, 0.88, x)));
     };
     const redo = () => { measure(); apply(p); };
     addEventListener('resize', redo); desk.addEventListener('change', redo);
@@ -137,6 +141,12 @@ const alt = 'Inside the cave mouth of an artificial mountain: a white-stone Naga
   :global(.js) .fly-h2 { transform: scale(var(--s, 1)); }
   :global(.js) .fly-line { position: absolute; margin: 0; top: calc(var(--h2y, 0px) + var(--h2h, 0px) * var(--s, 1) + 16px); opacity: var(--lo, 1); }
   :global(.js) .fly-scrim { opacity: var(--scrim, 0); }
+  /* Ellipse centred on the title block (top left), night at its core, gone by the cave mouth. No JS: shown, as the
+     poster is the end frame. */
+  .fly-shade {
+    z-index: 1; opacity: var(--shade, 1);
+    background: radial-gradient(ellipse 46% 52% at 16% 22%, rgb(14 14 31 / 0.82), rgb(14 14 31 / 0.55) 45%, rgb(14 14 31 / 0) 100%);
+  }
   .fly-btn {
     position: absolute; right: 20px; bottom: 20px; z-index: 3; display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
     padding: 0 16px; border: 1px solid #F4EFE6; background: rgb(14 14 31 / 0.6); color: #F4EFE6;
