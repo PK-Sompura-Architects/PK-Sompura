@@ -201,6 +201,7 @@ const cncPhotos = [
       <dl class="col-span-4 flex flex-col md:col-span-8 lg:col-span-6 lg:self-end">
         {[
           ['Phone', contact.phone, contact.phoneHref],
+          ['WhatsApp', contact.whatsapp, contact.whatsappHref],
           ['Email', contact.email, `mailto:${contact.email}`],
           ['Instagram', contact.instagram, contact.instagramHref],
         ].map(([dt, value, href]) => (

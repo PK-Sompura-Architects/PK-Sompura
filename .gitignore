@@ -34,9 +34,11 @@ work_website_images/
 !public/media/**
 !public/cnc/**
 !public/video/**
+!public/og/**
 
 # --- Tooling ---
 tools/fero-video/out/
+tools/og/out/
 node_modules/
 dist/
 build/

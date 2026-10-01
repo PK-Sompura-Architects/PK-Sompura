@@ -4,6 +4,7 @@ import PhotoFrame from '../../components/PhotoFrame.astro';
 import ScopeTag from '../../components/ScopeTag.astro';
 import TypeCard from '../../components/TypeCard.astro';
 import { pad, placeFull, sortedProjects, type Project } from '../../lib/projects';
+import { contact } from '../../data/site';
 
 export async function getStaticPaths() {
   const all = await sortedProjects();
@@ -30,6 +31,7 @@ const cap = (i: number, c?: string) => (total > 1 ? `${i} / ${total}${c ? ` · $
 const crumb = p.place ? placeFull(p) : 'Place to confirm';
 ---
 <Base title={`${p.name}${p.place && p.place !== p.name ? `, ${p.place}` : ''} · Temple Register · P.K. Sompura`} current="register"
+  image={p.photos[0] ? `/og/projects/${project.id}.jpg` : undefined} imageAlt={p.photos[0] ? `${p.name}, ${placeFull(p)}: ${p.type}` : undefined}
   description={`${p.name}, ${placeFull(p)}. ${p.type} in the Temple Register of P.K. Sompura, temple architects and contractors.`}>
   <nav aria-label="Breadcrumb" class="wrap pt-6 font-mono text-[12px] text-slate-deep lg:pt-16 lg:text-[13px]">
     <a href="/projects" class="inline-flex min-h-11 items-center text-navy underline underline-offset-4 hover:text-saffron-text">Temple Register</a>
@@ -101,7 +103,21 @@ const crumb = p.place ? placeFull(p) : 'Place to confirm';
     </>
   )}
 
-  <nav aria-label="More projects" class="wrap mt-16 flex flex-col gap-4 border-t border-navy pb-24 pt-6 lg:mt-36 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-6 lg:pb-40 lg:pt-8">
+  <!-- Closing call to action on every project page. -->
+  <section class="wrap mt-16 lg:mt-36" aria-labelledby="plan-title">
+    <div class="flex flex-col gap-5 bg-stone bg-stone-tex px-5 py-8 shadow-tablet lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-16 lg:py-14">
+      <div class="flex flex-col gap-3 lg:gap-4">
+        <h2 id="plan-title" class="text-cut font-display text-[34px] leading-[1.05] lg:text-[56px]">Planning a temple?</h2>
+        <p class="max-w-[46ch] text-[16px] leading-[1.55] lg:text-[18px]">Talk to the workshop in Palitana about design, carving and construction.</p>
+      </div>
+      <div class="flex flex-col gap-3 md:flex-row lg:flex-none">
+        <a href={contact.phoneHref} class="btn-primary">Call {contact.phone}</a>
+        <a href={contact.whatsappHref} class="btn-secondary">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <nav aria-label="More projects" class="wrap mt-12 flex flex-col gap-4 border-t border-navy pb-24 pt-6 lg:mt-24 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-6 lg:pb-40 lg:pt-8">
     <div>
       {prev && (
         <a href={`/projects/${prev.id}`} class="group flex min-h-14 flex-col gap-1 lg:gap-2">

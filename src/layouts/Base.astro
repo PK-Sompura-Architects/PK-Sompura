@@ -8,7 +8,7 @@ import '../styles/global.css';
 import SiteNav from '../components/SiteNav.astro';
 import Footer from '../components/Footer.astro';
 import Loader from '../components/Loader.astro';
-import type { NavKey } from '../data/site';
+import { contact, type NavKey } from '../data/site';
 // Preloaded so they don't wait for the CSS: the heading face (every h1, often the LCP) and the body face (its late
 // swap shifted the layout under the h1, CLS 0.034 on /contact).
 import caslon from '@fontsource/libre-caslon-display/files/libre-caslon-display-latin-400-normal.woff2?url';
@@ -19,13 +19,34 @@ interface Props {
   description?: string;
   theme?: 'light' | 'night';
   current?: NavKey;
+  image?: string; // link-preview image, 1200 × 630 (tools/og/render.mjs); the site card by default
+  imageAlt?: string;
 }
 const {
   title,
   description = 'P.K. Sompura, temple architects and contractors in Palitana, Gujarat. Hand carving, CNC stone work and artificial mountain temples.',
   theme = 'light',
   current,
+  image = '/og/default.jpg',
+  imageAlt = 'P.K. Sompura, Temple Architect & Contractor, Palitana, Gujarat: Where Devotion Meets Stone.',
 } = Astro.props;
+// Absolute URLs from the one site address in astro.config.mjs.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = new URL(image, Astro.site).href;
+const street = contact.address.slice(0, 3).join(', ');             // the last line is 'Palitana 364270, Gujarat'
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'P.K. Sompura',
+  description: 'Temple architects and contractors in Palitana, Gujarat: design, hand carving, CNC stone work and artificial mountain temples.',
+  url: new URL('/', Astro.site).href,
+  logo: new URL('/logo.webp', Astro.site).href,
+  image: new URL('/og/default.jpg', Astro.site).href,
+  telephone: contact.phoneHref.replace('tel:', ''),
+  email: contact.email,
+  address: { '@type': 'PostalAddress', streetAddress: street, addressLocality: 'Palitana', postalCode: '364270', addressRegion: 'Gujarat', addressCountry: 'IN' },
+  sameAs: [contact.instagramHref],
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -34,6 +55,23 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="P.K. Sompura" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <script type="application/ld+json" set:html={JSON.stringify(business)} />
     <meta name="theme-color" content={theme === 'night' ? '#0E0E1F' : '#F4EFE6'} />
     <link rel="icon" type="image/webp" href="/logo.webp" />
     <link rel="preload" as="font" type="font/woff2" href={caslon} crossorigin />
