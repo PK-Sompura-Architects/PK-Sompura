@@ -67,6 +67,10 @@
   /* Heading text cut into stone: cut.webp clipped to the letters, sand highlight 1 px below.
      Headings ≥ 40 px only. Navy is the fallback where background-clip:text is unsupported. */
   .text-cut { color: theme('colors.navy'); }
+  /* Room for descenders (g, p, y, j, q, commas) and overhanging glyphs: the texture is painted only inside the box,
+     and the display line-heights (0.9–0.96) put descenders below it. Padding out, negative margin back: layout unchanged.
+     The Split Text line masks (overflow: clip) get the same room. */
+  .text-cut, .split-line-mask { padding: 0 0.04em 0.22em; margin: 0 -0.04em -0.22em; }
   @supports ((-webkit-background-clip: text) or (background-clip: text)) {
     .text-cut {
       background-image: url('/tex/cut.webp');

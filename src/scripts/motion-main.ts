@@ -27,7 +27,7 @@ new MutationObserver(() => ($$('dialog[open]').length || document.documentElemen
 for (const el of $$('[data-split]')) {
   if (!below(el, 0.75)) continue;
   const cut = el.classList.contains('text-cut');
-  const split = SplitText.create(el, { type: 'lines', mask: 'lines', linesClass: cut ? 'text-cut' : '' });
+  const split = SplitText.create(el, { type: 'lines', mask: 'lines', linesClass: cut ? 'split-line text-cut' : 'split-line' }); // masks: .split-line-mask (global.css)
   if (cut) el.classList.remove('text-cut'); // the cut texture moves onto each line, so clipping survives the transform
   gsap.from(split.lines, {
     yPercent: 40, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08,
